@@ -1,0 +1,51 @@
+(node:13032) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+Token verification failed: TokenExpiredError: jwt expired
+    at C:\Hosting Space\CHOHAN\API\node_modules\jsonwebtoken\verify.js:190:21
+    at getSecret (C:\Hosting Space\CHOHAN\API\node_modules\jsonwebtoken\verify.js:97:14)
+    at module.exports [as verify] (C:\Hosting Space\CHOHAN\API\node_modules\jsonwebtoken\verify.js:101:10)
+    at getCompanyIdFromToken (C:\Hosting Space\CHOHAN\API\utils\dbClientService.js:116:25)
+    at Object.callStoredProcedure (C:\Hosting Space\CHOHAN\API\utils\dbClientService.js:72:23)
+    at getAllBusCategory (C:\Hosting Space\CHOHAN\API\routes\master\busCategory\busCategory.controllers.js:34:46)
+    at Layer.handle [as handle_request] (C:\Hosting Space\CHOHAN\API\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Hosting Space\CHOHAN\API\node_modules\express\lib\router\route.js:144:13)
+    at Route.dispatch (C:\Hosting Space\CHOHAN\API\node_modules\express\lib\router\route.js:114:3)
+    at Layer.handle [as handle_request] (C:\Hosting Space\CHOHAN\API\node_modules\express\lib\router\layer.js:95:5) {
+  expiredAt: 2025-07-13T19:57:36.000Z
+}
+Error occurred: Error: Invalid token
+    at getCompanyIdFromToken (C:\Hosting Space\CHOHAN\API\utils\dbClientService.js:120:11)
+    at Object.callStoredProcedure (C:\Hosting Space\CHOHAN\API\utils\dbClientService.js:72:23)
+    at getAllBusCategory (C:\Hosting Space\CHOHAN\API\routes\master\busCategory\busCategory.controllers.js:34:46)
+    at Layer.handle [as handle_request] (C:\Hosting Space\CHOHAN\API\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Hosting Space\CHOHAN\API\node_modules\express\lib\router\route.js:144:13)
+    at Route.dispatch (C:\Hosting Space\CHOHAN\API\node_modules\express\lib\router\route.js:114:3)
+    at Layer.handle [as handle_request] (C:\Hosting Space\CHOHAN\API\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Hosting Space\CHOHAN\API\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Hosting Space\CHOHAN\API\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Hosting Space\CHOHAN\API\node_modules\express\lib\router\index.js:280:10)
+Token verification failed: TokenExpiredError: jwt expired
+    at C:\Hosting Space\CHOHAN\API\node_modules\jsonwebtoken\verify.js:190:21
+    at getSecret (C:\Hosting Space\CHOHAN\API\node_modules\jsonwebtoken\verify.js:97:14)
+    at module.exports [as verify] (C:\Hosting Space\CHOHAN\API\node_modules\jsonwebtoken\verify.js:101:10)
+    at getCompanyIdFromToken (C:\Hosting Space\CHOHAN\API\utils\dbClientService.js:116:25)
+    at Object.callStoredProcedure (C:\Hosting Space\CHOHAN\API\utils\dbClientService.js:72:23)
+    at gateAllBookingInfo (C:\Hosting Space\CHOHAN\API\routes\dashboard\dashboard.controllers.js:217:40)
+    at Layer.handle [as handle_request] (C:\Hosting Space\CHOHAN\API\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Hosting Space\CHOHAN\API\node_modules\express\lib\router\route.js:144:13)
+    at Route.dispatch (C:\Hosting Space\CHOHAN\API\node_modules\express\lib\router\route.js:114:3)
+    at Layer.handle [as handle_request] (C:\Hosting Space\CHOHAN\API\node_modules\express\lib\router\layer.js:95:5) {
+  expiredAt: 2025-07-13T19:57:36.000Z
+}
+Error occurred: Error: Invalid token
+    at getCompanyIdFromToken (C:\Hosting Space\CHOHAN\API\utils\dbClientService.js:120:11)
+    at Object.callStoredProcedure (C:\Hosting Space\CHOHAN\API\utils\dbClientService.js:72:23)
+    at gateAllBookingInfo (C:\Hosting Space\CHOHAN\API\routes\dashboard\dashboard.controllers.js:217:40)
+    at Layer.handle [as handle_request] (C:\Hosting Space\CHOHAN\API\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Hosting Space\CHOHAN\API\node_modules\express\lib\router\route.js:144:13)
+    at Route.dispatch (C:\Hosting Space\CHOHAN\API\node_modules\express\lib\router\route.js:114:3)
+    at Layer.handle [as handle_request] (C:\Hosting Space\CHOHAN\API\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Hosting Space\CHOHAN\API\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Hosting Space\CHOHAN\API\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Hosting Space\CHOHAN\API\node_modules\express\lib\router\index.js:280:10)
+WARN | `express-rate-limit` | `request.ip` is undefined. You can avoid this by providing a custom `keyGenerator` function, but it may be indicative of a larger issue.

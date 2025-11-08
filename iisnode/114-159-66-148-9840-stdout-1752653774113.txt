@@ -1,0 +1,4028 @@
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 1 }
+in {
+  fieldname: 'file',
+  originalname: 'pl.jpeg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: './uploads/',
+  filename: '1752653774035-pl.jpeg',
+  path: 'uploads\\1752653774035-pl.jpeg',
+  size: 142924
+}
+in
+in 124 {
+  fieldname: 'file',
+  originalname: 'pl.jpeg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: './uploads/',
+  filename: '1752653774035-pl.jpeg',
+  path: 'uploads\\1752653774035-pl.jpeg',
+  size: 142924
+}
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+new file 124.jpeg
+{ id: '81' }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: null }
+[44m[37mResult of PROC :[39m[49m { StatusID: 0, StatusMessage: 'Success.', TotalCount: 10 }
+call
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 136 }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 8 }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 238 }
+undefined 76756
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 144 }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 1 }
+[Object: null prototype] {
+  UploadDocument: 'pr.jpeg',
+  ID: '209',
+  BusID: '81',
+  TaskName: 'undefined',
+  IntimateDays: '30',
+  doctype: 'PERMIT',
+  ExpiryDate: '2025-10-06',
+  NextDueDate: '2025-10-06'
+} 8877876
+userId 1 {
+  fieldname: 'file',
+  originalname: 'pr.jpeg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: './uploads/',
+  filename: '1752653793755-pr.jpeg',
+  path: 'uploads\\1752653793755-pr.jpeg',
+  size: 144503
+}
+params [Object: null prototype] {
+  UploadDocument: 'pr.jpeg',
+  ID: '209',
+  BusID: '81',
+  TaskName: 'undefined',
+  IntimateDays: '30',
+  doctype: 'PERMIT',
+  ExpiryDate: '2025-10-06',
+  NextDueDate: '2025-10-06'
+} {
+  id: '209',
+  ExpiryDate: '2025-10-06',
+  BusID: '81',
+  TaskName: 'undefined',
+  IntimateDays: '30',
+  NextDueDate: '2025-10-06',
+  EntryDate: undefined,
+  UserID: 1,
+  DocumentPath: '1752653793755-pr.jpeg',
+  doctype: 'PERMIT',
+  ReturnID: 0
+} <ref *2> IncomingMessage {
+  _readableState: ReadableState {
+    state: 325654,
+    highWaterMark: 16384,
+    buffer: BufferList { head: null, tail: null, length: 0 },
+    length: 0,
+    pipes: [],
+    flowing: false,
+    errored: null,
+    defaultEncoding: 'utf8',
+    awaitDrainWriters: null,
+    decoder: null,
+    encoding: null,
+    [Symbol(kPaused)]: true
+  },
+  _events: [Object: null prototype] {},
+  _eventsCount: 0,
+  _maxListeners: undefined,
+  socket: <ref *1> Socket {
+    connecting: false,
+    _hadError: false,
+    _parent: null,
+    _host: null,
+    _closeAfterHandlingError: false,
+    _readableState: ReadableState {
+      state: 4184,
+      highWaterMark: 16384,
+      buffer: BufferList { head: null, tail: null, length: 0 },
+      length: 0,
+      pipes: [],
+      flowing: true,
+      errored: null,
+      defaultEncoding: 'utf8',
+      awaitDrainWriters: null,
+      decoder: null,
+      encoding: null,
+      [Symbol(kPaused)]: false
+    },
+    _events: [Object: null prototype] {
+      end: [Array],
+      timeout: [Function: socketOnTimeout],
+      data: [Function: bound socketOnData],
+      error: [Function: socketOnError],
+      close: [Array],
+      drain: [Function: bound socketOnDrain],
+      resume: [Function: onSocketResume],
+      pause: [Function: onSocketPause]
+    },
+    _eventsCount: 8,
+    _maxListeners: undefined,
+    _writableState: WritableState {
+      state: 786500,
+      highWaterMark: 16384,
+      defaultEncoding: 'utf8',
+      length: 0,
+      corked: 0,
+      onwrite: [Function: bound onwrite],
+      writecb: null,
+      writelen: 0,
+      afterWriteTickInfo: null,
+      buffered: [],
+      bufferedIndex: 0,
+      pendingcb: 0,
+      errored: null,
+      [Symbol(kOnFinished)]: []
+    },
+    allowHalfOpen: true,
+    _sockname: null,
+    _pendingData: null,
+    _pendingEncoding: '',
+    server: Server {
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      requestTimeout: 300000,
+      headersTimeout: 60000,
+      keepAliveTimeout: 5000,
+      connectionsCheckingInterval: 30000,
+      requireHostHeader: true,
+      joinDuplicateHeaders: undefined,
+      rejectNonStandardBodyWrites: false,
+      _events: [Object: null prototype],
+      _eventsCount: 3,
+      _maxListeners: undefined,
+      _connections: 1,
+      _handle: [Pipe],
+      _usingWorkers: false,
+      _workers: [],
+      _unref: false,
+      allowHalfOpen: true,
+      pauseOnConnect: false,
+      noDelay: true,
+      keepAlive: false,
+      keepAliveInitialDelay: 0,
+      highWaterMark: 16384,
+      httpAllowHalfOpen: false,
+      timeout: 0,
+      maxHeadersCount: null,
+      maxRequestsPerSocket: 0,
+      _pipeName: '\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517',
+      _connectionKey: '-1:\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517:-1',
+      [Symbol(IncomingMessage)]: [Function: IncomingMessage],
+      [Symbol(ServerResponse)]: [Function: ServerResponse],
+      [Symbol(kCapture)]: false,
+      [Symbol(async_id_symbol)]: 6,
+      [Symbol(kUniqueHeaders)]: null,
+      [Symbol(http.server.connections)]: ConnectionsList {},
+      [Symbol(http.server.connectionsCheckingInterval)]: Timeout {
+        _idleTimeout: 30000,
+        _idlePrev: [TimersList],
+        _idleNext: [TimersList],
+        _idleStart: 2644147,
+        _onTimeout: [Function: bound checkConnections],
+        _timerArgs: undefined,
+        _repeat: 30000,
+        _destroyed: false,
+        [Symbol(refed)]: false,
+        [Symbol(kHasPrimitive)]: false,
+        [Symbol(asyncId)]: 9,
+        [Symbol(triggerId)]: 7
+      }
+    },
+    _server: Server {
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      requestTimeout: 300000,
+      headersTimeout: 60000,
+      keepAliveTimeout: 5000,
+      connectionsCheckingInterval: 30000,
+      requireHostHeader: true,
+      joinDuplicateHeaders: undefined,
+      rejectNonStandardBodyWrites: false,
+      _events: [Object: null prototype],
+      _eventsCount: 3,
+      _maxListeners: undefined,
+      _connections: 1,
+      _handle: [Pipe],
+      _usingWorkers: false,
+      _workers: [],
+      _unref: false,
+      allowHalfOpen: true,
+      pauseOnConnect: false,
+      noDelay: true,
+      keepAlive: false,
+      keepAliveInitialDelay: 0,
+      highWaterMark: 16384,
+      httpAllowHalfOpen: false,
+      timeout: 0,
+      maxHeadersCount: null,
+      maxRequestsPerSocket: 0,
+      _pipeName: '\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517',
+      _connectionKey: '-1:\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517:-1',
+      [Symbol(IncomingMessage)]: [Function: IncomingMessage],
+      [Symbol(ServerResponse)]: [Function: ServerResponse],
+      [Symbol(kCapture)]: false,
+      [Symbol(async_id_symbol)]: 6,
+      [Symbol(kUniqueHeaders)]: null,
+      [Symbol(http.server.connections)]: ConnectionsList {},
+      [Symbol(http.server.connectionsCheckingInterval)]: Timeout {
+        _idleTimeout: 30000,
+        _idlePrev: [TimersList],
+        _idleNext: [TimersList],
+        _idleStart: 2644147,
+        _onTimeout: [Function: bound checkConnections],
+        _timerArgs: undefined,
+        _repeat: 30000,
+        _destroyed: false,
+        [Symbol(refed)]: false,
+        [Symbol(kHasPrimitive)]: false,
+        [Symbol(asyncId)]: 9,
+        [Symbol(triggerId)]: 7
+      }
+    },
+    parser: HTTPParser {
+      '0': null,
+      '1': [Function: parserOnHeaders],
+      '2': [Function: parserOnHeadersComplete],
+      '3': [Function: parserOnBody],
+      '4': [Function: parserOnMessageComplete],
+      '5': [Function: bound onParserExecute],
+      '6': [Function: bound onParserTimeout],
+      _headers: [],
+      _url: '',
+      socket: [Circular *1],
+      incoming: [Circular *2],
+      outgoing: null,
+      maxHeaderPairs: 2000,
+      _consumed: true,
+      onIncoming: [Function: bound parserOnIncoming],
+      joinDuplicateHeaders: null,
+      [Symbol(resource_symbol)]: [HTTPServerAsyncResource]
+    },
+    on: [Function: socketListenerWrap],
+    addListener: [Function: socketListenerWrap],
+    prependListener: [Function: socketListenerWrap],
+    setEncoding: [Function: socketSetEncoding],
+    _paused: false,
+    _httpMessage: ServerResponse {
+      _events: [Object: null prototype],
+      _eventsCount: 1,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: false,
+      chunkedEncoding: false,
+      shouldKeepAlive: true,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: true,
+      sendDate: true,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: null,
+      _hasBody: true,
+      _trailer: '',
+      finished: false,
+      _headerSent: false,
+      _closed: false,
+      socket: [Circular *1],
+      _header: null,
+      _keepAliveTimeout: 5000,
+      _onPendingData: [Function: bound updateOutgoingData],
+      req: [Circular *2],
+      _sent100: false,
+      _expect_continue: false,
+      _maxRequestsPerSocket: 0,
+      locals: [Object: null prototype] {},
+      flush: [Function: flush],
+      write: [Function: write],
+      end: [Function: end],
+      on: [Function: on],
+      writeHead: [Function: writeHead],
+      [Symbol(kCapture)]: false,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype],
+      [Symbol(errored)]: null,
+      [Symbol(kHighWaterMark)]: 16384,
+      [Symbol(kRejectNonStandardBodyWrites)]: false,
+      [Symbol(kUniqueHeaders)]: null
+    },
+    timeout: 0,
+    [Symbol(async_id_symbol)]: 28994,
+    [Symbol(kHandle)]: Pipe {
+      reading: true,
+      _consumed: true,
+      [Symbol(owner_symbol)]: [Circular *1]
+    },
+    [Symbol(lastWriteQueueSize)]: 0,
+    [Symbol(timeout)]: Timeout {
+      _idleTimeout: -1,
+      _idlePrev: null,
+      _idleNext: null,
+      _idleStart: 2646032,
+      _onTimeout: null,
+      _timerArgs: undefined,
+      _repeat: null,
+      _destroyed: true,
+      [Symbol(refed)]: false,
+      [Symbol(kHasPrimitive)]: false,
+      [Symbol(asyncId)]: 29002,
+      [Symbol(triggerId)]: 28998
+    },
+    [Symbol(kBuffer)]: null,
+    [Symbol(kBufferCb)]: null,
+    [Symbol(kBufferGen)]: null,
+    [Symbol(kCapture)]: false,
+    [Symbol(kSetNoDelay)]: false,
+    [Symbol(kSetKeepAlive)]: false,
+    [Symbol(kSetKeepAliveInitialDelay)]: 0,
+    [Symbol(kBytesRead)]: 0,
+    [Symbol(kBytesWritten)]: 0
+  },
+  httpVersionMajor: 1,
+  httpVersionMinor: 1,
+  httpVersion: '1.1',
+  complete: true,
+  rawHeaders: [
+    'Connection',
+    'keep-alive',
+    'Content-Length',
+    '145648',
+    'Content-Type',
+    'multipart/form-data; boundary=----geckoformboundaryceb8c4c48c6023ddc12b91c505750c16',
+    'Accept',
+    'application/json, text/plain, */*',
+    'Accept-Encoding',
+    'gzip, br',
+    'Accept-Language',
+    'en-US,en;q=0.5',
+    'Authorization',
+    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInBlcm1pc3Npb25zIjpbImNyZWF0ZS1idXNDYXRlZ29yeSIsInJlYWRBbGwtYnVzQ2F0ZWdvcnkiLCJ1cGRhdGUtYnVzQ2F0ZWdvcnkiLCJkZWxldGUtYnVzQ2F0ZWdvcnkiLCJjcmVhdGUtY29tcGFueSIsInJlYWRBbGwtY29tcGFueSIsInVwZGF0ZS1jb21wYW55IiwiZGVsZXRlLWNvbXBhbnkiLCJjcmVhdGUtZnVlbCIsInJlYWRBbGwtZnVlbCIsInVwZGF0ZS1mdWVsIiwiZGVsZXRlLWZ1ZWwiLCJjcmVhdGUtYm9va2luZ0VudHJ5IiwicmVhZEFsbC1ib29raW5nRW50cnkiLCJ1cGRhdGUtYm9va2luZ0VudHJ5IiwiZGVsZXRlLWJvb2tpbmdFbnRyeSIsImNyZWF0ZS1yb2xlUGVybWlzc2lvbiIsInJlYWRBbGwtcm9sZVBlcm1pc3Npb24iLCJ1cGRhdGUtcm9sZVBlcm1pc3Npb24iLCJkZWxldGUtcm9sZVBlcm1pc3Npb24iLCJjcmVhdGUtYm9va2luZ0J1c0FsbG90bWVudCIsInJlYWRBbGwtYm9va2luZ0J1c0FsbG90bWVudCIsInVwZGF0ZS1ib29raW5nQnVzQWxsb3RtZW50IiwiZGVsZXRlLXNhbGVJbnZvaWNlIiwiY3JlYXRlLWhlbHBlciIsInJlYWRBbGwtaGVscGVyIiwidXBkYXRlLWhlbHBlciIsImRlbGV0ZS1oZWxwZXIiLCJjcmVhdGUtcHJvZm9ybWFJbnZvaWNlIiwicmVhZEFsbC1wcm9mb3JtYUludm9pY2UiLCJ1cGRhdGUtcHJvZm9ybWFJbnZvaWNlIiwiZGVsZXRlLXByb2Zvcm1hSW52b2ljZSIsImNyZWF0ZS1icmFuY2giLCJyZWFkQWxsLWJyYW5jaCIsInVwZGF0ZS1icmFuY2giLCJkZWxldGUtYnJhbmNoIiwiY3JlYXRlLXVzZXIiLCJyZWFkQWxsLXVzZXIiLCJ1cGRhdGUtdXNlciIsImRlbGV0ZS11c2VyIiwiY3JlYXRlLXJvbGUiLCJyZWFkQWxsLXJvbGUiLCJ1cGRhdGUtcm9sZSIsImRlbGV0ZS1yb2xlIiwiY3JlYXRlLWJ1cyIsInJlYWRBbGwtYnVzIiwidXBkYXRlLWJ1cyIsImRlbGV0ZS1idXMiLCJjcmVhdGUtZGFpbHlFeGVjdXRpb24iLCJyZWFkQWxsLWRhaWx5RXhlY3V0aW9uIiwidXBkYXRlLWRhaWx5RXhlY3V0aW9uIiwiZGVsZXRlLWRhaWx5RXhlY3V0aW9uIiwiY3JlYXRlLXNldHVwIiwicmVhZEFsbC1zZXR1cCIsInVwZGF0ZS1zZXR1cCIsImRlbGV0ZS1zZXR1cCIsImNyZWF0ZS1kcml2ZXJIZWxwZXJBdHRlbmRhbmNlIiwicmVhZEFsbC1kcml2ZXJIZWxwZXJBdHRlbmRhbmNlIiwidXBkYXRlLWRyaXZlckhlbHBlckF0dGVuZGFuY2UiLCJkZWxldGUtZHJpdmVySGVscGVyQXR0ZW5kYW5jZSIsInJlYWRBbGwtRVNJUEZSZWdpc3RlciIsInJlYWRBbGwtc2FsYXJ5UmVnaXN0ZXIiLCJyZWFkQWxsLWZ1ZWxSZWdpc3RlciIsInJlYWRBbGwtaW52b2ljZVJlZ2lzdGVyIiwicmVhZEFsbC1ib29raW5nUmVnaXN0ZXIiLCJyZWFkQWxsLWFkdmFuY2VUb1N0YWZmUmVnaXN0ZXIiLCJjcmVhdGUtYWR2YW5jZVRvU3RhZmZFbnRyeSIsInJlYWRBbGwtYWR2YW5jZVRvU3RhZmZFbnRyeSIsInVwZGF0ZS1hZHZhbmNlVG9TdGFmZkVudHJ5IiwiZGVsZXRlLWFkdmFuY2VUb1N0YWZmRW50cnkiLCJjcmVhdGUtY2l0eSIsInJlYWRBbGwtY2l0eSIsInVwZGF0ZS1jaXR5IiwiZGVsZXRlLWNpdHkiLCJjcmVhdGUtdHJhbnNmZXIiLCJyZWFkQWxsLXRyYW5zZmVyIiwiY3JlYXRlLXN0YXRlIiwicmVhZEFsbC1zdGF0ZSIsInVwZGF0ZS1zdGF0ZSIsImRlbGV0ZS1zdGF0ZSIsImNyZWF0ZS1zaXRlIiwicmVhZEFsbC1zaXRlIiwidXBkYXRlLXNpdGUiLCJkZWxldGUtc2l0ZSIsImNyZWF0ZS12ZW5kb3IiLCJyZWFkQWxsLXZlbmRvciIsImRlbGV0ZS12ZW5kb3IiLCJ1cGRhdGUtdmVuZG9yIiwiY3JlYXRlLWRyaXZlciIsInJlYWRBbGwtZHJpdmVyIiwidXBkYXRlLWRyaXZlciIsImRlbGV0ZS1kcml2ZXIiLCJyZWFkQWxsLXBhcnR5IiwidXBkYXRlLXBhcnR5IiwiY3JlYXRlLXBhcnR5IiwiZGVsZXRlLXBhcnR5Il0sImNvbXBhbnlJZCI6MiwiaWF0IjoxNzUyNDg4MzI2LCJleHAiOjE3NTI5MzQ3MjZ9.dJHwPnn2wCusuupCYZo-Suz_pFtvhqemQ0blRjqsqoI',
+    'Host',
+    'api.chohantoursandtravels.com',
+    'Referer',
+    'https://app.chohantoursandtravels.com/',
+    'User-Agent',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0',
+    'cf-ray',
+    '96000ee21cd25ff2-SIN',
+    'x-forwarded-for',
+    '2401:4900:8828:75:6cd0:90fd:74d6:cee0',
+    'origin',
+    'https://app.chohantoursandtravels.com',
+    'priority',
+    'u=0',
+    'X-Forwarded-Proto',
+    'https',
+    'cdn-loop',
+    'cloudflare; loops=1',
+    'sec-fetch-site',
+    'same-site',
+    'CF-Visitor',
+    '{"scheme":"https"}',
+    'sec-fetch-mode',
+    'cors',
+    'sec-fetch-dest',
+    'empty',
+    'CF-Connecting-IP',
+    '2401:4900:8828:75:6cd0:90fd:74d6:cee0',
+    'CF-IPCountry',
+    'IN',
+    'X-Original-URL',
+    '/v1/busdocuments/'
+  ],
+  rawTrailers: [],
+  joinDuplicateHeaders: null,
+  aborted: false,
+  upgrade: false,
+  url: '/',
+  method: 'POST',
+  statusCode: null,
+  statusMessage: null,
+  client: <ref *1> Socket {
+    connecting: false,
+    _hadError: false,
+    _parent: null,
+    _host: null,
+    _closeAfterHandlingError: false,
+    _readableState: ReadableState {
+      state: 4184,
+      highWaterMark: 16384,
+      buffer: BufferList { head: null, tail: null, length: 0 },
+      length: 0,
+      pipes: [],
+      flowing: true,
+      errored: null,
+      defaultEncoding: 'utf8',
+      awaitDrainWriters: null,
+      decoder: null,
+      encoding: null,
+      [Symbol(kPaused)]: false
+    },
+    _events: [Object: null prototype] {
+      end: [Array],
+      timeout: [Function: socketOnTimeout],
+      data: [Function: bound socketOnData],
+      error: [Function: socketOnError],
+      close: [Array],
+      drain: [Function: bound socketOnDrain],
+      resume: [Function: onSocketResume],
+      pause: [Function: onSocketPause]
+    },
+    _eventsCount: 8,
+    _maxListeners: undefined,
+    _writableState: WritableState {
+      state: 786500,
+      highWaterMark: 16384,
+      defaultEncoding: 'utf8',
+      length: 0,
+      corked: 0,
+      onwrite: [Function: bound onwrite],
+      writecb: null,
+      writelen: 0,
+      afterWriteTickInfo: null,
+      buffered: [],
+      bufferedIndex: 0,
+      pendingcb: 0,
+      errored: null,
+      [Symbol(kOnFinished)]: []
+    },
+    allowHalfOpen: true,
+    _sockname: null,
+    _pendingData: null,
+    _pendingEncoding: '',
+    server: Server {
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      requestTimeout: 300000,
+      headersTimeout: 60000,
+      keepAliveTimeout: 5000,
+      connectionsCheckingInterval: 30000,
+      requireHostHeader: true,
+      joinDuplicateHeaders: undefined,
+      rejectNonStandardBodyWrites: false,
+      _events: [Object: null prototype],
+      _eventsCount: 3,
+      _maxListeners: undefined,
+      _connections: 1,
+      _handle: [Pipe],
+      _usingWorkers: false,
+      _workers: [],
+      _unref: false,
+      allowHalfOpen: true,
+      pauseOnConnect: false,
+      noDelay: true,
+      keepAlive: false,
+      keepAliveInitialDelay: 0,
+      highWaterMark: 16384,
+      httpAllowHalfOpen: false,
+      timeout: 0,
+      maxHeadersCount: null,
+      maxRequestsPerSocket: 0,
+      _pipeName: '\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517',
+      _connectionKey: '-1:\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517:-1',
+      [Symbol(IncomingMessage)]: [Function: IncomingMessage],
+      [Symbol(ServerResponse)]: [Function: ServerResponse],
+      [Symbol(kCapture)]: false,
+      [Symbol(async_id_symbol)]: 6,
+      [Symbol(kUniqueHeaders)]: null,
+      [Symbol(http.server.connections)]: ConnectionsList {},
+      [Symbol(http.server.connectionsCheckingInterval)]: Timeout {
+        _idleTimeout: 30000,
+        _idlePrev: [TimersList],
+        _idleNext: [TimersList],
+        _idleStart: 2644147,
+        _onTimeout: [Function: bound checkConnections],
+        _timerArgs: undefined,
+        _repeat: 30000,
+        _destroyed: false,
+        [Symbol(refed)]: false,
+        [Symbol(kHasPrimitive)]: false,
+        [Symbol(asyncId)]: 9,
+        [Symbol(triggerId)]: 7
+      }
+    },
+    _server: Server {
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      requestTimeout: 300000,
+      headersTimeout: 60000,
+      keepAliveTimeout: 5000,
+      connectionsCheckingInterval: 30000,
+      requireHostHeader: true,
+      joinDuplicateHeaders: undefined,
+      rejectNonStandardBodyWrites: false,
+      _events: [Object: null prototype],
+      _eventsCount: 3,
+      _maxListeners: undefined,
+      _connections: 1,
+      _handle: [Pipe],
+      _usingWorkers: false,
+      _workers: [],
+      _unref: false,
+      allowHalfOpen: true,
+      pauseOnConnect: false,
+      noDelay: true,
+      keepAlive: false,
+      keepAliveInitialDelay: 0,
+      highWaterMark: 16384,
+      httpAllowHalfOpen: false,
+      timeout: 0,
+      maxHeadersCount: null,
+      maxRequestsPerSocket: 0,
+      _pipeName: '\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517',
+      _connectionKey: '-1:\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517:-1',
+      [Symbol(IncomingMessage)]: [Function: IncomingMessage],
+      [Symbol(ServerResponse)]: [Function: ServerResponse],
+      [Symbol(kCapture)]: false,
+      [Symbol(async_id_symbol)]: 6,
+      [Symbol(kUniqueHeaders)]: null,
+      [Symbol(http.server.connections)]: ConnectionsList {},
+      [Symbol(http.server.connectionsCheckingInterval)]: Timeout {
+        _idleTimeout: 30000,
+        _idlePrev: [TimersList],
+        _idleNext: [TimersList],
+        _idleStart: 2644147,
+        _onTimeout: [Function: bound checkConnections],
+        _timerArgs: undefined,
+        _repeat: 30000,
+        _destroyed: false,
+        [Symbol(refed)]: false,
+        [Symbol(kHasPrimitive)]: false,
+        [Symbol(asyncId)]: 9,
+        [Symbol(triggerId)]: 7
+      }
+    },
+    parser: HTTPParser {
+      '0': null,
+      '1': [Function: parserOnHeaders],
+      '2': [Function: parserOnHeadersComplete],
+      '3': [Function: parserOnBody],
+      '4': [Function: parserOnMessageComplete],
+      '5': [Function: bound onParserExecute],
+      '6': [Function: bound onParserTimeout],
+      _headers: [],
+      _url: '',
+      socket: [Circular *1],
+      incoming: [Circular *2],
+      outgoing: null,
+      maxHeaderPairs: 2000,
+      _consumed: true,
+      onIncoming: [Function: bound parserOnIncoming],
+      joinDuplicateHeaders: null,
+      [Symbol(resource_symbol)]: [HTTPServerAsyncResource]
+    },
+    on: [Function: socketListenerWrap],
+    addListener: [Function: socketListenerWrap],
+    prependListener: [Function: socketListenerWrap],
+    setEncoding: [Function: socketSetEncoding],
+    _paused: false,
+    _httpMessage: ServerResponse {
+      _events: [Object: null prototype],
+      _eventsCount: 1,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: false,
+      chunkedEncoding: false,
+      shouldKeepAlive: true,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: true,
+      sendDate: true,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: null,
+      _hasBody: true,
+      _trailer: '',
+      finished: false,
+      _headerSent: false,
+      _closed: false,
+      socket: [Circular *1],
+      _header: null,
+      _keepAliveTimeout: 5000,
+      _onPendingData: [Function: bound updateOutgoingData],
+      req: [Circular *2],
+      _sent100: false,
+      _expect_continue: false,
+      _maxRequestsPerSocket: 0,
+      locals: [Object: null prototype] {},
+      flush: [Function: flush],
+      write: [Function: write],
+      end: [Function: end],
+      on: [Function: on],
+      writeHead: [Function: writeHead],
+      [Symbol(kCapture)]: false,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype],
+      [Symbol(errored)]: null,
+      [Symbol(kHighWaterMark)]: 16384,
+      [Symbol(kRejectNonStandardBodyWrites)]: false,
+      [Symbol(kUniqueHeaders)]: null
+    },
+    timeout: 0,
+    [Symbol(async_id_symbol)]: 28994,
+    [Symbol(kHandle)]: Pipe {
+      reading: true,
+      _consumed: true,
+      [Symbol(owner_symbol)]: [Circular *1]
+    },
+    [Symbol(lastWriteQueueSize)]: 0,
+    [Symbol(timeout)]: Timeout {
+      _idleTimeout: -1,
+      _idlePrev: null,
+      _idleNext: null,
+      _idleStart: 2646032,
+      _onTimeout: null,
+      _timerArgs: undefined,
+      _repeat: null,
+      _destroyed: true,
+      [Symbol(refed)]: false,
+      [Symbol(kHasPrimitive)]: false,
+      [Symbol(asyncId)]: 29002,
+      [Symbol(triggerId)]: 28998
+    },
+    [Symbol(kBuffer)]: null,
+    [Symbol(kBufferCb)]: null,
+    [Symbol(kBufferGen)]: null,
+    [Symbol(kCapture)]: false,
+    [Symbol(kSetNoDelay)]: false,
+    [Symbol(kSetKeepAlive)]: false,
+    [Symbol(kSetKeepAliveInitialDelay)]: 0,
+    [Symbol(kBytesRead)]: 0,
+    [Symbol(kBytesWritten)]: 0
+  },
+  _consuming: true,
+  _dumped: false,
+  next: [Function: next],
+  baseUrl: '/v1/busdocuments',
+  originalUrl: '/v1/busdocuments/',
+  _parsedUrl: Url {
+    protocol: null,
+    slashes: null,
+    auth: null,
+    host: null,
+    port: null,
+    hostname: null,
+    hash: null,
+    search: null,
+    query: null,
+    pathname: '/',
+    path: '/',
+    href: '/',
+    _raw: '/'
+  },
+  params: {},
+  query: {},
+  res: <ref *3> ServerResponse {
+    _events: [Object: null prototype] { finish: [Function: bound resOnFinish] },
+    _eventsCount: 1,
+    _maxListeners: undefined,
+    outputData: [],
+    outputSize: 0,
+    writable: true,
+    destroyed: false,
+    _last: false,
+    chunkedEncoding: false,
+    shouldKeepAlive: true,
+    maxRequestsOnConnectionReached: false,
+    _defaultKeepAlive: true,
+    useChunkedEncodingByDefault: true,
+    sendDate: true,
+    _removedConnection: false,
+    _removedContLen: false,
+    _removedTE: false,
+    strictContentLength: false,
+    _contentLength: null,
+    _hasBody: true,
+    _trailer: '',
+    finished: false,
+    _headerSent: false,
+    _closed: false,
+    socket: <ref *1> Socket {
+      connecting: false,
+      _hadError: false,
+      _parent: null,
+      _host: null,
+      _closeAfterHandlingError: false,
+      _readableState: [ReadableState],
+      _events: [Object: null prototype],
+      _eventsCount: 8,
+      _maxListeners: undefined,
+      _writableState: [WritableState],
+      allowHalfOpen: true,
+      _sockname: null,
+      _pendingData: null,
+      _pendingEncoding: '',
+      server: [Server],
+      _server: [Server],
+      parser: [HTTPParser],
+      on: [Function: socketListenerWrap],
+      addListener: [Function: socketListenerWrap],
+      prependListener: [Function: socketListenerWrap],
+      setEncoding: [Function: socketSetEncoding],
+      _paused: false,
+      _httpMessage: [Circular *3],
+      timeout: 0,
+      [Symbol(async_id_symbol)]: 28994,
+      [Symbol(kHandle)]: [Pipe],
+      [Symbol(lastWriteQueueSize)]: 0,
+      [Symbol(timeout)]: Timeout {
+        _idleTimeout: -1,
+        _idlePrev: null,
+        _idleNext: null,
+        _idleStart: 2646032,
+        _onTimeout: null,
+        _timerArgs: undefined,
+        _repeat: null,
+        _destroyed: true,
+        [Symbol(refed)]: false,
+        [Symbol(kHasPrimitive)]: false,
+        [Symbol(asyncId)]: 29002,
+        [Symbol(triggerId)]: 28998
+      },
+      [Symbol(kBuffer)]: null,
+      [Symbol(kBufferCb)]: null,
+      [Symbol(kBufferGen)]: null,
+      [Symbol(kCapture)]: false,
+      [Symbol(kSetNoDelay)]: false,
+      [Symbol(kSetKeepAlive)]: false,
+      [Symbol(kSetKeepAliveInitialDelay)]: 0,
+      [Symbol(kBytesRead)]: 0,
+      [Symbol(kBytesWritten)]: 0
+    },
+    _header: null,
+    _keepAliveTimeout: 5000,
+    _onPendingData: [Function: bound updateOutgoingData],
+    req: [Circular *2],
+    _sent100: false,
+    _expect_continue: false,
+    _maxRequestsPerSocket: 0,
+    locals: [Object: null prototype] {},
+    flush: [Function: flush],
+    write: [Function: write],
+    end: [Function: end],
+    on: [Function: on],
+    writeHead: [Function: writeHead],
+    [Symbol(kCapture)]: false,
+    [Symbol(kBytesWritten)]: 0,
+    [Symbol(kNeedDrain)]: false,
+    [Symbol(corked)]: 0,
+    [Symbol(kOutHeaders)]: [Object: null prototype] {
+      'x-powered-by': [Array],
+      'access-control-allow-origin': [Array],
+      vary: [Array],
+      'access-control-allow-credentials': [Array]
+    },
+    [Symbol(errored)]: null,
+    [Symbol(kHighWaterMark)]: 16384,
+    [Symbol(kRejectNonStandardBodyWrites)]: false,
+    [Symbol(kUniqueHeaders)]: null
+  },
+  body: [Object: null prototype] {
+    UploadDocument: 'pr.jpeg',
+    ID: '209',
+    BusID: '81',
+    TaskName: 'undefined',
+    IntimateDays: '30',
+    doctype: 'PERMIT',
+    ExpiryDate: '2025-10-06',
+    NextDueDate: '2025-10-06'
+  },
+  route: Route {
+    path: '',
+    stack: [ [Layer], [Layer] ],
+    methods: { post: true }
+  },
+  file: {
+    fieldname: 'file',
+    originalname: 'pr.jpeg',
+    encoding: '7bit',
+    mimetype: 'image/jpeg',
+    destination: './uploads/',
+    filename: '1752653793755-pr.jpeg',
+    path: 'uploads\\1752653793755-pr.jpeg',
+    size: 144503
+  },
+  [Symbol(kCapture)]: false,
+  [Symbol(kHeaders)]: {
+    connection: 'keep-alive',
+    'content-length': '145648',
+    'content-type': 'multipart/form-data; boundary=----geckoformboundaryceb8c4c48c6023ddc12b91c505750c16',
+    accept: 'application/json, text/plain, */*',
+    'accept-encoding': 'gzip, br',
+    'accept-language': 'en-US,en;q=0.5',
+    authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInBlcm1pc3Npb25zIjpbImNyZWF0ZS1idXNDYXRlZ29yeSIsInJlYWRBbGwtYnVzQ2F0ZWdvcnkiLCJ1cGRhdGUtYnVzQ2F0ZWdvcnkiLCJkZWxldGUtYnVzQ2F0ZWdvcnkiLCJjcmVhdGUtY29tcGFueSIsInJlYWRBbGwtY29tcGFueSIsInVwZGF0ZS1jb21wYW55IiwiZGVsZXRlLWNvbXBhbnkiLCJjcmVhdGUtZnVlbCIsInJlYWRBbGwtZnVlbCIsInVwZGF0ZS1mdWVsIiwiZGVsZXRlLWZ1ZWwiLCJjcmVhdGUtYm9va2luZ0VudHJ5IiwicmVhZEFsbC1ib29raW5nRW50cnkiLCJ1cGRhdGUtYm9va2luZ0VudHJ5IiwiZGVsZXRlLWJvb2tpbmdFbnRyeSIsImNyZWF0ZS1yb2xlUGVybWlzc2lvbiIsInJlYWRBbGwtcm9sZVBlcm1pc3Npb24iLCJ1cGRhdGUtcm9sZVBlcm1pc3Npb24iLCJkZWxldGUtcm9sZVBlcm1pc3Npb24iLCJjcmVhdGUtYm9va2luZ0J1c0FsbG90bWVudCIsInJlYWRBbGwtYm9va2luZ0J1c0FsbG90bWVudCIsInVwZGF0ZS1ib29raW5nQnVzQWxsb3RtZW50IiwiZGVsZXRlLXNhbGVJbnZvaWNlIiwiY3JlYXRlLWhlbHBlciIsInJlYWRBbGwtaGVscGVyIiwidXBkYXRlLWhlbHBlciIsImRlbGV0ZS1oZWxwZXIiLCJjcmVhdGUtcHJvZm9ybWFJbnZvaWNlIiwicmVhZEFsbC1wcm9mb3JtYUludm9pY2UiLCJ1cGRhdGUtcHJvZm9ybWFJbnZvaWNlIiwiZGVsZXRlLXByb2Zvcm1hSW52b2ljZSIsImNyZWF0ZS1icmFuY2giLCJyZWFkQWxsLWJyYW5jaCIsInVwZGF0ZS1icmFuY2giLCJkZWxldGUtYnJhbmNoIiwiY3JlYXRlLXVzZXIiLCJyZWFkQWxsLXVzZXIiLCJ1cGRhdGUtdXNlciIsImRlbGV0ZS11c2VyIiwiY3JlYXRlLXJvbGUiLCJyZWFkQWxsLXJvbGUiLCJ1cGRhdGUtcm9sZSIsImRlbGV0ZS1yb2xlIiwiY3JlYXRlLWJ1cyIsInJlYWRBbGwtYnVzIiwidXBkYXRlLWJ1cyIsImRlbGV0ZS1idXMiLCJjcmVhdGUtZGFpbHlFeGVjdXRpb24iLCJyZWFkQWxsLWRhaWx5RXhlY3V0aW9uIiwidXBkYXRlLWRhaWx5RXhlY3V0aW9uIiwiZGVsZXRlLWRhaWx5RXhlY3V0aW9uIiwiY3JlYXRlLXNldHVwIiwicmVhZEFsbC1zZXR1cCIsInVwZGF0ZS1zZXR1cCIsImRlbGV0ZS1zZXR1cCIsImNyZWF0ZS1kcml2ZXJIZWxwZXJBdHRlbmRhbmNlIiwicmVhZEFsbC1kcml2ZXJIZWxwZXJBdHRlbmRhbmNlIiwidXBkYXRlLWRyaXZlckhlbHBlckF0dGVuZGFuY2UiLCJkZWxldGUtZHJpdmVySGVscGVyQXR0ZW5kYW5jZSIsInJlYWRBbGwtRVNJUEZSZWdpc3RlciIsInJlYWRBbGwtc2FsYXJ5UmVnaXN0ZXIiLCJyZWFkQWxsLWZ1ZWxSZWdpc3RlciIsInJlYWRBbGwtaW52b2ljZVJlZ2lzdGVyIiwicmVhZEFsbC1ib29raW5nUmVnaXN0ZXIiLCJyZWFkQWxsLWFkdmFuY2VUb1N0YWZmUmVnaXN0ZXIiLCJjcmVhdGUtYWR2YW5jZVRvU3RhZmZFbnRyeSIsInJlYWRBbGwtYWR2YW5jZVRvU3RhZmZFbnRyeSIsInVwZGF0ZS1hZHZhbmNlVG9TdGFmZkVudHJ5IiwiZGVsZXRlLWFkdmFuY2VUb1N0YWZmRW50cnkiLCJjcmVhdGUtY2l0eSIsInJlYWRBbGwtY2l0eSIsInVwZGF0ZS1jaXR5IiwiZGVsZXRlLWNpdHkiLCJjcmVhdGUtdHJhbnNmZXIiLCJyZWFkQWxsLXRyYW5zZmVyIiwiY3JlYXRlLXN0YXRlIiwicmVhZEFsbC1zdGF0ZSIsInVwZGF0ZS1zdGF0ZSIsImRlbGV0ZS1zdGF0ZSIsImNyZWF0ZS1zaXRlIiwicmVhZEFsbC1zaXRlIiwidXBkYXRlLXNpdGUiLCJkZWxldGUtc2l0ZSIsImNyZWF0ZS12ZW5kb3IiLCJyZWFkQWxsLXZlbmRvciIsImRlbGV0ZS12ZW5kb3IiLCJ1cGRhdGUtdmVuZG9yIiwiY3JlYXRlLWRyaXZlciIsInJlYWRBbGwtZHJpdmVyIiwidXBkYXRlLWRyaXZlciIsImRlbGV0ZS1kcml2ZXIiLCJyZWFkQWxsLXBhcnR5IiwidXBkYXRlLXBhcnR5IiwiY3JlYXRlLXBhcnR5IiwiZGVsZXRlLXBhcnR5Il0sImNvbXBhbnlJZCI6MiwiaWF0IjoxNzUyNDg4MzI2LCJleHAiOjE3NTI5MzQ3MjZ9.dJHwPnn2wCusuupCYZo-Suz_pFtvhqemQ0blRjqsqoI',
+    host: 'api.chohantoursandtravels.com',
+    referer: 'https://app.chohantoursandtravels.com/',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0',
+    'cf-ray': '96000ee21cd25ff2-SIN',
+    'x-forwarded-for': '2401:4900:8828:75:6cd0:90fd:74d6:cee0',
+    origin: 'https://app.chohantoursandtravels.com',
+    priority: 'u=0',
+    'x-forwarded-proto': 'https',
+    'cdn-loop': 'cloudflare; loops=1',
+    'sec-fetch-site': 'same-site',
+    'cf-visitor': '{"scheme":"https"}',
+    'sec-fetch-mode': 'cors',
+    'sec-fetch-dest': 'empty',
+    'cf-connecting-ip': '2401:4900:8828:75:6cd0:90fd:74d6:cee0',
+    'cf-ipcountry': 'IN',
+    'x-original-url': '/v1/busdocuments/'
+  },
+  [Symbol(kHeadersCount)]: 46,
+  [Symbol(kTrailers)]: null,
+  [Symbol(kTrailersCount)]: 0
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 1 }
+in {
+  fieldname: 'file',
+  originalname: 'pr.jpeg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: './uploads/',
+  filename: '1752653793755-pr.jpeg',
+  path: 'uploads\\1752653793755-pr.jpeg',
+  size: 144503
+}
+in
+in 209 {
+  fieldname: 'file',
+  originalname: 'pr.jpeg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: './uploads/',
+  filename: '1752653793755-pr.jpeg',
+  path: 'uploads\\1752653793755-pr.jpeg',
+  size: 144503
+}
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+new file 209.jpeg
+{ id: '81' }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: null }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 1 }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 8 }
+call
+undefined 76756
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 144 }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 136 }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 238 }
+[44m[37mResult of PROC :[39m[49m { StatusID: 0, StatusMessage: 'Success.', TotalCount: 10 }
+[Object: null prototype] {
+  UploadDocument: 'rc.jpeg',
+  ID: '308',
+  BusID: '81',
+  TaskName: 'undefined',
+  IntimateDays: '5',
+  doctype: 'R.C/SMART',
+  ExpiryDate: '2015-12-05',
+  NextDueDate: '2015-12-05'
+} 8877876
+userId 1 {
+  fieldname: 'file',
+  originalname: 'rc.jpeg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: './uploads/',
+  filename: '1752653807536-rc.jpeg',
+  path: 'uploads\\1752653807536-rc.jpeg',
+  size: 138730
+}
+params [Object: null prototype] {
+  UploadDocument: 'rc.jpeg',
+  ID: '308',
+  BusID: '81',
+  TaskName: 'undefined',
+  IntimateDays: '5',
+  doctype: 'R.C/SMART',
+  ExpiryDate: '2015-12-05',
+  NextDueDate: '2015-12-05'
+} {
+  id: '308',
+  ExpiryDate: '2015-12-05',
+  BusID: '81',
+  TaskName: 'undefined',
+  IntimateDays: '5',
+  NextDueDate: '2015-12-05',
+  EntryDate: undefined,
+  UserID: 1,
+  DocumentPath: '1752653807536-rc.jpeg',
+  doctype: 'R.C/SMART',
+  ReturnID: 0
+} <ref *2> IncomingMessage {
+  _readableState: ReadableState {
+    state: 325654,
+    highWaterMark: 16384,
+    buffer: BufferList { head: null, tail: null, length: 0 },
+    length: 0,
+    pipes: [],
+    flowing: false,
+    errored: null,
+    defaultEncoding: 'utf8',
+    awaitDrainWriters: null,
+    decoder: null,
+    encoding: null,
+    [Symbol(kPaused)]: true
+  },
+  _events: [Object: null prototype] {},
+  _eventsCount: 0,
+  _maxListeners: undefined,
+  socket: <ref *1> Socket {
+    connecting: false,
+    _hadError: false,
+    _parent: null,
+    _host: null,
+    _closeAfterHandlingError: false,
+    _readableState: ReadableState {
+      state: 4184,
+      highWaterMark: 16384,
+      buffer: BufferList { head: null, tail: null, length: 0 },
+      length: 0,
+      pipes: [],
+      flowing: true,
+      errored: null,
+      defaultEncoding: 'utf8',
+      awaitDrainWriters: null,
+      decoder: null,
+      encoding: null,
+      [Symbol(kPaused)]: false
+    },
+    _events: [Object: null prototype] {
+      end: [Array],
+      timeout: [Function: socketOnTimeout],
+      data: [Function: bound socketOnData],
+      error: [Function: socketOnError],
+      close: [Array],
+      drain: [Function: bound socketOnDrain],
+      resume: [Function: onSocketResume],
+      pause: [Function: onSocketPause]
+    },
+    _eventsCount: 8,
+    _maxListeners: undefined,
+    _writableState: WritableState {
+      state: 786500,
+      highWaterMark: 16384,
+      defaultEncoding: 'utf8',
+      length: 0,
+      corked: 0,
+      onwrite: [Function: bound onwrite],
+      writecb: null,
+      writelen: 0,
+      afterWriteTickInfo: null,
+      buffered: [],
+      bufferedIndex: 0,
+      pendingcb: 0,
+      errored: null,
+      [Symbol(kOnFinished)]: []
+    },
+    allowHalfOpen: true,
+    _sockname: null,
+    _pendingData: null,
+    _pendingEncoding: '',
+    server: Server {
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      requestTimeout: 300000,
+      headersTimeout: 60000,
+      keepAliveTimeout: 5000,
+      connectionsCheckingInterval: 30000,
+      requireHostHeader: true,
+      joinDuplicateHeaders: undefined,
+      rejectNonStandardBodyWrites: false,
+      _events: [Object: null prototype],
+      _eventsCount: 3,
+      _maxListeners: undefined,
+      _connections: 1,
+      _handle: [Pipe],
+      _usingWorkers: false,
+      _workers: [],
+      _unref: false,
+      allowHalfOpen: true,
+      pauseOnConnect: false,
+      noDelay: true,
+      keepAlive: false,
+      keepAliveInitialDelay: 0,
+      highWaterMark: 16384,
+      httpAllowHalfOpen: false,
+      timeout: 0,
+      maxHeadersCount: null,
+      maxRequestsPerSocket: 0,
+      _pipeName: '\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517',
+      _connectionKey: '-1:\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517:-1',
+      [Symbol(IncomingMessage)]: [Function: IncomingMessage],
+      [Symbol(ServerResponse)]: [Function: ServerResponse],
+      [Symbol(kCapture)]: false,
+      [Symbol(async_id_symbol)]: 6,
+      [Symbol(kUniqueHeaders)]: null,
+      [Symbol(http.server.connections)]: ConnectionsList {},
+      [Symbol(http.server.connectionsCheckingInterval)]: Timeout {
+        _idleTimeout: 30000,
+        _idlePrev: [TimersList],
+        _idleNext: [TimersList],
+        _idleStart: 2644147,
+        _onTimeout: [Function: bound checkConnections],
+        _timerArgs: undefined,
+        _repeat: 30000,
+        _destroyed: false,
+        [Symbol(refed)]: false,
+        [Symbol(kHasPrimitive)]: false,
+        [Symbol(asyncId)]: 9,
+        [Symbol(triggerId)]: 7
+      }
+    },
+    _server: Server {
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      requestTimeout: 300000,
+      headersTimeout: 60000,
+      keepAliveTimeout: 5000,
+      connectionsCheckingInterval: 30000,
+      requireHostHeader: true,
+      joinDuplicateHeaders: undefined,
+      rejectNonStandardBodyWrites: false,
+      _events: [Object: null prototype],
+      _eventsCount: 3,
+      _maxListeners: undefined,
+      _connections: 1,
+      _handle: [Pipe],
+      _usingWorkers: false,
+      _workers: [],
+      _unref: false,
+      allowHalfOpen: true,
+      pauseOnConnect: false,
+      noDelay: true,
+      keepAlive: false,
+      keepAliveInitialDelay: 0,
+      highWaterMark: 16384,
+      httpAllowHalfOpen: false,
+      timeout: 0,
+      maxHeadersCount: null,
+      maxRequestsPerSocket: 0,
+      _pipeName: '\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517',
+      _connectionKey: '-1:\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517:-1',
+      [Symbol(IncomingMessage)]: [Function: IncomingMessage],
+      [Symbol(ServerResponse)]: [Function: ServerResponse],
+      [Symbol(kCapture)]: false,
+      [Symbol(async_id_symbol)]: 6,
+      [Symbol(kUniqueHeaders)]: null,
+      [Symbol(http.server.connections)]: ConnectionsList {},
+      [Symbol(http.server.connectionsCheckingInterval)]: Timeout {
+        _idleTimeout: 30000,
+        _idlePrev: [TimersList],
+        _idleNext: [TimersList],
+        _idleStart: 2644147,
+        _onTimeout: [Function: bound checkConnections],
+        _timerArgs: undefined,
+        _repeat: 30000,
+        _destroyed: false,
+        [Symbol(refed)]: false,
+        [Symbol(kHasPrimitive)]: false,
+        [Symbol(asyncId)]: 9,
+        [Symbol(triggerId)]: 7
+      }
+    },
+    parser: HTTPParser {
+      '0': null,
+      '1': [Function: parserOnHeaders],
+      '2': [Function: parserOnHeadersComplete],
+      '3': [Function: parserOnBody],
+      '4': [Function: parserOnMessageComplete],
+      '5': [Function: bound onParserExecute],
+      '6': [Function: bound onParserTimeout],
+      _headers: [],
+      _url: '',
+      socket: [Circular *1],
+      incoming: [Circular *2],
+      outgoing: null,
+      maxHeaderPairs: 2000,
+      _consumed: true,
+      onIncoming: [Function: bound parserOnIncoming],
+      joinDuplicateHeaders: null,
+      [Symbol(resource_symbol)]: [HTTPServerAsyncResource]
+    },
+    on: [Function: socketListenerWrap],
+    addListener: [Function: socketListenerWrap],
+    prependListener: [Function: socketListenerWrap],
+    setEncoding: [Function: socketSetEncoding],
+    _paused: false,
+    _httpMessage: ServerResponse {
+      _events: [Object: null prototype],
+      _eventsCount: 1,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: false,
+      chunkedEncoding: false,
+      shouldKeepAlive: true,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: true,
+      sendDate: true,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: null,
+      _hasBody: true,
+      _trailer: '',
+      finished: false,
+      _headerSent: false,
+      _closed: false,
+      socket: [Circular *1],
+      _header: null,
+      _keepAliveTimeout: 5000,
+      _onPendingData: [Function: bound updateOutgoingData],
+      req: [Circular *2],
+      _sent100: false,
+      _expect_continue: false,
+      _maxRequestsPerSocket: 0,
+      locals: [Object: null prototype] {},
+      flush: [Function: flush],
+      write: [Function: write],
+      end: [Function: end],
+      on: [Function: on],
+      writeHead: [Function: writeHead],
+      [Symbol(kCapture)]: false,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype],
+      [Symbol(errored)]: null,
+      [Symbol(kHighWaterMark)]: 16384,
+      [Symbol(kRejectNonStandardBodyWrites)]: false,
+      [Symbol(kUniqueHeaders)]: null
+    },
+    timeout: 0,
+    [Symbol(async_id_symbol)]: 29457,
+    [Symbol(kHandle)]: Pipe {
+      reading: true,
+      _consumed: true,
+      [Symbol(owner_symbol)]: [Circular *1]
+    },
+    [Symbol(lastWriteQueueSize)]: 0,
+    [Symbol(timeout)]: Timeout {
+      _idleTimeout: -1,
+      _idlePrev: null,
+      _idleNext: null,
+      _idleStart: 2659871,
+      _onTimeout: null,
+      _timerArgs: undefined,
+      _repeat: null,
+      _destroyed: true,
+      [Symbol(refed)]: false,
+      [Symbol(kHasPrimitive)]: false,
+      [Symbol(asyncId)]: 30125,
+      [Symbol(triggerId)]: 30121
+    },
+    [Symbol(kBuffer)]: null,
+    [Symbol(kBufferCb)]: null,
+    [Symbol(kBufferGen)]: null,
+    [Symbol(kCapture)]: false,
+    [Symbol(kSetNoDelay)]: false,
+    [Symbol(kSetKeepAlive)]: false,
+    [Symbol(kSetKeepAliveInitialDelay)]: 0,
+    [Symbol(kBytesRead)]: 0,
+    [Symbol(kBytesWritten)]: 0
+  },
+  httpVersionMajor: 1,
+  httpVersionMinor: 1,
+  httpVersion: '1.1',
+  complete: true,
+  rawHeaders: [
+    'Connection',
+    'keep-alive',
+    'Content-Length',
+    '139877',
+    'Content-Type',
+    'multipart/form-data; boundary=----geckoformboundary479e9321d31446ec924a4e5a2e8b3c47',
+    'Accept',
+    'application/json, text/plain, */*',
+    'Accept-Encoding',
+    'gzip, br',
+    'Accept-Language',
+    'en-US,en;q=0.5',
+    'Authorization',
+    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInBlcm1pc3Npb25zIjpbImNyZWF0ZS1idXNDYXRlZ29yeSIsInJlYWRBbGwtYnVzQ2F0ZWdvcnkiLCJ1cGRhdGUtYnVzQ2F0ZWdvcnkiLCJkZWxldGUtYnVzQ2F0ZWdvcnkiLCJjcmVhdGUtY29tcGFueSIsInJlYWRBbGwtY29tcGFueSIsInVwZGF0ZS1jb21wYW55IiwiZGVsZXRlLWNvbXBhbnkiLCJjcmVhdGUtZnVlbCIsInJlYWRBbGwtZnVlbCIsInVwZGF0ZS1mdWVsIiwiZGVsZXRlLWZ1ZWwiLCJjcmVhdGUtYm9va2luZ0VudHJ5IiwicmVhZEFsbC1ib29raW5nRW50cnkiLCJ1cGRhdGUtYm9va2luZ0VudHJ5IiwiZGVsZXRlLWJvb2tpbmdFbnRyeSIsImNyZWF0ZS1yb2xlUGVybWlzc2lvbiIsInJlYWRBbGwtcm9sZVBlcm1pc3Npb24iLCJ1cGRhdGUtcm9sZVBlcm1pc3Npb24iLCJkZWxldGUtcm9sZVBlcm1pc3Npb24iLCJjcmVhdGUtYm9va2luZ0J1c0FsbG90bWVudCIsInJlYWRBbGwtYm9va2luZ0J1c0FsbG90bWVudCIsInVwZGF0ZS1ib29raW5nQnVzQWxsb3RtZW50IiwiZGVsZXRlLXNhbGVJbnZvaWNlIiwiY3JlYXRlLWhlbHBlciIsInJlYWRBbGwtaGVscGVyIiwidXBkYXRlLWhlbHBlciIsImRlbGV0ZS1oZWxwZXIiLCJjcmVhdGUtcHJvZm9ybWFJbnZvaWNlIiwicmVhZEFsbC1wcm9mb3JtYUludm9pY2UiLCJ1cGRhdGUtcHJvZm9ybWFJbnZvaWNlIiwiZGVsZXRlLXByb2Zvcm1hSW52b2ljZSIsImNyZWF0ZS1icmFuY2giLCJyZWFkQWxsLWJyYW5jaCIsInVwZGF0ZS1icmFuY2giLCJkZWxldGUtYnJhbmNoIiwiY3JlYXRlLXVzZXIiLCJyZWFkQWxsLXVzZXIiLCJ1cGRhdGUtdXNlciIsImRlbGV0ZS11c2VyIiwiY3JlYXRlLXJvbGUiLCJyZWFkQWxsLXJvbGUiLCJ1cGRhdGUtcm9sZSIsImRlbGV0ZS1yb2xlIiwiY3JlYXRlLWJ1cyIsInJlYWRBbGwtYnVzIiwidXBkYXRlLWJ1cyIsImRlbGV0ZS1idXMiLCJjcmVhdGUtZGFpbHlFeGVjdXRpb24iLCJyZWFkQWxsLWRhaWx5RXhlY3V0aW9uIiwidXBkYXRlLWRhaWx5RXhlY3V0aW9uIiwiZGVsZXRlLWRhaWx5RXhlY3V0aW9uIiwiY3JlYXRlLXNldHVwIiwicmVhZEFsbC1zZXR1cCIsInVwZGF0ZS1zZXR1cCIsImRlbGV0ZS1zZXR1cCIsImNyZWF0ZS1kcml2ZXJIZWxwZXJBdHRlbmRhbmNlIiwicmVhZEFsbC1kcml2ZXJIZWxwZXJBdHRlbmRhbmNlIiwidXBkYXRlLWRyaXZlckhlbHBlckF0dGVuZGFuY2UiLCJkZWxldGUtZHJpdmVySGVscGVyQXR0ZW5kYW5jZSIsInJlYWRBbGwtRVNJUEZSZWdpc3RlciIsInJlYWRBbGwtc2FsYXJ5UmVnaXN0ZXIiLCJyZWFkQWxsLWZ1ZWxSZWdpc3RlciIsInJlYWRBbGwtaW52b2ljZVJlZ2lzdGVyIiwicmVhZEFsbC1ib29raW5nUmVnaXN0ZXIiLCJyZWFkQWxsLWFkdmFuY2VUb1N0YWZmUmVnaXN0ZXIiLCJjcmVhdGUtYWR2YW5jZVRvU3RhZmZFbnRyeSIsInJlYWRBbGwtYWR2YW5jZVRvU3RhZmZFbnRyeSIsInVwZGF0ZS1hZHZhbmNlVG9TdGFmZkVudHJ5IiwiZGVsZXRlLWFkdmFuY2VUb1N0YWZmRW50cnkiLCJjcmVhdGUtY2l0eSIsInJlYWRBbGwtY2l0eSIsInVwZGF0ZS1jaXR5IiwiZGVsZXRlLWNpdHkiLCJjcmVhdGUtdHJhbnNmZXIiLCJyZWFkQWxsLXRyYW5zZmVyIiwiY3JlYXRlLXN0YXRlIiwicmVhZEFsbC1zdGF0ZSIsInVwZGF0ZS1zdGF0ZSIsImRlbGV0ZS1zdGF0ZSIsImNyZWF0ZS1zaXRlIiwicmVhZEFsbC1zaXRlIiwidXBkYXRlLXNpdGUiLCJkZWxldGUtc2l0ZSIsImNyZWF0ZS12ZW5kb3IiLCJyZWFkQWxsLXZlbmRvciIsImRlbGV0ZS12ZW5kb3IiLCJ1cGRhdGUtdmVuZG9yIiwiY3JlYXRlLWRyaXZlciIsInJlYWRBbGwtZHJpdmVyIiwidXBkYXRlLWRyaXZlciIsImRlbGV0ZS1kcml2ZXIiLCJyZWFkQWxsLXBhcnR5IiwidXBkYXRlLXBhcnR5IiwiY3JlYXRlLXBhcnR5IiwiZGVsZXRlLXBhcnR5Il0sImNvbXBhbnlJZCI6MiwiaWF0IjoxNzUyNDg4MzI2LCJleHAiOjE3NTI5MzQ3MjZ9.dJHwPnn2wCusuupCYZo-Suz_pFtvhqemQ0blRjqsqoI',
+    'Host',
+    'api.chohantoursandtravels.com',
+    'Referer',
+    'https://app.chohantoursandtravels.com/',
+    'User-Agent',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0',
+    'cf-ray',
+    '96000f38ac505ff2-SIN',
+    'x-forwarded-for',
+    '2401:4900:8828:75:6cd0:90fd:74d6:cee0',
+    'origin',
+    'https://app.chohantoursandtravels.com',
+    'priority',
+    'u=0',
+    'X-Forwarded-Proto',
+    'https',
+    'cdn-loop',
+    'cloudflare; loops=1',
+    'sec-fetch-site',
+    'same-site',
+    'CF-Visitor',
+    '{"scheme":"https"}',
+    'sec-fetch-mode',
+    'cors',
+    'sec-fetch-dest',
+    'empty',
+    'CF-Connecting-IP',
+    '2401:4900:8828:75:6cd0:90fd:74d6:cee0',
+    'CF-IPCountry',
+    'IN',
+    'X-Original-URL',
+    '/v1/busdocuments/'
+  ],
+  rawTrailers: [],
+  joinDuplicateHeaders: null,
+  aborted: false,
+  upgrade: false,
+  url: '/',
+  method: 'POST',
+  statusCode: null,
+  statusMessage: null,
+  client: <ref *1> Socket {
+    connecting: false,
+    _hadError: false,
+    _parent: null,
+    _host: null,
+    _closeAfterHandlingError: false,
+    _readableState: ReadableState {
+      state: 4184,
+      highWaterMark: 16384,
+      buffer: BufferList { head: null, tail: null, length: 0 },
+      length: 0,
+      pipes: [],
+      flowing: true,
+      errored: null,
+      defaultEncoding: 'utf8',
+      awaitDrainWriters: null,
+      decoder: null,
+      encoding: null,
+      [Symbol(kPaused)]: false
+    },
+    _events: [Object: null prototype] {
+      end: [Array],
+      timeout: [Function: socketOnTimeout],
+      data: [Function: bound socketOnData],
+      error: [Function: socketOnError],
+      close: [Array],
+      drain: [Function: bound socketOnDrain],
+      resume: [Function: onSocketResume],
+      pause: [Function: onSocketPause]
+    },
+    _eventsCount: 8,
+    _maxListeners: undefined,
+    _writableState: WritableState {
+      state: 786500,
+      highWaterMark: 16384,
+      defaultEncoding: 'utf8',
+      length: 0,
+      corked: 0,
+      onwrite: [Function: bound onwrite],
+      writecb: null,
+      writelen: 0,
+      afterWriteTickInfo: null,
+      buffered: [],
+      bufferedIndex: 0,
+      pendingcb: 0,
+      errored: null,
+      [Symbol(kOnFinished)]: []
+    },
+    allowHalfOpen: true,
+    _sockname: null,
+    _pendingData: null,
+    _pendingEncoding: '',
+    server: Server {
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      requestTimeout: 300000,
+      headersTimeout: 60000,
+      keepAliveTimeout: 5000,
+      connectionsCheckingInterval: 30000,
+      requireHostHeader: true,
+      joinDuplicateHeaders: undefined,
+      rejectNonStandardBodyWrites: false,
+      _events: [Object: null prototype],
+      _eventsCount: 3,
+      _maxListeners: undefined,
+      _connections: 1,
+      _handle: [Pipe],
+      _usingWorkers: false,
+      _workers: [],
+      _unref: false,
+      allowHalfOpen: true,
+      pauseOnConnect: false,
+      noDelay: true,
+      keepAlive: false,
+      keepAliveInitialDelay: 0,
+      highWaterMark: 16384,
+      httpAllowHalfOpen: false,
+      timeout: 0,
+      maxHeadersCount: null,
+      maxRequestsPerSocket: 0,
+      _pipeName: '\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517',
+      _connectionKey: '-1:\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517:-1',
+      [Symbol(IncomingMessage)]: [Function: IncomingMessage],
+      [Symbol(ServerResponse)]: [Function: ServerResponse],
+      [Symbol(kCapture)]: false,
+      [Symbol(async_id_symbol)]: 6,
+      [Symbol(kUniqueHeaders)]: null,
+      [Symbol(http.server.connections)]: ConnectionsList {},
+      [Symbol(http.server.connectionsCheckingInterval)]: Timeout {
+        _idleTimeout: 30000,
+        _idlePrev: [TimersList],
+        _idleNext: [TimersList],
+        _idleStart: 2644147,
+        _onTimeout: [Function: bound checkConnections],
+        _timerArgs: undefined,
+        _repeat: 30000,
+        _destroyed: false,
+        [Symbol(refed)]: false,
+        [Symbol(kHasPrimitive)]: false,
+        [Symbol(asyncId)]: 9,
+        [Symbol(triggerId)]: 7
+      }
+    },
+    _server: Server {
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      requestTimeout: 300000,
+      headersTimeout: 60000,
+      keepAliveTimeout: 5000,
+      connectionsCheckingInterval: 30000,
+      requireHostHeader: true,
+      joinDuplicateHeaders: undefined,
+      rejectNonStandardBodyWrites: false,
+      _events: [Object: null prototype],
+      _eventsCount: 3,
+      _maxListeners: undefined,
+      _connections: 1,
+      _handle: [Pipe],
+      _usingWorkers: false,
+      _workers: [],
+      _unref: false,
+      allowHalfOpen: true,
+      pauseOnConnect: false,
+      noDelay: true,
+      keepAlive: false,
+      keepAliveInitialDelay: 0,
+      highWaterMark: 16384,
+      httpAllowHalfOpen: false,
+      timeout: 0,
+      maxHeadersCount: null,
+      maxRequestsPerSocket: 0,
+      _pipeName: '\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517',
+      _connectionKey: '-1:\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517:-1',
+      [Symbol(IncomingMessage)]: [Function: IncomingMessage],
+      [Symbol(ServerResponse)]: [Function: ServerResponse],
+      [Symbol(kCapture)]: false,
+      [Symbol(async_id_symbol)]: 6,
+      [Symbol(kUniqueHeaders)]: null,
+      [Symbol(http.server.connections)]: ConnectionsList {},
+      [Symbol(http.server.connectionsCheckingInterval)]: Timeout {
+        _idleTimeout: 30000,
+        _idlePrev: [TimersList],
+        _idleNext: [TimersList],
+        _idleStart: 2644147,
+        _onTimeout: [Function: bound checkConnections],
+        _timerArgs: undefined,
+        _repeat: 30000,
+        _destroyed: false,
+        [Symbol(refed)]: false,
+        [Symbol(kHasPrimitive)]: false,
+        [Symbol(asyncId)]: 9,
+        [Symbol(triggerId)]: 7
+      }
+    },
+    parser: HTTPParser {
+      '0': null,
+      '1': [Function: parserOnHeaders],
+      '2': [Function: parserOnHeadersComplete],
+      '3': [Function: parserOnBody],
+      '4': [Function: parserOnMessageComplete],
+      '5': [Function: bound onParserExecute],
+      '6': [Function: bound onParserTimeout],
+      _headers: [],
+      _url: '',
+      socket: [Circular *1],
+      incoming: [Circular *2],
+      outgoing: null,
+      maxHeaderPairs: 2000,
+      _consumed: true,
+      onIncoming: [Function: bound parserOnIncoming],
+      joinDuplicateHeaders: null,
+      [Symbol(resource_symbol)]: [HTTPServerAsyncResource]
+    },
+    on: [Function: socketListenerWrap],
+    addListener: [Function: socketListenerWrap],
+    prependListener: [Function: socketListenerWrap],
+    setEncoding: [Function: socketSetEncoding],
+    _paused: false,
+    _httpMessage: ServerResponse {
+      _events: [Object: null prototype],
+      _eventsCount: 1,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: false,
+      chunkedEncoding: false,
+      shouldKeepAlive: true,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: true,
+      sendDate: true,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: null,
+      _hasBody: true,
+      _trailer: '',
+      finished: false,
+      _headerSent: false,
+      _closed: false,
+      socket: [Circular *1],
+      _header: null,
+      _keepAliveTimeout: 5000,
+      _onPendingData: [Function: bound updateOutgoingData],
+      req: [Circular *2],
+      _sent100: false,
+      _expect_continue: false,
+      _maxRequestsPerSocket: 0,
+      locals: [Object: null prototype] {},
+      flush: [Function: flush],
+      write: [Function: write],
+      end: [Function: end],
+      on: [Function: on],
+      writeHead: [Function: writeHead],
+      [Symbol(kCapture)]: false,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype],
+      [Symbol(errored)]: null,
+      [Symbol(kHighWaterMark)]: 16384,
+      [Symbol(kRejectNonStandardBodyWrites)]: false,
+      [Symbol(kUniqueHeaders)]: null
+    },
+    timeout: 0,
+    [Symbol(async_id_symbol)]: 29457,
+    [Symbol(kHandle)]: Pipe {
+      reading: true,
+      _consumed: true,
+      [Symbol(owner_symbol)]: [Circular *1]
+    },
+    [Symbol(lastWriteQueueSize)]: 0,
+    [Symbol(timeout)]: Timeout {
+      _idleTimeout: -1,
+      _idlePrev: null,
+      _idleNext: null,
+      _idleStart: 2659871,
+      _onTimeout: null,
+      _timerArgs: undefined,
+      _repeat: null,
+      _destroyed: true,
+      [Symbol(refed)]: false,
+      [Symbol(kHasPrimitive)]: false,
+      [Symbol(asyncId)]: 30125,
+      [Symbol(triggerId)]: 30121
+    },
+    [Symbol(kBuffer)]: null,
+    [Symbol(kBufferCb)]: null,
+    [Symbol(kBufferGen)]: null,
+    [Symbol(kCapture)]: false,
+    [Symbol(kSetNoDelay)]: false,
+    [Symbol(kSetKeepAlive)]: false,
+    [Symbol(kSetKeepAliveInitialDelay)]: 0,
+    [Symbol(kBytesRead)]: 0,
+    [Symbol(kBytesWritten)]: 0
+  },
+  _consuming: true,
+  _dumped: false,
+  next: [Function: next],
+  baseUrl: '/v1/busdocuments',
+  originalUrl: '/v1/busdocuments/',
+  _parsedUrl: Url {
+    protocol: null,
+    slashes: null,
+    auth: null,
+    host: null,
+    port: null,
+    hostname: null,
+    hash: null,
+    search: null,
+    query: null,
+    pathname: '/',
+    path: '/',
+    href: '/',
+    _raw: '/'
+  },
+  params: {},
+  query: {},
+  res: <ref *3> ServerResponse {
+    _events: [Object: null prototype] { finish: [Function: bound resOnFinish] },
+    _eventsCount: 1,
+    _maxListeners: undefined,
+    outputData: [],
+    outputSize: 0,
+    writable: true,
+    destroyed: false,
+    _last: false,
+    chunkedEncoding: false,
+    shouldKeepAlive: true,
+    maxRequestsOnConnectionReached: false,
+    _defaultKeepAlive: true,
+    useChunkedEncodingByDefault: true,
+    sendDate: true,
+    _removedConnection: false,
+    _removedContLen: false,
+    _removedTE: false,
+    strictContentLength: false,
+    _contentLength: null,
+    _hasBody: true,
+    _trailer: '',
+    finished: false,
+    _headerSent: false,
+    _closed: false,
+    socket: <ref *1> Socket {
+      connecting: false,
+      _hadError: false,
+      _parent: null,
+      _host: null,
+      _closeAfterHandlingError: false,
+      _readableState: [ReadableState],
+      _events: [Object: null prototype],
+      _eventsCount: 8,
+      _maxListeners: undefined,
+      _writableState: [WritableState],
+      allowHalfOpen: true,
+      _sockname: null,
+      _pendingData: null,
+      _pendingEncoding: '',
+      server: [Server],
+      _server: [Server],
+      parser: [HTTPParser],
+      on: [Function: socketListenerWrap],
+      addListener: [Function: socketListenerWrap],
+      prependListener: [Function: socketListenerWrap],
+      setEncoding: [Function: socketSetEncoding],
+      _paused: false,
+      _httpMessage: [Circular *3],
+      timeout: 0,
+      [Symbol(async_id_symbol)]: 29457,
+      [Symbol(kHandle)]: [Pipe],
+      [Symbol(lastWriteQueueSize)]: 0,
+      [Symbol(timeout)]: Timeout {
+        _idleTimeout: -1,
+        _idlePrev: null,
+        _idleNext: null,
+        _idleStart: 2659871,
+        _onTimeout: null,
+        _timerArgs: undefined,
+        _repeat: null,
+        _destroyed: true,
+        [Symbol(refed)]: false,
+        [Symbol(kHasPrimitive)]: false,
+        [Symbol(asyncId)]: 30125,
+        [Symbol(triggerId)]: 30121
+      },
+      [Symbol(kBuffer)]: null,
+      [Symbol(kBufferCb)]: null,
+      [Symbol(kBufferGen)]: null,
+      [Symbol(kCapture)]: false,
+      [Symbol(kSetNoDelay)]: false,
+      [Symbol(kSetKeepAlive)]: false,
+      [Symbol(kSetKeepAliveInitialDelay)]: 0,
+      [Symbol(kBytesRead)]: 0,
+      [Symbol(kBytesWritten)]: 0
+    },
+    _header: null,
+    _keepAliveTimeout: 5000,
+    _onPendingData: [Function: bound updateOutgoingData],
+    req: [Circular *2],
+    _sent100: false,
+    _expect_continue: false,
+    _maxRequestsPerSocket: 0,
+    locals: [Object: null prototype] {},
+    flush: [Function: flush],
+    write: [Function: write],
+    end: [Function: end],
+    on: [Function: on],
+    writeHead: [Function: writeHead],
+    [Symbol(kCapture)]: false,
+    [Symbol(kBytesWritten)]: 0,
+    [Symbol(kNeedDrain)]: false,
+    [Symbol(corked)]: 0,
+    [Symbol(kOutHeaders)]: [Object: null prototype] {
+      'x-powered-by': [Array],
+      'access-control-allow-origin': [Array],
+      vary: [Array],
+      'access-control-allow-credentials': [Array]
+    },
+    [Symbol(errored)]: null,
+    [Symbol(kHighWaterMark)]: 16384,
+    [Symbol(kRejectNonStandardBodyWrites)]: false,
+    [Symbol(kUniqueHeaders)]: null
+  },
+  body: [Object: null prototype] {
+    UploadDocument: 'rc.jpeg',
+    ID: '308',
+    BusID: '81',
+    TaskName: 'undefined',
+    IntimateDays: '5',
+    doctype: 'R.C/SMART',
+    ExpiryDate: '2015-12-05',
+    NextDueDate: '2015-12-05'
+  },
+  route: Route {
+    path: '',
+    stack: [ [Layer], [Layer] ],
+    methods: { post: true }
+  },
+  file: {
+    fieldname: 'file',
+    originalname: 'rc.jpeg',
+    encoding: '7bit',
+    mimetype: 'image/jpeg',
+    destination: './uploads/',
+    filename: '1752653807536-rc.jpeg',
+    path: 'uploads\\1752653807536-rc.jpeg',
+    size: 138730
+  },
+  [Symbol(kCapture)]: false,
+  [Symbol(kHeaders)]: {
+    connection: 'keep-alive',
+    'content-length': '139877',
+    'content-type': 'multipart/form-data; boundary=----geckoformboundary479e9321d31446ec924a4e5a2e8b3c47',
+    accept: 'application/json, text/plain, */*',
+    'accept-encoding': 'gzip, br',
+    'accept-language': 'en-US,en;q=0.5',
+    authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInBlcm1pc3Npb25zIjpbImNyZWF0ZS1idXNDYXRlZ29yeSIsInJlYWRBbGwtYnVzQ2F0ZWdvcnkiLCJ1cGRhdGUtYnVzQ2F0ZWdvcnkiLCJkZWxldGUtYnVzQ2F0ZWdvcnkiLCJjcmVhdGUtY29tcGFueSIsInJlYWRBbGwtY29tcGFueSIsInVwZGF0ZS1jb21wYW55IiwiZGVsZXRlLWNvbXBhbnkiLCJjcmVhdGUtZnVlbCIsInJlYWRBbGwtZnVlbCIsInVwZGF0ZS1mdWVsIiwiZGVsZXRlLWZ1ZWwiLCJjcmVhdGUtYm9va2luZ0VudHJ5IiwicmVhZEFsbC1ib29raW5nRW50cnkiLCJ1cGRhdGUtYm9va2luZ0VudHJ5IiwiZGVsZXRlLWJvb2tpbmdFbnRyeSIsImNyZWF0ZS1yb2xlUGVybWlzc2lvbiIsInJlYWRBbGwtcm9sZVBlcm1pc3Npb24iLCJ1cGRhdGUtcm9sZVBlcm1pc3Npb24iLCJkZWxldGUtcm9sZVBlcm1pc3Npb24iLCJjcmVhdGUtYm9va2luZ0J1c0FsbG90bWVudCIsInJlYWRBbGwtYm9va2luZ0J1c0FsbG90bWVudCIsInVwZGF0ZS1ib29raW5nQnVzQWxsb3RtZW50IiwiZGVsZXRlLXNhbGVJbnZvaWNlIiwiY3JlYXRlLWhlbHBlciIsInJlYWRBbGwtaGVscGVyIiwidXBkYXRlLWhlbHBlciIsImRlbGV0ZS1oZWxwZXIiLCJjcmVhdGUtcHJvZm9ybWFJbnZvaWNlIiwicmVhZEFsbC1wcm9mb3JtYUludm9pY2UiLCJ1cGRhdGUtcHJvZm9ybWFJbnZvaWNlIiwiZGVsZXRlLXByb2Zvcm1hSW52b2ljZSIsImNyZWF0ZS1icmFuY2giLCJyZWFkQWxsLWJyYW5jaCIsInVwZGF0ZS1icmFuY2giLCJkZWxldGUtYnJhbmNoIiwiY3JlYXRlLXVzZXIiLCJyZWFkQWxsLXVzZXIiLCJ1cGRhdGUtdXNlciIsImRlbGV0ZS11c2VyIiwiY3JlYXRlLXJvbGUiLCJyZWFkQWxsLXJvbGUiLCJ1cGRhdGUtcm9sZSIsImRlbGV0ZS1yb2xlIiwiY3JlYXRlLWJ1cyIsInJlYWRBbGwtYnVzIiwidXBkYXRlLWJ1cyIsImRlbGV0ZS1idXMiLCJjcmVhdGUtZGFpbHlFeGVjdXRpb24iLCJyZWFkQWxsLWRhaWx5RXhlY3V0aW9uIiwidXBkYXRlLWRhaWx5RXhlY3V0aW9uIiwiZGVsZXRlLWRhaWx5RXhlY3V0aW9uIiwiY3JlYXRlLXNldHVwIiwicmVhZEFsbC1zZXR1cCIsInVwZGF0ZS1zZXR1cCIsImRlbGV0ZS1zZXR1cCIsImNyZWF0ZS1kcml2ZXJIZWxwZXJBdHRlbmRhbmNlIiwicmVhZEFsbC1kcml2ZXJIZWxwZXJBdHRlbmRhbmNlIiwidXBkYXRlLWRyaXZlckhlbHBlckF0dGVuZGFuY2UiLCJkZWxldGUtZHJpdmVySGVscGVyQXR0ZW5kYW5jZSIsInJlYWRBbGwtRVNJUEZSZWdpc3RlciIsInJlYWRBbGwtc2FsYXJ5UmVnaXN0ZXIiLCJyZWFkQWxsLWZ1ZWxSZWdpc3RlciIsInJlYWRBbGwtaW52b2ljZVJlZ2lzdGVyIiwicmVhZEFsbC1ib29raW5nUmVnaXN0ZXIiLCJyZWFkQWxsLWFkdmFuY2VUb1N0YWZmUmVnaXN0ZXIiLCJjcmVhdGUtYWR2YW5jZVRvU3RhZmZFbnRyeSIsInJlYWRBbGwtYWR2YW5jZVRvU3RhZmZFbnRyeSIsInVwZGF0ZS1hZHZhbmNlVG9TdGFmZkVudHJ5IiwiZGVsZXRlLWFkdmFuY2VUb1N0YWZmRW50cnkiLCJjcmVhdGUtY2l0eSIsInJlYWRBbGwtY2l0eSIsInVwZGF0ZS1jaXR5IiwiZGVsZXRlLWNpdHkiLCJjcmVhdGUtdHJhbnNmZXIiLCJyZWFkQWxsLXRyYW5zZmVyIiwiY3JlYXRlLXN0YXRlIiwicmVhZEFsbC1zdGF0ZSIsInVwZGF0ZS1zdGF0ZSIsImRlbGV0ZS1zdGF0ZSIsImNyZWF0ZS1zaXRlIiwicmVhZEFsbC1zaXRlIiwidXBkYXRlLXNpdGUiLCJkZWxldGUtc2l0ZSIsImNyZWF0ZS12ZW5kb3IiLCJyZWFkQWxsLXZlbmRvciIsImRlbGV0ZS12ZW5kb3IiLCJ1cGRhdGUtdmVuZG9yIiwiY3JlYXRlLWRyaXZlciIsInJlYWRBbGwtZHJpdmVyIiwidXBkYXRlLWRyaXZlciIsImRlbGV0ZS1kcml2ZXIiLCJyZWFkQWxsLXBhcnR5IiwidXBkYXRlLXBhcnR5IiwiY3JlYXRlLXBhcnR5IiwiZGVsZXRlLXBhcnR5Il0sImNvbXBhbnlJZCI6MiwiaWF0IjoxNzUyNDg4MzI2LCJleHAiOjE3NTI5MzQ3MjZ9.dJHwPnn2wCusuupCYZo-Suz_pFtvhqemQ0blRjqsqoI',
+    host: 'api.chohantoursandtravels.com',
+    referer: 'https://app.chohantoursandtravels.com/',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0',
+    'cf-ray': '96000f38ac505ff2-SIN',
+    'x-forwarded-for': '2401:4900:8828:75:6cd0:90fd:74d6:cee0',
+    origin: 'https://app.chohantoursandtravels.com',
+    priority: 'u=0',
+    'x-forwarded-proto': 'https',
+    'cdn-loop': 'cloudflare; loops=1',
+    'sec-fetch-site': 'same-site',
+    'cf-visitor': '{"scheme":"https"}',
+    'sec-fetch-mode': 'cors',
+    'sec-fetch-dest': 'empty',
+    'cf-connecting-ip': '2401:4900:8828:75:6cd0:90fd:74d6:cee0',
+    'cf-ipcountry': 'IN',
+    'x-original-url': '/v1/busdocuments/'
+  },
+  [Symbol(kHeadersCount)]: 46,
+  [Symbol(kTrailers)]: null,
+  [Symbol(kTrailersCount)]: 0
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 1 }
+in {
+  fieldname: 'file',
+  originalname: 'rc.jpeg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: './uploads/',
+  filename: '1752653807536-rc.jpeg',
+  path: 'uploads\\1752653807536-rc.jpeg',
+  size: 138730
+}
+in
+in 308 {
+  fieldname: 'file',
+  originalname: 'rc.jpeg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: './uploads/',
+  filename: '1752653807536-rc.jpeg',
+  path: 'uploads\\1752653807536-rc.jpeg',
+  size: 138730
+}
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+new file 308.jpeg
+{ id: '81' }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: null }
+undefined 76756
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 8 }
+call
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 144 }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 136 }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 238 }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 1 }
+[Object: null prototype] {
+  UploadDocument: 'in.jpeg',
+  ID: '353',
+  BusID: '81',
+  TaskName: 'undefined',
+  IntimateDays: '10',
+  doctype: 'INSURANCE',
+  ExpiryDate: '2025-12-09',
+  NextDueDate: '2025-12-09'
+} 8877876
+userId 1 {
+  fieldname: 'file',
+  originalname: 'in.jpeg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: './uploads/',
+  filename: '1752653821208-in.jpeg',
+  path: 'uploads\\1752653821208-in.jpeg',
+  size: 214441
+}
+params [Object: null prototype] {
+  UploadDocument: 'in.jpeg',
+  ID: '353',
+  BusID: '81',
+  TaskName: 'undefined',
+  IntimateDays: '10',
+  doctype: 'INSURANCE',
+  ExpiryDate: '2025-12-09',
+  NextDueDate: '2025-12-09'
+} {
+  id: '353',
+  ExpiryDate: '2025-12-09',
+  BusID: '81',
+  TaskName: 'undefined',
+  IntimateDays: '10',
+  NextDueDate: '2025-12-09',
+  EntryDate: undefined,
+  UserID: 1,
+  DocumentPath: '1752653821208-in.jpeg',
+  doctype: 'INSURANCE',
+  ReturnID: 0
+} <ref *2> IncomingMessage {
+  _readableState: ReadableState {
+    state: 325654,
+    highWaterMark: 16384,
+    buffer: BufferList { head: null, tail: null, length: 0 },
+    length: 0,
+    pipes: [],
+    flowing: false,
+    errored: null,
+    defaultEncoding: 'utf8',
+    awaitDrainWriters: null,
+    decoder: null,
+    encoding: null,
+    [Symbol(kPaused)]: true
+  },
+  _events: [Object: null prototype] {},
+  _eventsCount: 0,
+  _maxListeners: undefined,
+  socket: <ref *1> Socket {
+    connecting: false,
+    _hadError: false,
+    _parent: null,
+    _host: null,
+    _closeAfterHandlingError: false,
+    _readableState: ReadableState {
+      state: 4184,
+      highWaterMark: 16384,
+      buffer: BufferList { head: null, tail: null, length: 0 },
+      length: 0,
+      pipes: [],
+      flowing: true,
+      errored: null,
+      defaultEncoding: 'utf8',
+      awaitDrainWriters: null,
+      decoder: null,
+      encoding: null,
+      [Symbol(kPaused)]: false
+    },
+    _events: [Object: null prototype] {
+      end: [Array],
+      timeout: [Function: socketOnTimeout],
+      data: [Function: bound socketOnData],
+      error: [Function: socketOnError],
+      close: [Array],
+      drain: [Function: bound socketOnDrain],
+      resume: [Function: onSocketResume],
+      pause: [Function: onSocketPause]
+    },
+    _eventsCount: 8,
+    _maxListeners: undefined,
+    _writableState: WritableState {
+      state: 786500,
+      highWaterMark: 16384,
+      defaultEncoding: 'utf8',
+      length: 0,
+      corked: 0,
+      onwrite: [Function: bound onwrite],
+      writecb: null,
+      writelen: 0,
+      afterWriteTickInfo: null,
+      buffered: [],
+      bufferedIndex: 0,
+      pendingcb: 0,
+      errored: null,
+      [Symbol(kOnFinished)]: []
+    },
+    allowHalfOpen: true,
+    _sockname: null,
+    _pendingData: null,
+    _pendingEncoding: '',
+    server: Server {
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      requestTimeout: 300000,
+      headersTimeout: 60000,
+      keepAliveTimeout: 5000,
+      connectionsCheckingInterval: 30000,
+      requireHostHeader: true,
+      joinDuplicateHeaders: undefined,
+      rejectNonStandardBodyWrites: false,
+      _events: [Object: null prototype],
+      _eventsCount: 3,
+      _maxListeners: undefined,
+      _connections: 1,
+      _handle: [Pipe],
+      _usingWorkers: false,
+      _workers: [],
+      _unref: false,
+      allowHalfOpen: true,
+      pauseOnConnect: false,
+      noDelay: true,
+      keepAlive: false,
+      keepAliveInitialDelay: 0,
+      highWaterMark: 16384,
+      httpAllowHalfOpen: false,
+      timeout: 0,
+      maxHeadersCount: null,
+      maxRequestsPerSocket: 0,
+      _pipeName: '\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517',
+      _connectionKey: '-1:\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517:-1',
+      [Symbol(IncomingMessage)]: [Function: IncomingMessage],
+      [Symbol(ServerResponse)]: [Function: ServerResponse],
+      [Symbol(kCapture)]: false,
+      [Symbol(async_id_symbol)]: 6,
+      [Symbol(kUniqueHeaders)]: null,
+      [Symbol(http.server.connections)]: ConnectionsList {},
+      [Symbol(http.server.connectionsCheckingInterval)]: Timeout {
+        _idleTimeout: 30000,
+        _idlePrev: [TimersList],
+        _idleNext: [TimersList],
+        _idleStart: 2644147,
+        _onTimeout: [Function: bound checkConnections],
+        _timerArgs: undefined,
+        _repeat: 30000,
+        _destroyed: false,
+        [Symbol(refed)]: false,
+        [Symbol(kHasPrimitive)]: false,
+        [Symbol(asyncId)]: 9,
+        [Symbol(triggerId)]: 7
+      }
+    },
+    _server: Server {
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      requestTimeout: 300000,
+      headersTimeout: 60000,
+      keepAliveTimeout: 5000,
+      connectionsCheckingInterval: 30000,
+      requireHostHeader: true,
+      joinDuplicateHeaders: undefined,
+      rejectNonStandardBodyWrites: false,
+      _events: [Object: null prototype],
+      _eventsCount: 3,
+      _maxListeners: undefined,
+      _connections: 1,
+      _handle: [Pipe],
+      _usingWorkers: false,
+      _workers: [],
+      _unref: false,
+      allowHalfOpen: true,
+      pauseOnConnect: false,
+      noDelay: true,
+      keepAlive: false,
+      keepAliveInitialDelay: 0,
+      highWaterMark: 16384,
+      httpAllowHalfOpen: false,
+      timeout: 0,
+      maxHeadersCount: null,
+      maxRequestsPerSocket: 0,
+      _pipeName: '\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517',
+      _connectionKey: '-1:\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517:-1',
+      [Symbol(IncomingMessage)]: [Function: IncomingMessage],
+      [Symbol(ServerResponse)]: [Function: ServerResponse],
+      [Symbol(kCapture)]: false,
+      [Symbol(async_id_symbol)]: 6,
+      [Symbol(kUniqueHeaders)]: null,
+      [Symbol(http.server.connections)]: ConnectionsList {},
+      [Symbol(http.server.connectionsCheckingInterval)]: Timeout {
+        _idleTimeout: 30000,
+        _idlePrev: [TimersList],
+        _idleNext: [TimersList],
+        _idleStart: 2644147,
+        _onTimeout: [Function: bound checkConnections],
+        _timerArgs: undefined,
+        _repeat: 30000,
+        _destroyed: false,
+        [Symbol(refed)]: false,
+        [Symbol(kHasPrimitive)]: false,
+        [Symbol(asyncId)]: 9,
+        [Symbol(triggerId)]: 7
+      }
+    },
+    parser: HTTPParser {
+      '0': null,
+      '1': [Function: parserOnHeaders],
+      '2': [Function: parserOnHeadersComplete],
+      '3': [Function: parserOnBody],
+      '4': [Function: parserOnMessageComplete],
+      '5': [Function: bound onParserExecute],
+      '6': [Function: bound onParserTimeout],
+      _headers: [],
+      _url: '',
+      socket: [Circular *1],
+      incoming: [Circular *2],
+      outgoing: null,
+      maxHeaderPairs: 2000,
+      _consumed: true,
+      onIncoming: [Function: bound parserOnIncoming],
+      joinDuplicateHeaders: null,
+      [Symbol(resource_symbol)]: [HTTPServerAsyncResource]
+    },
+    on: [Function: socketListenerWrap],
+    addListener: [Function: socketListenerWrap],
+    prependListener: [Function: socketListenerWrap],
+    setEncoding: [Function: socketSetEncoding],
+    _paused: false,
+    _httpMessage: ServerResponse {
+      _events: [Object: null prototype],
+      _eventsCount: 1,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: false,
+      chunkedEncoding: false,
+      shouldKeepAlive: true,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: true,
+      sendDate: true,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: null,
+      _hasBody: true,
+      _trailer: '',
+      finished: false,
+      _headerSent: false,
+      _closed: false,
+      socket: [Circular *1],
+      _header: null,
+      _keepAliveTimeout: 5000,
+      _onPendingData: [Function: bound updateOutgoingData],
+      req: [Circular *2],
+      _sent100: false,
+      _expect_continue: false,
+      _maxRequestsPerSocket: 0,
+      locals: [Object: null prototype] {},
+      flush: [Function: flush],
+      write: [Function: write],
+      end: [Function: end],
+      on: [Function: on],
+      writeHead: [Function: writeHead],
+      [Symbol(kCapture)]: false,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype],
+      [Symbol(errored)]: null,
+      [Symbol(kHighWaterMark)]: 16384,
+      [Symbol(kRejectNonStandardBodyWrites)]: false,
+      [Symbol(kUniqueHeaders)]: null
+    },
+    timeout: 0,
+    [Symbol(async_id_symbol)]: 31006,
+    [Symbol(kHandle)]: Pipe {
+      reading: true,
+      _consumed: true,
+      [Symbol(owner_symbol)]: [Circular *1]
+    },
+    [Symbol(lastWriteQueueSize)]: 0,
+    [Symbol(timeout)]: Timeout {
+      _idleTimeout: -1,
+      _idlePrev: null,
+      _idleNext: null,
+      _idleStart: 2673596,
+      _onTimeout: null,
+      _timerArgs: undefined,
+      _repeat: null,
+      _destroyed: true,
+      [Symbol(refed)]: false,
+      [Symbol(kHasPrimitive)]: false,
+      [Symbol(asyncId)]: 31014,
+      [Symbol(triggerId)]: 31010
+    },
+    [Symbol(kBuffer)]: null,
+    [Symbol(kBufferCb)]: null,
+    [Symbol(kBufferGen)]: null,
+    [Symbol(kCapture)]: false,
+    [Symbol(kSetNoDelay)]: false,
+    [Symbol(kSetKeepAlive)]: false,
+    [Symbol(kSetKeepAliveInitialDelay)]: 0,
+    [Symbol(kBytesRead)]: 0,
+    [Symbol(kBytesWritten)]: 0
+  },
+  httpVersionMajor: 1,
+  httpVersionMinor: 1,
+  httpVersion: '1.1',
+  complete: true,
+  rawHeaders: [
+    'Connection',
+    'keep-alive',
+    'Content-Length',
+    '215589',
+    'Content-Type',
+    'multipart/form-data; boundary=----geckoformboundaryceac7994e4fd0f46702acf81a19c3eb2',
+    'Accept',
+    'application/json, text/plain, */*',
+    'Accept-Encoding',
+    'gzip, br',
+    'Accept-Language',
+    'en-US,en;q=0.5',
+    'Authorization',
+    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInBlcm1pc3Npb25zIjpbImNyZWF0ZS1idXNDYXRlZ29yeSIsInJlYWRBbGwtYnVzQ2F0ZWdvcnkiLCJ1cGRhdGUtYnVzQ2F0ZWdvcnkiLCJkZWxldGUtYnVzQ2F0ZWdvcnkiLCJjcmVhdGUtY29tcGFueSIsInJlYWRBbGwtY29tcGFueSIsInVwZGF0ZS1jb21wYW55IiwiZGVsZXRlLWNvbXBhbnkiLCJjcmVhdGUtZnVlbCIsInJlYWRBbGwtZnVlbCIsInVwZGF0ZS1mdWVsIiwiZGVsZXRlLWZ1ZWwiLCJjcmVhdGUtYm9va2luZ0VudHJ5IiwicmVhZEFsbC1ib29raW5nRW50cnkiLCJ1cGRhdGUtYm9va2luZ0VudHJ5IiwiZGVsZXRlLWJvb2tpbmdFbnRyeSIsImNyZWF0ZS1yb2xlUGVybWlzc2lvbiIsInJlYWRBbGwtcm9sZVBlcm1pc3Npb24iLCJ1cGRhdGUtcm9sZVBlcm1pc3Npb24iLCJkZWxldGUtcm9sZVBlcm1pc3Npb24iLCJjcmVhdGUtYm9va2luZ0J1c0FsbG90bWVudCIsInJlYWRBbGwtYm9va2luZ0J1c0FsbG90bWVudCIsInVwZGF0ZS1ib29raW5nQnVzQWxsb3RtZW50IiwiZGVsZXRlLXNhbGVJbnZvaWNlIiwiY3JlYXRlLWhlbHBlciIsInJlYWRBbGwtaGVscGVyIiwidXBkYXRlLWhlbHBlciIsImRlbGV0ZS1oZWxwZXIiLCJjcmVhdGUtcHJvZm9ybWFJbnZvaWNlIiwicmVhZEFsbC1wcm9mb3JtYUludm9pY2UiLCJ1cGRhdGUtcHJvZm9ybWFJbnZvaWNlIiwiZGVsZXRlLXByb2Zvcm1hSW52b2ljZSIsImNyZWF0ZS1icmFuY2giLCJyZWFkQWxsLWJyYW5jaCIsInVwZGF0ZS1icmFuY2giLCJkZWxldGUtYnJhbmNoIiwiY3JlYXRlLXVzZXIiLCJyZWFkQWxsLXVzZXIiLCJ1cGRhdGUtdXNlciIsImRlbGV0ZS11c2VyIiwiY3JlYXRlLXJvbGUiLCJyZWFkQWxsLXJvbGUiLCJ1cGRhdGUtcm9sZSIsImRlbGV0ZS1yb2xlIiwiY3JlYXRlLWJ1cyIsInJlYWRBbGwtYnVzIiwidXBkYXRlLWJ1cyIsImRlbGV0ZS1idXMiLCJjcmVhdGUtZGFpbHlFeGVjdXRpb24iLCJyZWFkQWxsLWRhaWx5RXhlY3V0aW9uIiwidXBkYXRlLWRhaWx5RXhlY3V0aW9uIiwiZGVsZXRlLWRhaWx5RXhlY3V0aW9uIiwiY3JlYXRlLXNldHVwIiwicmVhZEFsbC1zZXR1cCIsInVwZGF0ZS1zZXR1cCIsImRlbGV0ZS1zZXR1cCIsImNyZWF0ZS1kcml2ZXJIZWxwZXJBdHRlbmRhbmNlIiwicmVhZEFsbC1kcml2ZXJIZWxwZXJBdHRlbmRhbmNlIiwidXBkYXRlLWRyaXZlckhlbHBlckF0dGVuZGFuY2UiLCJkZWxldGUtZHJpdmVySGVscGVyQXR0ZW5kYW5jZSIsInJlYWRBbGwtRVNJUEZSZWdpc3RlciIsInJlYWRBbGwtc2FsYXJ5UmVnaXN0ZXIiLCJyZWFkQWxsLWZ1ZWxSZWdpc3RlciIsInJlYWRBbGwtaW52b2ljZVJlZ2lzdGVyIiwicmVhZEFsbC1ib29raW5nUmVnaXN0ZXIiLCJyZWFkQWxsLWFkdmFuY2VUb1N0YWZmUmVnaXN0ZXIiLCJjcmVhdGUtYWR2YW5jZVRvU3RhZmZFbnRyeSIsInJlYWRBbGwtYWR2YW5jZVRvU3RhZmZFbnRyeSIsInVwZGF0ZS1hZHZhbmNlVG9TdGFmZkVudHJ5IiwiZGVsZXRlLWFkdmFuY2VUb1N0YWZmRW50cnkiLCJjcmVhdGUtY2l0eSIsInJlYWRBbGwtY2l0eSIsInVwZGF0ZS1jaXR5IiwiZGVsZXRlLWNpdHkiLCJjcmVhdGUtdHJhbnNmZXIiLCJyZWFkQWxsLXRyYW5zZmVyIiwiY3JlYXRlLXN0YXRlIiwicmVhZEFsbC1zdGF0ZSIsInVwZGF0ZS1zdGF0ZSIsImRlbGV0ZS1zdGF0ZSIsImNyZWF0ZS1zaXRlIiwicmVhZEFsbC1zaXRlIiwidXBkYXRlLXNpdGUiLCJkZWxldGUtc2l0ZSIsImNyZWF0ZS12ZW5kb3IiLCJyZWFkQWxsLXZlbmRvciIsImRlbGV0ZS12ZW5kb3IiLCJ1cGRhdGUtdmVuZG9yIiwiY3JlYXRlLWRyaXZlciIsInJlYWRBbGwtZHJpdmVyIiwidXBkYXRlLWRyaXZlciIsImRlbGV0ZS1kcml2ZXIiLCJyZWFkQWxsLXBhcnR5IiwidXBkYXRlLXBhcnR5IiwiY3JlYXRlLXBhcnR5IiwiZGVsZXRlLXBhcnR5Il0sImNvbXBhbnlJZCI6MiwiaWF0IjoxNzUyNDg4MzI2LCJleHAiOjE3NTI5MzQ3MjZ9.dJHwPnn2wCusuupCYZo-Suz_pFtvhqemQ0blRjqsqoI',
+    'Host',
+    'api.chohantoursandtravels.com',
+    'Referer',
+    'https://app.chohantoursandtravels.com/',
+    'User-Agent',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0',
+    'cf-ray',
+    '96000f8e7b3b5ff2-SIN',
+    'x-forwarded-for',
+    '2401:4900:8828:75:6cd0:90fd:74d6:cee0',
+    'origin',
+    'https://app.chohantoursandtravels.com',
+    'priority',
+    'u=0',
+    'X-Forwarded-Proto',
+    'https',
+    'cdn-loop',
+    'cloudflare; loops=1',
+    'sec-fetch-site',
+    'same-site',
+    'CF-Visitor',
+    '{"scheme":"https"}',
+    'sec-fetch-mode',
+    'cors',
+    'sec-fetch-dest',
+    'empty',
+    'CF-Connecting-IP',
+    '2401:4900:8828:75:6cd0:90fd:74d6:cee0',
+    'CF-IPCountry',
+    'IN',
+    'X-Original-URL',
+    '/v1/busdocuments/'
+  ],
+  rawTrailers: [],
+  joinDuplicateHeaders: null,
+  aborted: false,
+  upgrade: false,
+  url: '/',
+  method: 'POST',
+  statusCode: null,
+  statusMessage: null,
+  client: <ref *1> Socket {
+    connecting: false,
+    _hadError: false,
+    _parent: null,
+    _host: null,
+    _closeAfterHandlingError: false,
+    _readableState: ReadableState {
+      state: 4184,
+      highWaterMark: 16384,
+      buffer: BufferList { head: null, tail: null, length: 0 },
+      length: 0,
+      pipes: [],
+      flowing: true,
+      errored: null,
+      defaultEncoding: 'utf8',
+      awaitDrainWriters: null,
+      decoder: null,
+      encoding: null,
+      [Symbol(kPaused)]: false
+    },
+    _events: [Object: null prototype] {
+      end: [Array],
+      timeout: [Function: socketOnTimeout],
+      data: [Function: bound socketOnData],
+      error: [Function: socketOnError],
+      close: [Array],
+      drain: [Function: bound socketOnDrain],
+      resume: [Function: onSocketResume],
+      pause: [Function: onSocketPause]
+    },
+    _eventsCount: 8,
+    _maxListeners: undefined,
+    _writableState: WritableState {
+      state: 786500,
+      highWaterMark: 16384,
+      defaultEncoding: 'utf8',
+      length: 0,
+      corked: 0,
+      onwrite: [Function: bound onwrite],
+      writecb: null,
+      writelen: 0,
+      afterWriteTickInfo: null,
+      buffered: [],
+      bufferedIndex: 0,
+      pendingcb: 0,
+      errored: null,
+      [Symbol(kOnFinished)]: []
+    },
+    allowHalfOpen: true,
+    _sockname: null,
+    _pendingData: null,
+    _pendingEncoding: '',
+    server: Server {
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      requestTimeout: 300000,
+      headersTimeout: 60000,
+      keepAliveTimeout: 5000,
+      connectionsCheckingInterval: 30000,
+      requireHostHeader: true,
+      joinDuplicateHeaders: undefined,
+      rejectNonStandardBodyWrites: false,
+      _events: [Object: null prototype],
+      _eventsCount: 3,
+      _maxListeners: undefined,
+      _connections: 1,
+      _handle: [Pipe],
+      _usingWorkers: false,
+      _workers: [],
+      _unref: false,
+      allowHalfOpen: true,
+      pauseOnConnect: false,
+      noDelay: true,
+      keepAlive: false,
+      keepAliveInitialDelay: 0,
+      highWaterMark: 16384,
+      httpAllowHalfOpen: false,
+      timeout: 0,
+      maxHeadersCount: null,
+      maxRequestsPerSocket: 0,
+      _pipeName: '\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517',
+      _connectionKey: '-1:\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517:-1',
+      [Symbol(IncomingMessage)]: [Function: IncomingMessage],
+      [Symbol(ServerResponse)]: [Function: ServerResponse],
+      [Symbol(kCapture)]: false,
+      [Symbol(async_id_symbol)]: 6,
+      [Symbol(kUniqueHeaders)]: null,
+      [Symbol(http.server.connections)]: ConnectionsList {},
+      [Symbol(http.server.connectionsCheckingInterval)]: Timeout {
+        _idleTimeout: 30000,
+        _idlePrev: [TimersList],
+        _idleNext: [TimersList],
+        _idleStart: 2644147,
+        _onTimeout: [Function: bound checkConnections],
+        _timerArgs: undefined,
+        _repeat: 30000,
+        _destroyed: false,
+        [Symbol(refed)]: false,
+        [Symbol(kHasPrimitive)]: false,
+        [Symbol(asyncId)]: 9,
+        [Symbol(triggerId)]: 7
+      }
+    },
+    _server: Server {
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      requestTimeout: 300000,
+      headersTimeout: 60000,
+      keepAliveTimeout: 5000,
+      connectionsCheckingInterval: 30000,
+      requireHostHeader: true,
+      joinDuplicateHeaders: undefined,
+      rejectNonStandardBodyWrites: false,
+      _events: [Object: null prototype],
+      _eventsCount: 3,
+      _maxListeners: undefined,
+      _connections: 1,
+      _handle: [Pipe],
+      _usingWorkers: false,
+      _workers: [],
+      _unref: false,
+      allowHalfOpen: true,
+      pauseOnConnect: false,
+      noDelay: true,
+      keepAlive: false,
+      keepAliveInitialDelay: 0,
+      highWaterMark: 16384,
+      httpAllowHalfOpen: false,
+      timeout: 0,
+      maxHeadersCount: null,
+      maxRequestsPerSocket: 0,
+      _pipeName: '\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517',
+      _connectionKey: '-1:\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517:-1',
+      [Symbol(IncomingMessage)]: [Function: IncomingMessage],
+      [Symbol(ServerResponse)]: [Function: ServerResponse],
+      [Symbol(kCapture)]: false,
+      [Symbol(async_id_symbol)]: 6,
+      [Symbol(kUniqueHeaders)]: null,
+      [Symbol(http.server.connections)]: ConnectionsList {},
+      [Symbol(http.server.connectionsCheckingInterval)]: Timeout {
+        _idleTimeout: 30000,
+        _idlePrev: [TimersList],
+        _idleNext: [TimersList],
+        _idleStart: 2644147,
+        _onTimeout: [Function: bound checkConnections],
+        _timerArgs: undefined,
+        _repeat: 30000,
+        _destroyed: false,
+        [Symbol(refed)]: false,
+        [Symbol(kHasPrimitive)]: false,
+        [Symbol(asyncId)]: 9,
+        [Symbol(triggerId)]: 7
+      }
+    },
+    parser: HTTPParser {
+      '0': null,
+      '1': [Function: parserOnHeaders],
+      '2': [Function: parserOnHeadersComplete],
+      '3': [Function: parserOnBody],
+      '4': [Function: parserOnMessageComplete],
+      '5': [Function: bound onParserExecute],
+      '6': [Function: bound onParserTimeout],
+      _headers: [],
+      _url: '',
+      socket: [Circular *1],
+      incoming: [Circular *2],
+      outgoing: null,
+      maxHeaderPairs: 2000,
+      _consumed: true,
+      onIncoming: [Function: bound parserOnIncoming],
+      joinDuplicateHeaders: null,
+      [Symbol(resource_symbol)]: [HTTPServerAsyncResource]
+    },
+    on: [Function: socketListenerWrap],
+    addListener: [Function: socketListenerWrap],
+    prependListener: [Function: socketListenerWrap],
+    setEncoding: [Function: socketSetEncoding],
+    _paused: false,
+    _httpMessage: ServerResponse {
+      _events: [Object: null prototype],
+      _eventsCount: 1,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: false,
+      chunkedEncoding: false,
+      shouldKeepAlive: true,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: true,
+      sendDate: true,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: null,
+      _hasBody: true,
+      _trailer: '',
+      finished: false,
+      _headerSent: false,
+      _closed: false,
+      socket: [Circular *1],
+      _header: null,
+      _keepAliveTimeout: 5000,
+      _onPendingData: [Function: bound updateOutgoingData],
+      req: [Circular *2],
+      _sent100: false,
+      _expect_continue: false,
+      _maxRequestsPerSocket: 0,
+      locals: [Object: null prototype] {},
+      flush: [Function: flush],
+      write: [Function: write],
+      end: [Function: end],
+      on: [Function: on],
+      writeHead: [Function: writeHead],
+      [Symbol(kCapture)]: false,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype],
+      [Symbol(errored)]: null,
+      [Symbol(kHighWaterMark)]: 16384,
+      [Symbol(kRejectNonStandardBodyWrites)]: false,
+      [Symbol(kUniqueHeaders)]: null
+    },
+    timeout: 0,
+    [Symbol(async_id_symbol)]: 31006,
+    [Symbol(kHandle)]: Pipe {
+      reading: true,
+      _consumed: true,
+      [Symbol(owner_symbol)]: [Circular *1]
+    },
+    [Symbol(lastWriteQueueSize)]: 0,
+    [Symbol(timeout)]: Timeout {
+      _idleTimeout: -1,
+      _idlePrev: null,
+      _idleNext: null,
+      _idleStart: 2673596,
+      _onTimeout: null,
+      _timerArgs: undefined,
+      _repeat: null,
+      _destroyed: true,
+      [Symbol(refed)]: false,
+      [Symbol(kHasPrimitive)]: false,
+      [Symbol(asyncId)]: 31014,
+      [Symbol(triggerId)]: 31010
+    },
+    [Symbol(kBuffer)]: null,
+    [Symbol(kBufferCb)]: null,
+    [Symbol(kBufferGen)]: null,
+    [Symbol(kCapture)]: false,
+    [Symbol(kSetNoDelay)]: false,
+    [Symbol(kSetKeepAlive)]: false,
+    [Symbol(kSetKeepAliveInitialDelay)]: 0,
+    [Symbol(kBytesRead)]: 0,
+    [Symbol(kBytesWritten)]: 0
+  },
+  _consuming: true,
+  _dumped: false,
+  next: [Function: next],
+  baseUrl: '/v1/busdocuments',
+  originalUrl: '/v1/busdocuments/',
+  _parsedUrl: Url {
+    protocol: null,
+    slashes: null,
+    auth: null,
+    host: null,
+    port: null,
+    hostname: null,
+    hash: null,
+    search: null,
+    query: null,
+    pathname: '/',
+    path: '/',
+    href: '/',
+    _raw: '/'
+  },
+  params: {},
+  query: {},
+  res: <ref *3> ServerResponse {
+    _events: [Object: null prototype] { finish: [Function: bound resOnFinish] },
+    _eventsCount: 1,
+    _maxListeners: undefined,
+    outputData: [],
+    outputSize: 0,
+    writable: true,
+    destroyed: false,
+    _last: false,
+    chunkedEncoding: false,
+    shouldKeepAlive: true,
+    maxRequestsOnConnectionReached: false,
+    _defaultKeepAlive: true,
+    useChunkedEncodingByDefault: true,
+    sendDate: true,
+    _removedConnection: false,
+    _removedContLen: false,
+    _removedTE: false,
+    strictContentLength: false,
+    _contentLength: null,
+    _hasBody: true,
+    _trailer: '',
+    finished: false,
+    _headerSent: false,
+    _closed: false,
+    socket: <ref *1> Socket {
+      connecting: false,
+      _hadError: false,
+      _parent: null,
+      _host: null,
+      _closeAfterHandlingError: false,
+      _readableState: [ReadableState],
+      _events: [Object: null prototype],
+      _eventsCount: 8,
+      _maxListeners: undefined,
+      _writableState: [WritableState],
+      allowHalfOpen: true,
+      _sockname: null,
+      _pendingData: null,
+      _pendingEncoding: '',
+      server: [Server],
+      _server: [Server],
+      parser: [HTTPParser],
+      on: [Function: socketListenerWrap],
+      addListener: [Function: socketListenerWrap],
+      prependListener: [Function: socketListenerWrap],
+      setEncoding: [Function: socketSetEncoding],
+      _paused: false,
+      _httpMessage: [Circular *3],
+      timeout: 0,
+      [Symbol(async_id_symbol)]: 31006,
+      [Symbol(kHandle)]: [Pipe],
+      [Symbol(lastWriteQueueSize)]: 0,
+      [Symbol(timeout)]: Timeout {
+        _idleTimeout: -1,
+        _idlePrev: null,
+        _idleNext: null,
+        _idleStart: 2673596,
+        _onTimeout: null,
+        _timerArgs: undefined,
+        _repeat: null,
+        _destroyed: true,
+        [Symbol(refed)]: false,
+        [Symbol(kHasPrimitive)]: false,
+        [Symbol(asyncId)]: 31014,
+        [Symbol(triggerId)]: 31010
+      },
+      [Symbol(kBuffer)]: null,
+      [Symbol(kBufferCb)]: null,
+      [Symbol(kBufferGen)]: null,
+      [Symbol(kCapture)]: false,
+      [Symbol(kSetNoDelay)]: false,
+      [Symbol(kSetKeepAlive)]: false,
+      [Symbol(kSetKeepAliveInitialDelay)]: 0,
+      [Symbol(kBytesRead)]: 0,
+      [Symbol(kBytesWritten)]: 0
+    },
+    _header: null,
+    _keepAliveTimeout: 5000,
+    _onPendingData: [Function: bound updateOutgoingData],
+    req: [Circular *2],
+    _sent100: false,
+    _expect_continue: false,
+    _maxRequestsPerSocket: 0,
+    locals: [Object: null prototype] {},
+    flush: [Function: flush],
+    write: [Function: write],
+    end: [Function: end],
+    on: [Function: on],
+    writeHead: [Function: writeHead],
+    [Symbol(kCapture)]: false,
+    [Symbol(kBytesWritten)]: 0,
+    [Symbol(kNeedDrain)]: false,
+    [Symbol(corked)]: 0,
+    [Symbol(kOutHeaders)]: [Object: null prototype] {
+      'x-powered-by': [Array],
+      'access-control-allow-origin': [Array],
+      vary: [Array],
+      'access-control-allow-credentials': [Array]
+    },
+    [Symbol(errored)]: null,
+    [Symbol(kHighWaterMark)]: 16384,
+    [Symbol(kRejectNonStandardBodyWrites)]: false,
+    [Symbol(kUniqueHeaders)]: null
+  },
+  body: [Object: null prototype] {
+    UploadDocument: 'in.jpeg',
+    ID: '353',
+    BusID: '81',
+    TaskName: 'undefined',
+    IntimateDays: '10',
+    doctype: 'INSURANCE',
+    ExpiryDate: '2025-12-09',
+    NextDueDate: '2025-12-09'
+  },
+  route: Route {
+    path: '',
+    stack: [ [Layer], [Layer] ],
+    methods: { post: true }
+  },
+  file: {
+    fieldname: 'file',
+    originalname: 'in.jpeg',
+    encoding: '7bit',
+    mimetype: 'image/jpeg',
+    destination: './uploads/',
+    filename: '1752653821208-in.jpeg',
+    path: 'uploads\\1752653821208-in.jpeg',
+    size: 214441
+  },
+  [Symbol(kCapture)]: false,
+  [Symbol(kHeaders)]: {
+    connection: 'keep-alive',
+    'content-length': '215589',
+    'content-type': 'multipart/form-data; boundary=----geckoformboundaryceac7994e4fd0f46702acf81a19c3eb2',
+    accept: 'application/json, text/plain, */*',
+    'accept-encoding': 'gzip, br',
+    'accept-language': 'en-US,en;q=0.5',
+    authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInBlcm1pc3Npb25zIjpbImNyZWF0ZS1idXNDYXRlZ29yeSIsInJlYWRBbGwtYnVzQ2F0ZWdvcnkiLCJ1cGRhdGUtYnVzQ2F0ZWdvcnkiLCJkZWxldGUtYnVzQ2F0ZWdvcnkiLCJjcmVhdGUtY29tcGFueSIsInJlYWRBbGwtY29tcGFueSIsInVwZGF0ZS1jb21wYW55IiwiZGVsZXRlLWNvbXBhbnkiLCJjcmVhdGUtZnVlbCIsInJlYWRBbGwtZnVlbCIsInVwZGF0ZS1mdWVsIiwiZGVsZXRlLWZ1ZWwiLCJjcmVhdGUtYm9va2luZ0VudHJ5IiwicmVhZEFsbC1ib29raW5nRW50cnkiLCJ1cGRhdGUtYm9va2luZ0VudHJ5IiwiZGVsZXRlLWJvb2tpbmdFbnRyeSIsImNyZWF0ZS1yb2xlUGVybWlzc2lvbiIsInJlYWRBbGwtcm9sZVBlcm1pc3Npb24iLCJ1cGRhdGUtcm9sZVBlcm1pc3Npb24iLCJkZWxldGUtcm9sZVBlcm1pc3Npb24iLCJjcmVhdGUtYm9va2luZ0J1c0FsbG90bWVudCIsInJlYWRBbGwtYm9va2luZ0J1c0FsbG90bWVudCIsInVwZGF0ZS1ib29raW5nQnVzQWxsb3RtZW50IiwiZGVsZXRlLXNhbGVJbnZvaWNlIiwiY3JlYXRlLWhlbHBlciIsInJlYWRBbGwtaGVscGVyIiwidXBkYXRlLWhlbHBlciIsImRlbGV0ZS1oZWxwZXIiLCJjcmVhdGUtcHJvZm9ybWFJbnZvaWNlIiwicmVhZEFsbC1wcm9mb3JtYUludm9pY2UiLCJ1cGRhdGUtcHJvZm9ybWFJbnZvaWNlIiwiZGVsZXRlLXByb2Zvcm1hSW52b2ljZSIsImNyZWF0ZS1icmFuY2giLCJyZWFkQWxsLWJyYW5jaCIsInVwZGF0ZS1icmFuY2giLCJkZWxldGUtYnJhbmNoIiwiY3JlYXRlLXVzZXIiLCJyZWFkQWxsLXVzZXIiLCJ1cGRhdGUtdXNlciIsImRlbGV0ZS11c2VyIiwiY3JlYXRlLXJvbGUiLCJyZWFkQWxsLXJvbGUiLCJ1cGRhdGUtcm9sZSIsImRlbGV0ZS1yb2xlIiwiY3JlYXRlLWJ1cyIsInJlYWRBbGwtYnVzIiwidXBkYXRlLWJ1cyIsImRlbGV0ZS1idXMiLCJjcmVhdGUtZGFpbHlFeGVjdXRpb24iLCJyZWFkQWxsLWRhaWx5RXhlY3V0aW9uIiwidXBkYXRlLWRhaWx5RXhlY3V0aW9uIiwiZGVsZXRlLWRhaWx5RXhlY3V0aW9uIiwiY3JlYXRlLXNldHVwIiwicmVhZEFsbC1zZXR1cCIsInVwZGF0ZS1zZXR1cCIsImRlbGV0ZS1zZXR1cCIsImNyZWF0ZS1kcml2ZXJIZWxwZXJBdHRlbmRhbmNlIiwicmVhZEFsbC1kcml2ZXJIZWxwZXJBdHRlbmRhbmNlIiwidXBkYXRlLWRyaXZlckhlbHBlckF0dGVuZGFuY2UiLCJkZWxldGUtZHJpdmVySGVscGVyQXR0ZW5kYW5jZSIsInJlYWRBbGwtRVNJUEZSZWdpc3RlciIsInJlYWRBbGwtc2FsYXJ5UmVnaXN0ZXIiLCJyZWFkQWxsLWZ1ZWxSZWdpc3RlciIsInJlYWRBbGwtaW52b2ljZVJlZ2lzdGVyIiwicmVhZEFsbC1ib29raW5nUmVnaXN0ZXIiLCJyZWFkQWxsLWFkdmFuY2VUb1N0YWZmUmVnaXN0ZXIiLCJjcmVhdGUtYWR2YW5jZVRvU3RhZmZFbnRyeSIsInJlYWRBbGwtYWR2YW5jZVRvU3RhZmZFbnRyeSIsInVwZGF0ZS1hZHZhbmNlVG9TdGFmZkVudHJ5IiwiZGVsZXRlLWFkdmFuY2VUb1N0YWZmRW50cnkiLCJjcmVhdGUtY2l0eSIsInJlYWRBbGwtY2l0eSIsInVwZGF0ZS1jaXR5IiwiZGVsZXRlLWNpdHkiLCJjcmVhdGUtdHJhbnNmZXIiLCJyZWFkQWxsLXRyYW5zZmVyIiwiY3JlYXRlLXN0YXRlIiwicmVhZEFsbC1zdGF0ZSIsInVwZGF0ZS1zdGF0ZSIsImRlbGV0ZS1zdGF0ZSIsImNyZWF0ZS1zaXRlIiwicmVhZEFsbC1zaXRlIiwidXBkYXRlLXNpdGUiLCJkZWxldGUtc2l0ZSIsImNyZWF0ZS12ZW5kb3IiLCJyZWFkQWxsLXZlbmRvciIsImRlbGV0ZS12ZW5kb3IiLCJ1cGRhdGUtdmVuZG9yIiwiY3JlYXRlLWRyaXZlciIsInJlYWRBbGwtZHJpdmVyIiwidXBkYXRlLWRyaXZlciIsImRlbGV0ZS1kcml2ZXIiLCJyZWFkQWxsLXBhcnR5IiwidXBkYXRlLXBhcnR5IiwiY3JlYXRlLXBhcnR5IiwiZGVsZXRlLXBhcnR5Il0sImNvbXBhbnlJZCI6MiwiaWF0IjoxNzUyNDg4MzI2LCJleHAiOjE3NTI5MzQ3MjZ9.dJHwPnn2wCusuupCYZo-Suz_pFtvhqemQ0blRjqsqoI',
+    host: 'api.chohantoursandtravels.com',
+    referer: 'https://app.chohantoursandtravels.com/',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0',
+    'cf-ray': '96000f8e7b3b5ff2-SIN',
+    'x-forwarded-for': '2401:4900:8828:75:6cd0:90fd:74d6:cee0',
+    origin: 'https://app.chohantoursandtravels.com',
+    priority: 'u=0',
+    'x-forwarded-proto': 'https',
+    'cdn-loop': 'cloudflare; loops=1',
+    'sec-fetch-site': 'same-site',
+    'cf-visitor': '{"scheme":"https"}',
+    'sec-fetch-mode': 'cors',
+    'sec-fetch-dest': 'empty',
+    'cf-connecting-ip': '2401:4900:8828:75:6cd0:90fd:74d6:cee0',
+    'cf-ipcountry': 'IN',
+    'x-original-url': '/v1/busdocuments/'
+  },
+  [Symbol(kHeadersCount)]: 46,
+  [Symbol(kTrailers)]: null,
+  [Symbol(kTrailersCount)]: 0
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 1 }
+in {
+  fieldname: 'file',
+  originalname: 'in.jpeg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: './uploads/',
+  filename: '1752653821208-in.jpeg',
+  path: 'uploads\\1752653821208-in.jpeg',
+  size: 214441
+}
+in
+in 353 {
+  fieldname: 'file',
+  originalname: 'in.jpeg',
+  encoding: '7bit',
+  mimetype: 'image/jpeg',
+  destination: './uploads/',
+  filename: '1752653821208-in.jpeg',
+  path: 'uploads\\1752653821208-in.jpeg',
+  size: 214441
+}
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+new file 353.jpeg
+{ id: '81' }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: null }
+[44m[37mResult of PROC :[39m[49m { StatusID: 0, StatusMessage: 'Success.', TotalCount: 10 }
+{ id: '128' }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: null }
+call
+call
+call
+call
+call
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 238 }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 136 }
+{ id: '128' }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: null }
+call
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 136 }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 1 }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 8 }
+undefined 76756
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 144 }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 238 }
+[Object: null prototype] {
+  UploadDocument: '3576.pdf',
+  ID: '34',
+  BusID: '128',
+  TaskName: 'undefined',
+  IntimateDays: '10',
+  doctype: 'ROAD TAX',
+  ExpiryDate: '2025-10-14',
+  NextDueDate: '2025-10-14'
+} 8877876
+userId 1 {
+  fieldname: 'file',
+  originalname: '3576.pdf',
+  encoding: '7bit',
+  mimetype: 'application/pdf',
+  destination: './uploads/',
+  filename: '1752654439477-3576.pdf',
+  path: 'uploads\\1752654439477-3576.pdf',
+  size: 339824
+}
+params [Object: null prototype] {
+  UploadDocument: '3576.pdf',
+  ID: '34',
+  BusID: '128',
+  TaskName: 'undefined',
+  IntimateDays: '10',
+  doctype: 'ROAD TAX',
+  ExpiryDate: '2025-10-14',
+  NextDueDate: '2025-10-14'
+} {
+  id: '34',
+  ExpiryDate: '2025-10-14',
+  BusID: '128',
+  TaskName: 'undefined',
+  IntimateDays: '10',
+  NextDueDate: '2025-10-14',
+  EntryDate: undefined,
+  UserID: 1,
+  DocumentPath: '1752654439477-3576.pdf',
+  doctype: 'ROAD TAX',
+  ReturnID: 0
+} <ref *2> IncomingMessage {
+  _readableState: ReadableState {
+    state: 325654,
+    highWaterMark: 16384,
+    buffer: BufferList { head: null, tail: null, length: 0 },
+    length: 0,
+    pipes: [],
+    flowing: false,
+    errored: null,
+    defaultEncoding: 'utf8',
+    awaitDrainWriters: null,
+    decoder: null,
+    encoding: null,
+    [Symbol(kPaused)]: true
+  },
+  _events: [Object: null prototype] {},
+  _eventsCount: 0,
+  _maxListeners: undefined,
+  socket: <ref *1> Socket {
+    connecting: false,
+    _hadError: false,
+    _parent: null,
+    _host: null,
+    _closeAfterHandlingError: false,
+    _readableState: ReadableState {
+      state: 4184,
+      highWaterMark: 16384,
+      buffer: BufferList { head: null, tail: null, length: 0 },
+      length: 0,
+      pipes: [],
+      flowing: true,
+      errored: null,
+      defaultEncoding: 'utf8',
+      awaitDrainWriters: null,
+      decoder: null,
+      encoding: null,
+      [Symbol(kPaused)]: false
+    },
+    _events: [Object: null prototype] {
+      end: [Array],
+      timeout: [Function: socketOnTimeout],
+      data: [Function: bound socketOnData],
+      error: [Function: socketOnError],
+      close: [Array],
+      drain: [Function: bound socketOnDrain],
+      resume: [Function: onSocketResume],
+      pause: [Function: onSocketPause]
+    },
+    _eventsCount: 8,
+    _maxListeners: undefined,
+    _writableState: WritableState {
+      state: 786500,
+      highWaterMark: 16384,
+      defaultEncoding: 'utf8',
+      length: 0,
+      corked: 0,
+      onwrite: [Function: bound onwrite],
+      writecb: null,
+      writelen: 0,
+      afterWriteTickInfo: null,
+      buffered: [],
+      bufferedIndex: 0,
+      pendingcb: 0,
+      errored: null,
+      [Symbol(kOnFinished)]: []
+    },
+    allowHalfOpen: true,
+    _sockname: null,
+    _pendingData: null,
+    _pendingEncoding: '',
+    server: Server {
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      requestTimeout: 300000,
+      headersTimeout: 60000,
+      keepAliveTimeout: 5000,
+      connectionsCheckingInterval: 30000,
+      requireHostHeader: true,
+      joinDuplicateHeaders: undefined,
+      rejectNonStandardBodyWrites: false,
+      _events: [Object: null prototype],
+      _eventsCount: 3,
+      _maxListeners: undefined,
+      _connections: 1,
+      _handle: [Pipe],
+      _usingWorkers: false,
+      _workers: [],
+      _unref: false,
+      allowHalfOpen: true,
+      pauseOnConnect: false,
+      noDelay: true,
+      keepAlive: false,
+      keepAliveInitialDelay: 0,
+      highWaterMark: 16384,
+      httpAllowHalfOpen: false,
+      timeout: 0,
+      maxHeadersCount: null,
+      maxRequestsPerSocket: 0,
+      _pipeName: '\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517',
+      _connectionKey: '-1:\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517:-1',
+      [Symbol(IncomingMessage)]: [Function: IncomingMessage],
+      [Symbol(ServerResponse)]: [Function: ServerResponse],
+      [Symbol(kCapture)]: false,
+      [Symbol(async_id_symbol)]: 6,
+      [Symbol(kUniqueHeaders)]: null,
+      [Symbol(http.server.connections)]: ConnectionsList {},
+      [Symbol(http.server.connectionsCheckingInterval)]: Timeout {
+        _idleTimeout: 30000,
+        _idlePrev: [TimersList],
+        _idleNext: [TimersList],
+        _idleStart: 3274275,
+        _onTimeout: [Function: bound checkConnections],
+        _timerArgs: undefined,
+        _repeat: 30000,
+        _destroyed: false,
+        [Symbol(refed)]: false,
+        [Symbol(kHasPrimitive)]: false,
+        [Symbol(asyncId)]: 9,
+        [Symbol(triggerId)]: 7
+      }
+    },
+    _server: Server {
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      requestTimeout: 300000,
+      headersTimeout: 60000,
+      keepAliveTimeout: 5000,
+      connectionsCheckingInterval: 30000,
+      requireHostHeader: true,
+      joinDuplicateHeaders: undefined,
+      rejectNonStandardBodyWrites: false,
+      _events: [Object: null prototype],
+      _eventsCount: 3,
+      _maxListeners: undefined,
+      _connections: 1,
+      _handle: [Pipe],
+      _usingWorkers: false,
+      _workers: [],
+      _unref: false,
+      allowHalfOpen: true,
+      pauseOnConnect: false,
+      noDelay: true,
+      keepAlive: false,
+      keepAliveInitialDelay: 0,
+      highWaterMark: 16384,
+      httpAllowHalfOpen: false,
+      timeout: 0,
+      maxHeadersCount: null,
+      maxRequestsPerSocket: 0,
+      _pipeName: '\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517',
+      _connectionKey: '-1:\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517:-1',
+      [Symbol(IncomingMessage)]: [Function: IncomingMessage],
+      [Symbol(ServerResponse)]: [Function: ServerResponse],
+      [Symbol(kCapture)]: false,
+      [Symbol(async_id_symbol)]: 6,
+      [Symbol(kUniqueHeaders)]: null,
+      [Symbol(http.server.connections)]: ConnectionsList {},
+      [Symbol(http.server.connectionsCheckingInterval)]: Timeout {
+        _idleTimeout: 30000,
+        _idlePrev: [TimersList],
+        _idleNext: [TimersList],
+        _idleStart: 3274275,
+        _onTimeout: [Function: bound checkConnections],
+        _timerArgs: undefined,
+        _repeat: 30000,
+        _destroyed: false,
+        [Symbol(refed)]: false,
+        [Symbol(kHasPrimitive)]: false,
+        [Symbol(asyncId)]: 9,
+        [Symbol(triggerId)]: 7
+      }
+    },
+    parser: HTTPParser {
+      '0': null,
+      '1': [Function: parserOnHeaders],
+      '2': [Function: parserOnHeadersComplete],
+      '3': [Function: parserOnBody],
+      '4': [Function: parserOnMessageComplete],
+      '5': [Function: bound onParserExecute],
+      '6': [Function: bound onParserTimeout],
+      _headers: [],
+      _url: '',
+      socket: [Circular *1],
+      incoming: [Circular *2],
+      outgoing: null,
+      maxHeaderPairs: 2000,
+      _consumed: true,
+      onIncoming: [Function: bound parserOnIncoming],
+      joinDuplicateHeaders: null,
+      [Symbol(resource_symbol)]: [HTTPServerAsyncResource]
+    },
+    on: [Function: socketListenerWrap],
+    addListener: [Function: socketListenerWrap],
+    prependListener: [Function: socketListenerWrap],
+    setEncoding: [Function: socketSetEncoding],
+    _paused: false,
+    _httpMessage: ServerResponse {
+      _events: [Object: null prototype],
+      _eventsCount: 1,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: false,
+      chunkedEncoding: false,
+      shouldKeepAlive: true,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: true,
+      sendDate: true,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: null,
+      _hasBody: true,
+      _trailer: '',
+      finished: false,
+      _headerSent: false,
+      _closed: false,
+      socket: [Circular *1],
+      _header: null,
+      _keepAliveTimeout: 5000,
+      _onPendingData: [Function: bound updateOutgoingData],
+      req: [Circular *2],
+      _sent100: false,
+      _expect_continue: false,
+      _maxRequestsPerSocket: 0,
+      locals: [Object: null prototype] {},
+      flush: [Function: flush],
+      write: [Function: write],
+      end: [Function: end],
+      on: [Function: on],
+      writeHead: [Function: writeHead],
+      [Symbol(kCapture)]: false,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype],
+      [Symbol(errored)]: null,
+      [Symbol(kHighWaterMark)]: 16384,
+      [Symbol(kRejectNonStandardBodyWrites)]: false,
+      [Symbol(kUniqueHeaders)]: null
+    },
+    timeout: 0,
+    [Symbol(async_id_symbol)]: 33091,
+    [Symbol(kHandle)]: Pipe {
+      reading: true,
+      _consumed: true,
+      [Symbol(owner_symbol)]: [Circular *1]
+    },
+    [Symbol(lastWriteQueueSize)]: 0,
+    [Symbol(timeout)]: Timeout {
+      _idleTimeout: -1,
+      _idlePrev: null,
+      _idleNext: null,
+      _idleStart: 3291594,
+      _onTimeout: null,
+      _timerArgs: undefined,
+      _repeat: null,
+      _destroyed: true,
+      [Symbol(refed)]: false,
+      [Symbol(kHasPrimitive)]: false,
+      [Symbol(asyncId)]: 33099,
+      [Symbol(triggerId)]: 33095
+    },
+    [Symbol(kBuffer)]: null,
+    [Symbol(kBufferCb)]: null,
+    [Symbol(kBufferGen)]: null,
+    [Symbol(kCapture)]: false,
+    [Symbol(kSetNoDelay)]: false,
+    [Symbol(kSetKeepAlive)]: false,
+    [Symbol(kSetKeepAliveInitialDelay)]: 0,
+    [Symbol(kBytesRead)]: 0,
+    [Symbol(kBytesWritten)]: 0
+  },
+  httpVersionMajor: 1,
+  httpVersionMinor: 1,
+  httpVersion: '1.1',
+  complete: true,
+  rawHeaders: [
+    'Connection',
+    'keep-alive',
+    'Content-Length',
+    '340968',
+    'Content-Type',
+    'multipart/form-data; boundary=----geckoformboundarya51396b5a12ff53a65ac23a779dc995',
+    'Accept',
+    'application/json, text/plain, */*',
+    'Accept-Encoding',
+    'gzip, br',
+    'Accept-Language',
+    'en-US,en;q=0.5',
+    'Authorization',
+    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInBlcm1pc3Npb25zIjpbImNyZWF0ZS1idXNDYXRlZ29yeSIsInJlYWRBbGwtYnVzQ2F0ZWdvcnkiLCJ1cGRhdGUtYnVzQ2F0ZWdvcnkiLCJkZWxldGUtYnVzQ2F0ZWdvcnkiLCJjcmVhdGUtY29tcGFueSIsInJlYWRBbGwtY29tcGFueSIsInVwZGF0ZS1jb21wYW55IiwiZGVsZXRlLWNvbXBhbnkiLCJjcmVhdGUtZnVlbCIsInJlYWRBbGwtZnVlbCIsInVwZGF0ZS1mdWVsIiwiZGVsZXRlLWZ1ZWwiLCJjcmVhdGUtYm9va2luZ0VudHJ5IiwicmVhZEFsbC1ib29raW5nRW50cnkiLCJ1cGRhdGUtYm9va2luZ0VudHJ5IiwiZGVsZXRlLWJvb2tpbmdFbnRyeSIsImNyZWF0ZS1yb2xlUGVybWlzc2lvbiIsInJlYWRBbGwtcm9sZVBlcm1pc3Npb24iLCJ1cGRhdGUtcm9sZVBlcm1pc3Npb24iLCJkZWxldGUtcm9sZVBlcm1pc3Npb24iLCJjcmVhdGUtYm9va2luZ0J1c0FsbG90bWVudCIsInJlYWRBbGwtYm9va2luZ0J1c0FsbG90bWVudCIsInVwZGF0ZS1ib29raW5nQnVzQWxsb3RtZW50IiwiZGVsZXRlLXNhbGVJbnZvaWNlIiwiY3JlYXRlLWhlbHBlciIsInJlYWRBbGwtaGVscGVyIiwidXBkYXRlLWhlbHBlciIsImRlbGV0ZS1oZWxwZXIiLCJjcmVhdGUtcHJvZm9ybWFJbnZvaWNlIiwicmVhZEFsbC1wcm9mb3JtYUludm9pY2UiLCJ1cGRhdGUtcHJvZm9ybWFJbnZvaWNlIiwiZGVsZXRlLXByb2Zvcm1hSW52b2ljZSIsImNyZWF0ZS1icmFuY2giLCJyZWFkQWxsLWJyYW5jaCIsInVwZGF0ZS1icmFuY2giLCJkZWxldGUtYnJhbmNoIiwiY3JlYXRlLXVzZXIiLCJyZWFkQWxsLXVzZXIiLCJ1cGRhdGUtdXNlciIsImRlbGV0ZS11c2VyIiwiY3JlYXRlLXJvbGUiLCJyZWFkQWxsLXJvbGUiLCJ1cGRhdGUtcm9sZSIsImRlbGV0ZS1yb2xlIiwiY3JlYXRlLWJ1cyIsInJlYWRBbGwtYnVzIiwidXBkYXRlLWJ1cyIsImRlbGV0ZS1idXMiLCJjcmVhdGUtZGFpbHlFeGVjdXRpb24iLCJyZWFkQWxsLWRhaWx5RXhlY3V0aW9uIiwidXBkYXRlLWRhaWx5RXhlY3V0aW9uIiwiZGVsZXRlLWRhaWx5RXhlY3V0aW9uIiwiY3JlYXRlLXNldHVwIiwicmVhZEFsbC1zZXR1cCIsInVwZGF0ZS1zZXR1cCIsImRlbGV0ZS1zZXR1cCIsImNyZWF0ZS1kcml2ZXJIZWxwZXJBdHRlbmRhbmNlIiwicmVhZEFsbC1kcml2ZXJIZWxwZXJBdHRlbmRhbmNlIiwidXBkYXRlLWRyaXZlckhlbHBlckF0dGVuZGFuY2UiLCJkZWxldGUtZHJpdmVySGVscGVyQXR0ZW5kYW5jZSIsInJlYWRBbGwtRVNJUEZSZWdpc3RlciIsInJlYWRBbGwtc2FsYXJ5UmVnaXN0ZXIiLCJyZWFkQWxsLWZ1ZWxSZWdpc3RlciIsInJlYWRBbGwtaW52b2ljZVJlZ2lzdGVyIiwicmVhZEFsbC1ib29raW5nUmVnaXN0ZXIiLCJyZWFkQWxsLWFkdmFuY2VUb1N0YWZmUmVnaXN0ZXIiLCJjcmVhdGUtYWR2YW5jZVRvU3RhZmZFbnRyeSIsInJlYWRBbGwtYWR2YW5jZVRvU3RhZmZFbnRyeSIsInVwZGF0ZS1hZHZhbmNlVG9TdGFmZkVudHJ5IiwiZGVsZXRlLWFkdmFuY2VUb1N0YWZmRW50cnkiLCJjcmVhdGUtY2l0eSIsInJlYWRBbGwtY2l0eSIsInVwZGF0ZS1jaXR5IiwiZGVsZXRlLWNpdHkiLCJjcmVhdGUtdHJhbnNmZXIiLCJyZWFkQWxsLXRyYW5zZmVyIiwiY3JlYXRlLXN0YXRlIiwicmVhZEFsbC1zdGF0ZSIsInVwZGF0ZS1zdGF0ZSIsImRlbGV0ZS1zdGF0ZSIsImNyZWF0ZS1zaXRlIiwicmVhZEFsbC1zaXRlIiwidXBkYXRlLXNpdGUiLCJkZWxldGUtc2l0ZSIsImNyZWF0ZS12ZW5kb3IiLCJyZWFkQWxsLXZlbmRvciIsImRlbGV0ZS12ZW5kb3IiLCJ1cGRhdGUtdmVuZG9yIiwiY3JlYXRlLWRyaXZlciIsInJlYWRBbGwtZHJpdmVyIiwidXBkYXRlLWRyaXZlciIsImRlbGV0ZS1kcml2ZXIiLCJyZWFkQWxsLXBhcnR5IiwidXBkYXRlLXBhcnR5IiwiY3JlYXRlLXBhcnR5IiwiZGVsZXRlLXBhcnR5Il0sImNvbXBhbnlJZCI6MiwiaWF0IjoxNzUyNDg4MzI2LCJleHAiOjE3NTI5MzQ3MjZ9.dJHwPnn2wCusuupCYZo-Suz_pFtvhqemQ0blRjqsqoI',
+    'Host',
+    'api.chohantoursandtravels.com',
+    'Referer',
+    'https://app.chohantoursandtravels.com/',
+    'User-Agent',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0',
+    'cf-ray',
+    '96001ea50dd01658-SIN',
+    'x-forwarded-for',
+    '2401:4900:8828:75:6cd0:90fd:74d6:cee0',
+    'origin',
+    'https://app.chohantoursandtravels.com',
+    'priority',
+    'u=0',
+    'X-Forwarded-Proto',
+    'https',
+    'cdn-loop',
+    'cloudflare; loops=1',
+    'sec-fetch-site',
+    'same-site',
+    'CF-Visitor',
+    '{"scheme":"https"}',
+    'sec-fetch-mode',
+    'cors',
+    'sec-fetch-dest',
+    'empty',
+    'CF-Connecting-IP',
+    '2401:4900:8828:75:6cd0:90fd:74d6:cee0',
+    'CF-IPCountry',
+    'IN',
+    'X-Original-URL',
+    '/v1/busdocuments/'
+  ],
+  rawTrailers: [],
+  joinDuplicateHeaders: null,
+  aborted: false,
+  upgrade: false,
+  url: '/',
+  method: 'POST',
+  statusCode: null,
+  statusMessage: null,
+  client: <ref *1> Socket {
+    connecting: false,
+    _hadError: false,
+    _parent: null,
+    _host: null,
+    _closeAfterHandlingError: false,
+    _readableState: ReadableState {
+      state: 4184,
+      highWaterMark: 16384,
+      buffer: BufferList { head: null, tail: null, length: 0 },
+      length: 0,
+      pipes: [],
+      flowing: true,
+      errored: null,
+      defaultEncoding: 'utf8',
+      awaitDrainWriters: null,
+      decoder: null,
+      encoding: null,
+      [Symbol(kPaused)]: false
+    },
+    _events: [Object: null prototype] {
+      end: [Array],
+      timeout: [Function: socketOnTimeout],
+      data: [Function: bound socketOnData],
+      error: [Function: socketOnError],
+      close: [Array],
+      drain: [Function: bound socketOnDrain],
+      resume: [Function: onSocketResume],
+      pause: [Function: onSocketPause]
+    },
+    _eventsCount: 8,
+    _maxListeners: undefined,
+    _writableState: WritableState {
+      state: 786500,
+      highWaterMark: 16384,
+      defaultEncoding: 'utf8',
+      length: 0,
+      corked: 0,
+      onwrite: [Function: bound onwrite],
+      writecb: null,
+      writelen: 0,
+      afterWriteTickInfo: null,
+      buffered: [],
+      bufferedIndex: 0,
+      pendingcb: 0,
+      errored: null,
+      [Symbol(kOnFinished)]: []
+    },
+    allowHalfOpen: true,
+    _sockname: null,
+    _pendingData: null,
+    _pendingEncoding: '',
+    server: Server {
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      requestTimeout: 300000,
+      headersTimeout: 60000,
+      keepAliveTimeout: 5000,
+      connectionsCheckingInterval: 30000,
+      requireHostHeader: true,
+      joinDuplicateHeaders: undefined,
+      rejectNonStandardBodyWrites: false,
+      _events: [Object: null prototype],
+      _eventsCount: 3,
+      _maxListeners: undefined,
+      _connections: 1,
+      _handle: [Pipe],
+      _usingWorkers: false,
+      _workers: [],
+      _unref: false,
+      allowHalfOpen: true,
+      pauseOnConnect: false,
+      noDelay: true,
+      keepAlive: false,
+      keepAliveInitialDelay: 0,
+      highWaterMark: 16384,
+      httpAllowHalfOpen: false,
+      timeout: 0,
+      maxHeadersCount: null,
+      maxRequestsPerSocket: 0,
+      _pipeName: '\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517',
+      _connectionKey: '-1:\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517:-1',
+      [Symbol(IncomingMessage)]: [Function: IncomingMessage],
+      [Symbol(ServerResponse)]: [Function: ServerResponse],
+      [Symbol(kCapture)]: false,
+      [Symbol(async_id_symbol)]: 6,
+      [Symbol(kUniqueHeaders)]: null,
+      [Symbol(http.server.connections)]: ConnectionsList {},
+      [Symbol(http.server.connectionsCheckingInterval)]: Timeout {
+        _idleTimeout: 30000,
+        _idlePrev: [TimersList],
+        _idleNext: [TimersList],
+        _idleStart: 3274275,
+        _onTimeout: [Function: bound checkConnections],
+        _timerArgs: undefined,
+        _repeat: 30000,
+        _destroyed: false,
+        [Symbol(refed)]: false,
+        [Symbol(kHasPrimitive)]: false,
+        [Symbol(asyncId)]: 9,
+        [Symbol(triggerId)]: 7
+      }
+    },
+    _server: Server {
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      requestTimeout: 300000,
+      headersTimeout: 60000,
+      keepAliveTimeout: 5000,
+      connectionsCheckingInterval: 30000,
+      requireHostHeader: true,
+      joinDuplicateHeaders: undefined,
+      rejectNonStandardBodyWrites: false,
+      _events: [Object: null prototype],
+      _eventsCount: 3,
+      _maxListeners: undefined,
+      _connections: 1,
+      _handle: [Pipe],
+      _usingWorkers: false,
+      _workers: [],
+      _unref: false,
+      allowHalfOpen: true,
+      pauseOnConnect: false,
+      noDelay: true,
+      keepAlive: false,
+      keepAliveInitialDelay: 0,
+      highWaterMark: 16384,
+      httpAllowHalfOpen: false,
+      timeout: 0,
+      maxHeadersCount: null,
+      maxRequestsPerSocket: 0,
+      _pipeName: '\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517',
+      _connectionKey: '-1:\\\\.\\pipe\\0cadb03d-e4b0-4306-97b3-232fc41f5517:-1',
+      [Symbol(IncomingMessage)]: [Function: IncomingMessage],
+      [Symbol(ServerResponse)]: [Function: ServerResponse],
+      [Symbol(kCapture)]: false,
+      [Symbol(async_id_symbol)]: 6,
+      [Symbol(kUniqueHeaders)]: null,
+      [Symbol(http.server.connections)]: ConnectionsList {},
+      [Symbol(http.server.connectionsCheckingInterval)]: Timeout {
+        _idleTimeout: 30000,
+        _idlePrev: [TimersList],
+        _idleNext: [TimersList],
+        _idleStart: 3274275,
+        _onTimeout: [Function: bound checkConnections],
+        _timerArgs: undefined,
+        _repeat: 30000,
+        _destroyed: false,
+        [Symbol(refed)]: false,
+        [Symbol(kHasPrimitive)]: false,
+        [Symbol(asyncId)]: 9,
+        [Symbol(triggerId)]: 7
+      }
+    },
+    parser: HTTPParser {
+      '0': null,
+      '1': [Function: parserOnHeaders],
+      '2': [Function: parserOnHeadersComplete],
+      '3': [Function: parserOnBody],
+      '4': [Function: parserOnMessageComplete],
+      '5': [Function: bound onParserExecute],
+      '6': [Function: bound onParserTimeout],
+      _headers: [],
+      _url: '',
+      socket: [Circular *1],
+      incoming: [Circular *2],
+      outgoing: null,
+      maxHeaderPairs: 2000,
+      _consumed: true,
+      onIncoming: [Function: bound parserOnIncoming],
+      joinDuplicateHeaders: null,
+      [Symbol(resource_symbol)]: [HTTPServerAsyncResource]
+    },
+    on: [Function: socketListenerWrap],
+    addListener: [Function: socketListenerWrap],
+    prependListener: [Function: socketListenerWrap],
+    setEncoding: [Function: socketSetEncoding],
+    _paused: false,
+    _httpMessage: ServerResponse {
+      _events: [Object: null prototype],
+      _eventsCount: 1,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: false,
+      chunkedEncoding: false,
+      shouldKeepAlive: true,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: true,
+      sendDate: true,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: null,
+      _hasBody: true,
+      _trailer: '',
+      finished: false,
+      _headerSent: false,
+      _closed: false,
+      socket: [Circular *1],
+      _header: null,
+      _keepAliveTimeout: 5000,
+      _onPendingData: [Function: bound updateOutgoingData],
+      req: [Circular *2],
+      _sent100: false,
+      _expect_continue: false,
+      _maxRequestsPerSocket: 0,
+      locals: [Object: null prototype] {},
+      flush: [Function: flush],
+      write: [Function: write],
+      end: [Function: end],
+      on: [Function: on],
+      writeHead: [Function: writeHead],
+      [Symbol(kCapture)]: false,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype],
+      [Symbol(errored)]: null,
+      [Symbol(kHighWaterMark)]: 16384,
+      [Symbol(kRejectNonStandardBodyWrites)]: false,
+      [Symbol(kUniqueHeaders)]: null
+    },
+    timeout: 0,
+    [Symbol(async_id_symbol)]: 33091,
+    [Symbol(kHandle)]: Pipe {
+      reading: true,
+      _consumed: true,
+      [Symbol(owner_symbol)]: [Circular *1]
+    },
+    [Symbol(lastWriteQueueSize)]: 0,
+    [Symbol(timeout)]: Timeout {
+      _idleTimeout: -1,
+      _idlePrev: null,
+      _idleNext: null,
+      _idleStart: 3291594,
+      _onTimeout: null,
+      _timerArgs: undefined,
+      _repeat: null,
+      _destroyed: true,
+      [Symbol(refed)]: false,
+      [Symbol(kHasPrimitive)]: false,
+      [Symbol(asyncId)]: 33099,
+      [Symbol(triggerId)]: 33095
+    },
+    [Symbol(kBuffer)]: null,
+    [Symbol(kBufferCb)]: null,
+    [Symbol(kBufferGen)]: null,
+    [Symbol(kCapture)]: false,
+    [Symbol(kSetNoDelay)]: false,
+    [Symbol(kSetKeepAlive)]: false,
+    [Symbol(kSetKeepAliveInitialDelay)]: 0,
+    [Symbol(kBytesRead)]: 0,
+    [Symbol(kBytesWritten)]: 0
+  },
+  _consuming: true,
+  _dumped: false,
+  next: [Function: next],
+  baseUrl: '/v1/busdocuments',
+  originalUrl: '/v1/busdocuments/',
+  _parsedUrl: Url {
+    protocol: null,
+    slashes: null,
+    auth: null,
+    host: null,
+    port: null,
+    hostname: null,
+    hash: null,
+    search: null,
+    query: null,
+    pathname: '/',
+    path: '/',
+    href: '/',
+    _raw: '/'
+  },
+  params: {},
+  query: {},
+  res: <ref *3> ServerResponse {
+    _events: [Object: null prototype] { finish: [Function: bound resOnFinish] },
+    _eventsCount: 1,
+    _maxListeners: undefined,
+    outputData: [],
+    outputSize: 0,
+    writable: true,
+    destroyed: false,
+    _last: false,
+    chunkedEncoding: false,
+    shouldKeepAlive: true,
+    maxRequestsOnConnectionReached: false,
+    _defaultKeepAlive: true,
+    useChunkedEncodingByDefault: true,
+    sendDate: true,
+    _removedConnection: false,
+    _removedContLen: false,
+    _removedTE: false,
+    strictContentLength: false,
+    _contentLength: null,
+    _hasBody: true,
+    _trailer: '',
+    finished: false,
+    _headerSent: false,
+    _closed: false,
+    socket: <ref *1> Socket {
+      connecting: false,
+      _hadError: false,
+      _parent: null,
+      _host: null,
+      _closeAfterHandlingError: false,
+      _readableState: [ReadableState],
+      _events: [Object: null prototype],
+      _eventsCount: 8,
+      _maxListeners: undefined,
+      _writableState: [WritableState],
+      allowHalfOpen: true,
+      _sockname: null,
+      _pendingData: null,
+      _pendingEncoding: '',
+      server: [Server],
+      _server: [Server],
+      parser: [HTTPParser],
+      on: [Function: socketListenerWrap],
+      addListener: [Function: socketListenerWrap],
+      prependListener: [Function: socketListenerWrap],
+      setEncoding: [Function: socketSetEncoding],
+      _paused: false,
+      _httpMessage: [Circular *3],
+      timeout: 0,
+      [Symbol(async_id_symbol)]: 33091,
+      [Symbol(kHandle)]: [Pipe],
+      [Symbol(lastWriteQueueSize)]: 0,
+      [Symbol(timeout)]: Timeout {
+        _idleTimeout: -1,
+        _idlePrev: null,
+        _idleNext: null,
+        _idleStart: 3291594,
+        _onTimeout: null,
+        _timerArgs: undefined,
+        _repeat: null,
+        _destroyed: true,
+        [Symbol(refed)]: false,
+        [Symbol(kHasPrimitive)]: false,
+        [Symbol(asyncId)]: 33099,
+        [Symbol(triggerId)]: 33095
+      },
+      [Symbol(kBuffer)]: null,
+      [Symbol(kBufferCb)]: null,
+      [Symbol(kBufferGen)]: null,
+      [Symbol(kCapture)]: false,
+      [Symbol(kSetNoDelay)]: false,
+      [Symbol(kSetKeepAlive)]: false,
+      [Symbol(kSetKeepAliveInitialDelay)]: 0,
+      [Symbol(kBytesRead)]: 0,
+      [Symbol(kBytesWritten)]: 0
+    },
+    _header: null,
+    _keepAliveTimeout: 5000,
+    _onPendingData: [Function: bound updateOutgoingData],
+    req: [Circular *2],
+    _sent100: false,
+    _expect_continue: false,
+    _maxRequestsPerSocket: 0,
+    locals: [Object: null prototype] {},
+    flush: [Function: flush],
+    write: [Function: write],
+    end: [Function: end],
+    on: [Function: on],
+    writeHead: [Function: writeHead],
+    [Symbol(kCapture)]: false,
+    [Symbol(kBytesWritten)]: 0,
+    [Symbol(kNeedDrain)]: false,
+    [Symbol(corked)]: 0,
+    [Symbol(kOutHeaders)]: [Object: null prototype] {
+      'x-powered-by': [Array],
+      'access-control-allow-origin': [Array],
+      vary: [Array],
+      'access-control-allow-credentials': [Array]
+    },
+    [Symbol(errored)]: null,
+    [Symbol(kHighWaterMark)]: 16384,
+    [Symbol(kRejectNonStandardBodyWrites)]: false,
+    [Symbol(kUniqueHeaders)]: null
+  },
+  body: [Object: null prototype] {
+    UploadDocument: '3576.pdf',
+    ID: '34',
+    BusID: '128',
+    TaskName: 'undefined',
+    IntimateDays: '10',
+    doctype: 'ROAD TAX',
+    ExpiryDate: '2025-10-14',
+    NextDueDate: '2025-10-14'
+  },
+  route: Route {
+    path: '',
+    stack: [ [Layer], [Layer] ],
+    methods: { post: true }
+  },
+  file: {
+    fieldname: 'file',
+    originalname: '3576.pdf',
+    encoding: '7bit',
+    mimetype: 'application/pdf',
+    destination: './uploads/',
+    filename: '1752654439477-3576.pdf',
+    path: 'uploads\\1752654439477-3576.pdf',
+    size: 339824
+  },
+  [Symbol(kCapture)]: false,
+  [Symbol(kHeaders)]: {
+    connection: 'keep-alive',
+    'content-length': '340968',
+    'content-type': 'multipart/form-data; boundary=----geckoformboundarya51396b5a12ff53a65ac23a779dc995',
+    accept: 'application/json, text/plain, */*',
+    'accept-encoding': 'gzip, br',
+    'accept-language': 'en-US,en;q=0.5',
+    authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInBlcm1pc3Npb25zIjpbImNyZWF0ZS1idXNDYXRlZ29yeSIsInJlYWRBbGwtYnVzQ2F0ZWdvcnkiLCJ1cGRhdGUtYnVzQ2F0ZWdvcnkiLCJkZWxldGUtYnVzQ2F0ZWdvcnkiLCJjcmVhdGUtY29tcGFueSIsInJlYWRBbGwtY29tcGFueSIsInVwZGF0ZS1jb21wYW55IiwiZGVsZXRlLWNvbXBhbnkiLCJjcmVhdGUtZnVlbCIsInJlYWRBbGwtZnVlbCIsInVwZGF0ZS1mdWVsIiwiZGVsZXRlLWZ1ZWwiLCJjcmVhdGUtYm9va2luZ0VudHJ5IiwicmVhZEFsbC1ib29raW5nRW50cnkiLCJ1cGRhdGUtYm9va2luZ0VudHJ5IiwiZGVsZXRlLWJvb2tpbmdFbnRyeSIsImNyZWF0ZS1yb2xlUGVybWlzc2lvbiIsInJlYWRBbGwtcm9sZVBlcm1pc3Npb24iLCJ1cGRhdGUtcm9sZVBlcm1pc3Npb24iLCJkZWxldGUtcm9sZVBlcm1pc3Npb24iLCJjcmVhdGUtYm9va2luZ0J1c0FsbG90bWVudCIsInJlYWRBbGwtYm9va2luZ0J1c0FsbG90bWVudCIsInVwZGF0ZS1ib29raW5nQnVzQWxsb3RtZW50IiwiZGVsZXRlLXNhbGVJbnZvaWNlIiwiY3JlYXRlLWhlbHBlciIsInJlYWRBbGwtaGVscGVyIiwidXBkYXRlLWhlbHBlciIsImRlbGV0ZS1oZWxwZXIiLCJjcmVhdGUtcHJvZm9ybWFJbnZvaWNlIiwicmVhZEFsbC1wcm9mb3JtYUludm9pY2UiLCJ1cGRhdGUtcHJvZm9ybWFJbnZvaWNlIiwiZGVsZXRlLXByb2Zvcm1hSW52b2ljZSIsImNyZWF0ZS1icmFuY2giLCJyZWFkQWxsLWJyYW5jaCIsInVwZGF0ZS1icmFuY2giLCJkZWxldGUtYnJhbmNoIiwiY3JlYXRlLXVzZXIiLCJyZWFkQWxsLXVzZXIiLCJ1cGRhdGUtdXNlciIsImRlbGV0ZS11c2VyIiwiY3JlYXRlLXJvbGUiLCJyZWFkQWxsLXJvbGUiLCJ1cGRhdGUtcm9sZSIsImRlbGV0ZS1yb2xlIiwiY3JlYXRlLWJ1cyIsInJlYWRBbGwtYnVzIiwidXBkYXRlLWJ1cyIsImRlbGV0ZS1idXMiLCJjcmVhdGUtZGFpbHlFeGVjdXRpb24iLCJyZWFkQWxsLWRhaWx5RXhlY3V0aW9uIiwidXBkYXRlLWRhaWx5RXhlY3V0aW9uIiwiZGVsZXRlLWRhaWx5RXhlY3V0aW9uIiwiY3JlYXRlLXNldHVwIiwicmVhZEFsbC1zZXR1cCIsInVwZGF0ZS1zZXR1cCIsImRlbGV0ZS1zZXR1cCIsImNyZWF0ZS1kcml2ZXJIZWxwZXJBdHRlbmRhbmNlIiwicmVhZEFsbC1kcml2ZXJIZWxwZXJBdHRlbmRhbmNlIiwidXBkYXRlLWRyaXZlckhlbHBlckF0dGVuZGFuY2UiLCJkZWxldGUtZHJpdmVySGVscGVyQXR0ZW5kYW5jZSIsInJlYWRBbGwtRVNJUEZSZWdpc3RlciIsInJlYWRBbGwtc2FsYXJ5UmVnaXN0ZXIiLCJyZWFkQWxsLWZ1ZWxSZWdpc3RlciIsInJlYWRBbGwtaW52b2ljZVJlZ2lzdGVyIiwicmVhZEFsbC1ib29raW5nUmVnaXN0ZXIiLCJyZWFkQWxsLWFkdmFuY2VUb1N0YWZmUmVnaXN0ZXIiLCJjcmVhdGUtYWR2YW5jZVRvU3RhZmZFbnRyeSIsInJlYWRBbGwtYWR2YW5jZVRvU3RhZmZFbnRyeSIsInVwZGF0ZS1hZHZhbmNlVG9TdGFmZkVudHJ5IiwiZGVsZXRlLWFkdmFuY2VUb1N0YWZmRW50cnkiLCJjcmVhdGUtY2l0eSIsInJlYWRBbGwtY2l0eSIsInVwZGF0ZS1jaXR5IiwiZGVsZXRlLWNpdHkiLCJjcmVhdGUtdHJhbnNmZXIiLCJyZWFkQWxsLXRyYW5zZmVyIiwiY3JlYXRlLXN0YXRlIiwicmVhZEFsbC1zdGF0ZSIsInVwZGF0ZS1zdGF0ZSIsImRlbGV0ZS1zdGF0ZSIsImNyZWF0ZS1zaXRlIiwicmVhZEFsbC1zaXRlIiwidXBkYXRlLXNpdGUiLCJkZWxldGUtc2l0ZSIsImNyZWF0ZS12ZW5kb3IiLCJyZWFkQWxsLXZlbmRvciIsImRlbGV0ZS12ZW5kb3IiLCJ1cGRhdGUtdmVuZG9yIiwiY3JlYXRlLWRyaXZlciIsInJlYWRBbGwtZHJpdmVyIiwidXBkYXRlLWRyaXZlciIsImRlbGV0ZS1kcml2ZXIiLCJyZWFkQWxsLXBhcnR5IiwidXBkYXRlLXBhcnR5IiwiY3JlYXRlLXBhcnR5IiwiZGVsZXRlLXBhcnR5Il0sImNvbXBhbnlJZCI6MiwiaWF0IjoxNzUyNDg4MzI2LCJleHAiOjE3NTI5MzQ3MjZ9.dJHwPnn2wCusuupCYZo-Suz_pFtvhqemQ0blRjqsqoI',
+    host: 'api.chohantoursandtravels.com',
+    referer: 'https://app.chohantoursandtravels.com/',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0',
+    'cf-ray': '96001ea50dd01658-SIN',
+    'x-forwarded-for': '2401:4900:8828:75:6cd0:90fd:74d6:cee0',
+    origin: 'https://app.chohantoursandtravels.com',
+    priority: 'u=0',
+    'x-forwarded-proto': 'https',
+    'cdn-loop': 'cloudflare; loops=1',
+    'sec-fetch-site': 'same-site',
+    'cf-visitor': '{"scheme":"https"}',
+    'sec-fetch-mode': 'cors',
+    'sec-fetch-dest': 'empty',
+    'cf-connecting-ip': '2401:4900:8828:75:6cd0:90fd:74d6:cee0',
+    'cf-ipcountry': 'IN',
+    'x-original-url': '/v1/busdocuments/'
+  },
+  [Symbol(kHeadersCount)]: 46,
+  [Symbol(kTrailers)]: null,
+  [Symbol(kTrailersCount)]: 0
+}

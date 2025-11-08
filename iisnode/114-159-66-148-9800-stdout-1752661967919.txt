@@ -1,0 +1,375 @@
+development
+Server is running in development on port \\.\pipe\c69d8ead-e42b-415e-bbfe-ff5773878618
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 1 }
+[
+  'create-driverHelperAttendance',
+  'readAll-driverHelperAttendance',
+  'update-driverHelperAttendance'
+]
+TOKEN :  [32meyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMjMsInBlcm1pc3Npb25zIjpbImNyZWF0ZS1kcml2ZXJIZWxwZXJBdHRlbmRhbmNlIiwicmVhZEFsbC1kcml2ZXJIZWxwZXJBdHRlbmRhbmNlIiwidXBkYXRlLWRyaXZlckhlbHBlckF0dGVuZGFuY2UiXSwiY29tcGFueUlkIjoyLCJpYXQiOjE3NTI2NjE5NjksImV4cCI6MTc1MzEwODM2OX0.mE-KO8LnsoulIARq7zNbENTlwxhYGFd1l5zeDYj6F_I[39m
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 1 }
+[
+  'create-driverHelperAttendance',
+  'readAll-driverHelperAttendance',
+  'update-driverHelperAttendance'
+]
+TOKEN :  [32meyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMjMsInBlcm1pc3Npb25zIjpbImNyZWF0ZS1kcml2ZXJIZWxwZXJBdHRlbmRhbmNlIiwicmVhZEFsbC1kcml2ZXJIZWxwZXJBdHRlbmRhbmNlIiwidXBkYXRlLWRyaXZlckhlbHBlckF0dGVuZGFuY2UiXSwiY29tcGFueUlkIjoyLCJpYXQiOjE3NTI2NjE5NjksImV4cCI6MTc1MzEwODM2OX0.mE-KO8LnsoulIARq7zNbENTlwxhYGFd1l5zeDYj6F_I[39m
+req.query {
+  page: '1',
+  count: '20',
+  status: 'Helper',
+  selectedMonth: '07/2025',
+  siteId: '0'
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 776 }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 238 }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 9 }
+req.query {
+  page: '1',
+  count: '20',
+  status: 'Helper',
+  selectedMonth: '07/2025',
+  siteId: '21'
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 776 }
+{
+  id: 1092,
+  month: '07/2025',
+  type: 'Helper',
+  attendance: [ { date: '16', status: '21' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 776 }
+{
+  id: 1115,
+  month: '07/2025',
+  type: 'Helper',
+  attendance: [ { date: '16', status: '21' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 776 }
+{
+  id: 21,
+  month: '07/2025',
+  type: 'Helper',
+  attendance: [ { date: '16', status: '21' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 776 }
+{
+  id: 1080,
+  month: '07/2025',
+  type: 'Helper',
+  attendance: [ { date: '16', status: '21' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 776 }
+{
+  id: 1108,
+  month: '07/2025',
+  type: 'Helper',
+  attendance: [ { date: '16', status: '21' } ]
+}
+[44m[37mResult of PROC :[39m[49m {
+  StatusID: 0,
+  StatusMessage: 'The MERGE statement attempted to UPDATE or DELETE the same row more than once. This happens when a target row matches more than one source row. A MERGE statement cannot UPDATE/DELETE the same row of t',
+  TotalCount: 0
+}
+{
+  id: 17,
+  month: '07/2025',
+  type: 'Helper',
+  attendance: [ { date: '16', status: '21' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 776 }
+{
+  id: 1134,
+  month: '07/2025',
+  type: 'Helper',
+  attendance: [ { date: '16', status: '21' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 776 }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 9 }
+req.query {
+  page: '1',
+  count: '20',
+  status: 'Helper',
+  selectedMonth: '07/2025',
+  siteId: '21'
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 776 }
+undefined 76756
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 144 }
+req.query {
+  page: '1',
+  count: '20',
+  status: 'driver',
+  selectedMonth: '07/2025',
+  siteId: '21'
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 776 }
+{
+  id: 75,
+  month: '07/2025',
+  type: 'driver',
+  attendance: [ { date: '16', status: '21' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 776 }
+{
+  id: 7,
+  month: '07/2025',
+  type: 'driver',
+  attendance: [ { date: '16', status: '21' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 776 }
+{
+  id: 81,
+  month: '07/2025',
+  type: 'driver',
+  attendance: [ { date: '16', status: '21' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 776 }
+{
+  id: 74,
+  month: '07/2025',
+  type: 'driver',
+  attendance: [ { date: '16', status: '21' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 776 }
+{
+  id: 1097,
+  month: '07/2025',
+  type: 'driver',
+  attendance: [ { date: '16', status: '21' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 776 }
+{
+  id: 80,
+  month: '07/2025',
+  type: 'driver',
+  attendance: [ { date: '16', status: '21' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 776 }
+{
+  id: 1119,
+  month: '07/2025',
+  type: 'driver',
+  attendance: [ { date: '16', status: '21' } ]
+}
+[44m[37mResult of PROC :[39m[49m {
+  StatusID: 0,
+  StatusMessage: 'The MERGE statement attempted to UPDATE or DELETE the same row more than once. This happens when a target row matches more than one source row. A MERGE statement cannot UPDATE/DELETE the same row of t',
+  TotalCount: 0
+}
+undefined 76756
+req.query {
+  page: '1',
+  count: '20',
+  status: 'driver',
+  selectedMonth: '07/2025',
+  siteId: '21'
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 144 }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 776 }
+undefined 76756
+req.query {
+  page: '1',
+  count: '20',
+  status: 'driver',
+  selectedMonth: '07/2025',
+  siteId: '0'
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 144 }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 776 }
+{
+  id: 28,
+  month: '07/2025',
+  type: 'driver',
+  attendance: [ { date: '16', status: '21' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 776 }
+{
+  id: 1125,
+  month: '07/2025',
+  type: 'driver',
+  attendance: [ { date: '16', status: '21' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 776 }
+req.query {
+  page: '1',
+  count: '20',
+  status: 'driver',
+  selectedMonth: '07/2025',
+  siteId: '0'
+}
+undefined 76756
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 776 }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 144 }
+req.query {
+  page: '1',
+  count: '20',
+  status: 'helper',
+  selectedMonth: '07/2025',
+  siteId: '0'
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 776 }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 238 }
+{
+  id: 1177,
+  month: '07/2025',
+  type: 'helper',
+  attendance: [ { date: '16', status: '21' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 776 }
+req.query {
+  page: '1',
+  count: '20',
+  status: 'helper',
+  selectedMonth: '07/2025',
+  siteId: '0'
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 238 }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 776 }
+req.query {
+  page: '1',
+  count: '20',
+  status: 'Helper',
+  selectedMonth: '07/2025',
+  siteId: '0'
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 776 }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 238 }
+{
+  id: 1086,
+  month: '07/2025',
+  type: 'Helper',
+  attendance: [ { date: '16', status: '8' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 776 }
+{
+  id: 41,
+  month: '07/2025',
+  type: 'Helper',
+  attendance: [ { date: '16', status: '8' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 777 }
+req.query {
+  page: '1',
+  count: '20',
+  status: 'Helper',
+  selectedMonth: '07/2025',
+  siteId: '8'
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 777 }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 8 }
+{
+  id: 34,
+  month: '07/2025',
+  type: 'Helper',
+  attendance: [ { date: '16', status: '8' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 777 }
+undefined 76756
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 144 }
+req.query {
+  page: '1',
+  count: '20',
+  status: 'driver',
+  selectedMonth: '07/2025',
+  siteId: '8'
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 777 }
+{
+  id: 56,
+  month: '07/2025',
+  type: 'driver',
+  attendance: [ { date: '16', status: '8' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 778 }
+{
+  id: 55,
+  month: '07/2025',
+  type: 'driver',
+  attendance: [ { date: '16', status: '8' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 779 }
+{
+  id: 10,
+  month: '07/2025',
+  type: 'driver',
+  attendance: [ { date: '16', status: '8' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 780 }
+{
+  id: 1219,
+  month: '07/2025',
+  type: 'driver',
+  attendance: [ { date: '16', status: '8' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 781 }
+{
+  id: 42,
+  month: '07/2025',
+  type: 'driver',
+  attendance: [ { date: '16', status: '8' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 781 }
+{
+  id: 1093,
+  month: '07/2025',
+  type: 'driver',
+  attendance: [ { date: '16', status: '8' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 781 }
+{
+  id: 1088,
+  month: '07/2025',
+  type: 'driver',
+  attendance: [ { date: '16', status: '8' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 782 }
+{
+  id: 55,
+  month: '07/2025',
+  type: 'driver',
+  attendance: [ { date: '15', status: '8' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 782 }
+{
+  id: 56,
+  month: '07/2025',
+  type: 'driver',
+  attendance: [ { date: '15', status: '8' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 782 }
+{
+  id: 10,
+  month: '07/2025',
+  type: 'driver',
+  attendance: [ { date: '15', status: '8' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 782 }
+{
+  id: 1219,
+  month: '07/2025',
+  type: 'driver',
+  attendance: [ { date: '15', status: '8' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 782 }
+{
+  id: 42,
+  month: '07/2025',
+  type: 'driver',
+  attendance: [ { date: '15', status: '8' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 782 }
+{
+  id: 1093,
+  month: '07/2025',
+  type: 'driver',
+  attendance: [ { date: '15', status: '8' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 782 }
+{
+  id: 1088,
+  month: '07/2025',
+  type: 'driver',
+  attendance: [ { date: '15', status: '8' } ]
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 782 }

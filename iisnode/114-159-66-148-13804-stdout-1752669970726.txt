@@ -1,0 +1,2 @@
+development
+Server is running in development on port \\.\pipe\9065ed5f-c948-4f8a-a602-f074cb72e3f8

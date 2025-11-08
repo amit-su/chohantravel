@@ -1,0 +1,183 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+
+model Permission {
+  id            Int               @id @default(autoincrement())
+  name          String
+  created_at    DateTime?
+  updated_at    DateTime?
+  MenuGroup   String?
+  MenuName    String?
+  ActionName  String?
+  rolePermissions RolePermission[]  @relation("PermissionRolePermissions")
+}
+
+
+model CityMast{
+  id Int @id @default(autoincrement())
+  name String 
+  created_at         DateTime?
+  updated_at         DateTime?
+}
+
+model Role {
+  id              Int              @id @default(autoincrement())
+  name            String
+  status          String          
+  rolePermissions RolePermission[]
+}
+
+model RolePermission {
+  id            Int          @id @default(autoincrement())
+  roleId        Int
+  permissionId  Int
+  role          Role         @relation(fields: [roleId], references: [id])
+  permission    Permission   @relation(fields: [permissionId], references: [id], name: "PermissionRolePermissions")
+}
+
+
+model User {
+  id            Int       @id @default(autoincrement())
+  username      String
+  password      String
+  refreshToken  String?
+  email         String?
+  salary        Int?
+  idNo          String?
+  phone         String?
+  address       String?
+  bloodGroup    String?
+  image         String?
+  joinDate      DateTime?
+  leaveDate     DateTime?
+  status        String    @default("true")
+  roleId        Int
+  created_at    DateTime?
+  updated_at    DateTime?
+  designationId Int?
+}
+model BusMast {
+  id              Int       @id @default(autoincrement())
+  busName         String?
+  busType         String?
+  busCategory     String?
+  sittingCapacity Int?
+  make            String?
+  model           String?
+  engineNo        String?
+  chasisNo        String?
+  companyId       Int?
+  branchId        Int?
+  userId          Int?
+  createdOn       DateTime?  @default(now())
+}
+
+model DriverMast {
+  id                   Int       @id @default(autoincrement())
+  driverName           String?
+  driverAddr           String?
+  cityID               BigInt?
+  pincode              String?
+  mobileNo             String?
+  whatsAppNo           String?
+  drvLicenseNo         String?
+  drvLicenseExpDate    DateTime?
+  aadharCardNo         String?
+  bankName             String?
+  bankBranch           String?
+  bankAcNo             String?
+  bankAcType           String?
+  bankIFSC             String?
+  driverActive         String?
+  referredBy           String?
+  licensePath          String?
+  adharPath            String?
+  createdOn            DateTime  @default(now())
+  userId               Int
+  companyId            Int
+  pfNo                 String?
+  esiNo                String?
+
+}
+
+model PartyMast {
+  id          Int       @id @default(autoincrement())
+  partyName   String?
+  partyAddr   String?
+  cityID      Int?
+  pincode     String?
+  mobileNo    String?
+  whatsAppNo  String?
+  email       String?
+  gstNo       String?
+  panNo       String?
+  referredBy  String?
+  partyActive String?
+  crDays      Int?
+  crLimit     Float?
+  createdOn   DateTime   @default(now())
+  companyID   Int
+  userID      Int
+}
+model PartySiteMast {
+  id            Int       @id @default(autoincrement())
+  siteName      String?
+  siteShortName String?
+  siteActive    String?
+  siteAddress   String?
+  cityID        Int?
+  pinCode       String?
+  partyID       BigInt?
+
+}
+
+model VendorMast {
+  id            Int       @id @default(autoincrement())
+  vendorType    String?
+  vendorName    String?
+  vendAddr      String?
+  cityID        Int?
+  pinCode       String?
+  mobileNo      String?
+  whatsAppNo    String?
+  email         String?
+  gstNo         String?
+  panNo         String?
+  bankName      String?
+  bankBranch    String?
+  bankAcNo      String?
+  bankAcType    String?
+  bankIFSC      String?
+  vendorActive  String?
+  referredBy    String?
+  createdOn     DateTime  @default(now())
+  userID        Int
+  companyID     Int
+  username      String?
+  password      String?
+  token         String?
+  wallet        Int?
+}
+
+model StateMast {
+  id          Int       @id @default(autoincrement())
+  state       String?
+  userid      Int?
+  compname    String?
+  statename   String?
+  CreatedOn   DateTime  @default(now())
+  user_id     Int       @default(0)
+  company_id  Int       @default(0)
+
+}
+
+
+
+

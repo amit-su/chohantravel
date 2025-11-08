@@ -1,0 +1,32 @@
+development
+Server is running in development on port \\.\pipe\5141d51b-245a-4e32-aeac-0fdc91a9b240
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 25 }
+req.query {
+  page: '1',
+  count: '20',
+  status: 'Helper',
+  selectedMonth: '07/2025',
+  siteId: '0'
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 782 }
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 238 }
+req.query {
+  page: '1',
+  count: '20',
+  status: 'driver',
+  selectedMonth: '07/2025',
+  siteId: '0'
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 782 }
+undefined 76756
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 144 }
+undefined 76756
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 144 }
+req.query {
+  page: '1',
+  count: '20',
+  status: 'driver',
+  selectedMonth: '07/2025',
+  siteId: '1'
+}
+[44m[37mResult of PROC :[39m[49m { StatusID: 1, StatusMessage: 'Success', TotalCount: 782 }
