@@ -92,13 +92,15 @@ const deleteSaldetals = async (req, res) => {
   try {
     // delete productcategory
 
-    const params2 = {
-      Id: req.params.id,
+    const params = {
+      table_name: "SalaryDetl",
+      column_name: "id",
+      column_value: req.params.id,
     };
     const result = await databaseService.callStoredProcedure(
       req,
-      "DeleteSalary",
-      params2
+      DELETE_PROCEDURE,
+      params
     );
     res.json(result);
   } catch (error) {
@@ -135,9 +137,11 @@ const getAllSalarydetailsbyid = async (req, res) => {
 
 const saveSalaryDetails = async (req, res) => {
   try {
+    const companyId = databaseService.getCompanyIdFromToken(req);
     const params = {
       // The stored procedure expects the JSON array as a string.
       // req.body will be the array from the frontend.
+      CompanyID: companyId,
       json: JSON.stringify(req.body),
       UserId: databaseService.getUserIdFromToken(req),
     };
@@ -201,6 +205,26 @@ const getAllSalary = async (req, res) => {
     res.json(resultdata);
   } catch (error) {
     res.status(400).json(error.message);
+  }
+};
+
+const deleteSalary = async (req, res) => {
+  try {
+    // delete Company
+    const params = {
+      table_name: "SalaryDetl",
+      column_name: "id",
+      column_value: req.params.id,
+    };
+    const deletedCompany = await databaseService.callStoredProcedure(
+      req,
+      DELETE_PROCEDURE,
+      params
+    );
+    res.json(deletedCompany);
+  } catch (error) {
+    res.status(400).json(error.message);
+    console.log(error.message);
   }
 };
 module.exports = {
