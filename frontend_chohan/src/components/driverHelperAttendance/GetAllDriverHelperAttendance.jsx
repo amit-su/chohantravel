@@ -8,7 +8,6 @@ import {
   Spin,
   Table,
   Typography,
-  Tag,
   Space,
 } from "antd";
 import dayjs from "dayjs";
@@ -50,6 +49,7 @@ const parseCountsFromMessage = (message) => {
 
 const GetAllDriverHelperAttendance = () => {
   const [DriverOrHelper, setDriverOrHelper] = useState("Helper");
+  // ✅ Initialize siteId to 0, matching the Angular default
   const [siteId, setSiteId] = useState(0);
   const apiUrl = import.meta.env.VITE_APP_API;
   const [sitename, setSitename] = useState([]);
@@ -65,47 +65,109 @@ const GetAllDriverHelperAttendance = () => {
   const [originalData, setOriginalData] = useState([]);
   const [pagination, setPagination] = useState({ current: 1, pageSize: 20 });
   const [tableData, setTableData] = useState([]);
+  // ✅ Keep isAllSites for the toggle functionality
   const [isAllSites, setIsAllSites] = useState(false);
 
-  // Fetch sites data
+  // --- NEW / MODIFIED SITE FETCHING LOGIC ---
+  // useEffect(() => {
+  //   const fetchSites = async () => {
+  //     try {
+  //       let endpoint;
+
+  //       // Logic based on isAllSites state, matching Angular's fetchSites()
+  //       if (isAllSites || userId === 1) {
+  //         endpoint = `${apiUrl}/site`;
+  //       } else {
+  //         endpoint = `${apiUrl}/site/${userId}`;
+  //       }
+
+  //       const response = await axios.get(endpoint);
+  //       const fetchedSites = response.data.data;
+  //       setSitename(fetchedSites);
+
+  //       // Angular Logic: Set default site if none is selected
+  //       // (siteId === 0 or null is considered unselected)
+  //       if (fetchedSites && fetchedSites.length > 0 && siteId === 0) {
+  //         const defaultSiteId = fetchedSites[0].siteID;
+  //         setSiteId(defaultSiteId);
+  //         form.setFieldsValue({ site: defaultSiteId });
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching sites:", error);
+  //     }
+  //   };
+  //   fetchSites();
+  // }, [userId, apiUrl, isAllSites, form, siteId]);
+
   useEffect(() => {
     const fetchSites = async () => {
       try {
         let endpoint;
-        if (isAllSites) {
+
+        if (isAllSites || userId === 1) {
           endpoint = `${apiUrl}/site`;
         } else {
-          endpoint =
-            userId === 1 ? `${apiUrl}/site` : `${apiUrl}/site/${userId}`;
+          endpoint = `${apiUrl}/site/${userId}`;
         }
+
         const response = await axios.get(endpoint);
-        setSitename(response.data.data);
+        const fetchedSites = response.data.data;
+
+        // Save all sites
+        setSitename(fetchedSites);
+
+        // Filter out blocked sites for default selection
+        const allowedSites = fetchedSites.filter(
+          (site) => ![28, 29, 4].includes(Number(site.siteID))
+        );
+
+        if (allowedSites.length > 0 && siteId === 0) {
+          const defaultSiteId = allowedSites[0].siteID; // first allowed site
+          setSiteId(defaultSiteId);
+          form.setFieldsValue({ site: defaultSiteId });
+        }
       } catch (error) {
         console.error("Error fetching sites:", error);
       }
     };
     fetchSites();
-  }, [userId, apiUrl, isAllSites]);
+  }, [userId, apiUrl, isAllSites, form, siteId]);
 
-  // Load drivers/helpers and attendance data
+  // siteId added to dependency array to re-run if it changes outside this hook (e.g., manually)
+
+  // --- MODIFIED DATA LOADING LOGIC ---
+  // Load drivers/helpers and attendance data, now dependent on the updated siteId state
   useEffect(() => {
-    dispatch(
-      DriverOrHelper === "Driver"
-        ? loadAllDriver({ page: 1, count: 10000, status: true, siteId: siteId })
-        : loadAllHelper({ page: 1, count: 10000, status: true, siteId: siteId })
-    );
-    dispatch(
-      loadAllDriverHelperAttendance({
-        requestArgs: {
-          page: 1,
-          count: 20,
-          status: DriverOrHelper,
-          siteId: siteId,
-        },
-        selectedMonth: selectedMonth.format("MM/YYYY"),
-      })
-    );
-  }, [dispatch, DriverOrHelper, selectedMonth, siteId]);
+    // Only load if siteId is set (either by default or user selection)
+    if (siteId > 0) {
+      dispatch(
+        DriverOrHelper === "Driver"
+          ? loadAllDriver({
+              page: 1,
+              count: 10000,
+              status: true,
+              siteId: siteId,
+            })
+          : loadAllHelper({
+              page: 1,
+              count: 10000,
+              status: true,
+              siteId: siteId,
+            })
+      );
+      dispatch(
+        loadAllDriverHelperAttendance({
+          requestArgs: {
+            page: 1,
+            count: 20,
+            status: DriverOrHelper,
+            siteId: siteId,
+          },
+          selectedMonth: selectedMonth.format("MM/YYYY"),
+        })
+      );
+    }
+  }, [dispatch, DriverOrHelper, selectedMonth, siteId]); // siteId is now the trigger
 
   const { list: driverList, loading: driverLoading } = useSelector(
     (state) => state.drivers
@@ -158,16 +220,21 @@ const GetAllDriverHelperAttendance = () => {
           attendanceData.forEach(({ id, date, status }) => {
             if (date && row.hasOwnProperty(`attendance_${date}`)) {
               // Ensure status is treated as a single site ID string for this record
+              // NOTE: The backend sends status as a single siteID or comma-separated list.
+              // This React front-end assumes the Angular front-end's parsing logic is correct (which was simpler, only handling single siteID per object)
+              // The Angular back-end likely expects one record per duty, not comma-separated lists.
               const siteIdStr = status ? status.toString() : null;
 
-              if (siteIdStr) {
-                // Store the whole object including the unique 'dbId' and 'siteId'
-                row[`attendance_${date}`].push({
-                  dbId: id, // Database ID for the specific attendance record
-                  siteId: siteIdStr, // The SiteID as a string
-                  key: `${id}-${siteIdStr}`, // Unique key for React/AntD
-                });
-              }
+              // Loop through sites if status contains comma-separated IDs
+              siteIdStr?.split(",").forEach((site) => {
+                if (site) {
+                  row[`attendance_${date}`].push({
+                    dbId: id, // Database ID for the specific attendance record
+                    siteId: site.trim(), // The SiteID as a string
+                    key: `${id}-${site.trim()}-${Math.random()}`, // Unique key for React/AntD
+                  });
+                }
+              });
             }
           });
         } catch (e) {
@@ -538,17 +605,6 @@ const GetAllDriverHelperAttendance = () => {
       const toastMessage = (
         <div>
           <strong>All Attendance save Successful!</strong>
-          {/* <ul className="list-disc ml-4 mt-1">
-            <li>
-              ✅ Inserted: <strong>{insertedCount}</strong>
-            </li>
-            <li>
-              🗑️ Deleted: <strong>{deletedCount}</strong>
-            </li>
-            <li>
-              ❌ Failed/Ignored: <strong>{failedCount}</strong>
-            </li>
-          </ul> */}
         </div>
       );
 
@@ -562,7 +618,7 @@ const GetAllDriverHelperAttendance = () => {
         loadAllDriverHelperAttendance({
           requestArgs: {
             page: 1,
-            count: 20,
+            count: 2000,
             status: DriverOrHelper,
             siteId: siteId,
           },
@@ -579,6 +635,11 @@ const GetAllDriverHelperAttendance = () => {
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
+  };
+
+  // --- FIX: Update Site Selection Handler ---
+  const handleSiteChange = (newSiteId) => {
+    setSiteId(newSiteId);
   };
 
   const filteredData = tableData.filter((row) =>
@@ -623,14 +684,15 @@ const GetAllDriverHelperAttendance = () => {
             />
           </Form.Item>
 
-          <Form.Item
+          {/* <Form.Item
             label="Site"
             name="site"
             rules={[{ required: true }]}
             className="w-full sm:w-64"
           >
             <Select
-              onChange={setSiteId}
+              // Use the new handler which updates siteId state
+              onChange={handleSiteChange}
               showSearch
               filterOption={(input, option) =>
                 option.children.toLowerCase().includes(input.toLowerCase())
@@ -641,6 +703,30 @@ const GetAllDriverHelperAttendance = () => {
                   {site.siteName}
                 </Select.Option>
               ))}
+            </Select>
+          </Form.Item> */}
+
+          <Form.Item
+            label="Site"
+            name="site"
+            rules={[{ required: true }]}
+            className="w-full sm:w-64"
+          >
+            <Select
+              showSearch
+              placeholder="Select Site"
+              onChange={handleSiteChange}
+              filterOption={(input, option) =>
+                option.children.toLowerCase().includes(input.toLowerCase())
+              }
+            >
+              {sitename
+                .filter((site) => ![28, 29, 4].includes(Number(site.siteID))) // convert to number
+                .map((site) => (
+                  <Select.Option key={site.siteID} value={site.siteID}>
+                    {site.siteName}
+                  </Select.Option>
+                ))}
             </Select>
           </Form.Item>
 
@@ -669,9 +755,14 @@ const GetAllDriverHelperAttendance = () => {
       {/* SHOW ALL SITES TOGGLE (RETAINED) */}
       <div className="mt-4">
         <button
-          onClick={() => setIsAllSites((prev) => !prev)}
+          onClick={() => {
+            setIsAllSites((prev) => !prev);
+            // Reset siteId to 0 when toggling to force default site selection logic to run
+            setSiteId(0);
+            form.setFieldsValue({ site: null }); // Clear form value
+          }}
           className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium shadow-sm transition-all 
-          ${
+					${
             isAllSites
               ? "bg-gray-100 text-gray-700 hover:bg-gray-200"
               : "bg-blue-600 text-white hover:bg-blue-700"
