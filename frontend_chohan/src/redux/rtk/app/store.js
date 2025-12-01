@@ -4,7 +4,7 @@ import PurchaseReturnListSlice from "../features/PurchaseReturnList/PurchaseRetu
 import SaleReturnListSlice from "../features/SaleReturnList/SaleReturnListSlice";
 import accountReducer from "../features/account/accountSlice";
 import stateReducer from "../features/state/stateSlice";
-import vendorReducer from "../features/vendor/vendorSlice";
+import supplierReducer from "../features/supplier/supplierSlice";
 import partyReducer from "../features/party/partySlice";
 import setupReducer from "../features/setup/setupSlice";
 import dashboardReducer from "../features/dashboard/dashboardSlice";
@@ -17,7 +17,6 @@ import busCategoryReducer from "../features/busCategory/busCategorySlice";
 import ProductSortListSlice from "../features/branch/branchSlice";
 import fuelReducer from "../features/fuel/fuelSlice";
 import settingReducer from "../features/setting/settingSlice";
-import supplierReducer from "../features/supplier/supplierSlice";
 import supplierPaymentReducer from "../features/supplierPayment/supplierPaymentSlice";
 import userReducer from "../features/user/userSlice";
 import printPageSlice from "../features/printPage/printPageSlice";
@@ -65,7 +64,7 @@ const store = configureStore({
     city: cityReducer,
     designations: designationReducer,
     StateNames: stateReducer,
-    vendors: vendorReducer,
+    vendors: supplierReducer,
     bookings: bookingReducer,
     bookingTrans: bookingTranReducer,
     bookingHead: bookingHeadReducer,

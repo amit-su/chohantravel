@@ -31,12 +31,12 @@ import City from "./components/city/City";
 import UpdateCity from "./components/city/updateCity";
 import StateComponent from "./components/state/State";
 import UpdateState from "./components/state/updateState";
-import Vendor from "./components/vendor/Vendor";
+
 import Bus from "./components/bus/Bus";
 import Branch from "./components/branch/Branch";
 import Driver from "./components/driver/Driver";
 import GetAllSite from "./components/site/getAllSite";
-import BusCategory from "./components/busCategory/busCategory";
+import BusCategory from "./components/busCategory/BusCategory";
 import Setup from "./components/setup/Setup";
 import Company from "./components/company/Company";
 import Fuel from "./components/fuel/Fuel";
@@ -101,7 +101,7 @@ import UpdateUser from "./components/Useradd/updateuser";
 import AddProformaInvoiceEntry from "./components/proformaInvoiceEntry/AddProformaInvoiceEntry";
 import SalaryRegisterPrint from "./components/reports/salaryRegisterPrint";
 import DriverLicenseExpirePrint from "./components/reports/driverLisanceExpirePrint";
-import GetAllSalary from "./components/Salaryprocess/GetAllSalary";
+import GetAllSalary from "./components/Salaryprocess/getAllSalary";
 
 function App() {
   const dispatch = useDispatch();
@@ -463,7 +463,7 @@ function App() {
                        Vendor Permeation add here
                ================================================*/}
             <Route element={<UserPrivateRoute permission={"readAll-vendor"} />}>
-              <Route path="/admin/vendor" exact element={<Vendor />} />
+              <Route path="/admin/vendor" exact element={<Suppliers />} />
             </Route>
             <Route
               element={<UserPrivateRoute permission={"readSingle-vendor"} />}

@@ -43,7 +43,7 @@ export const deleteSite = createAsyncThunk("site/deleteSite", async (id) => {
         Accept: "application/json",
         "Content-Type": "application/json;charset=UTF-8",
       },
-      url: `/site/${id}`,
+      url: `site/${id}`,
       data: {
         status: "false",
       },
@@ -92,7 +92,7 @@ export const updateSite = createAsyncThunk(
           Accept: "application/json",
           "Content-Type": "application/json;charset=UTF-8",
         },
-        url: `/site/${id}`,
+        url: `site/${id}`,
         data: {
           ...values,
         },

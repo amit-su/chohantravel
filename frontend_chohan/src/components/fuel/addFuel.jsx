@@ -13,7 +13,7 @@ import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addFuel, loadAllFuel } from "../../redux/rtk/features/fuel/fuelSlice";
 import { loadAllBus } from "../../redux/rtk/features/bus/busSlice";
-import { loadAllVendor } from "../../redux/rtk/features/vendor/vendorSlice";
+import { loadSuppliers } from "../../redux/rtk/features/supplier/supplierSlice";
 import { loadAllDriver } from "../../redux/rtk/features/driver/driverSlice";
 import { loadAllCompany } from "../../redux/rtk/features/company/comapnySlice";
 import { loadAllCity } from "../../redux/rtk/features/city/citySlice";
@@ -33,10 +33,10 @@ const AddFuel = () => {
   }, [dispatch]);
   const { list: busList } = useSelector((state) => state.buses);
 
-  const handleLoadVendor = () => {
-    dispatch(loadAllVendor({ page: 1, count: 10000, status: true }));
+  const handleLoadSupplier = () => {
+    dispatch(loadSuppliers({ page: 1, count: 10000, status: true }));
   };
-  const { list: vendorList } = useSelector((state) => state.vendors);
+  const { list: supplierList } = useSelector((state) => state.suppliers);
   const handleLoadDriver = () => {
     dispatch(loadAllDriver({ page: 1, count: 10000, status: true }));
   };
@@ -253,10 +253,10 @@ const AddFuel = () => {
               <InputNumber disabled />
             </Form.Item>
 
-            {/* <Form.Item
+            <Form.Item
               style={{ marginBottom: "10px" }}
-              label="Vendor"
-              name="vendor_id"
+              label="Supplier"
+              name="supplier_id"
               // rules={[
               //   {
               //     required: true,
@@ -266,16 +266,16 @@ const AddFuel = () => {
             >
               <Select
                 // onChange={handleBusTypeChange}
-                onClick={handleLoadVendor}
-                placeholder="Select Vendor"
+                onClick={handleLoadSupplier}
+                placeholder="Select Supplier"
               >
-                {vendorList?.map((vendor) => (
-                  <Select.Option key={vendor.id} value={vendor.id}>
-                    {vendor.vendorName}
+                {supplierList?.map((supplier) => (
+                  <Select.Option key={supplier.id} value={supplier.id}>
+                    {supplier.name}
                   </Select.Option>
                 ))}
               </Select>
-            </Form.Item> */}
+            </Form.Item>
             <Form.Item
               style={{ marginBottom: "10px" }}
               label="Driver"

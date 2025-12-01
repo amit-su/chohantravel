@@ -12,7 +12,7 @@ const roleRoutes = require("./routes/hr/role/role.routes");
 const { partyRoutes } = require("./routes/master/party/party.routes");
 const cityRoutes = require("./routes/master/city/city.routes");
 const stateRoutes = require("./routes/master/state/state.routes");
-const { vendorRoutes } = require("./routes/master/vendor/vendor.routes");
+// const { vendorRoutes } = require("./routes/master/vendor/vendor.routes");
 const busRoutes = require("./routes/master/bus/bus.routes");
 const branchRoutes = require("./routes/master/branch/branch.routes");
 const driverRoutes = require("./routes/master/driver/driver.routes");
@@ -68,7 +68,7 @@ const limiter = rateLimit({
 
 /* Middleware */
 // for compressing the response body
-app.use(compression());
+// app.use(compression());
 // helmet: secure express app by setting various HTTP headers. And serve cross origin resources.
 //app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 // morgan: log requests to console in dev environment
@@ -101,7 +101,7 @@ app.use("/v1/permission", permissionRoutes);
 app.use("/v1/party", partyRoutes);
 app.use("/v1/city", cityRoutes);
 app.use("/v1/state", stateRoutes);
-app.use("/v1/vendor", vendorRoutes);
+// app.use("/v1/vendor", vendorRoutes);
 app.use("/v1/bus", busRoutes);
 app.use("/v1/branch", branchRoutes);
 app.use("/v1/driver", driverRoutes);

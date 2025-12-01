@@ -2,7 +2,7 @@ import { Button, DatePicker, Form, Input, InputNumber, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loadAllBus, updateBus } from "../../redux/rtk/features/bus/busSlice";
-import { loadAllVendor } from "../../redux/rtk/features/vendor/vendorSlice";
+import { loadSuppliers } from "../../redux/rtk/features/supplier/supplierSlice";
 import { loadAllDriver } from "../../redux/rtk/features/driver/driverSlice";
 import { loadAllCompany } from "../../redux/rtk/features/company/comapnySlice";
 import { loadAllCity } from "../../redux/rtk/features/city/citySlice";
@@ -60,7 +60,7 @@ function UpdateBus({ data, id }) {
   };
 
   const handleLoadVendor = () => {
-    dispatch(loadAllVendor({ page: 1, count: 10000, status: true }));
+    dispatch(loadSuppliers({ page: 1, count: 10000, status: true }));
   };
 
   const handleLoadDriver = () => {
@@ -77,7 +77,7 @@ function UpdateBus({ data, id }) {
 
   useEffect(() => {
     dispatch(loadAllBus({ page: 1, count: 10000, status: true }));
-    dispatch(loadAllVendor({ page: 1, count: 10000, status: true }));
+    dispatch(loadSuppliers({ page: 1, count: 10000, status: true }));
     dispatch(loadAllDriver({ page: 1, count: 10000, status: true }));
     dispatch(loadAllCompany({ page: 1, count: 10000, status: true }));
     dispatch(loadAllCity({ page: 1, count: 10000, status: true }));
