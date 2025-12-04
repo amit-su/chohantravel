@@ -5,6 +5,7 @@ const {
   GET_PROFORMA_INV_PROCEDURE_BY_PARTY,
   INSERT_OR_UPDATE_BOOKING_ENTRY_PROCEDURE,
   DELETE_PROFORMAINVOICE_TRAN,
+  RPT_PROFORMA_INVOICE,
 } = require("../../utils/constants");
 const powerbiservice = require("../../utils/powerbiService");
 
@@ -242,6 +243,39 @@ const deleteproformaInvoiceTran = async (req, res) => {
   }
 };
 
+const getProformaInvoiceReport = async (req, res) => {
+  try {
+    const { invoiceNo } = req.body;
+
+    const sql = require('mssql');
+    const config = {
+      user: process.env.USER_NAME,
+      password: process.env.PASSWORD,
+      server: process.env.SERVER,
+      database: process.env.DATABASE,
+      options: {
+        encrypt: false,
+      },
+    };
+
+    const pool = await sql.connect(config);
+    const request = pool.request();
+    request.input('InvoiceNo', sql.NVarChar(50), invoiceNo);
+
+    console.log('Executing spRpt_ProformaInvoice with InvoiceNo:', invoiceNo);
+    const result = await request.execute('[dbo].[spRpt_ProformaInvoice]');
+
+    res.json({
+      status: 1,
+      message: 'Success',
+      data: result.recordset,
+    });
+  } catch (error) {
+    console.error('Error in getProformaInvoiceReport:', error);
+    res.status(400).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createProformaInvoice,
   getAllProformaInvoice,
@@ -251,4 +285,5 @@ module.exports = {
   powerBiLogin,
   getPartyProformaInvoice,
   deleteproformaInvoiceTran,
+  getProformaInvoiceReport,
 };

@@ -9,12 +9,14 @@ const {
   powerBiLogin,
   getPartyProformaInvoice,
   deleteproformaInvoiceTran,
+  getProformaInvoiceReport,
 } = require("./proformaInvoice.controllers");
 
 const proformaInvoiceRoutes = express.Router();
 
 proformaInvoiceRoutes.post("/", createProformaInvoice);
 proformaInvoiceRoutes.get("/", getAllProformaInvoice);
+proformaInvoiceRoutes.post("/report", getProformaInvoiceReport);
 proformaInvoiceRoutes.get("/:id", getSingleProformaInvoice);
 proformaInvoiceRoutes.get("/party/:id", getPartyProformaInvoice);
 
