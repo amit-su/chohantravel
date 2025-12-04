@@ -19,11 +19,12 @@ import {
 } from "../../../redux/rtk/features/proformaInvoice/proformaInvoiceSlice";
 import Performainvoicedrawer from "./performainvoiceprintdrawer";
 import { loadAllCompany } from "../../../redux/rtk/features/company/comapnySlice";
+import { generateProformaInvoicePDF } from "../../../utils/generateProformaInvoicePDF";
 // import { useDispatch, useSelector } from "react-redux";
 import dayjs from "dayjs";
 
 const GetAllProformaInvoice = () => {
-  const onClose = () => {};
+  const onClose = () => { };
   const navigate = useNavigate();
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [dateFilter, setDateFilter] = useState(null);
@@ -83,6 +84,27 @@ const GetAllProformaInvoice = () => {
       console.log("Transfer canceled by user or Du");
     }
   };
+
+  const handlePrintPDF = async (invoiceNo) => {
+    try {
+      console.log(invoiceNo);
+      const response = await axios.post(`${apiUrl}/proformaInvoice/report`, {
+        invoiceNo: invoiceNo
+      });
+      console.log(response);
+
+      if (response.data && response.data.data && response.data.data.length > 0) {
+        generateProformaInvoicePDF(response.data.data);
+        toast.success("PDF generated successfully!");
+      } else {
+        toast.error("No data found for this invoice");
+      }
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      toast.error("Failed to generate PDF");
+    }
+  };
+
   const onPrint = () => {
     console.log("print");
   };
@@ -206,6 +228,15 @@ const GetAllProformaInvoice = () => {
           </div>
           <div>
             <button
+              className="px-4 py-2 font-bold text-white transition duration-300 bg-blue-600 rounded hover:bg-blue-700"
+              style={{ width: "120px" }}
+              onClick={() => handlePrintPDF(invoiceNo)}
+            >
+              Print PDF
+            </button>
+          </div>
+          <div>
+            <button
               className="px-4 py-2 font-bold text-white transition duration-300 bg-green-600 rounded hover:bg-green-700"
               style={{ width: "120px" }}
               onClick={() =>
@@ -241,8 +272,8 @@ const GetAllProformaInvoice = () => {
 
     const matchesDate = dateFilter
       ? dayjs(item.invoiceDate)
-          .startOf("day")
-          .isSame(dayjs(dateFilter).startOf("day"))
+        .startOf("day")
+        .isSame(dayjs(dateFilter).startOf("day"))
       : true;
 
     return matchesCompany && matchesDate;
@@ -277,11 +308,11 @@ const GetAllProformaInvoice = () => {
                   value={
                     selectedCompany
                       ? {
-                          value: selectedCompany,
-                          label: companyList.find(
-                            (c) => c.Id === selectedCompany
-                          )?.Name,
-                        }
+                        value: selectedCompany,
+                        label: companyList.find(
+                          (c) => c.Id === selectedCompany
+                        )?.Name,
+                      }
                       : undefined
                   }
                   onChange={(option) => {
