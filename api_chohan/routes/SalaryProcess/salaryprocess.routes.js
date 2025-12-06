@@ -8,9 +8,18 @@ const {
   saveSalaryDetails,
   deleteSaldetals,
   getAllSalary,
+  getSalarySlipReport,
+  getSalaryRegisterReport,
 } = require("./salaryprocess.controller");
 
 const salarydetailssetupRoutes = express.Router();
+
+// Salary slip report route - POST request
+salarydetailssetupRoutes.post("/slip-report", getSalarySlipReport);
+
+// Salary register report route - POST request
+salarydetailssetupRoutes.post("/register-report", getSalaryRegisterReport);
+
 salarydetailssetupRoutes.get("/:details/:type/:id", getAllSalarydetailsbyid);
 salarydetailssetupRoutes.post("/salary", getAllSalary);
 

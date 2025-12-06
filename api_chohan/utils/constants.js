@@ -109,8 +109,12 @@ const sp_insert_drv_helper_site_attend_json =
 const sp_save_salary_details = "[dbo].[sp_save_salary_details]";
 const sp_get_salary = "[dbo].[spGet_Salarydetails]";
 const RPT_PROFORMA_INVOICE = "[dbo].[spRpt_ProformaInvoice]";
+const RPT_SALARY_SLIP = "[dbo].[spRpt_SalarySlip]";
+const RPT_SALARY_REGISTER = "[dbo].[spRpt_SalaryReg]";
 
 module.exports = {
+  RPT_SALARY_REGISTER,
+  RPT_SALARY_SLIP,
   RPT_PROFORMA_INVOICE,
   sp_get_salary,
   sp_save_salary_details,

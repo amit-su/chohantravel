@@ -8,6 +8,8 @@ const {
   GET_SALARY_DETL_BY_TYPE_ID2,
   sp_save_salary_details,
   sp_get_salary,
+  RPT_SALARY_SLIP,
+  RPT_SALARY_REGISTER,
 } = require("../../utils/constants");
 
 const getAllSalarydetail = async (req, res) => {
@@ -227,6 +229,66 @@ const deleteSalary = async (req, res) => {
     console.log(error.message);
   }
 };
+
+const getSalarySlipReport = async (req, res) => {
+  try {
+    const { id } = req.body;
+
+    // Get database connection directly
+    const pool = await databaseService.dbClientService();
+    const request = pool.request();
+
+    // Add only the id parameter
+    request.input('id', id);
+
+    // Execute the stored procedure
+    const result = await request.execute(RPT_SALARY_SLIP);
+
+    // The result will contain multiple recordsets
+    // Result structure:
+    // recordsets[0] - Main Salary Slip Data
+    // recordsets[1] - Advance Payment Details
+    // recordsets[2] - Bus Number Assignments
+    // recordsets[3] - Khoraki/Meal Allowance Details
+    // recordsets[4] - Opening Advance Balance
+
+    res.json({
+      salarySlipData: result.recordsets[0] || [],
+      advancePayments: result.recordsets[1] || [],
+      busAssignments: result.recordsets[2] || [],
+      khorakiDetails: result.recordsets[3] || [],
+      openingAdvance: result.recordsets[4] || [],
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+    console.log(error.message);
+  }
+};
+
+const getSalaryRegisterReport = async (req, res) => {
+  try {
+    const { sDate } = req.body;
+
+    // Get database connection directly
+    const pool = await databaseService.dbClientService();
+    const request = pool.request();
+
+    // Add the sDate parameter
+    request.input('SDate', sDate);
+
+    // Execute the stored procedure
+    const result = await request.execute(RPT_SALARY_REGISTER);
+
+    // Return the salary register data
+    res.json({
+      data: result.recordset || [],
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+    console.log(error.message);
+  }
+};
+
 module.exports = {
   getSalaryProcessbytypeid,
   getAllSalarydetail,
@@ -235,5 +297,7 @@ module.exports = {
   getAllSalarydetailsbyid,
   saveSalaryDetails,
   getAllSalary,
+  getSalarySlipReport,
+  getSalaryRegisterReport,
   // deleteSingleProductCategory,
 };

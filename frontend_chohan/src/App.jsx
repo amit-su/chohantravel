@@ -99,7 +99,7 @@ import InvoicePrintdrawer from "./components/Invoiceentry/invoiceprintdrawer";
 import User from "./components/Useradd/users";
 import UpdateUser from "./components/Useradd/updateuser";
 import AddProformaInvoiceEntry from "./components/proformaInvoiceEntry/AddProformaInvoiceEntry";
-import SalaryRegisterPrint from "./components/reports/salaryRegisterPrint";
+import SalaryRegisterReport from "./components/Salaryprocess/SalaryRegisterReport";
 import DriverLicenseExpirePrint from "./components/reports/driverLisanceExpirePrint";
 import GetAllSalary from "./components/Salaryprocess/getAllSalary";
 
@@ -216,7 +216,7 @@ function App() {
             />
             <Route
               path="/admin/salaryRegister"
-              element={<SalaryRegisterPrint />}
+              element={<SalaryRegisterReport />}
             />
             <Route
               path="/admin/DriverLicenseExpirePrint"

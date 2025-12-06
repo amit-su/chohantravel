@@ -483,27 +483,27 @@ const GetSalaryDetails = () => {
           return Math.round(gross - totalDeductions);
         },
       },
-      {
-        id: 3,
-        title: "Action",
-        dataIndex: "",
-        key: "action",
-        fixed: "right",
-        width: 100,
-        render: (record) => (
-          <div className="flex items-center gap-2">
-            <button
-              className="bg-green-600 text-white font-medium py-1 px-3 rounded hover:bg-green-700 transition duration-300 text-sm"
-              onClick={() =>
-                window.open(`/admin/salaryprint/${record.id}`, "_blank")
-              }
-              style={{ minWidth: "90px" }}
-            >
-              Print
-            </button>
-          </div>
-        ),
-      },
+      // {
+      //   id: 3,
+      //   title: "Action",
+      //   dataIndex: "",
+      //   key: "action",
+      //   fixed: "right",
+      //   width: 100,
+      //   render: (record) => (
+      //     <div className="flex items-center gap-2">
+      //       <button
+      //         className="bg-green-600 text-white font-medium py-1 px-3 rounded hover:bg-green-700 transition duration-300 text-sm"
+      //         onClick={() =>
+      //           window.open(`/admin/salaryprint/${record.id}`, "_blank")
+      //         }
+      //         style={{ minWidth: "90px" }}
+      //       >
+      //         Print
+      //       </button>
+      //     </div>
+      //   ),
+      // },
     ],
     [selectedEmpType, data, onDelete]
   );

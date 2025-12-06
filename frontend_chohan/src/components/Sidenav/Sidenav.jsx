@@ -364,10 +364,6 @@ const Sidenav = () => {
           label: (
             <NavLink
               to="/admin/salaryRegister"
-              onClick={(e) => {
-                e.preventDefault(); // Prevent the default behavior of the NavLink
-                window.open("/admin/salaryRegister", "_blank"); // Open the link in a new tab
-              }}
             >
               <span>Salary Register</span>
             </NavLink>
