@@ -33,56 +33,24 @@ export const generateInvoiceEntryPDF = (data) => {
 
     const calculateTotals = () => {
         let grossAmount = 0;
-        // Assuming TollExtra might be in the data or calculated from items if needed. 
-        // Based on sample data, 'Amt' seems to be the line total.
-        // Sample data has 'Amt': 2500 for the item.
+        let TollParkingAmt = parseFloat(invoiceData.TollParkingAmt) || 0;
 
         data.forEach(item => {
             grossAmount += parseFloat(item.Amt) || 0;
         });
 
-        // Sample data doesn't explicitly show tax breakdown columns like CGSTPer/SGSTPer in the item, 
-        // but the proforma one did. We will check if we need to calculate it or if it's in the data.
-        // The sample data has 'Rate': 2500, 'Amt': 2500. 
-        // It doesn't show tax fields in the root object in the sample provided in the prompt, 
-        // but let's look at the sample again.
-        // Sample: "Amt": 2500, "Rate": 2500. 
-        // It doesn't have tax info in the sample. 
-        // However, the proforma one calculated 2.5% CGST/SGST. 
-        // I will stick to what's available or standard logic. 
-        // If the sample data implies inclusive or exclusive, it's not clear.
-        // For now, I will display what is available. 
-        // If tax info is missing in sample, I might assume 0 or check if I should use the same logic.
-        // The user said "generate pdf style like performainvoiceprint.js".
-        // I'll keep the structure but maybe comment out hardcoded taxes if not in data, 
-        // OR just use the logic if it applies to all.
-        // Let's assume the same tax logic applies if not provided, OR better, check if fields exist.
-        // The sample data provided in the prompt DOES NOT have CGST/SGST fields.
-        // It has 'Amt': 2500.
-        // I will sum up 'Amt' as Gross.
+        const cgstPer = parseFloat(invoiceData.CGSTPer) || 0;
+        const sgstPer = parseFloat(invoiceData.SGSTPer) || 0;
+        const igstPer = parseFloat(invoiceData.IGSTPer) || 0;
 
-        // If the user wants exact same style, I should probably keep the tax rows but maybe 0 if not applicable?
-        // Or maybe the 'Amt' is the final amount?
-        // Let's look at the sample data again. 
-        // "AmtInWords": "Two Thousand Six Hundred Twenty Five" -> 2625.
-        // "Amt": 2500.
-        // 2625 - 2500 = 125.
-        // 125 is 5% of 2500. So it seems 5% GST is added (2.5% CGST + 2.5% SGST).
-        // So I should apply the same 2.5% logic if not present in data.
+        const cgstAmt = ((grossAmount + TollParkingAmt) * cgstPer) / 100;
+        const sgstAmt = ((grossAmount + TollParkingAmt) * sgstPer) / 100;
+        const igstAmt = ((grossAmount + TollParkingAmt) * igstPer) / 100;
 
-        const cgstPer = 2.5;
-        const sgstPer = 2.5;
-        const cgstAmt = (grossAmount * cgstPer) / 100;
-        const sgstAmt = (grossAmount * sgstPer) / 100;
-        const totalGst = cgstAmt + sgstAmt;
+        const totalGst = cgstAmt + sgstAmt + igstAmt;
+        const netAmount = grossAmount + totalGst + TollParkingAmt;
 
-        // Check if there are other extras. Sample has "SittingCapacity": 26, "BusQty": 1.
-        // No explicit "TollExtra" in sample.
-        const tollExtra = 0;
-
-        const netAmount = grossAmount + totalGst + tollExtra;
-
-        return { grossAmount, tollExtra, cgstPer, cgstAmt, sgstPer, sgstAmt, totalGst, netAmount };
+        return { grossAmount, TollParkingAmt, cgstPer, cgstAmt, sgstPer, sgstAmt, igstPer, igstAmt, totalGst, netAmount };
     };
 
     const totals = calculateTotals();
@@ -268,17 +236,29 @@ export const generateInvoiceEntryPDF = (data) => {
                             widths: ['*', 70],
                             body: [
                                 [
+                                    // Toll & Parking
+                                    { text: 'Toll & Parking', style: 'summaryLabel', border: [false, true, false, false], borderColor: ['#e5e7eb', '#cbd5e1', '#e5e7eb', '#e5e7eb'] },
+                                    { text: formatCurrency(totals.TollParkingAmt), style: 'summaryValue', alignment: 'right', border: [false, true, false, false], borderColor: ['#e5e7eb', '#cbd5e1', '#e5e7eb', '#e5e7eb'] }
+                                ],
+                                [
                                     { text: 'Gross Amount', style: 'summaryLabel', border: [false, false, false, false] },
                                     { text: formatCurrency(totals.grossAmount), style: 'summaryValue', alignment: 'right', border: [false, false, false, false] }
                                 ],
-                                [
+                                // CGST (Conditional)
+                                ...(totals.cgstPer > 0 ? [[
                                     { text: `CGST (${totals.cgstPer}%)`, style: 'summaryLabel', border: [false, false, false, false] },
                                     { text: formatCurrency(totals.cgstAmt), style: 'summaryValue', alignment: 'right', border: [false, false, false, false] }
-                                ],
-                                [
+                                ]] : []),
+                                // SGST (Conditional)
+                                ...(totals.sgstPer > 0 ? [[
                                     { text: `SGST (${totals.sgstPer}%)`, style: 'summaryLabel', border: [false, false, false, false] },
                                     { text: formatCurrency(totals.sgstAmt), style: 'summaryValue', alignment: 'right', border: [false, false, false, false] }
-                                ],
+                                ]] : []),
+                                // IGST (Conditional)
+                                ...(totals.igstPer > 0 ? [[
+                                    { text: `IGST (${totals.igstPer}%)`, style: 'summaryLabel', border: [false, false, false, false] },
+                                    { text: formatCurrency(totals.igstAmt), style: 'summaryValue', alignment: 'right', border: [false, false, false, false] }
+                                ]] : []),
                                 [
                                     { text: 'Total GST', style: 'summaryBold', border: [false, true, false, false], borderColor: ['#e5e7eb', '#cbd5e1', '#e5e7eb', '#e5e7eb'] },
                                     { text: formatCurrency(totals.totalGst), style: 'summaryBold', alignment: 'right', border: [false, true, false, false], borderColor: ['#e5e7eb', '#cbd5e1', '#e5e7eb', '#e5e7eb'] }
