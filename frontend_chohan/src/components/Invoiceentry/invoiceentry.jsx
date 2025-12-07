@@ -20,10 +20,11 @@ import {
 import Performainvoicedrawer from "../entry/proformaInvoice/performainvoiceprintdrawer";
 import { loadAllCompany } from "../../redux/rtk/features/company/comapnySlice";
 import dayjs from "dayjs";
+import { generateInvoiceEntryPDF } from "../../utils/generateInvoiceEntryPDF";
 
 let invoiceentrydata = [];
 const Invoiceentry = () => {
-  const onClose = () => {};
+  const onClose = () => { };
   //----------------API CALL HELPER-------------------//
   let [list2, setList] = useState([]);
   const [dailylist, setDailyList] = useState([]);
@@ -114,6 +115,22 @@ const Invoiceentry = () => {
     console.log("print");
   };
 
+  const handlePrintPDF = async (invoiceNo) => {
+    try {
+      const response = await axios.post(`${apiUrl}/invoiceentry/report`, {
+        InvoiceId: invoiceNo,
+      });
+      if (response.data && response.data.status === 1) {
+        generateInvoiceEntryPDF(response.data.data);
+      } else {
+        toast.error("Failed to fetch invoice data for printing");
+      }
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      toast.error("Error generating PDF");
+    }
+  };
+
   const columns = [
     {
       id: 1,
@@ -187,47 +204,52 @@ const Invoiceentry = () => {
       key: "action",
       fixed: "right",
       width: 150,
-      render: ({ invoiceNo, COMPANY_ID, ...restData }) => (
-        <div className="flex items-center gap-2">
-          <UserPrivateComponent permission="update-proformaInvoice">
-            <Link onClick={() => handleLinkClick(invoiceNo)}>
-              <EditOutlined
-                className="p-2 text-white bg-gray-600 rounded-md"
-                style={{ fontSize: "15px", cursor: "pointer" }}
+      render: (record) => {
+        const { invoiceNo, InvNo, RefInvoiceNo, COMPANY_ID, ...restData } = record;
+        const idToUse = invoiceNo || InvNo || RefInvoiceNo;
+        console.log("Row Record:", record);
+        console.log("ID to use for PDF:", idToUse);
+
+        return (
+          <div className="flex items-center gap-2">
+            <UserPrivateComponent permission="update-proformaInvoice">
+              <Link onClick={() => handleLinkClick(idToUse)}>
+                <EditOutlined
+                  className="p-2 text-white bg-gray-600 rounded-md"
+                  style={{ fontSize: "15px", cursor: "pointer" }}
+                />
+              </Link>
+            </UserPrivateComponent>
+            <UserPrivateComponent permission={"delete-proformaInvoice"}>
+              <DeleteOutlined
+                onClick={() => onDelete(idToUse)}
+                className="p-2 text-white bg-red-600 rounded-md"
               />
-            </Link>
-          </UserPrivateComponent>
-          <UserPrivateComponent permission={"delete-proformaInvoice"}>
-            <DeleteOutlined
-              onClick={() => onDelete(invoiceNo)}
-              className="p-2 text-white bg-red-600 rounded-md"
-            />
-          </UserPrivateComponent>
-          <button
-            className="px-4 py-2 font-bold text-white transition duration-300 bg-green-600 rounded hover:bg-green-700"
-            style={{ width: "120px" }}
-            onClick={() =>
-              window.open(`/admin/invoiceprint/${2}/${invoiceNo}`, "_blank")
-            }
-          >
-            Print Page
-          </button>
-          {/* <div>
+            </UserPrivateComponent>
+            <button
+              className="px-4 py-2 font-bold text-white transition duration-300 bg-green-600 rounded hover:bg-green-700"
+              style={{ width: "120px" }}
+              onClick={() => handlePrintPDF(idToUse)}
+            >
+              Print Page
+            </button>
+            {/* <div>
         {isTransferVisible && (
           <Button
             type="primary"
             className="flex text-center text-white bg-green-600 rounded-md"
             style={{ width: "80px" }}
             loading={loading}
-            onClick={() => onTransfer(invoiceNo,restData)} // Pass the invoiceNo to the onTransfer function
+            onClick={() => onTransfer(idToUse,restData)} // Pass the invoiceNo to the onTransfer function
           >
             Transfer
           </Button>
         )}
       </div> */}
-          <div></div>
-        </div>
-      ),
+            <div></div>
+          </div>
+        );
+      },
     },
   ];
   useEffect(() => {
@@ -248,8 +270,8 @@ const Invoiceentry = () => {
 
     const matchesDate = dateFilter
       ? dayjs(item.invoiceDate)
-          .startOf("day")
-          .isSame(dayjs(dateFilter).startOf("day"))
+        .startOf("day")
+        .isSame(dayjs(dateFilter).startOf("day"))
       : true;
 
     return matchesCompany && matchesDate;
@@ -285,11 +307,11 @@ const Invoiceentry = () => {
                   value={
                     selectedCompany
                       ? {
-                          value: selectedCompany,
-                          label: companyList.find(
-                            (c) => c.Id === selectedCompany
-                          )?.Name,
-                        }
+                        value: selectedCompany,
+                        label: companyList.find(
+                          (c) => c.Id === selectedCompany
+                        )?.Name,
+                      }
                       : undefined
                   }
                   onChange={(option) => {
