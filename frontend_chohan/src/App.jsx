@@ -94,6 +94,8 @@ import ReportInvoiceRegister from "./components/reports/ReportInvoiceRegister";
 import ProformaInvoiceRegister from "./components/reports/ProformaInvoiceRegister";
 import FuelSummeryPrint from "./components/reports/fuelSummery";
 import FuelReportPrint from "./components/reports/fuelReport";
+import SitewiseDutyReport from "./components/reports/SitewiseDutyReport";
+import BusBookingReport from "./components/reports/BusBookingReport";
 
 import InvoicePrintdrawer from "./components/Invoiceentry/invoiceprintdrawer";
 import User from "./components/Useradd/users";
@@ -213,6 +215,14 @@ function App() {
             <Route
               path="/admin/InvoiceReportRegister"
               element={<ReportInvoiceRegister />}
+            />
+            <Route
+              path="/admin/Khoraki-summary"
+              element={<SitewiseDutyReport />}
+            />
+            <Route
+              path="/admin/bus-booking-report"
+              element={<BusBookingReport />}
             />
             <Route
               path="/admin/salaryRegister"

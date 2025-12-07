@@ -154,6 +154,34 @@ function getBearerToken(req) {
   return null;
 }
 
+async function callStoredProcedureReporting(req, procedureName, params = {}) {
+  try {
+    const pool = await dbClientService();
+    const request = pool.request();
+
+    // Add parameters if provided
+    if (Object.keys(params).length > 0) {
+      for (const paramName in params) {
+        const param = params[paramName];
+        if (param && typeof param === 'object' && param.type && param.value !== undefined) {
+          request.input(paramName, param.type, param.value);
+        } else {
+          request.input(paramName, param);
+        }
+      }
+    }
+
+    const result = await request.execute(procedureName);
+
+    return {
+      data: result.recordset,
+    };
+  } catch (error) {
+    console.error("Error occurred:", error);
+    throw error;
+  }
+}
+
 module.exports = {
   dbClientService,
   callStoredProcedure,
@@ -161,4 +189,5 @@ module.exports = {
   getBearerToken,
   callStored,
   getUserIdFromToken,
+  callStoredProcedureReporting,
 };

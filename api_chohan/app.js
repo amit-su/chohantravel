@@ -43,6 +43,7 @@ const BusdocRouter = require("./routes/BusDocuments/busdocuments.routes");
 const salaryadjustRoutes = require("./routes/Salaryadjust/salaryadjust.routes");
 const UsersRoutes = require("./routes/Usersadd/users.routes");
 const Dashboard = require("./routes/dashboard/dashboard.routes");
+const ReportRoutes = require("./routes/report/report.Routes");
 
 /* variables */
 // express app instance
@@ -134,5 +135,6 @@ app.use("/v1/salarydetails", salarydetailssetupRoutes);
 app.use("/v1/busdocuments", BusdocRouter);
 app.use("/v1/salaryadjust", salaryadjustRoutes);
 app.use("/v1/users", UsersRoutes);
+app.use("/v1/report", ReportRoutes);
 
 module.exports = app;

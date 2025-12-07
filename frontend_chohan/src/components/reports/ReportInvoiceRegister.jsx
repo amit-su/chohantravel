@@ -1,74 +1,187 @@
-import { Button, DatePicker, Form, Input, Select, TimePicker } from "antd";
-import React, { useBusCategory, useState, useCallback, useEffect } from "react";
-import { PowerBIEmbed } from "powerbi-client-react";
-import moment from "moment";
+import React, { useState } from "react";
+import { DatePicker, Button, Table, Card, message, Input } from "antd";
+import axios from "axios";
 import dayjs from "dayjs";
-import { loadPowerbiToken } from "../../redux/rtk/features/powerBi/powerBiBookingRegisterSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-function ReportInvoiceRegister() {
- 
-  // const invoiceNo=invoiceNo;
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import * as XLSX from "xlsx";
 
-  //Date issue//s
-  const dispatch = useDispatch();
-  const { data, loading } = useSelector(
-    (state) => state.powerbiBookingRegister
-  );
- 
-  const [reportInfo, setReportInfo] = useState(null);
+const ReportInvoiceRegister = () => {
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const [filters, setFilters] = useState({
+    StartDate: dayjs().startOf("month"),
+    EndDate: dayjs().endOf("month"),
+    PartyName: "",
+  });
 
-  useEffect(() => {
-    if (!data) {
-      dispatch(
-        loadPowerbiToken({ reportId: "51e6f018-d297-4385-907a-737f59d05ba9" })
+  const columns = [
+    {
+      title: "SL No",
+      key: "index",
+      render: (text, record, index) => index + 1,
+    },
+    {
+      title: "Invoice No",
+      dataIndex: "RefInvoiceNo",
+      key: "RefInvoiceNo",
+    },
+    {
+      title: "Date",
+      dataIndex: "InvoiceDate",
+      key: "InvoiceDate",
+      render: (text) => dayjs(text).format("YYYY-MM-DD"),
+    },
+    {
+      title: "Party",
+      dataIndex: "Party",
+      key: "Party",
+    },
+    {
+      title: "Gross Amount",
+      dataIndex: "GrossAmount",
+      key: "GrossAmount",
+    },
+    {
+      title: "Net Amount",
+      dataIndex: "NetAmount",
+      key: "NetAmount",
+    },
+  ];
+
+  const fetchData = async () => {
+    if (!filters.StartDate || !filters.EndDate) {
+      message.error("Please select Start Date and End Date");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_APP_API}/report/invoice-register`,
+        {
+          StartDate: filters.StartDate.format("YYYY-MM-DD"),
+          EndDate: filters.EndDate.format("YYYY-MM-DD"),
+          PartyName: filters.PartyName,
+        }
       );
+
+      if (response.data.status === 1) {
+        const resultData = response.data.data.data || [];
+        setData(resultData);
+        message.success("Data fetched successfully");
+      } else {
+        message.error(response.data.message || "Failed to fetch data");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      message.error("Error fetching data");
+    } finally {
+      setLoading(false);
     }
-    if (data) {
-      setReportInfo(data);
-      console.log("report data", reportInfo);
-    }
-  }, [dispatch, data, reportInfo]);
+  };
+
+  const exportPDF = () => {
+    const doc = new jsPDF();
+    doc.text("Invoice Register", 14, 15);
+    doc.text(
+      `From: ${filters.StartDate.format("YYYY-MM-DD")} To: ${filters.EndDate.format(
+        "YYYY-MM-DD"
+      )}`,
+      14,
+      22
+    );
+
+    const tableColumn = columns.map((col) => col.title);
+    const tableRows = [];
+
+    data.forEach((row, index) => {
+      const rowData = [
+        index + 1,
+        row.RefInvoiceNo,
+        dayjs(row.InvoiceDate).format("YYYY-MM-DD"),
+        row.Party,
+        row.GrossAmount,
+        row.NetAmount,
+      ];
+      tableRows.push(rowData);
+    });
+
+    doc.autoTable({
+      head: [tableColumn],
+      body: tableRows,
+      startY: 30,
+    });
+
+    doc.save("InvoiceRegister.pdf");
+  };
+
+  const exportExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(
+      data.map((row, index) => ({
+        "SL No": index + 1,
+        ...row,
+        InvoiceDate: dayjs(row.InvoiceDate).format("YYYY-MM-DD"),
+      }))
+    );
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Report");
+    XLSX.writeFile(workbook, "InvoiceRegister.xlsx");
+  };
 
   return (
-    <>
-      <div className="text-center">
-        <div className="">
-          <h1>
-            <strong>Invoice Register </strong>
-          </h1>
-        </div>
-        <div>
-          {reportInfo && data && reportInfo.embedUrl ? (
-            <PowerBIEmbed
-              embedConfig={{
-                type: "report",
-                id: reportInfo.id,
-                embedUrl: reportInfo.embedUrl,
-                accessToken: reportInfo.token,
-                settings: {
-                  panes: {
-                    filters: {
-                      expanded: false,
-                      visible: true,
-                    },
-                  },
-                },
-              }}
-              cssClassName={"Embed-container"}
-              getEmbeddedComponent={(embeddedReport) => {
-                window.report = embeddedReport;
-              }}
+    <div className="p-4">
+      <Card title="Invoice Register">
+        <div className="flex gap-4 mb-4 flex-wrap">
+          <div>
+            <label className="block mb-1">Start Date</label>
+            <DatePicker
+              value={filters.StartDate}
+              onChange={(date) => setFilters({ ...filters, StartDate: date })}
             />
-          ) : (
-            <>
-              <div className="flex justify-center items-center col-lg-2"></div>
-            </>
-          )}
+          </div>
+          <div>
+            <label className="block mb-1">End Date</label>
+            <DatePicker
+              value={filters.EndDate}
+              onChange={(date) => setFilters({ ...filters, EndDate: date })}
+            />
+          </div>
+          <div>
+            <label className="block mb-1">Party Name</label>
+            <Input
+              value={filters.PartyName}
+              onChange={(e) => setFilters({ ...filters, PartyName: e.target.value })}
+              placeholder="Optional"
+            />
+          </div>
+          <div className="flex items-end">
+            <Button type="primary" onClick={fetchData} loading={loading}>
+              Search
+            </Button>
+          </div>
         </div>
-      </div>
-    </>
+
+        <div className="mb-4 flex gap-2">
+          <Button onClick={exportPDF} disabled={data.length === 0}>
+            Export PDF
+          </Button>
+          <Button onClick={exportExcel} disabled={data.length === 0}>
+            Export Excel
+          </Button>
+        </div>
+
+        <Table
+          columns={columns}
+          dataSource={data}
+          rowKey="ID"
+          loading={loading}
+          pagination={{ pageSize: 10 }}
+          scroll={{ x: true }}
+        />
+      </Card>
+    </div>
   );
-}
+};
 
 export default ReportInvoiceRegister;

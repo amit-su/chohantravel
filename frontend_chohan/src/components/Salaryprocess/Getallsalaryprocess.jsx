@@ -154,22 +154,27 @@ const GetSalaryDetails = () => {
         // --- 3. Deductions: Calculated based on Gross Salary / PerDay rates ---
 
         // PF
-        const PF = Math.round(item.PerDayPF * item.PaidDays);
+        const PF = item.PF_Deduction > 0 ? Math.round(item.PerDayPF * item.PaidDays) : 0;
 
         // ESIC: Based on Gross Salary * 0.0075
-        const ESIC_CALC = GrossSalary * 0.0075;
-        const ESIC = Math.round(ESIC_CALC);
+        let ESIC = 0;
+        if (item.ESIC_Deduction > 0) {
+          const ESIC_CALC = GrossSalary * 0.0075;
+          ESIC = Math.round(ESIC_CALC);
+        }
 
         // PTAX: Based on Gross Salary slab
         let PTAX = 0;
-        if (GrossSalary > 40000) {
-          PTAX = 200;
-        } else if (GrossSalary > 25000) {
-          PTAX = 150;
-        } else if (GrossSalary > 15000) {
-          PTAX = 130;
-        } else if (GrossSalary > 10000) {
-          PTAX = 110;
+        if (item.PTAX_Deduction > 0) {
+          if (GrossSalary > 40000) {
+            PTAX = 200;
+          } else if (GrossSalary > 25000) {
+            PTAX = 150;
+          } else if (GrossSalary > 15000) {
+            PTAX = 130;
+          } else if (GrossSalary > 10000) {
+            PTAX = 110;
+          }
         }
 
         // Total Deductions
@@ -357,7 +362,10 @@ const GetSalaryDetails = () => {
         key: "PF_Deduction",
         width: 70,
         align: "right",
-        render: (text, record) => Math.round(record.PerDayPF * record.PaidDays),
+        render: (text, record) =>
+          record.PF_Deduction > 0
+            ? Math.round(record.PerDayPF * record.PaidDays)
+            : 0,
       },
       {
         id: 4,
@@ -367,16 +375,20 @@ const GetSalaryDetails = () => {
         width: 70,
         align: "right",
         render: (text, record) => {
-          const basic = record.PerDayBasic * record.PaidDays;
-          const hra = record.PerDayHRA * record.PaidDays;
-          const ta = record.PerDayTA * record.PaidDays;
-          const medical = record.PerDayMedicalAllowance * record.PaidDays;
-          const washing = record.PerDayWashingAllowance * record.PaidDays;
-          const khuraki = record.KhurakiAmt || 0;
-          return (
-            (basic + hra + ta + medical + washing + khuraki) *
-            0.0075
-          ).toFixed(2);
+          if (record.ESIC_Deduction > 0) {
+            const basic = record.PerDayBasic * record.PaidDays;
+            const hra = record.PerDayHRA * record.PaidDays;
+            const ta = record.PerDayTA * record.PaidDays;
+            const medical = record.PerDayMedicalAllowance * record.PaidDays;
+            const washing = record.PerDayWashingAllowance * record.PaidDays;
+            const khuraki = record.KhurakiAmt || 0;
+            return (
+              (basic + hra + ta + medical + washing + khuraki) *
+              0.0075
+            ).toFixed(2);
+          } else {
+            return 0;
+          }
         },
       },
       {
@@ -387,24 +399,28 @@ const GetSalaryDetails = () => {
         width: 70,
         align: "right",
         render: (text, record) => {
-          const grossSalary =
-            record.PerDayBasic * record.PaidDays +
-            record.PerDayHRA * record.PaidDays +
-            record.PerDayTA * record.PaidDays +
-            record.PerDayMedicalAllowance * record.PaidDays +
-            record.PerDayWashingAllowance * record.PaidDays +
-            (record.KhurakiAmt || 0);
+          if (record.PTAX_Deduction > 0) {
+            const grossSalary =
+              record.PerDayBasic * record.PaidDays +
+              record.PerDayHRA * record.PaidDays +
+              record.PerDayTA * record.PaidDays +
+              record.PerDayMedicalAllowance * record.PaidDays +
+              record.PerDayWashingAllowance * record.PaidDays +
+              (record.KhurakiAmt || 0);
 
-          if (grossSalary <= 10000) {
-            return 0;
-          } else if (grossSalary <= 15000) {
-            return 110;
-          } else if (grossSalary <= 25000) {
-            return 130;
-          } else if (grossSalary <= 40000) {
-            return 150;
+            if (grossSalary <= 10000) {
+              return 0;
+            } else if (grossSalary <= 15000) {
+              return 110;
+            } else if (grossSalary <= 25000) {
+              return 130;
+            } else if (grossSalary <= 40000) {
+              return 150;
+            } else {
+              return 200;
+            }
           } else {
-            return 200;
+            return 0;
           }
         },
       },
@@ -456,21 +472,26 @@ const GetSalaryDetails = () => {
           // --- Deductions ---
 
           // 1. PF: Calculated correctly as PerDayPF * PaidDays
-          const pf = record.PerDayPF * record.PaidDays;
+          const pf =
+            record.PF_Deduction > 0
+              ? record.PerDayPF * record.PaidDays
+              : 0;
 
           // 2. ESIC: Needs to be calculated based on Gross Salary * 0.0075
-          const esic = gross * 0.0075;
+          const esic = record.ESIC_Deduction > 0 ? gross * 0.0075 : 0;
 
           // 3. P Tax: Needs to be calculated based on the P Tax slab logic
           let ptax = 0;
-          if (gross > 40000) {
-            ptax = 200;
-          } else if (gross > 25000) {
-            ptax = 150;
-          } else if (gross > 15000) {
-            ptax = 130;
-          } else if (gross > 10000) {
-            ptax = 110;
+          if (record.PTAX_Deduction > 0) {
+            if (gross > 40000) {
+              ptax = 200;
+            } else if (gross > 25000) {
+              ptax = 150;
+            } else if (gross > 15000) {
+              ptax = 130;
+            } else if (gross > 10000) {
+              ptax = 110;
+            }
           }
 
           // 4. Advance Adjusted

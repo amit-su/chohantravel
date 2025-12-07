@@ -112,10 +112,17 @@ const RPT_PROFORMA_INVOICE = "[dbo].[spRpt_ProformaInvoice]";
 const RPT_SALARY_SLIP = "[dbo].[spRpt_SalarySlip]";
 const RPT_SALARY_REGISTER = "[dbo].[spRpt_SalaryReg]";
 const RPT_INVOICE_REPORT = "[dbo].[spRpt_Invoice]";
-
+const GET_SITEWISE_MONTH_DUTY_SUM = "[dbo].[sp_get_SitewiseMonthDutySum]";
+const RPT_BUS_BOOKING = "[dbo].[spRpt_BusBooking]";
+const PROFORMA_INV_REG = "[dbo].[spRpt_ProformaInvReg]";
+const INVOICE_REG = "[dbo].[spRpt_InvoiceReg]";
 module.exports = {
+  RPT_BUS_BOOKING,
+  PROFORMA_INV_REG,
+  INVOICE_REG,
   RPT_SALARY_REGISTER,
   RPT_INVOICE_REPORT,
+  GET_SITEWISE_MONTH_DUTY_SUM,
   RPT_SALARY_SLIP,
   RPT_PROFORMA_INVOICE,
   sp_get_salary,

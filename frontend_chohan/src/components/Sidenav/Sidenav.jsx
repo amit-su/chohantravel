@@ -255,31 +255,27 @@ const Sidenav = () => {
         //   key: "salaryRegister",
         //   icon: <GiTakeMyMoney style={{ fontSize: "20px" }} />,
         // },
+        // {
+        //   label: (
+        //     <NavLink
+        //       to="/admin/ESIPFRegister"
+        //       onClick={(e) => {
+        //         e.preventDefault(); // Prevent the default behavior of the NavLink
+        //         window.open("/admin/repairprint", "_blank"); // Open the link in a new tab
+        //       }}
+        //     >
+        //       <span>Repair Register </span>
+        //     </NavLink>
+        //   ),
+        //   key: "ESIPFRegister",
+        //   icon: <TbReportMoney style={{ fontSize: "20px" }} />,
+        // },
         {
           label: (
             <NavLink
-              to="/admin/ESIPFRegister"
-              onClick={(e) => {
-                e.preventDefault(); // Prevent the default behavior of the NavLink
-                window.open("/admin/repairprint", "_blank"); // Open the link in a new tab
-              }}
+              to="/admin/Khoraki-summary"
             >
-              <span>Repair Register </span>
-            </NavLink>
-          ),
-          key: "ESIPFRegister",
-          icon: <TbReportMoney style={{ fontSize: "20px" }} />,
-        },
-        {
-          label: (
-            <NavLink
-              to="/admin/khorakiPrint"
-              onClick={(e) => {
-                e.preventDefault(); // Prevent the default behavior of the NavLink
-                window.open("/admin/khorakiPrint", "_blank"); // Open the link in a new tab
-              }}
-            >
-              <span>Khoraki Summary </span>
+              <span>Khoraki Summary</span>
             </NavLink>
           ),
           key: "khorakiPrint",
@@ -288,72 +284,72 @@ const Sidenav = () => {
         {
           label: (
             <NavLink
-              to="/admin/BusRegisterPrint"
-              onClick={(e) => {
-                e.preventDefault(); // Prevent the default behavior of the NavLink
-                window.open("/admin/BusRegisterPrint", "_blank"); // Open the link in a new tab
-              }}
+              to="/admin/bus-booking-report"
             >
-              <span>Bus Booking </span>
+              <span>Bus Booking Report</span>
             </NavLink>
           ),
-          key: "BusBooking",
+          key: "busBookingReport",
           icon: <TbReportMoney style={{ fontSize: "20px" }} />,
         },
+        // {
+        //   label: (
+        //     <NavLink
+        //       to="/admin/BusRegisterPrint"
+        //       onClick={(e) => {
+        //         e.preventDefault(); // Prevent the default behavior of the NavLink
+        //         window.open("/admin/BusRegisterPrint", "_blank"); // Open the link in a new tab
+        //       }}
+        //     >
+        //       <span>Bus Booking </span>
+        //     </NavLink>
+        //   ),
+        //   key: "BusBooking",
+        //   icon: <TbReportMoney style={{ fontSize: "20px" }} />,
+        // },
+        // {
+        //   label: (
+        //     <NavLink
+        //       to="/admin/DailyFuelReg"
+        //       onClick={(e) => {
+        //         e.preventDefault(); // Prevent the default behavior of the NavLink
+        //         window.open("/admin/DailyFuelReg", "_blank"); // Open the link in a new tab
+        //       }}
+        //     >
+        //       <span>Daily Fuel Register </span>
+        //     </NavLink>
+        //   ),
+        //   key: "BusBooking",
+        //   icon: <TbReportMoney style={{ fontSize: "20px" }} />,
+        // },
+        // {
+        //   label: (
+        //     <NavLink
+        //       to="/admin/FuelRegSumm"
+        //       onClick={(e) => {
+        //         e.preventDefault(); // Prevent the default behavior of the NavLink
+        //         window.open("/admin/FuelRegSumm", "_blank"); // Open the link in a new tab
+        //       }}
+        //     >
+        //       <span>Bus wise Fuel Summary </span>
+        //     </NavLink>
+        //   ),
+        //   key: "BusBooking",
+        //   icon: <TbReportMoney style={{ fontSize: "20px" }} />,
+        // },
         {
           label: (
             <NavLink
-              to="/admin/DailyFuelReg"
-              onClick={(e) => {
-                e.preventDefault(); // Prevent the default behavior of the NavLink
-                window.open("/admin/DailyFuelReg", "_blank"); // Open the link in a new tab
-              }}
-            >
-              <span>Daily Fuel Register </span>
-            </NavLink>
-          ),
-          key: "BusBooking",
-          icon: <TbReportMoney style={{ fontSize: "20px" }} />,
-        },
-        {
-          label: (
-            <NavLink
-              to="/admin/FuelRegSumm"
-              onClick={(e) => {
-                e.preventDefault(); // Prevent the default behavior of the NavLink
-                window.open("/admin/FuelRegSumm", "_blank"); // Open the link in a new tab
-              }}
-            >
-              <span>Bus wise Fuel Summary </span>
-            </NavLink>
-          ),
-          key: "BusBooking",
-          icon: <TbReportMoney style={{ fontSize: "20px" }} />,
-        },
-        {
-          label: (
-            <NavLink
-              to="/admin/ProformaInvoiceReg"
-              onClick={(e) => {
-                e.preventDefault(); // Prevent the default behavior of the NavLink
-                window.open("/admin/ProformaInvoiceReg", "_blank"); // Open the link in a new tab
-              }}
-            >
+              to="/admin/ProformaInvoiceReg">
               <span>Proforma Invoice Register </span>
             </NavLink>
           ),
-          key: "BusBooking",
           icon: <TbReportMoney style={{ fontSize: "20px" }} />,
         },
         {
           label: (
             <NavLink
-              to="/admin/InvoiceReportRegister"
-              onClick={(e) => {
-                e.preventDefault(); // Prevent the default behavior of the NavLink
-                window.open("/admin/InvoiceReportRegister", "_blank"); // Open the link in a new tab
-              }}
-            >
+              to="/admin/InvoiceReportRegister">
               <span>Invoice Register</span>
             </NavLink>
           ),
@@ -371,21 +367,21 @@ const Sidenav = () => {
           key: "SalaryReg",
           icon: <TbReportMoney style={{ fontSize: "20px" }} />,
         },
-        {
-          label: (
-            <NavLink
-              to="/admin/DriverLicenseExpirePrint"
-              onClick={(e) => {
-                e.preventDefault(); // Prevent the default behavior of the NavLink
-                window.open("/admin/DriverLicenseExpirePrint", "_blank"); // Open the link in a new tab
-              }}
-            >
-              <span>Driver License Exp</span>
-            </NavLink>
-          ),
-          key: "SalaryReg",
-          icon: <TbReportMoney style={{ fontSize: "20px" }} />,
-        },
+        // {
+        //   label: (
+        //     <NavLink
+        //       to="/admin/DriverLicenseExpirePrint"
+        //       onClick={(e) => {
+        //         e.preventDefault(); // Prevent the default behavior of the NavLink
+        //         window.open("/admin/DriverLicenseExpirePrint", "_blank"); // Open the link in a new tab
+        //       }}
+        //     >
+        //       <span>Driver License Exp</span>
+        //     </NavLink>
+        //   ),
+        //   key: "SalaryReg",
+        //   icon: <TbReportMoney style={{ fontSize: "20px" }} />,
+        // },
       ],
     },
 

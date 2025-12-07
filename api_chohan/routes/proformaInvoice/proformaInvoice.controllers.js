@@ -262,7 +262,6 @@ const getProformaInvoiceReport = async (req, res) => {
     const request = pool.request();
     request.input('InvoiceNo', sql.NVarChar(50), invoiceNo);
 
-    console.log('Executing spRpt_ProformaInvoice with InvoiceNo:', invoiceNo);
     const result = await request.execute('[dbo].[spRpt_ProformaInvoice]');
 
     res.json({
