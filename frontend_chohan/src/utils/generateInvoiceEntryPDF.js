@@ -48,9 +48,11 @@ export const generateInvoiceEntryPDF = (data) => {
         const igstAmt = ((grossAmount + TollParkingAmt) * igstPer) / 100;
 
         const totalGst = cgstAmt + sgstAmt + igstAmt;
-        const netAmount = grossAmount + totalGst + TollParkingAmt;
+        const netAmountRaw = grossAmount + totalGst + TollParkingAmt;
+        const netAmount = Math.ceil(netAmountRaw);
+        const roundOff = netAmount - netAmountRaw;
 
-        return { grossAmount, TollParkingAmt, cgstPer, cgstAmt, sgstPer, sgstAmt, igstPer, igstAmt, totalGst, netAmount };
+        return { grossAmount, TollParkingAmt, cgstPer, cgstAmt, sgstPer, sgstAmt, igstPer, igstAmt, totalGst, netAmount, roundOff };
     };
 
     const totals = calculateTotals();
@@ -262,6 +264,11 @@ export const generateInvoiceEntryPDF = (data) => {
                                 [
                                     { text: 'Total GST', style: 'summaryBold', border: [false, true, false, false], borderColor: ['#e5e7eb', '#cbd5e1', '#e5e7eb', '#e5e7eb'] },
                                     { text: formatCurrency(totals.totalGst), style: 'summaryBold', alignment: 'right', border: [false, true, false, false], borderColor: ['#e5e7eb', '#cbd5e1', '#e5e7eb', '#e5e7eb'] }
+                                ],
+                                // Round Off
+                                [
+                                    { text: 'Round Off', style: 'summaryLabel', border: [false, false, false, false] },
+                                    { text: formatCurrency(totals.roundOff), style: 'summaryValue', alignment: 'right', border: [false, false, false, false] }
                                 ],
                                 [
                                     { text: 'Net Amount', style: 'totalLabel', border: [false, false, false, false], fillColor: '#15803d', color: 'white' },
