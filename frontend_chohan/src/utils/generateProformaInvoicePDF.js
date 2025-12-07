@@ -32,20 +32,25 @@ export const generateProformaInvoicePDF = (data) => {
 
     const calculateTotals = () => {
         let grossAmount = 0;
-        let tollExtra = parseFloat(invoiceData.TollExtra) || 0;
+        let TollParkingAmt = parseFloat(invoiceData.TollParkingAmt) || 0;
 
         data.forEach(item => {
             grossAmount += parseFloat(item.Amt) || 0;
         });
 
-        const cgstPer = 2.5;
-        const sgstPer = 2.5;
-        const cgstAmt = (grossAmount * cgstPer) / 100;
-        const sgstAmt = (grossAmount * sgstPer) / 100;
-        const totalGst = cgstAmt + sgstAmt;
-        const netAmount = grossAmount + totalGst + tollExtra;
+        const cgstPer = parseFloat(invoiceData.CGSTPer) || 0;
+        const sgstPer = parseFloat(invoiceData.SGSTPer) || 0;
+        const igstPer = parseFloat(invoiceData.IGSTPer) || 0;
 
-        return { grossAmount, tollExtra, cgstPer, cgstAmt, sgstPer, sgstAmt, totalGst, netAmount };
+        const cgstAmt = ((grossAmount + TollParkingAmt) * cgstPer) / 100;
+        const sgstAmt = ((grossAmount + TollParkingAmt) * sgstPer) / 100;
+        const igstAmt = ((grossAmount + TollParkingAmt) * igstPer) / 100;
+        const totalGst = cgstAmt + sgstAmt + igstAmt;
+        const netAmountRaw = grossAmount + totalGst + TollParkingAmt;
+        const netAmount = Math.ceil(netAmountRaw);
+        const roundOff = netAmount - netAmountRaw;
+
+        return { grossAmount, TollParkingAmt, cgstPer, cgstAmt, sgstPer, sgstAmt, igstPer, igstAmt, totalGst, netAmount, roundOff };
     };
 
     // ... inside export const generateProformaInvoicePDF = (data) => { ...
@@ -244,27 +249,37 @@ export const generateProformaInvoicePDF = (data) => {
                                 [
                                     // Toll & Parking
                                     { text: 'Toll & Parking', style: 'summaryLabel', border: [false, true, false, false], borderColor: ['#e5e7eb', '#cbd5e1', '#e5e7eb', '#e5e7eb'] },
-                                    { text: formatCurrency(totals.tollExtra), style: 'summaryValue', alignment: 'right', border: [false, true, false, false], borderColor: ['#e5e7eb', '#cbd5e1', '#e5e7eb', '#e5e7eb'] }
+                                    { text: formatCurrency(totals.TollParkingAmt), style: 'summaryValue', alignment: 'right', border: [false, true, false, false], borderColor: ['#e5e7eb', '#cbd5e1', '#e5e7eb', '#e5e7eb'] }
                                 ],
                                 // Gross Amount
                                 [
                                     { text: 'Gross Amount', style: 'summaryLabel', border: [false, false, false, false] },
                                     { text: formatCurrency(totals.grossAmount), style: 'summaryValue', alignment: 'right', border: [false, false, false, false] }
                                 ],
-                                // CGST
-                                [
+                                // CGST (Conditional)
+                                ...(totals.cgstPer > 0 ? [[
                                     { text: `CGST (${totals.cgstPer}%)`, style: 'summaryLabel', border: [false, false, false, false] },
                                     { text: formatCurrency(totals.cgstAmt), style: 'summaryValue', alignment: 'right', border: [false, false, false, false] }
-                                ],
-                                // SGST
-                                [
+                                ]] : []),
+                                // SGST (Conditional)
+                                ...(totals.sgstPer > 0 ? [[
                                     { text: `SGST (${totals.sgstPer}%)`, style: 'summaryLabel', border: [false, false, false, false] },
                                     { text: formatCurrency(totals.sgstAmt), style: 'summaryValue', alignment: 'right', border: [false, false, false, false] }
-                                ],
+                                ]] : []),
+                                // IGST (Conditional)
+                                ...(totals.igstPer > 0 ? [[
+                                    { text: `IGST (${totals.igstPer}%)`, style: 'summaryLabel', border: [false, false, false, false] },
+                                    { text: formatCurrency(totals.igstAmt), style: 'summaryValue', alignment: 'right', border: [false, false, false, false] }
+                                ]] : []),
                                 // Total GST
                                 [
                                     { text: 'Total GST', style: 'summaryBold', border: [false, true, false, false], borderColor: ['#e5e7eb', '#cbd5e1', '#e5e7eb', '#e5e7eb'] },
                                     { text: formatCurrency(totals.totalGst), style: 'summaryBold', alignment: 'right', border: [false, true, false, false], borderColor: ['#e5e7eb', '#cbd5e1', '#e5e7eb', '#e5e7eb'] }
+                                ],
+                                // Round Off
+                                [
+                                    { text: 'Round Off', style: 'summaryLabel', border: [false, false, false, false] },
+                                    { text: formatCurrency(totals.roundOff), style: 'summaryValue', alignment: 'right', border: [false, false, false, false] }
                                 ],
                                 // Net Amount (Blue Bar)
                                 [
