@@ -6,8 +6,9 @@ const {
   deleteSingleInvoice,
   getSingleInvoice,
   updateProformaInvoice,
-  powerBiLogin,getPartyProformaInvoice,
-  getAllInvoicebooking,deleteSinglebookingInvoice
+  powerBiLogin, getPartyProformaInvoice,
+  getAllInvoicebooking, deleteSinglebookingInvoice,
+  getInvoiceReport
 } = require("./invoiceentry.controller");
 
 const InvoiceRoutes = express.Router();
@@ -22,9 +23,9 @@ InvoiceRoutes.get(
   getAllProformaInvoice
 );
 InvoiceRoutes.get(
-    "/booking",
-    getAllInvoicebooking
-  );
+  "/booking",
+  getAllInvoicebooking
+);
 InvoiceRoutes.get(
   "/:id",
   getSingleInvoice
@@ -32,6 +33,11 @@ InvoiceRoutes.get(
 InvoiceRoutes.get(
   '/party/:id',
   getPartyProformaInvoice
+);
+
+InvoiceRoutes.post(
+  "/report",
+  getInvoiceReport
 );
 
 InvoiceRoutes.put(

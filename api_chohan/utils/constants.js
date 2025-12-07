@@ -111,9 +111,11 @@ const sp_get_salary = "[dbo].[spGet_Salarydetails]";
 const RPT_PROFORMA_INVOICE = "[dbo].[spRpt_ProformaInvoice]";
 const RPT_SALARY_SLIP = "[dbo].[spRpt_SalarySlip]";
 const RPT_SALARY_REGISTER = "[dbo].[spRpt_SalaryReg]";
+const RPT_INVOICE_REPORT = "[dbo].[spRpt_Invoice]";
 
 module.exports = {
   RPT_SALARY_REGISTER,
+  RPT_INVOICE_REPORT,
   RPT_SALARY_SLIP,
   RPT_PROFORMA_INVOICE,
   sp_get_salary,
