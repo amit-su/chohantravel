@@ -382,14 +382,14 @@ const GetSalaryDetails = () => {
             const medical = record.PerDayMedicalAllowance * record.PaidDays;
             const washing = record.PerDayWashingAllowance * record.PaidDays;
             const khuraki = record.KhurakiAmt || 0;
-            return (
-              (basic + hra + ta + medical + washing + khuraki) *
-              0.0075
-            ).toFixed(2);
+
+            return Math.round(
+              (basic + hra + ta + medical + washing + khuraki) * 0.0075
+            );
           } else {
             return 0;
           }
-        },
+        }
       },
       {
         id: 8,
