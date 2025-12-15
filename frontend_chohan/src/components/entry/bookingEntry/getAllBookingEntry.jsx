@@ -35,7 +35,7 @@ const GetAllBookingEntry = (data) => {
 
   // Pagination State
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(15);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalItems, setTotalItems] = useState(0);
 
   const showModal = (record) => {
@@ -54,7 +54,7 @@ const GetAllBookingEntry = (data) => {
     form.resetFields(); // <-- Reset all form fields to initial values
   };
 
-  const fetchData = async (page = 1, limit = 15) => {
+  const fetchData = async (page = 1, limit = 10) => {
     setLoading2(true);
     try {
       const queryParams = new URLSearchParams({
