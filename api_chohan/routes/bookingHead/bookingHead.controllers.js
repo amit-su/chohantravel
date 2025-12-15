@@ -30,8 +30,11 @@ const getAllBookingHead = async (req, res) => {
     console.log(req.query);
     const params = {
       ClosedStatus: req.query.closedStatus,
-      PageNo: 1,
-      PageSize: 100000,
+      PageNo: parseInt(req.query.page) || 1,
+      PageSize: parseInt(req.query.limit) || 15,
+      PartyID: req.query.partyId || null,
+      BookingDate: req.query.bookingDate || null,
+      SearchValue: req.query.search || null,
     };
 
     const resultdata = await databaseService.callStoredProcedure(req,

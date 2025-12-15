@@ -11,13 +11,10 @@ import UserPrivateComponent from "../../PrivacyComponent/UserPrivateComponent";
 import SimpleButton from "../../Buttons/SimpleButton";
 import axios from "axios";
 import dayjs from "dayjs";
-import { loadAllBus } from "../../../redux/rtk/features/bus/busSlice";
-import { loadAllDriver } from "../../../redux/rtk/features/driver/driverSlice";
-import { loadAllHelper } from "../../../redux/rtk/features/helper/helperSlice";
 import {
   deletebookingEntry,
-  loadAllBookingEntry,
 } from "../../../redux/rtk/features/bookingEntry/bookingsEntrySlice";
+import { loadPartyPaginated } from "../../../redux/rtk/features/party/partySlice";
 import DetailBookingEntry from "./detailBookingEntry";
 import AllotBus from "../../busAllotmentBooking/AllotBus";
 import GetAllBusAllotmentToBooking from "./../../busAllotmentBooking/GetAllAllotmentToBooking";
@@ -26,7 +23,6 @@ import { Tooltip } from "antd";
 const GetAllBookingEntry = (data) => {
   //API CALL//
   const [list2, setList] = useState([]);
-
   const [loading2, setLoading2] = useState(true);
   const [error, setError] = useState(null);
   const [selectedEmpType, setSelectedEmpType] = useState("HELPER");
@@ -35,6 +31,12 @@ const GetAllBookingEntry = (data) => {
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [partyFilter, setPartyFilter] = useState(null);
   const [dateFilter, setDateFilter] = useState(null);
+  const [searchFilter, setSearchFilter] = useState("");
+
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(15);
+  const [totalItems, setTotalItems] = useState(0);
 
   const showModal = (record) => {
     setSelectedBooking(record);
@@ -52,10 +54,67 @@ const GetAllBookingEntry = (data) => {
     form.resetFields(); // <-- Reset all form fields to initial values
   };
 
-  const fetchData = async () => {
+  const fetchData = async (page = 1, limit = 15) => {
+    setLoading2(true);
     try {
-      const response = await axios.get(`${apiUrl}/bookingHead`);
+      const queryParams = new URLSearchParams({
+        page,
+        limit,
+        ...(partyFilter && { partyId: partyFilter }), // Assuming partyFilter stores ID or Name, backend expects ID? Let's check. 
+        // Wait, the select stores "PartyName" as value. The backend expects PartyID. 
+        // I need to find the PartyID corresponding to the selected PartyName or change the Select to store ID.
+        // The current implementation uses PartyName for filtering on the client side.
+        // I should probably change the Select to use PartyID as value.
+        // But list2 only has the PartyName from the booking list.
+        // I need to fetch the list of parties with IDs to populate the Select properly if I want to filter by ID.
+        // OR, I can pass the PartyName to the backend if I modify the SP to filter by PartyName subquery (which I did in the SP update: PartyID IN (SELECT id FROM PartyMast WHERE PartyName LIKE ...)).
+        // So passing PartyName as search value or a separate param is fine if I handle it.
+        // My SP update handles @SearchValue matching PartyName.
+        // But for specific @PartyID filter, I need the ID.
+        // Let's check how partyNames is populated: const partyNames = [...new Set(list2?.map((item) => item.PartyName))];
+        // This only gets party names from the *current page* of data, which is wrong for server-side filtering.
+        // I should fetch all parties for the filter dropdown.
+        // For now, I will use the search input for general search and maybe skip the specific party ID filter unless I fetch parties.
+        // The user asked for "filter data using party and booking date".
+        // I'll assume I can pass the PartyName as a search param or I need to fetch parties.
+        // Let's look at the code again.
+        // There is `loadAllBookingEntry` which was removed.
+        // There is no `loadAllParty` call visible.
+        // I will stick to what I have:
+        // 1. Search Input: Passes to `search` param (matches BookingNo, ContactPerson, PartyName).
+        // 2. Date Filter: Passes to `bookingDate` param.
+        // 3. Party Filter: The current dropdown is derived from `list2`, which is paginated. This is bad UX for server-side pagination.
+        // I should probably fetch all parties. But I don't want to overcomplicate if not asked.
+        // However, the user said "implement filter data using party".
+        // If I use the existing `partyFilter` state, I can pass it. But wait, if I select a party from the dropdown (which currently only shows parties on the current page), and then I want to filter...
+        // Actually, if I want to filter by Party, I should probably use a proper Party Select that fetches from `party` endpoint.
+        // But I don't see `party` slice being used.
+        // Let's look at `api_chohan/utils/constants.js` again. `GET_PARTY_PROCEDURE`.
+        // I'll check if there is a `loadAllParty` action available in the codebase.
+        // For now, I will implement the Search and Date filter first, and for Party, I will try to pass the selected value.
+        // Wait, if I use `partyFilter` (which is a name), I can't pass it as `partyId` unless the backend handles it.
+        // The backend expects `PartyID`.
+        // My SP has `@PartyID INT`.
+        // So I must pass an ID.
+        // The current `Select` uses `PartyName` as value.
+        // I will change the `Select` to use `SearchValue` for now if the user types, or I need to fetch parties.
+        // Let's look at the `Select` options: `partyNames.map((party) => ... value={party})`.
+        // This is definitely just names.
+        // I will modify the frontend to use `SearchValue` for the general search.
+        // For the specific "Party" filter, I really should fetch parties.
+        // Let's see if I can find `loadAllParty`.
+        ...(dateFilter && { bookingDate: dayjs(dateFilter).format("YYYY-MM-DD") }),
+        ...(searchFilter && { search: searchFilter }),
+      });
+
+      // If partyFilter is selected, and it's a name, I can't pass it as PartyID.
+      // But I can pass it as `search` if the user wants to filter by party name?
+      // No, that's ambiguous.
+      // I will check if I can import `loadAllParty`.
+
+      const response = await axios.get(`${apiUrl}/bookingHead?${queryParams.toString()}`);
       setList(response.data.data);
+      setTotalItems(response.data.count);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -64,10 +123,10 @@ const GetAllBookingEntry = (data) => {
   };
 
   useEffect(() => {
-    dispatch(loadAllBus({ page: 1, count: 10000, status: true }));
+    dispatch(loadPartyPaginated({ status: true, page: 1, count: 1000 }));
     // Call the function
-    fetchData();
-  }, []);
+    fetchData(currentPage, itemsPerPage);
+  }, [currentPage, itemsPerPage, dateFilter, searchFilter, partyFilter]); // Add filters to dependency array
   //END//
   const [expandedRowKeys, setExpandedRowKeys] = useState([]);
 
@@ -84,7 +143,6 @@ const GetAllBookingEntry = (data) => {
   const onDelete = async (id) => {
     const res = await dispatch(deletebookingEntry(id));
     if (res) {
-      dispatch(loadAllBookingEntry({ status: true, page: 1, count: 1000 }));
       window.location.reload();
     }
   };
@@ -103,8 +161,7 @@ const GetAllBookingEntry = (data) => {
   };
 
   const dispatch = useDispatch();
-  const { list, total, loading } = useSelector((state) => state.bookingEntry);
-  console.log(list);
+  const { list: partyList } = useSelector((state) => state.party);
   const columns = [
     {
       title: "Sl No",
@@ -266,11 +323,10 @@ const GetAllBookingEntry = (data) => {
               <button
                 onClick={() => showDeleteConfirm(BookingNo)}
                 disabled={restData.UsedInInvoice !== ""}
-                className={`px-2 pb-2 rounded-md transition duration-300 ${
-                  restData.UsedInInvoice !== ""
-                    ? "bg-gray-400 text-white cursor-not-allowed"
-                    : "bg-red-600 text-white hover:bg-red-700"
-                }`}
+                className={`px-2 pb-2 rounded-md transition duration-300 ${restData.UsedInInvoice !== ""
+                  ? "bg-gray-400 text-white cursor-not-allowed"
+                  : "bg-red-600 text-white hover:bg-red-700"
+                  }`}
                 style={{ fontSize: "15px" }}
               >
                 <DeleteOutlined />
@@ -291,43 +347,21 @@ const GetAllBookingEntry = (data) => {
     },
   ];
 
-  const filteredData = list2?.filter((item) => {
-    const matchesParty = partyFilter
-      ? item.PartyName?.toLowerCase() === partyFilter.toLowerCase()
-      : true;
+  // Removed client-side filtering logic as it's now handled server-side
+  const filteredData = list2;
+  console.log("data", filteredData);
 
-    const matchesDate = dateFilter
-      ? dayjs(item.BookingDate)
-          .startOf("day")
-          .isSame(dayjs(dateFilter).startOf("day"))
-      : true;
+  // Note: Party dropdown currently only shows parties from the fetched page. 
+  // To properly filter by Party server-side, we should fetch the full list of parties.
+  // For now, I'll keep the existing logic but it might be limited.
+  // Actually, I should probably remove the client-side derivation of partyNames if I want true server-side filtering.
+  // But without a separate API call for parties, I can't populate the dropdown with *all* parties.
+  // I will leave the Party Select as is for now, but it will only filter *client-side* if I don't pass it to backend?
+  // No, the user wants server-side.
+  // I will add a Search Input.
 
-    // Return TRUE if any filter is applied and matches
-    if (partyFilter && dateFilter) {
-      return matchesParty && matchesDate;
-    } else if (partyFilter) {
-      return matchesParty;
-    } else if (dateFilter) {
-      return matchesDate;
-    } else {
-      return true; // If no filters, show all
-    }
-  });
-  console.log("filter data", filteredData);
 
-  const partyNames = [...new Set(list2?.map((item) => item.PartyName))];
 
-  useEffect(() => {
-    dispatch(loadAllBookingEntry({ status: true, page: 1, count: 1000 }));
-    dispatch(loadAllDriver({ page: 1, count: 10000, status: true }));
-    dispatch(loadAllHelper({ page: 1, count: 10000, status: true }));
-  }, [dispatch]);
-
-  useEffect(() => {
-    // const lastDigits = list?.map((item) => parseInt(item.BookingNo.slice(-1)));
-    // const maxLastDigit = lastDigits && Math.max(...lastDigits);
-    //setMaxId(maxLastDigit);
-  }, [list]);
 
   return (
     <>
@@ -350,40 +384,56 @@ const GetAllBookingEntry = (data) => {
               </div>
             </div>
             <div className="flex flex-col gap-2 mb-4 ml-16 md:flex-row">
-              <Select
-                allowClear
-                showSearch
-                placeholder="Filter by Party"
-                onChange={(value) => setPartyFilter(value)}
-                style={{ width: 400 }}
-                value={partyFilter}
-                optionFilterProp="children" // ensures it filters by displayed text
-                filterOption={(input, option) =>
-                  option?.children?.toLowerCase().includes(input.toLowerCase())
-                }
-              >
-                {partyNames.map((party) => (
-                  <Select.Option key={party} value={party}>
-                    {party}
-                  </Select.Option>
-                ))}
-              </Select>
-
-              <DatePicker
-                allowClear
-                placeholder="Filter by Date"
-                onChange={(date) => setDateFilter(date)}
-                style={{ width: 200 }}
-                value={dateFilter}
-                format="DD-MM-YYYY"
-              />
+              <div className="flex gap-2">
+                <Select
+                  allowClear
+                  showSearch
+                  placeholder="Filter by Party"
+                  onChange={(value) => setPartyFilter(value)}
+                  style={{ width: 200 }}
+                  value={partyFilter}
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    option?.children?.toLowerCase().includes(input.toLowerCase())
+                  }
+                >
+                  {partyList?.map((party) => (
+                    <Select.Option key={party.id} value={party.id}>
+                      {party.partyName}
+                    </Select.Option>
+                  ))}
+                </Select>
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  className="px-3 py-2 border rounded"
+                  value={searchFilter}
+                  onChange={(e) => setSearchFilter(e.target.value)}
+                />
+                <DatePicker
+                  allowClear
+                  placeholder="Filter by Date"
+                  onChange={(date) => setDateFilter(date)}
+                  style={{ width: 200 }}
+                  value={dateFilter}
+                  format="DD-MM-YYYY"
+                />
+              </div>
             </div>
 
             <Table
               dataSource={filteredData}
               columns={columns}
-              loading={loading}
-              pagination={false}
+              loading={loading2}
+              pagination={{
+                current: currentPage,
+                pageSize: itemsPerPage,
+                total: totalItems,
+                onChange: (page, pageSize) => {
+                  setCurrentPage(page);
+                  setItemsPerPage(pageSize);
+                },
+              }}
               scroll={{ x: 1700 }}
               rowKey="BookingNo"
               rowClassName={(record) => {
@@ -421,7 +471,7 @@ const GetAllBookingEntry = (data) => {
           </button>,
         ]}
       >
-        <AllotBus ID={selectedBooking} onSuccess={fetchData} />
+        <AllotBus ID={selectedBooking} onSuccess={() => fetchData(currentPage, itemsPerPage)} />
       </Modal>
     </>
   );
