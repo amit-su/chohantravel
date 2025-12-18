@@ -162,11 +162,11 @@ const GetSalaryDetails = () => {
         if (item.ESIC_Deduction > 0) {
           let esicBaseAmount = rawGrossSalary;
           const empType = item.employType || selectedEmpType;
-          if (empType == "Helper") {
+          if (empType == "Driver") {
             esicBaseAmount = rawGrossSalary - rawKhuraki;
             rawESIC = esicBaseAmount * 0.0075;
 
-          } else if (empType == "Driver") {
+          } else if (empType == "Helper") {
             esicBaseAmount = rawGrossSalary;
             console.log(esicBaseAmount, "+", rawKhuraki)
             rawESIC = (esicBaseAmount) * 0.0075;
@@ -406,11 +406,11 @@ const GetSalaryDetails = () => {
             const khuraki = record.KhurakiAmt || 0;
 
             let esicBaseAmount =
-              basic + hra + ta + medical + washing + khuraki;
+              basic + hra + ta + medical + washing;
 
             // 💡 For HELPER, exclude Khoraki from ESI calculation
             if (selectedEmpType === "HELPER") {
-              esicBaseAmount = basic + hra + ta + medical + washing;
+              esicBaseAmount = basic + hra + ta + medical + washing + khuraki;
             }
 
             return Math.round(esicBaseAmount * 0.0075);
