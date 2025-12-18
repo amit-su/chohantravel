@@ -498,7 +498,18 @@ const GetSalaryDetails = () => {
               : 0;
 
           // 2. ESIC: Needs to be calculated based on Gross Salary * 0.0075
-          const esic = record.ESIC_Deduction > 0 ? gross * 0.0075 : 0;
+          let esic = 0;
+          if (record.ESIC_Deduction > 0) {
+            let esicBaseAmount = gross;
+
+            // 💡 For HELPER, ESI is calculated on (Gross Salary - Khoraki)
+            // For DRIVER (and others), ESI is calculated on Gross Salary (including Khoraki)
+            if (selectedEmpType === "HELPER") {
+              esicBaseAmount = gross - (record.KhurakiAmt || 0);
+            }
+
+            esic = esicBaseAmount * 0.0075;
+          }
 
           // 3. P Tax: Needs to be calculated based on the P Tax slab logic
           let ptax = 0;
