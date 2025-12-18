@@ -174,13 +174,16 @@ const GetSalaryDetails = () => {
         // PTAX: Based on Gross Salary slab
         let PTAX = 0;
         if (item.PTAX_Deduction > 0) {
-          if (GrossSalary > 40000) {
+          // 💡 P Tax is calculated on (Gross Salary - Khoraki) for ALL employees
+          const ptaxBaseAmount = GrossSalary - TotalKhurakiAmt;
+
+          if (ptaxBaseAmount > 40000) {
             PTAX = 200;
-          } else if (GrossSalary > 25000) {
+          } else if (ptaxBaseAmount > 25000) {
             PTAX = 150;
-          } else if (GrossSalary > 15000) {
+          } else if (ptaxBaseAmount > 15000) {
             PTAX = 130;
-          } else if (GrossSalary > 10000) {
+          } else if (ptaxBaseAmount > 10000) {
             PTAX = 110;
           }
         }
@@ -422,13 +425,16 @@ const GetSalaryDetails = () => {
               record.PerDayWashingAllowance * record.PaidDays +
               (record.KhurakiAmt || 0);
 
-            if (grossSalary <= 10000) {
+            // 💡 P Tax is calculated on (Gross Salary - Khoraki) for ALL employees
+            const ptaxBaseAmount = grossSalary - (record.KhurakiAmt || 0);
+
+            if (ptaxBaseAmount <= 10000) {
               return 0;
-            } else if (grossSalary <= 15000) {
+            } else if (ptaxBaseAmount <= 15000) {
               return 110;
-            } else if (grossSalary <= 25000) {
+            } else if (ptaxBaseAmount <= 25000) {
               return 130;
-            } else if (grossSalary <= 40000) {
+            } else if (ptaxBaseAmount <= 40000) {
               return 150;
             } else {
               return 200;
@@ -497,13 +503,16 @@ const GetSalaryDetails = () => {
           // 3. P Tax: Needs to be calculated based on the P Tax slab logic
           let ptax = 0;
           if (record.PTAX_Deduction > 0) {
-            if (gross > 40000) {
+            // 💡 P Tax is calculated on (Gross Salary - Khoraki) for ALL employees
+            const ptaxBaseAmount = gross - (record.KhurakiAmt || 0);
+
+            if (ptaxBaseAmount > 40000) {
               ptax = 200;
-            } else if (gross > 25000) {
+            } else if (ptaxBaseAmount > 25000) {
               ptax = 150;
-            } else if (gross > 15000) {
+            } else if (ptaxBaseAmount > 15000) {
               ptax = 130;
-            } else if (gross > 10000) {
+            } else if (ptaxBaseAmount > 10000) {
               ptax = 110;
             }
           }
