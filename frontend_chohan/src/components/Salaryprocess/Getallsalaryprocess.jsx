@@ -163,7 +163,9 @@ const GetSalaryDetails = () => {
 
           // 💡 For HELPER, ESI is calculated on (Gross Salary - Khoraki)
           // For DRIVER (and others), ESI is calculated on Gross Salary (including Khoraki)
-          if (item.employType === "HELPER") {
+          // Use item.employType or fallback to selectedEmpType to be safe
+          const empType = item.employType || selectedEmpType;
+          if (empType === "HELPER") {
             esicBaseAmount = GrossSalary - TotalKhurakiAmt;
           }
 
