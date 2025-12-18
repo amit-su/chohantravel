@@ -129,55 +129,57 @@ const GetSalaryDetails = () => {
       );
 
       const payload = selectedData.map((item) => {
-        // 1. Calculate Earnings (Using Math.round for integer precision for DB)
-        const BASIC = Math.round(item.PerDayBasic * item.PaidDays);
-        const HRA = Math.round(item.PerDayHRA * item.PaidDays);
-        const MedicalAllowance = Math.round(
-          item.PerDayMedicalAllowance * item.PaidDays
-        );
-        const WashingAllowance = Math.round(
-          item.PerDayWashingAllowance * item.PaidDays
-        );
-        const TA = Math.round(item.PerDayTA * item.PaidDays);
+        // 1. Calculate Raw Earnings
+        const rawBasic = item.PerDayBasic * item.PaidDays;
+        const rawHRA = item.PerDayHRA * item.PaidDays;
+        const rawMedical = item.PerDayMedicalAllowance * item.PaidDays;
+        const rawWashing = item.PerDayWashingAllowance * item.PaidDays;
+        const rawTA = item.PerDayTA * item.PaidDays;
+        const rawKhuraki = item.KhurakiAmt || 0;
 
-        const TotalKhurakiAmt = Math.round(item.KhurakiAmt || 0);
+        // 2. Gross Salary Calculation (Raw)
+        const rawGrossSalary =
+          rawBasic + rawHRA + rawMedical + rawWashing + rawTA + rawKhuraki;
 
-        // 2. Gross Salary Calculation
-        const GrossSalary =
-          BASIC +
-          HRA +
-          MedicalAllowance +
-          WashingAllowance +
-          TA +
-          TotalKhurakiAmt;
+        // Rounded components for Payload
+        const BASIC = Math.round(rawBasic);
+        const HRA = Math.round(rawHRA);
+        const MedicalAllowance = Math.round(rawMedical);
+        const WashingAllowance = Math.round(rawWashing);
+        const TA = Math.round(rawTA);
+        const TotalKhurakiAmt = Math.round(rawKhuraki);
+        const GrossSalary = Math.round(rawGrossSalary);
 
-        // --- 3. Deductions: Calculated based on Gross Salary / PerDay rates ---
+        // --- 3. Deductions ---
 
-        // PF
-        const PF = item.PF_Deduction > 0 ? Math.round(item.PerDayPF * item.PaidDays) : 0;
+        // PF (Raw & Rounded)
+        const rawPF = item.PF_Deduction > 0 ? item.PerDayPF * item.PaidDays : 0;
+        const PF = Math.round(rawPF);
 
-        // ESIC: Based on Gross Salary * 0.0075
+        // ESIC
+        let rawESIC = 0;
         let ESIC = 0;
         if (item.ESIC_Deduction > 0) {
-          let esicBaseAmount = GrossSalary;
-
-          // 💡 For HELPER, ESI is calculated on (Gross Salary - Khoraki)
-          // For DRIVER (and others), ESI is calculated on Gross Salary (including Khoraki)
-          // Use item.employType or fallback to selectedEmpType to be safe
+          let esicBaseAmount = rawGrossSalary;
           const empType = item.employType || selectedEmpType;
-          if (empType === "HELPER") {
-            esicBaseAmount = GrossSalary - TotalKhurakiAmt;
+          if (empType == "Helper") {
+            esicBaseAmount = rawGrossSalary - rawKhuraki;
+            rawESIC = esicBaseAmount * 0.0075;
+
+          } else if (empType == "Driver") {
+            esicBaseAmount = rawGrossSalary;
+            console.log(esicBaseAmount, "+", rawKhuraki)
+            rawESIC = (esicBaseAmount) * 0.0075;
           }
 
-          const ESIC_CALC = esicBaseAmount * 0.0075;
-          ESIC = Math.round(ESIC_CALC);
+          ESIC = Math.round(rawESIC);
         }
 
-        // PTAX: Based on Gross Salary slab
+        // PTAX
         let PTAX = 0;
         if (item.PTAX_Deduction > 0) {
           // 💡 P Tax is calculated on (Gross Salary - Khoraki) for ALL employees
-          const ptaxBaseAmount = GrossSalary - TotalKhurakiAmt;
+          const ptaxBaseAmount = rawGrossSalary - rawKhuraki;
 
           if (ptaxBaseAmount > 40000) {
             PTAX = 200;
@@ -190,18 +192,25 @@ const GetSalaryDetails = () => {
           }
         }
 
-        // Total Deductions
-        const totaldeduction =
-          ESIC + PF + PTAX + Math.round(item.AdvanceAdjusted || 0);
+        // Advance
+        const rawAdvance = item.AdvanceAdjusted || 0;
 
-        // Net Salary
-        const NetSalary = GrossSalary - totaldeduction;
+        // Total Deductions (Rounded for payload field, but we use raw for Net calc if matching table exactly?)
+        // Wait, table uses: Math.round(gross - totalDeductions) where totalDeductions = pf + esic + ptax + advance (all raw-ish)
+        // Let's calculate Net Salary exactly like Table
+        const totalDeductionsRaw = rawPF + rawESIC + PTAX + rawAdvance;
+        const NetSalary = Math.round(rawGrossSalary - totalDeductionsRaw);
+
+        // For the "totaldeduction" field in payload, we usually send the sum of rounded deductions or rounded sum?
+        // Let's send the sum of the fields we are sending (PF + ESIC + PTAX + Advance) to be consistent with those fields.
+        const totaldeduction = PF + ESIC + PTAX + Math.round(rawAdvance);
 
         // Unique ID combination
-        const iddel = `${item.SalaryMonth}${item.SalaryYear}${item.EmployeeID}${item.employType}`;
+        const empType = item.employType || selectedEmpType;
+        const iddel = `${item.SalaryMonth}${item.SalaryYear}${item.EmployeeID}${empType}`;
 
         return {
-          empType: item.employType,
+          empType: empType,
           empID: item.EmployeeID,
           SalaryMonth: item.SalaryMonth,
           SalaryYear: item.SalaryYear,
@@ -223,11 +232,11 @@ const GetSalaryDetails = () => {
           ESIC,
           PF,
           PTAX,
-          AdvanceAdjusted: Math.round(item.AdvanceAdjusted || 0),
+          AdvanceAdjusted: Math.round(rawAdvance),
           KhurakiTotalAmt: TotalKhurakiAmt,
           GrossSalary,
-          NetSalary: Math.round(NetSalary),
-          amountadjust: Math.round(item.AdvanceAdjusted || 0),
+          NetSalary, // 💡 Matches Table Logic
+          amountadjust: Math.round(rawAdvance),
           iddel,
           totaldeduction,
         };
