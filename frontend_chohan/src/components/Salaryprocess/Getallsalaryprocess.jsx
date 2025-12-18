@@ -159,7 +159,15 @@ const GetSalaryDetails = () => {
         // ESIC: Based on Gross Salary * 0.0075
         let ESIC = 0;
         if (item.ESIC_Deduction > 0) {
-          const ESIC_CALC = GrossSalary * 0.0075;
+          let esicBaseAmount = GrossSalary;
+
+          // 💡 For HELPER, ESI is calculated on (Gross Salary - Khoraki)
+          // For DRIVER (and others), ESI is calculated on Gross Salary (including Khoraki)
+          if (item.employType === "HELPER") {
+            esicBaseAmount = GrossSalary - TotalKhurakiAmt;
+          }
+
+          const ESIC_CALC = esicBaseAmount * 0.0075;
           ESIC = Math.round(ESIC_CALC);
         }
 
@@ -383,9 +391,15 @@ const GetSalaryDetails = () => {
             const washing = record.PerDayWashingAllowance * record.PaidDays;
             const khuraki = record.KhurakiAmt || 0;
 
-            return Math.round(
-              (basic + hra + ta + medical + washing + khuraki) * 0.0075
-            );
+            let esicBaseAmount =
+              basic + hra + ta + medical + washing + khuraki;
+
+            // 💡 For HELPER, exclude Khoraki from ESI calculation
+            if (selectedEmpType === "HELPER") {
+              esicBaseAmount = basic + hra + ta + medical + washing;
+            }
+
+            return Math.round(esicBaseAmount * 0.0075);
           } else {
             return 0;
           }
