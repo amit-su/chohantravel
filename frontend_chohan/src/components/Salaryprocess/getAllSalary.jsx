@@ -22,6 +22,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { loadAllBookingEntry } from "../../redux/rtk/features/bookingEntry/bookingsEntrySlice";
 import { useNavigate } from "react-router-dom";
+import { generateSalarySlipPDF } from "../../utils/generateSalarySlipPDF";
 
 const GetAllSalary = () => {
   const [data, setData] = useState([]);
@@ -105,6 +106,21 @@ const GetAllSalary = () => {
 
   const onSelectChange = (newSelectedRowKeys) => {
     setSelectedRowKeys(newSelectedRowKeys);
+  };
+
+  const handlePrint = async (id) => {
+    try {
+      const response = await axios.post(
+        `${apiUrl}/salarydetails/slip-report`,
+        { id: parseInt(id) }
+      );
+      if (response.data) {
+        generateSalarySlipPDF(response.data);
+      }
+    } catch (err) {
+      toast.error("Failed to generate PDF");
+      console.error(err);
+    }
   };
 
   // 💡 NEW: Handle search input change
@@ -258,13 +274,12 @@ const GetAllSalary = () => {
           <div className="flex items-center gap-2">
             <button
               className="bg-green-600 text-white font-medium py-1 px-3 rounded hover:bg-green-700 transition duration-300 text-sm"
-              onClick={() =>
-                window.open(`/admin/salaryprint/${record.id}`, "_blank")
-              }
+              onClick={() => handlePrint(record.id)}
               style={{ minWidth: "90px" }}
             >
               Print
             </button>
+
             <button
               className="bg-red-500 p-2 text-white rounded-md hover:bg-red-600 transition duration-300"
               onClick={() => onDelete(record.id)}
