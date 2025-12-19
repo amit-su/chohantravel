@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import {
   Card,
   Table,
@@ -10,7 +9,16 @@ import {
   DatePicker,
   Button,
   Input, // 💡 Imported Input component
+  Modal,
+  Collapse,
 } from "antd";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  InfoCircleOutlined,
+  PlusOutlined,
+  MinusOutlined,
+} from "@ant-design/icons";
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import UserPrivateComponent from "../PrivacyComponent/UserPrivateComponent";
@@ -31,6 +39,12 @@ const GetSalaryDetails = () => {
   const [selectedMonth, setSelectedMonth] = useState(dayjs());
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [searchQuery, setSearchQuery] = useState(""); // 💡 NEW: State for search query
+
+  // Khoraki Report Modal State
+  const [isKhorakiModalVisible, setIsKhorakiModalVisible] = useState(false);
+  const [khorakiReportData, setKhorakiReportData] = useState([]);
+  const [khorakiLoading, setKhorakiLoading] = useState(false);
+  const [selectedEmployeeName, setSelectedEmployeeName] = useState("");
 
   const apiUrl = import.meta.env.VITE_APP_API;
   const dispatch = useDispatch();
@@ -112,6 +126,30 @@ const GetSalaryDetails = () => {
     } catch (error) {
       toast.error("There was an error deleting the item!");
       console.error("Delete error:", error);
+    }
+  };
+
+  const handleKhorakiClick = async (record) => {
+    setSelectedEmployeeName(record.EmployeeName);
+    setIsKhorakiModalVisible(true);
+    setKhorakiLoading(true);
+    try {
+      const payload = {
+        month: selectedMonth.format("MM"),
+        year: selectedMonth.format("YYYY"),
+        empID: record.EmployeeID,
+        empType: selectedEmpType,
+      };
+      const response = await axios.post(
+        `${apiUrl}/salarydetails/khoraki-report`,
+        payload
+      );
+      setKhorakiReportData(response.data.data || []);
+    } catch (err) {
+      toast.error("Failed to fetch khoraki report");
+      console.error(err);
+    } finally {
+      setKhorakiLoading(false);
     }
   };
 
@@ -241,9 +279,6 @@ const GetSalaryDetails = () => {
           totaldeduction,
         };
       });
-
-      console.log("payload", payload);
-
       const response = await axios.post(
         `${apiUrl}/salarydetails/save`,
         payload
@@ -359,7 +394,15 @@ const GetSalaryDetails = () => {
         key: "KhurakiAmt",
         width: 120,
         align: "right",
-        render: (text) => Math.round(+text || 0),
+        render: (text, record) => (
+          <div
+            className="flex items-center justify-end gap-2 cursor-pointer text-blue-600 hover:text-blue-800"
+            onClick={() => handleKhorakiClick(record)}
+          >
+            <span>{Math.round(+text || 0)}</span>
+            <InfoCircleOutlined />
+          </div>
+        ),
       },
       {
         id: 13,
@@ -685,6 +728,118 @@ const GetSalaryDetails = () => {
           </Card>
         </div>
       </div>
+
+      <Modal
+        title={`Khoraki Report - ${selectedEmployeeName}`}
+        open={isKhorakiModalVisible}
+        onCancel={() => setIsKhorakiModalVisible(false)}
+        footer={[
+          <Button key="close" onClick={() => setIsKhorakiModalVisible(false)}>
+            Close
+          </Button>,
+        ]}
+        width={800}
+      >
+        <Collapse
+          defaultActiveKey={["1"]}
+          expandIcon={({ isActive }) =>
+            isActive ? <MinusOutlined /> : <PlusOutlined />
+          }
+          className="bg-white"
+        >
+          <Collapse.Panel header="Group Wise Summary" key="1">
+            <Table
+              dataSource={Object.values(
+                khorakiReportData.reduce((acc, curr) => {
+                  const site = curr.SiteShortName;
+                  if (!acc[site]) {
+                    acc[site] = {
+                      SiteShortName: site,
+                      TotalAmount: 0,
+                      TotalDays: 0,
+                    };
+                  }
+                  acc[site].TotalAmount += curr.TotalKhurakiAmount;
+                  acc[site].TotalDays += curr.DayCount;
+                  return acc;
+                }, {})
+              )}
+              pagination={false}
+              size="small"
+              bordered
+              scroll={{ y: 300 }}
+              columns={[
+                {
+                  title: "Site Name",
+                  dataIndex: "SiteShortName",
+                  key: "SiteShortName",
+                },
+                {
+                  title: "Total Duty",
+                  dataIndex: "TotalDays",
+                  key: "TotalDays",
+                  align: "center",
+                },
+                {
+                  title: "Total Amount",
+                  dataIndex: "TotalAmount",
+                  key: "TotalAmount",
+                  align: "right",
+                  render: (text) => Math.round(text),
+                },
+              ]}
+            />
+          </Collapse.Panel>
+
+          <Collapse.Panel header="Khoraki Report (Date Wise)" key="2">
+            <Table
+              dataSource={khorakiReportData}
+              loading={khorakiLoading}
+              pagination={false}
+              size="small"
+              bordered
+              scroll={{ y: 300 }}
+              columns={[
+                {
+                  title: "Date",
+                  dataIndex: "DutyDate",
+                  key: "DutyDate",
+                  render: (text) => dayjs(text).format("DD-MM-YYYY"),
+                },
+                {
+                  title: "Site Name",
+                  dataIndex: "SiteShortName",
+                  key: "SiteShortName",
+                },
+                {
+                  title: "Khuraki Amount",
+                  dataIndex: "TotalKhurakiAmount",
+                  key: "TotalKhurakiAmount",
+                  align: "right",
+                  render: (text) => Math.round(text),
+                },
+              ]}
+              summary={(pageData) => {
+                let totalAmount = 0;
+                pageData.forEach(({ TotalKhurakiAmount }) => {
+                  totalAmount += TotalKhurakiAmount;
+                });
+
+                return (
+                  <Table.Summary.Row className="bg-gray-50 font-bold">
+                    <Table.Summary.Cell index={0} colSpan={2}>
+                      Full Month Total
+                    </Table.Summary.Cell>
+                    <Table.Summary.Cell index={1} align="right">
+                      {Math.round(totalAmount)}
+                    </Table.Summary.Cell>
+                  </Table.Summary.Row>
+                );
+              }}
+            />
+          </Collapse.Panel>
+        </Collapse>
+      </Modal>
     </>
   );
 };
