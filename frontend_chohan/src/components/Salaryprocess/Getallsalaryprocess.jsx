@@ -46,6 +46,11 @@ const GetSalaryDetails = () => {
   const [khorakiLoading, setKhorakiLoading] = useState(false);
   const [selectedEmployeeName, setSelectedEmployeeName] = useState("");
 
+  // Advance Report Modal State
+  const [isAdvanceModalVisible, setIsAdvanceModalVisible] = useState(false);
+  const [advanceReportData, setAdvanceReportData] = useState([]);
+  const [advanceLoading, setAdvanceLoading] = useState(false);
+
   const apiUrl = import.meta.env.VITE_APP_API;
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -150,6 +155,30 @@ const GetSalaryDetails = () => {
       console.error(err);
     } finally {
       setKhorakiLoading(false);
+    }
+  };
+
+  const handleAdvanceClick = async (record) => {
+    setSelectedEmployeeName(record.EmployeeName);
+    setIsAdvanceModalVisible(true);
+    setAdvanceLoading(true);
+    try {
+      const payload = {
+        month: selectedMonth.format("MM"),
+        year: selectedMonth.format("YYYY"),
+        empID: record.EmployeeID,
+        empType: selectedEmpType,
+      };
+      const response = await axios.post(
+        `${apiUrl}/salarydetails/advance-report`,
+        payload
+      );
+      setAdvanceReportData(response.data.data || []);
+    } catch (err) {
+      toast.error("Failed to fetch advance report");
+      console.error(err);
+    } finally {
+      setAdvanceLoading(false);
     }
   };
 
@@ -505,6 +534,15 @@ const GetSalaryDetails = () => {
         key: "TotalAdvanceDue",
         width: 120,
         align: "right",
+        render: (text, record) => (
+          <div
+            className="flex items-center justify-end gap-2 cursor-pointer text-blue-600 hover:text-blue-800"
+            onClick={() => handleAdvanceClick(record)}
+          >
+            <span>{Math.round(+text || 0)}</span>
+            <InfoCircleOutlined />
+          </div>
+        ),
       },
       {
         id: 15,
@@ -514,17 +552,24 @@ const GetSalaryDetails = () => {
         width: 120,
         align: "right",
         render: (text, record) => (
-          <InputNumber
-            value={text}
-            onChange={(value) => {
-              const newData = data.map((item) =>
-                item.id === record.id
-                  ? { ...item, AdvanceAdjusted: value }
-                  : item
-              );
-              setData(newData);
-            }}
-          />
+          <div className="flex items-center justify-end gap-2">
+            <InputNumber
+              value={text}
+              onChange={(value) => {
+                const newData = data.map((item) =>
+                  item.id === record.id
+                    ? { ...item, AdvanceAdjusted: value }
+                    : item
+                );
+                setData(newData);
+              }}
+              style={{ width: "80px" }}
+            />
+            <InfoCircleOutlined
+              className="cursor-pointer text-blue-600 hover:text-blue-800"
+              onClick={() => handleAdvanceClick(record)}
+            />
+          </div>
         ),
       },
       {
@@ -839,6 +884,64 @@ const GetSalaryDetails = () => {
             />
           </Collapse.Panel>
         </Collapse>
+      </Modal>
+
+      <Modal
+        title={`Advance Report - ${selectedEmployeeName}`}
+        open={isAdvanceModalVisible}
+        onCancel={() => setIsAdvanceModalVisible(false)}
+        footer={[
+          <Button key="close" onClick={() => setIsAdvanceModalVisible(false)}>
+            Close
+          </Button>,
+        ]}
+        width={600}
+      >
+        <Table
+          dataSource={advanceReportData}
+          loading={advanceLoading}
+          pagination={false}
+          size="small"
+          bordered
+          scroll={{ y: 300 }}
+          columns={[
+            {
+              title: "Date",
+              dataIndex: "created_at",
+              key: "created_at",
+              render: (text) => dayjs(text).format("DD-MM-YYYY"),
+            },
+            {
+              title: "Remark",
+              dataIndex: "remark",
+              key: "remark",
+            },
+            {
+              title: "Advance Amount",
+              dataIndex: "advanceAmount",
+              key: "advanceAmount",
+              align: "right",
+              render: (text) => Math.round(text),
+            },
+          ]}
+          summary={(pageData) => {
+            let totalAmount = 0;
+            pageData.forEach(({ advanceAmount }) => {
+              totalAmount += advanceAmount;
+            });
+
+            return (
+              <Table.Summary.Row className="bg-gray-50 font-bold">
+                <Table.Summary.Cell index={0} colSpan={2}>
+                  Total Advance
+                </Table.Summary.Cell>
+                <Table.Summary.Cell index={1} align="right">
+                  {Math.round(totalAmount)}
+                </Table.Summary.Cell>
+              </Table.Summary.Row>
+            );
+          }}
+        />
       </Modal>
     </>
   );
