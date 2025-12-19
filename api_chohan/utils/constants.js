@@ -117,8 +117,10 @@ const RPT_BUS_BOOKING = "[dbo].[spRpt_BusBooking]";
 const PROFORMA_INV_REG = "[dbo].[spRpt_ProformaInvReg]";
 const INVOICE_REG = "[dbo].[spRpt_InvoiceReg]";
 const RPT_SALARY_SLIP_KHORAKI = "[dbo].[spRpt_SalarySlip_Khoraki_New]";
+const RPT_SALARY_SLIP_ADVANCE = "[dbo].[spRpt_SalarySlip_Advance_New]";
 module.exports = {
   RPT_SALARY_SLIP_KHORAKI,
+  RPT_SALARY_SLIP_ADVANCE,
   RPT_BUS_BOOKING,
   PROFORMA_INV_REG,
   INVOICE_REG,
