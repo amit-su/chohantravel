@@ -10,6 +10,7 @@ const {
   sp_get_salary,
   RPT_SALARY_SLIP,
   RPT_SALARY_REGISTER,
+  RPT_SALARY_SLIP_KHORAKI,
 } = require("../../utils/constants");
 
 const getAllSalarydetail = async (req, res) => {
@@ -289,6 +290,33 @@ const getSalaryRegisterReport = async (req, res) => {
   }
 };
 
+const getKhorakiReport = async (req, res) => {
+  try {
+    const { month, year, empID, empType } = req.body;
+
+    // Get database connection directly
+    const pool = await databaseService.dbClientService();
+    const request = pool.request();
+
+    // Add parameters
+    request.input('MONTH', month);
+    request.input('YEAR', year);
+    request.input('empID', empID);
+    request.input('empType', empType);
+
+    // Execute the stored procedure
+    const result = await request.execute(RPT_SALARY_SLIP_KHORAKI);
+
+    // Return the khoraki report data
+    res.json({
+      data: result.recordset || [],
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+    console.log(error.message);
+  }
+};
+
 module.exports = {
   getSalaryProcessbytypeid,
   getAllSalarydetail,
@@ -299,5 +327,6 @@ module.exports = {
   getAllSalary,
   getSalarySlipReport,
   getSalaryRegisterReport,
+  getKhorakiReport,
   // deleteSingleProductCategory,
 };
