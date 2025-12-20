@@ -8,7 +8,30 @@ if (pdfFonts.pdfMake && pdfFonts.pdfMake.vfs) {
     pdfMake.vfs = pdfFonts.default.pdfMake.vfs;
 }
 
-export const generateSalarySlipPDF = (data) => {
+const STEMP_IMAGE_URL = window.location.origin + "/images/stemp.jpeg";
+
+const getBase64ImageFromURL = (url) => {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.setAttribute("crossOrigin", "anonymous");
+        img.onload = () => {
+            const canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
+            const dataURL = canvas.toDataURL("image/jpeg");
+            resolve(dataURL);
+        };
+        img.onerror = (error) => {
+            console.error("Error loading image:", error);
+            reject(error);
+        };
+        img.src = url;
+    });
+};
+
+export const generateSalarySlipPDF = async (data) => {
     if (!data || !data.salarySlipData || data.salarySlipData.length === 0) {
         console.error('No salary slip data provided for PDF generation');
         return;
@@ -45,8 +68,9 @@ export const generateSalarySlipPDF = (data) => {
     const totalDeductions = (parseFloat(salaryData.ESIC) || 0) +
         (parseFloat(salaryData.PF) || 0) +
         (parseFloat(salaryData.PTAX) || 0) +
-        (parseFloat(salaryData.AdvanceAdjusted) || 0) +
-        (parseFloat(salaryData.totaldeduction) || 0);
+        (parseFloat(salaryData.AdvanceAdjusted) || 0);
+
+    const netSalary = totalEarnings - totalDeductions;
 
     // Build Khoraki details rows
     const khorakiRows = khorakiDetails.map((item, index) => [
@@ -64,8 +88,11 @@ export const generateSalarySlipPDF = (data) => {
         { text: formatCurrency(item.advanceAmount), alignment: 'right', style: 'tableCell' }
     ]);
 
-    // Calculate opening advance balance
+    // Calculate advance totals
+    const totalWeeklyAdvance = advancePayments.reduce((sum, item) => sum + (parseFloat(item.advanceAmount) || 0), 0);
     const openingAdvanceTotal = openingAdvance.reduce((sum, item) => sum + (parseFloat(item.OpAdvAmt) || 0), 0);
+    const advanceAdjusted = parseFloat(salaryData.AdvanceAdjusted) || 0;
+    const advanceCB = openingAdvanceTotal + totalWeeklyAdvance - advanceAdjusted;
 
     // Build bus assignments text
     const busAssignmentText = busAssignments.map(item => {
@@ -73,6 +100,13 @@ export const generateSalarySlipPDF = (data) => {
         if (item.HelperBusNo) return `Helper: ${item.HelperBusNo}`;
         return '';
     }).filter(text => text).join(', ') || 'N/A';
+
+    let stempImageBase64 = null;
+    try {
+        stempImageBase64 = await getBase64ImageFromURL(STEMP_IMAGE_URL);
+    } catch (error) {
+        console.error("Could not load signature image", error);
+    }
 
     const docDefinition = {
         pageSize: 'A4',
@@ -192,7 +226,7 @@ export const generateSalarySlipPDF = (data) => {
                                         [{ text: 'Washing Allowance', style: 'label' }, { text: formatCurrency(salaryData.WashingAllowance), alignment: 'right', style: 'value' }],
                                         [{ text: 'TA', style: 'label' }, { text: formatCurrency(salaryData.TA), alignment: 'right', style: 'value' }],
                                         [{ text: 'Khuraki', style: 'label' }, { text: formatCurrency(salaryData.KhurakiTotalAmt), alignment: 'right', style: 'value' }],
-                                        [{ text: 'Gross Salary', style: 'totalLabel', fillColor: '#d1fae5' }, { text: formatCurrency(salaryData.GrossSalary), alignment: 'right', style: 'totalValue', fillColor: '#d1fae5' }]
+                                        [{ text: 'Gross Salary', style: 'totalLabel', fillColor: '#d1fae5' }, { text: formatCurrency(totalEarnings), alignment: 'right', style: 'totalValue', fillColor: '#d1fae5' }]
                                     ]
                                 },
                                 layout: {
@@ -216,8 +250,6 @@ export const generateSalarySlipPDF = (data) => {
                                         [{ text: 'PF', style: 'label' }, { text: formatCurrency(salaryData.PF), alignment: 'right', style: 'value' }],
                                         [{ text: 'P-Tax', style: 'label' }, { text: formatCurrency(salaryData.PTAX), alignment: 'right', style: 'value' }],
                                         [{ text: 'Advance Adjusted', style: 'label' }, { text: formatCurrency(salaryData.AdvanceAdjusted), alignment: 'right', style: 'value' }],
-                                        [{ text: 'Other Deductions', style: 'label' }, { text: formatCurrency(salaryData.totaldeduction), alignment: 'right', style: 'value' }],
-                                        [{ text: '', style: 'label' }, { text: '', alignment: 'right', style: 'value' }],
                                         [{ text: 'Total Deductions', style: 'totalLabel', fillColor: '#fee2e2' }, { text: formatCurrency(totalDeductions), alignment: 'right', style: 'totalValue', fillColor: '#fee2e2' }]
                                     ]
                                 },
@@ -240,7 +272,7 @@ export const generateSalarySlipPDF = (data) => {
                     body: [
                         [
                             { text: 'NET SALARY', style: 'netSalaryLabel', fillColor: '#047857', color: 'white' },
-                            { text: formatCurrency(salaryData.NetSalary), alignment: 'right', style: 'netSalaryValue', fillColor: '#047857', color: 'white' }
+                            { text: formatCurrency(netSalary), alignment: 'right', style: 'netSalaryValue', fillColor: '#047857', color: 'white' }
                         ]
                     ]
                 },
@@ -275,43 +307,66 @@ export const generateSalarySlipPDF = (data) => {
                 }
             ] : []),
 
-            // Advance Payments (if available)
-            ...(advanceRows.length > 0 ? [
-                { text: 'ADVANCE PAYMENTS (THIS MONTH)', style: 'sectionHeader', margin: [0, 5, 0, 5] },
-                {
-                    table: {
-                        headerRows: 1,
-                        widths: [30, 80, '*', 80],
-                        body: [
-                            [
-                                { text: 'S.No', style: 'tableHeader', alignment: 'center' },
-                                { text: 'Date', style: 'tableHeader' },
-                                { text: 'Remark', style: 'tableHeader' },
-                                { text: 'Amount', style: 'tableHeader', alignment: 'right' }
-                            ],
-                            ...advanceRows
+            // Advance Details Section
+            { text: 'ADVANCE DETAILS', style: 'sectionHeader', margin: [0, 5, 0, 5] },
+            {
+                table: {
+                    headerRows: 1,
+                    widths: [30, 80, '*', 80],
+                    body: [
+                        [
+                            { text: 'S.No', style: 'tableHeader', alignment: 'center' },
+                            { text: 'Date', style: 'tableHeader' },
+                            { text: 'Remark', style: 'tableHeader' },
+                            { text: 'Amount', style: 'tableHeader', alignment: 'right' }
+                        ],
+                        // Opening Advance Row
+                        [
+                            { text: '-', alignment: 'center', style: 'tableCell', bold: true, fontSize: 9 },
+                            { text: 'Opening', style: 'tableCell', bold: true, fontSize: 9 },
+                            { text: 'Opening Advance Balance', style: 'tableCell', bold: true, fontSize: 9 },
+                            { text: formatCurrency(openingAdvanceTotal), alignment: 'right', style: 'tableCell', bold: true, fontSize: 9 }
+                        ],
+                        // Weekly Advance Rows
+                        ...advanceRows,
+                        // Total Weekly Advance
+                        [
+                            { text: '', border: [false, true, false, false] },
+                            { text: '', border: [false, true, false, false] },
+                            { text: 'Total Weekly Advance', style: 'label', alignment: 'right', border: [false, true, false, false] },
+                            { text: formatCurrency(totalWeeklyAdvance), alignment: 'right', style: 'value', border: [false, true, false, false] }
+                        ],
+                        // Total (Opening + Weekly)
+                        [
+                            { text: '', border: [false, false, false, false] },
+                            { text: '', border: [false, false, false, false] },
+                            { text: 'Total Advance (Op + Weekly)', style: 'label', alignment: 'right', border: [false, false, false, false] },
+                            { text: formatCurrency(openingAdvanceTotal + totalWeeklyAdvance), alignment: 'right', style: 'value', border: [false, false, false, false] }
+                        ],
+                        // Advance Adjusted
+                        [
+                            { text: '', border: [false, false, false, false] },
+                            { text: '', border: [false, false, false, false] },
+                            { text: 'Less: Advance Adjusted', style: 'label', alignment: 'right', border: [false, false, false, false] },
+                            { text: `(-) ${formatCurrency(advanceAdjusted)}`, alignment: 'right', style: 'value', border: [false, false, false, false] }
+                        ],
+                        // Closing Balance
+                        [
+                            { text: '', border: [false, true, false, false] },
+                            { text: '', border: [false, true, false, false] },
+                            { text: 'Advance (CB)', style: 'totalLabel', alignment: 'right', fillColor: '#f3f4f6', border: [false, true, false, true] },
+                            { text: formatCurrency(advanceCB), alignment: 'right', style: 'totalValue', fillColor: '#f3f4f6', border: [false, true, false, true] }
                         ]
-                    },
-                    layout: {
-                        fillColor: (rowIndex) => (rowIndex === 0) ? '#047857' : (rowIndex % 2 === 0 ? '#f5f5f5' : null),
-                        hLineWidth: () => 0.5,
-                        vLineWidth: () => 0,
-                        hLineColor: () => '#e0e0e0'
-                    },
-                    margin: [0, 0, 0, 10]
-                }
-            ] : []),
-
-            // Opening Advance Balance
-            ...(openingAdvanceTotal !== 0 ? [
-                {
-                    text: [
-                        { text: 'Opening Advance Balance: ', style: 'label' },
-                        { text: formatCurrency(openingAdvanceTotal), style: 'totalValue', bold: true }
-                    ],
-                    margin: [0, 5, 0, 10]
-                }
-            ] : []),
+                    ]
+                },
+                layout: {
+                    fillColor: (rowIndex) => (rowIndex === 0) ? '#047857' : null,
+                    hLineWidth: (i, node) => (i === 0 || i === 1 || i === node.table.body.length) ? 0.5 : 0,
+                    vLineWidth: () => 0,
+                    hLineColor: () => '#e0e0e0'
+                },
+                margin: [0, 0, 0, 10]
+            },
 
             // Footer
             {
@@ -324,10 +379,20 @@ export const generateSalarySlipPDF = (data) => {
                     },
                     {
                         width: '50%',
-                        text: 'Authorized Signatory\n\n_________________',
-                        style: 'signature',
-                        alignment: 'right',
-                        margin: [0, 20, 0, 0]
+                        stack: [
+                            {
+                                text: 'Authorized Signatory',
+                                style: 'signature',
+                                alignment: 'right',
+                                margin: [0, 5, 0, 0]
+                            },
+                            ...(stempImageBase64 ? [{
+                                image: stempImageBase64,
+                                width: 60,
+                                alignment: 'right',
+                                margin: [0, 0, 10, 0]
+                            }] : []),
+                        ]
                     }
                 ]
             }

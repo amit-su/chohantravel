@@ -8,7 +8,30 @@ if (pdfFonts.pdfMake && pdfFonts.pdfMake.vfs) {
     pdfMake.vfs = pdfFonts.default.pdfMake.vfs;
 }
 
-export const generateProformaInvoicePDF = (data) => {
+const STEMP_IMAGE_URL = window.location.origin + "/images/stemp.jpeg";
+
+const getBase64ImageFromURL = (url) => {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.setAttribute("crossOrigin", "anonymous");
+        img.onload = () => {
+            const canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
+            const dataURL = canvas.toDataURL("image/jpeg");
+            resolve(dataURL);
+        };
+        img.onerror = (error) => {
+            console.error("Error loading image:", error);
+            reject(error);
+        };
+        img.src = url;
+    });
+};
+
+export const generateProformaInvoicePDF = async (data) => {
     if (!data || data.length === 0) {
         console.error('No data provided for PDF generation');
         return;
@@ -57,6 +80,12 @@ export const generateProformaInvoicePDF = (data) => {
     // ... (Your setup, formatDate, formatCurrency, calculateTotals functions) ...
 
     const totals = calculateTotals();
+    let stempImageBase64 = null;
+    try {
+        stempImageBase64 = await getBase64ImageFromURL(STEMP_IMAGE_URL);
+    } catch (error) {
+        console.error("Could not load signature image", error);
+    }
 
     const tripDetailsRows = data.map((item, index) => {
         return [
@@ -169,7 +198,7 @@ export const generateProformaInvoicePDF = (data) => {
                                 table: {
                                     widths: ['*', 'auto'],
                                     body: [
-                                        [{ text: 'Invoice No:', style: 'compactLabel', alignment: 'left', border: [false, false, false, false] }, { text: invoiceData.RefInvoiceNo, style: 'compactInvoiceNo', alignment: 'right', border: [false, false, false, false] }],
+                                        [{ text: 'Proforma invoice No:', style: 'compactLabel', alignment: 'left', border: [false, false, false, false] }, { text: invoiceData.RefInvoiceNo, style: 'compactInvoiceNo', alignment: 'right', border: [false, false, false, false] }],
                                         [{ text: 'Date:', style: 'compactLabel', alignment: 'left', border: [false, false, false, false] }, { text: formatDate(invoiceData.ProformaInvDate), style: 'compactText', alignment: 'right', border: [false, false, false, false] }],
                                         [{ text: 'SAC Code:', style: 'compactLabel', alignment: 'left', border: [false, false, false, false] }, { text: invoiceData.BranchSACCode, style: 'compactText', alignment: 'right', border: [false, false, false, false] }]
                                     ]
@@ -247,9 +276,23 @@ export const generateProformaInvoicePDF = (data) => {
                             widths: ['*', 70],
                             body: [
                                 [
-                                    // Toll & Parking
-                                    { text: 'Toll & Parking', style: 'summaryLabel', border: [false, true, false, false], borderColor: ['#e5e7eb', '#cbd5e1', '#e5e7eb', '#e5e7eb'] },
-                                    { text: formatCurrency(totals.TollParkingAmt), style: 'summaryValue', alignment: 'right', border: [false, true, false, false], borderColor: ['#e5e7eb', '#cbd5e1', '#e5e7eb', '#e5e7eb'] }
+                                    {
+                                        text: [
+                                            { text: 'Toll & Parking ' },
+                                            ...(invoiceData?.TollExtra
+                                                ? [{ text: `(${invoiceData.TollExtra})`, italics: true, fontSize: 9 }]
+                                                : [])],
+                                        style: 'summaryLabel',
+                                        border: [false, true, false, false],
+                                        borderColor: ['#e5e7eb', '#cbd5e1', '#e5e7eb', '#e5e7eb']
+                                    },
+                                    {
+                                        text: formatCurrency(totals.TollParkingAmt),
+                                        style: 'summaryValue',
+                                        alignment: 'right',
+                                        border: [false, true, false, false],
+                                        borderColor: ['#e5e7eb', '#cbd5e1', '#e5e7eb', '#e5e7eb']
+                                    }
                                 ],
                                 // Gross Amount
                                 [
@@ -331,12 +374,19 @@ export const generateProformaInvoicePDF = (data) => {
                             {
                                 text: 'FOR ' + (invoiceData.CompanyName || 'CHOHAN TOURS AND TRAVELS'),
                                 style: 'compactLabel',
-                                margin: [0, 15, 0, 50] // Increased margin for space before signature
+                                margin: [0, 15, 0, 5]
                             },
+
+                            ...(stempImageBase64 ? [{
+                                image: stempImageBase64,
+                                width: 60,
+                                alignment: 'left',
+                                margin: [10, 0, 0, 0]
+                            }] : []),
                             {
                                 text: 'Authorized Signatory',
                                 style: 'compactText',
-                                margin: [0, 0, 0, 5]
+                                margin: [0, 5, 0, 5]
                             },
                             {
                                 text: 'E. & O. E.',

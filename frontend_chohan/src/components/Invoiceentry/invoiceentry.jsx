@@ -121,7 +121,7 @@ const Invoiceentry = () => {
         InvoiceId: invoiceNo,
       });
       if (response.data && response.data.status === 1) {
-        generateInvoiceEntryPDF(response.data.data);
+        await generateInvoiceEntryPDF(response.data.data);
       } else {
         toast.error("Failed to fetch invoice data for printing");
       }

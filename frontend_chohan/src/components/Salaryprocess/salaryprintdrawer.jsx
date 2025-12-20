@@ -31,7 +31,7 @@ function SalaryProcessPrintdrawer() {
 
       // Automatically generate PDF when data is loaded
       if (response.data) {
-        generateSalarySlipPDF(response.data);
+        await generateSalarySlipPDF(response.data);
       }
     } catch (err) {
       console.error('Full error object:', err);
@@ -53,9 +53,9 @@ function SalaryProcessPrintdrawer() {
     }
   }, [id]);
 
-  const handleGeneratePDF = () => {
+  const handleGeneratePDF = async () => {
     if (salaryData) {
-      generateSalarySlipPDF(salaryData);
+      await generateSalarySlipPDF(salaryData);
     }
   };
 

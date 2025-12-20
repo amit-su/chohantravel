@@ -227,19 +227,20 @@ const GetSalaryDetails = () => {
         let rawESIC = 0;
         let ESIC = 0;
         if (item.ESIC_Deduction > 0) {
+          const empType = (item.employType || selectedEmpType || "").toUpperCase();
           let esicBaseAmount = rawGrossSalary;
-          const empType = item.employType || selectedEmpType;
-          if (empType == "Driver") {
-            esicBaseAmount = rawGrossSalary - rawKhuraki;
-            rawESIC = esicBaseAmount * 0.0075;
 
-          } else if (empType == "Helper") {
+          if (empType === "DRIVER") {
+            // 💡 For DRIVER, exclude Khoraki from ESI calculation
+            esicBaseAmount = rawGrossSalary - rawKhuraki;
+          } else if (empType === "HELPER") {
+            // 💡 For HELPER, include Khoraki in ESI calculation (or as per requirement)
+            // Based on the ESIC column logic: if (selectedEmpType === "HELPER") { esicBaseAmount = basic + hra + ta + medical + washing + khuraki; }
             esicBaseAmount = rawGrossSalary;
-            console.log(esicBaseAmount, "+", rawKhuraki)
-            rawESIC = (esicBaseAmount) * 0.0075;
           }
 
-          ESIC = Math.round(rawESIC);
+          rawESIC = esicBaseAmount * 0.0075;
+          ESIC = Math.ceil(rawESIC);
         }
 
         // PTAX
@@ -485,7 +486,7 @@ const GetSalaryDetails = () => {
               esicBaseAmount = basic + hra + ta + medical + washing + khuraki;
             }
 
-            return Math.round(esicBaseAmount * 0.0075);
+            return Math.ceil(esicBaseAmount * 0.0075);
           } else {
             return 0;
           }
@@ -599,15 +600,18 @@ const GetSalaryDetails = () => {
           // 2. ESIC: Needs to be calculated based on Gross Salary * 0.0075
           let esic = 0;
           if (record.ESIC_Deduction > 0) {
+            const empType = (selectedEmpType || "").toUpperCase();
             let esicBaseAmount = gross;
 
-            // 💡 For HELPER, ESI is calculated on (Gross Salary - Khoraki)
-            // For DRIVER (and others), ESI is calculated on Gross Salary (including Khoraki)
-            if (selectedEmpType === "HELPER") {
+            // 💡 For DRIVER, exclude Khoraki from ESI calculation
+            // 💡 For HELPER, include Khoraki in ESI calculation
+            if (empType === "DRIVER") {
               esicBaseAmount = gross - (record.KhurakiAmt || 0);
+            } else if (empType === "HELPER") {
+              esicBaseAmount = gross;
             }
 
-            esic = esicBaseAmount * 0.0075;
+            esic = Math.ceil(esicBaseAmount * 0.0075);
           }
 
           // 3. P Tax: Needs to be calculated based on the P Tax slab logic

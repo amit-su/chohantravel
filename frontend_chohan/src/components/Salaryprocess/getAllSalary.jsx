@@ -115,7 +115,7 @@ const GetAllSalary = () => {
         { id: parseInt(id) }
       );
       if (response.data) {
-        generateSalarySlipPDF(response.data);
+        await generateSalarySlipPDF(response.data);
       }
     } catch (err) {
       toast.error("Failed to generate PDF");

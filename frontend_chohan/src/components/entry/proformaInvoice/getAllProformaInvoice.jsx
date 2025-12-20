@@ -94,7 +94,7 @@ const GetAllProformaInvoice = () => {
       console.log(response);
 
       if (response.data && response.data.data && response.data.data.length > 0) {
-        generateProformaInvoicePDF(response.data.data);
+        await generateProformaInvoicePDF(response.data.data);
         toast.success("PDF generated successfully!");
       } else {
         toast.error("No data found for this invoice");
