@@ -11,109 +11,58 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TableComponent from "../CommonUi/TableComponent";
 import UserPrivateComponent from "../PrivacyComponent/UserPrivateComponent";
-import { loadAllBooking } from "../../redux/rtk/features/booking/bookingSlice";
 import SimpleButton from "../Buttons/SimpleButton";
-import {
-  deleteproformaInvoice,
-  loadAllproformaInvoice,
-} from "../../redux/rtk/features/proformaInvoice/proformaInvoiceSlice";
-import Performainvoicedrawer from "../entry/proformaInvoice/performainvoiceprintdrawer";
 import { loadAllCompany } from "../../redux/rtk/features/company/comapnySlice";
 import dayjs from "dayjs";
 import { generateInvoiceEntryPDF } from "../../utils/generateInvoiceEntryPDF";
+import { loadAllInvoiceEntry } from "../../redux/rtk/features/invoiceEntry/invoiceEntrySlice";
 
-let invoiceentrydata = [];
 const Invoiceentry = () => {
   const onClose = () => { };
-  //----------------API CALL HELPER-------------------//
-  let [list2, setList] = useState([]);
-  const [dailylist, setDailyList] = useState([]);
-  const [loading2, setLoading2] = useState(true);
-  const [error, setError] = useState(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { list, total, loading } = useSelector((state) => state.invoiceEntries);
   const { list: companyList } = useSelector((state) => state.companies);
+
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [dateFilter, setDateFilter] = useState(null);
+  const [maxId, setMaxId] = useState(0);
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${apiUrl}/invoiceentry`);
-        setList(response.data.data);
-        invoiceentrydata = response.data.data;
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading2(false);
-      }
-    };
+    dispatch(loadAllInvoiceEntry({ page: 1, count: 10 }));
+    dispatch(loadAllCompany({ page: 1, count: 10000, status: true }));
+  }, [dispatch]);
 
-    // Call the function
-    fetchData();
-  }, []);
-
-  //-------------END---------------------------//
-
-  const navigate = useNavigate();
+  useEffect(() => {
+    if (list) {
+      const ids = list.map((item) => parseInt(item.ID));
+      const max = ids.length === 0 ? 0 : Math.max(...ids);
+      setMaxId(max);
+    }
+  }, [list]);
 
   const handleLinkClick = (invoiceNo) => {
     navigate(`/admin/update-Invoice/${invoiceNo}`);
     window.location.reload();
   };
 
-  const [maxId, setMaxId] = useState(0);
   const onDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this invoice?")) {
       try {
-        const response = await fetch(`${apiUrl}/invoiceentry/${id}`, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (response.ok) {
-          window.location.reload();
-
-          // Assuming you have a function to reload or refresh the invoices
-          // loadAllProformaInvoice({ status: true, page: 1, count: 1000 });
-        } else {
-          console.error("Failed to delete the invoice.");
+        const response = await axios.delete(`${apiUrl}/invoiceentry/${id}`);
+        if (response.status === 200) {
+          dispatch(loadAllInvoiceEntry({ page: 1, count: 10 }));
+          toast.success("Invoice deleted successfully");
         }
       } catch (error) {
         console.error("Error:", error);
+        toast.error("Failed to delete the invoice.");
       }
-    } else {
-      console.log("Delete action canceled by user.");
     }
   };
 
   const apiUrl = import.meta.env.VITE_APP_API;
-
-  const dispatch = useDispatch();
-  const { list, total, loading } = useSelector(
-    (state) => state.proformaInvoices
-  );
-  const [isTransferVisible, setIsTransferVisible] = useState(true);
-
-  const onTransfer = (invoiceNo, restData) => {
-    //   if (window.confirm("Are you sure you want to transfer this invoice?") && restData.status!="transfered") {
-    //     axios.post(`${apiUrl}/invoicetransfer`, {
-    //         invoiceNo
-    //     })
-    //     .then(response => {
-    //         console.log('Transfer successful:', response.data);
-    //         toast.success('Transfer successful!');
-    //     })
-    //     .catch(error => {
-    //         console.error('Transfer failed:', error);
-    //     });
-    // } else {
-    //   toast.error('dublicate!');
-    //     console.log('Transfer canceled by user or Du');
-    // }
-  };
-  const onPrint = () => {
-    console.log("print");
-  };
 
   const handlePrintPDF = async (invoiceNo) => {
     try {
@@ -137,11 +86,6 @@ const Invoiceentry = () => {
       title: "Invoice No.",
       dataIndex: "RefInvoiceNo",
       key: "RefInvoiceNo",
-      // render: (id) => (
-      //   <Link to={`/admin/Detailproforma-invoice/${encodeURIComponent(id)}`}>
-      //     {id}
-      //   </Link>
-      // ),
       width: 100,
     },
     {
@@ -149,10 +93,6 @@ const Invoiceentry = () => {
       title: "Invoice Date",
       dataIndex: "invoiceDate",
       key: "invoiceDate",
-      // render: (createdAt) => {
-      //   const parsedDate = moment(createdAt, 'YYYY-MM-DD');
-      //   return parsedDate.isValid() ? parsedDate.format('YYYY-MM-DD') : 'Invalid date';
-      // },
       width: 110,
       render: (date) => moment(date).format("DD-MM-YYYY"),
     },
@@ -195,8 +135,6 @@ const Invoiceentry = () => {
       width: 110,
     },
 
-    //Update Supplier Name here
-
     {
       id: 3,
       title: "Action",
@@ -205,10 +143,8 @@ const Invoiceentry = () => {
       fixed: "right",
       width: 150,
       render: (record) => {
-        const { invoiceNo, InvNo, RefInvoiceNo, COMPANY_ID, ...restData } = record;
+        const { invoiceNo, InvNo, RefInvoiceNo } = record;
         const idToUse = invoiceNo || InvNo || RefInvoiceNo;
-        console.log("Row Record:", record);
-        console.log("ID to use for PDF:", idToUse);
 
         return (
           <div className="flex items-center gap-2">
@@ -233,37 +169,13 @@ const Invoiceentry = () => {
             >
               Print Page
             </button>
-            {/* <div>
-        {isTransferVisible && (
-          <Button
-            type="primary"
-            className="flex text-center text-white bg-green-600 rounded-md"
-            style={{ width: "80px" }}
-            loading={loading}
-            onClick={() => onTransfer(idToUse,restData)} // Pass the invoiceNo to the onTransfer function
-          >
-            Transfer
-          </Button>
-        )}
-      </div> */}
-            <div></div>
           </div>
         );
       },
     },
   ];
-  useEffect(() => {
-    dispatch(loadAllCompany({ page: 1, count: 10000, status: true }));
-  }, [dispatch]);
 
-  useEffect(() => {
-    // Find the maximum ID from the list
-    const ids = list2?.map((item) => parseInt(item.ID));
-    const maxId = ids?.length === 0 ? 0 : ids && Math.max(...ids);
-    setMaxId(maxId);
-  }, [list2]);
-
-  const filteredList = list2?.filter((item) => {
+  const filteredList = list?.filter((item) => {
     const matchesCompany = selectedCompany
       ? item.COMPANY_ID == selectedCompany
       : true;
@@ -348,9 +260,10 @@ const Invoiceentry = () => {
                 columns={columns}
                 loading={loading}
                 total={total}
-                paginatedThunk={loadAllBooking}
+                paginatedThunk={loadAllInvoiceEntry}
+                pageSize={10}
                 scrollX={1700}
-                csvFileName={"Booking List"}
+                csvFileName={"Invoice List"}
               />
             </UserPrivateComponent>
           </Card>

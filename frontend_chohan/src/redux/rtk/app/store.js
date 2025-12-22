@@ -44,6 +44,7 @@ import advanceToStaffEntryReducer from "../features/advanceToStaffEntry/advanceT
 import salarysetupEntryReducer from "../features/Salarysetupslice/salarysetslice";
 import staffslice from "../features/staff/staffslice";
 import staffattendenceslice from "../features/staffatendence/staffattendenceslice";
+import invoiceEntryReducer from "../features/invoiceEntry/invoiceEntrySlice";
 const store = configureStore({
   reducer: {
     suppliers: supplierReducer,
@@ -89,9 +90,10 @@ const store = configureStore({
     powerbiSalaryRegister: powerbiSalaryRegisterReducer,
     powerbiESIPFRegister: powerbiESIPFRegisterReducer,
     driverHelperAttendance: driverhelperAttendanceReducer,
-    salarysetup:salarysetupEntryReducer,
-    staff:staffslice,
-    staffatten:staffattendenceslice
+    salarysetup: salarysetupEntryReducer,
+    staff: staffslice,
+    staffatten: staffattendenceslice,
+    invoiceEntries: invoiceEntryReducer,
 
   },
   middleware: (getDefaultMiddleware) =>

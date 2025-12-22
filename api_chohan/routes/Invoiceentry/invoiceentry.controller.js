@@ -61,8 +61,8 @@ const getAllProformaInvoice = async (req, res) => {
   try {
     // get all product_category
     const params = {
-      PageNumber: 1,
-      PageSize: 10000,
+      PageNumber: req.query.page,
+      PageSize: req.query.count,
     };
 
     const resultdata = await databaseService.callStoredProcedure(req,

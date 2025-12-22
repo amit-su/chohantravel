@@ -438,6 +438,7 @@ const TableComponent = ({
   scrollX,
   FilterOptionList,
   expandedRow,
+  pageSize = 10,
 }) => {
   const dispatch = useDispatch();
 
@@ -518,21 +519,6 @@ const TableComponent = ({
                 )}
               </div>
             )}
-
-            <div className="">
-              {total >= 1 && (
-                <Pagination
-                  total={total}
-                  showTotal={(total, range) =>
-                    `${range[0]}-${range[1]} of ${total} items`
-                  }
-                  onChange={fetchData}
-                  defaultPageSize={1000}
-                  defaultCurrent={1}
-                  showSizeChanger={total > 1000}
-                />
-              )}
-            </div>
           </div>
         </div>
 
@@ -555,14 +541,28 @@ const TableComponent = ({
           expandedRowRender={
             expandedRow
               ? (record) =>
-                  expandedRow === record.ID && (
-                    <div className="expanded-content">
-                      <p>Additional content for {record.BookingNo}</p>
-                    </div>
-                  )
+                expandedRow === record.ID && (
+                  <div className="expanded-content">
+                    <p>Additional content for {record.BookingNo}</p>
+                  </div>
+                )
               : undefined
           }
         />
+        <div className="flex justify-end mt-4">
+          {total >= 1 && (
+            <Pagination
+              total={total}
+              showTotal={(total, range) =>
+                `${range[0]}-${range[1]} of ${total} items`
+              }
+              onChange={fetchData}
+              defaultPageSize={pageSize}
+              defaultCurrent={1}
+              showSizeChanger={total > pageSize}
+            />
+          )}
+        </div>
       </div>
 
       {/* Render any additional children passed to the component */}

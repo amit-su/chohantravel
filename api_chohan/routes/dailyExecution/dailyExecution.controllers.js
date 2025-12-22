@@ -57,17 +57,17 @@ const getAllDailyExecution = async (req, res) => {
 //   }
 // };
 const updateDailyExecution = async (req, res) => {
-  
-var r= {
-  ID: req.body.id,
-  PartyID: parseInt(req.body.PartyID),
-  SiteID: req.body.SiteID,
-  BusID: req.body.BusID,
-  DriverID: req.body.DriverID,
-  HelperID: req.body.HelperID,
-  CreatedOn: req.body.CreatedOn,
-}
-console.log(r);
+
+  var r = {
+    ID: req.body.id,
+    PartyID: parseInt(req.body.PartyID),
+    SiteID: req.body.SiteID,
+    BusID: req.body.BusID,
+    DriverID: req.body.DriverID,
+    HelperID: req.body.HelperID,
+    CreatedOn: req.body.CreatedOn,
+  }
+  console.log(r);
 
 
   try {
@@ -120,8 +120,8 @@ const SingledailyExecutionbydate = async (req, res) => {
 
     const params = {
       CreatedOn: decodedId,
-      // PageNo: req.query.page,
-      // PageSize: req.query.count,
+      PageNo: req.query.page,
+      PageSize: req.query.count,
     };
 
     const resultdata = await databaseService.callStoredProcedure(req,

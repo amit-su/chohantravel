@@ -164,7 +164,7 @@ const GetAllBusAllotmentToBooking = () => {
     },
   ];
   useEffect(() => {
-    dispatch(loadAllBookingHead({ status: true, page: 1, count: 1000 }));
+    dispatch(loadAllBookingHead({ status: true, page: 1, count: 10 }));
   }, [dispatch]);
   return (
     <Card

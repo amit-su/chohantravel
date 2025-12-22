@@ -40,7 +40,7 @@ const GetAllProformaInvoice = () => {
       const res = await dispatch(deleteproformaInvoice(id));
       if (res) {
         dispatch(
-          loadAllproformaInvoice({ status: true, page: 1, count: 1000 })
+          loadAllproformaInvoice({ status: true, page: 1, count: 10 })
         );
       }
     } else {
@@ -235,26 +235,12 @@ const GetAllProformaInvoice = () => {
               Print PDF
             </button>
           </div>
-          <div>
-            <button
-              className="px-4 py-2 font-bold text-white transition duration-300 bg-green-600 rounded hover:bg-green-700"
-              style={{ width: "120px" }}
-              onClick={() =>
-                window.open(
-                  `/admin/performainvoiceprint/${COMPANY_ID}/${invoiceNo}`,
-                  "_blank"
-                )
-              }
-            >
-              Print Page
-            </button>
-          </div>
         </div>
       ),
     },
   ];
   useEffect(() => {
-    dispatch(loadAllproformaInvoice({ status: true, page: 1, count: 1000 }));
+    dispatch(loadAllproformaInvoice({ status: true, page: 1, count: 10 }));
     dispatch(loadAllCompany({ page: 1, count: 10000, status: true }));
   }, [dispatch]);
 
@@ -350,7 +336,8 @@ const GetAllProformaInvoice = () => {
                 columns={columns}
                 loading={loading}
                 total={total}
-                paginatedThunk={loadAllBooking}
+                paginatedThunk={loadAllproformaInvoice}
+                pageSize={10}
                 scrollX={1700}
                 csvFileName={"Booking List"}
               />

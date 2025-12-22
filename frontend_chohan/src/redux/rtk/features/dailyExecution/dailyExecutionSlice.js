@@ -96,10 +96,10 @@ export const deleteDailyExecution = createAsyncThunk(
 // );
 export const loadAllDailyExecution = createAsyncThunk(
   "dailyExecution/loadAllDailyExecution",
-  async (dateString) => {
-    // Change the argument name to dateString
+  async (arg) => {
     try {
-      const { data } = await axios.get(`dailyExecution/${dateString}`);
+      const query = queryGenerator(arg);
+      const { data } = await axios.get(`dailyExecution/${arg.status}?${query}`);
       return successHandler(data);
     } catch (error) {
       return errorHandler(error);
