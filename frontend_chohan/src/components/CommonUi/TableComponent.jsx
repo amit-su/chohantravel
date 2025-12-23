@@ -439,6 +439,7 @@ const TableComponent = ({
   FilterOptionList,
   expandedRow,
   pageSize = 10,
+  showColVisibility = true,
 }) => {
   const dispatch = useDispatch();
 
@@ -492,26 +493,28 @@ const TableComponent = ({
 
   return (
     <>
-      <div className="mt-2">
-        <div className="pb-3">
+      <div className="">
+        <div className="">
           <div className="flex flex-col items-center justify-between w-full gap-2 dark:text-yellow-50 md:flex-row">
             {csvFileName && (
               <div className="flex gap-2">
                 {/* CSV Export Button */}
-                <CSVLink
+                {/* <CSVLink
                   data={list || []}
                   className="px-0 py-1 mr-2 text-xs text-white rounded md:text-base"
                   filename={csvFileName}
                 >
                   Download CSV
-                </CSVLink>
+                </CSVLink> */}
 
                 {/* Column Visibility Dropdown */}
-                <ColVisibilityDropdown
-                  options={columns}
-                  columns={columns}
-                  columnsToShowHandler={columnsToShowHandler}
-                />
+                {showColVisibility && (
+                  <ColVisibilityDropdown
+                    options={columns}
+                    columns={columns}
+                    columnsToShowHandler={columnsToShowHandler}
+                  />
+                )}
 
                 {/* Filter Input (optional) */}
                 {FilterOptionList && (

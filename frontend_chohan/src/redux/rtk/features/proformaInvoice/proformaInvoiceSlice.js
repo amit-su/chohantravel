@@ -27,7 +27,7 @@ export const addproformaInvoice = createAsyncThunk(
           ...values,
         },
       });
-      return data;    
+      return data;
     } catch (error) {
       return errorHandler(error, true);
     }
@@ -87,9 +87,7 @@ export const loadAllproformaInvoice = createAsyncThunk(
   "proformaInvoice/loadAllproformaInvoice",
   async (arg) => {
     try {
-      const query = queryGenerator(arg);
-
-      const { data } = await axios.get(`/proformaInvoice?${query}`);
+      const { data } = await axios.post(`/proformaInvoice/all`, arg);
       return successHandler(data);
     } catch (error) {
       return errorHandler(error);
@@ -165,7 +163,7 @@ const proformaInvoiceSlice = createSlice({
 
     builder.addCase(addproformaInvoice.fulfilled, (state, action) => {
       state.loading = false;
-      state.payload= action;
+      state.payload = action;
     });
 
     builder.addCase(addproformaInvoice.rejected, (state, action) => {

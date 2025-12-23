@@ -16,6 +16,7 @@ const proformaInvoiceRoutes = express.Router();
 
 proformaInvoiceRoutes.post("/", createProformaInvoice);
 proformaInvoiceRoutes.get("/", getAllProformaInvoice);
+proformaInvoiceRoutes.post("/all", getAllProformaInvoice);
 proformaInvoiceRoutes.post("/report", getProformaInvoiceReport);
 proformaInvoiceRoutes.get("/:id", getSingleProformaInvoice);
 proformaInvoiceRoutes.get("/party/:id", getPartyProformaInvoice);

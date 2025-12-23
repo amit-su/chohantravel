@@ -79,8 +79,13 @@ async function callStoredProcedure(req, procedureName, params = {}) {
         request.input(paramName, params[paramName]);
       }
     }
-    // Add the com
-    request.input("CompanyID", companyId);
+    // Add the company ID as an input parameter if not already provided (case-insensitive check)
+    const hasCompanyID = Object.keys(params).some(
+      (key) => key.toLowerCase() === "companyid"
+    );
+    if (!hasCompanyID) {
+      request.input("CompanyID", companyId);
+    }
     const outputStatusID = "StatusID";
     request.output(outputStatusID, sql.Int);
     const outputStatusMessage = "StatusMessage";

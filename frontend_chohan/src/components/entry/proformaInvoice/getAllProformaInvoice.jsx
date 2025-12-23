@@ -1,99 +1,71 @@
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import CreateDrawer from "../../CommonUi/CreateDrawer";
-
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Card, Button, Select, DatePicker } from "antd";
+import { DeleteOutlined, EditOutlined, SearchOutlined, PlusOutlined, PrinterOutlined, SwapOutlined, FilterOutlined, CalendarOutlined, BankOutlined, MoreOutlined } from "@ant-design/icons";
+import { Card, Button, Select, DatePicker, Input, Row, Col, Space, Typography, Tooltip, Tag, Dropdown, Menu } from "antd";
 import axios from "axios";
 import moment from "moment";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TableComponent from "../../CommonUi/TableComponent";
 import UserPrivateComponent from "../../PrivacyComponent/UserPrivateComponent";
-import { loadAllBooking } from "../../../redux/rtk/features/booking/bookingSlice";
-import SimpleButton from "../../Buttons/SimpleButton";
 import {
   deleteproformaInvoice,
   loadAllproformaInvoice,
 } from "../../../redux/rtk/features/proformaInvoice/proformaInvoiceSlice";
-import Performainvoicedrawer from "./performainvoiceprintdrawer";
 import { loadAllCompany } from "../../../redux/rtk/features/company/comapnySlice";
 import { generateProformaInvoicePDF } from "../../../utils/generateProformaInvoicePDF";
-// import { useDispatch, useSelector } from "react-redux";
 import dayjs from "dayjs";
+import debounce from "lodash/debounce";
+
+const { Title, Text } = Typography;
 
 const GetAllProformaInvoice = () => {
-  const onClose = () => { };
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [dateFilter, setDateFilter] = useState(null);
+  const [searchText, setSearchText] = useState("");
+  const [maxId, setMaxId] = useState(0);
 
-  const handleLinkClick = (invoiceNo) => {
-    navigate(`/admin/update-proformaInvoice/${invoiceNo}`);
+  const { list, total, loading } = useSelector((state) => state.proformaInvoices);
+  const { list: companyList } = useSelector((state) => state.companies);
+  const apiUrl = import.meta.env.VITE_APP_API;
+
+  const handleLinkClick = (id) => {
+    navigate(`/admin/update-proformaInvoice/${id}`);
     window.location.reload();
   };
 
-  const [maxId, setMaxId] = useState(0);
   const onDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this invoice?")) {
       const res = await dispatch(deleteproformaInvoice(id));
       if (res) {
-        dispatch(
-          loadAllproformaInvoice({ status: true, page: 1, count: 10 })
-        );
+        dispatch(loadAllproformaInvoice({ status: true, page: 1, count: 10 }));
       }
-    } else {
-      console.log("Delete action canceled by user.");
     }
   };
 
-  const handleNavigation = (invoiceNo, companyId) => {
-    navigate(`/admin/performainvoiceprint/${companyId}/${invoiceNo}`);
-  };
-
-  const apiUrl = import.meta.env.VITE_APP_API;
-
-  const dispatch = useDispatch();
-  const { list, total, loading } = useSelector(
-    (state) => state.proformaInvoices
-  );
-  const [isTransferVisible, setIsTransferVisible] = useState(true);
-
   const onTransfer = (invoiceNo, restData) => {
-    console.log(restData, "restdata");
-
-    if (
-      window.confirm("Are you sure you want to transfer this invoice?") &&
-      restData.status != "transfered"
-    ) {
-      axios
-        .post(`${apiUrl}/invoicetransfer`, {
-          invoiceNo,
-        })
-        .then((response) => {
-          console.log("Transfer successful:", response.data);
+    if (window.confirm("Are you sure you want to transfer this invoice?") && restData.status !== "transfered") {
+      axios.post(`${apiUrl}/invoicetransfer`, { invoiceNo })
+        .then(() => {
           toast.success("Transfer successful!");
+          dispatch(loadAllproformaInvoice({ status: true, page: 1, count: 10 }));
         })
         .catch((error) => {
           console.error("Transfer failed:", error);
+          toast.error("Transfer failed!");
         });
-    } else {
-      toast.error("dublicate!");
-
-      console.log("Transfer canceled by user or Du");
+    } else if (restData.status === "transfered") {
+      toast.info("Invoice already transferred!");
     }
   };
 
   const handlePrintPDF = async (invoiceNo) => {
     try {
-      console.log(invoiceNo);
-      const response = await axios.post(`${apiUrl}/proformaInvoice/report`, {
-        invoiceNo: invoiceNo
-      });
-      console.log(response);
-
-      if (response.data && response.data.data && response.data.data.length > 0) {
+      const response = await axios.post(`${apiUrl}/proformaInvoice/report`, { invoiceNo });
+      if (response.data?.data?.length > 0) {
         await generateProformaInvoicePDF(response.data.data);
         toast.success("PDF generated successfully!");
       } else {
@@ -105,247 +77,259 @@ const GetAllProformaInvoice = () => {
     }
   };
 
-  const onPrint = () => {
-    console.log("print");
-  };
-
-  const { list: companyList } = useSelector((state) => state.companies);
-
-  console.log("list", list);
   const columns = [
     {
-      id: 1,
-      title: "Proforma Invoice No.",
+      title: "Invoice No.",
       dataIndex: "RefInvoiceNo",
       key: "RefInvoiceNo",
-      // render: (id) => (
-      //   <Link to={`/admin/Detailproforma-invoice/${encodeURIComponent(id)}`}>
-      //     {id}
-      //   </Link>
-      // ),
-      width: 100,
+      width: 120,
+      render: (text) => <Text strong style={{ color: '#0891b2' }}>{text}</Text>,
     },
     {
-      id: 2,
-      title: "Proforma Invoice Date",
+      title: "Date",
       dataIndex: "invoiceDate",
       key: "invoiceDate",
-      render: (date) => moment(date).format("DD-MM-YYYY"),
       width: 110,
+      render: (date) => moment(date).format("DD-MM-YYYY"),
     },
     {
-      id: 8,
       title: "Party",
       dataIndex: "partyName",
       key: "partyName",
       width: 200,
+      ellipsis: true,
     },
     {
-      id: 3,
-      title: "Contact Person Name",
-      dataIndex: `contactPersonName`,
-      key: "contactPersonName",
-      width: 170,
+      title: "Contact Person",
+      key: "contact",
+      width: 200,
+      render: (_, record) => (
+        <Space direction="vertical" size={0}>
+          <Text strong style={{ color: '#1e293b' }}>{record.contactPersonName}</Text>
+          <Text style={{ color: '#64748b', fontSize: '12px' }}>{record.contactPersonNo}</Text>
+        </Space>
+      ),
     },
     {
-      id: 3,
-      title: "Contact Person No",
-      dataIndex: `contactPersonNo`,
-      key: "contactPersonNo",
-      width: 170,
-    },
-    {
-      id: 4,
-      title: "No of Bus Required",
+      title: "Buses",
       dataIndex: "busQtyRequired",
       key: "busQtyRequired",
-      align: "right",
-      width: 90,
+      align: "center",
+      width: 80,
+      render: (qty) => <Tag color="processing" style={{ borderRadius: '4px' }}>{qty}</Tag>,
     },
     {
-      id: 6,
-      title: "Gross Amount ",
-      dataIndex: "grossAmount",
-      key: "grossAmount",
-      align: "right",
-      width: 140,
-    },
-    {
-      id: 5,
       title: "Net Amount",
       dataIndex: "netAmount",
       key: "netAmount",
       align: "right",
-      width: 110,
+      width: 120,
+      render: (amt) => <Text strong>₹{parseFloat(amt).toLocaleString()}</Text>,
     },
     {
-      id: 7,
-      title: "Advance Received",
-      dataIndex: "advanceReceived",
-      key: "advanceReceived",
-      align: "right",
-      width: 110,
-    },
-
-    //Update Supplier Name here
-
-    {
-      id: 3,
-      title: "Action",
-      dataIndex: "",
-      key: "action",
-      fixed: "right",
-      width: 300,
-      render: ({ invoiceNo, ID, COMPANY_ID, ...restData }) => (
-        <div className="flex items-center gap-2">
-          <UserPrivateComponent permission="update-proformaInvoice">
-            <Link onClick={() => handleLinkClick(ID)}>
-              <EditOutlined
-                className="p-2 text-white bg-gray-600 rounded-md"
-                style={{ fontSize: "15px", cursor: "pointer" }}
-              />
-            </Link>
-          </UserPrivateComponent>
-
-          <UserPrivateComponent permission={"delete-proformaInvoice"}>
-            <DeleteOutlined
-              onClick={() => onDelete(invoiceNo)}
-              className="p-2 text-white bg-red-600 rounded-md"
-            />
-          </UserPrivateComponent>
-          <div>
-            {isTransferVisible && (
-              <Button
-                type="primary"
-                className="flex text-center text-white bg-green-600 rounded-md"
-                style={{ width: "80px" }}
-                loading={loading}
-                onClick={() => onTransfer(invoiceNo, restData)} // Pass the invoiceNo to the onTransfer function
-              >
-                Transfer
-              </Button>
-            )}
-          </div>
-          <div>
-            <button
-              className="px-4 py-2 font-bold text-white transition duration-300 bg-blue-600 rounded hover:bg-blue-700"
-              style={{ width: "120px" }}
-              onClick={() => handlePrintPDF(invoiceNo)}
-            >
-              Print PDF
-            </button>
-          </div>
-        </div>
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      width: 100,
+      render: (status) => (
+        <Tag color={status === "transfered" ? "success" : "warning"} style={{ borderRadius: '4px' }}>
+          {status === "transfered" ? "Transferred" : "Pending"}
+        </Tag>
       ),
     },
+    {
+      title: "Action",
+      key: "action",
+      fixed: "right",
+      width: 80,
+      render: (record) => {
+        const menu = (
+          <Menu>
+            <Menu.Item key="edit" icon={<EditOutlined style={{ color: '#0891b2' }} />} onClick={() => handleLinkClick(record.ID)}>
+              Edit
+            </Menu.Item>
+            <Menu.Item key="print" icon={<PrinterOutlined style={{ color: '#0891b2' }} />} onClick={() => handlePrintPDF(record.invoiceNo)}>
+              Print PDF
+            </Menu.Item>
+            <Menu.Item
+              key="transfer"
+              icon={<SwapOutlined style={{ color: record.status === "transfered" ? '#cbd5e1' : '#0891b2' }} />}
+              disabled={record.status === "transfered"}
+              onClick={() => onTransfer(record.invoiceNo, record)}
+            >
+              Transfer to Booking
+            </Menu.Item>
+            <Menu.Divider />
+            <Menu.Item key="delete" danger icon={<DeleteOutlined />} onClick={() => onDelete(record.invoiceNo)}>
+              Delete
+            </Menu.Item>
+          </Menu>
+        );
+
+        return (
+          <Dropdown overlay={menu} trigger={['click']} placement="bottomRight">
+            <MoreOutlined style={{ fontSize: '24px', cursor: 'pointer', color: '#ebeef3ff', padding: '4px' }} />
+          </Dropdown>
+        );
+      },
+    },
   ];
+
+  const fetchData = useCallback((params) => {
+    dispatch(loadAllproformaInvoice(params));
+  }, [dispatch]);
+
+  const debouncedFetchData = useCallback(
+    debounce((params) => fetchData(params), 500),
+    [fetchData]
+  );
+
   useEffect(() => {
-    dispatch(loadAllproformaInvoice({ status: true, page: 1, count: 10 }));
+    const params = {
+      status: true,
+      page: 1,
+      count: 10,
+      companyId: selectedCompany,
+      invoiceDate: dateFilter ? dayjs(dateFilter).format("YYYY-MM-DD") : null,
+      searchText: searchText || null,
+    };
+    debouncedFetchData(params);
+  }, [selectedCompany, dateFilter, searchText, debouncedFetchData]);
+
+  useEffect(() => {
     dispatch(loadAllCompany({ page: 1, count: 10000, status: true }));
   }, [dispatch]);
 
   useEffect(() => {
-    // Find the maximum ID from the list
     const ids = list?.map((item) => parseInt(item.ID));
     const maxId = ids?.length === 0 ? 0 : ids && Math.max(...ids);
-    setMaxId(maxId);
+    setMaxId(maxId || 0);
   }, [list]);
 
-  const filteredList = list?.filter((item) => {
-    const matchesCompany = selectedCompany
-      ? item.COMPANY_ID == selectedCompany
-      : true;
-
-    const matchesDate = dateFilter
-      ? dayjs(item.invoiceDate)
-        .startOf("day")
-        .isSame(dayjs(dateFilter).startOf("day"))
-      : true;
-
-    return matchesCompany && matchesDate;
-  });
-
   return (
-    <>
-      <div className="mt-2 card card-custom">
-        <div className="card-body">
-          <Card
-            className="border-0 md:border md:p-6 bg-transparent md:bg-[#fafafa]"
-            bodyStyle={{ padding: 0 }}
-          >
-            <div className="items-center justify-between pb-3 md:flex">
-              <h1 className="text-lg font-bold">Proforma Invoice</h1>
-              <div className="flex items-center justify-between gap-1 md:justify-start md:gap-3">
-                <div className="flex xxs:w-1/2 md:w-full xxs:flex-col md:flex-row xxs:gap-1 md:gap-5">
-                  <UserPrivateComponent permission={"create-proformaInvoice"}>
-                    <Link to={`/admin/add-proformaInvoice/${maxId + 1}`}>
-                      <SimpleButton title={"Add Proforma Invoice"} />
-                    </Link>
-                  </UserPrivateComponent>
-                </div>
+    <div className=" bg-slate-50 min-h-screen">
+      <Card bordered={false} className="shadow-none bg-transparent">
+        <Row justify="space-between" align="middle" className="mb-8">
+          <Col>
+            <Space align="center" size="middle">
+              <div style={{
+                background: 'linear-gradient(135deg, #0891b2 0%, #06b6d4 100%)',
+                padding: '12px',
+                borderRadius: '12px',
+                boxShadow: '0 4px 12px rgba(8, 145, 178, 0.2)'
+              }}>
+                <FilterOutlined className="text-white text-2xl" />
               </div>
-            </div>
-            <div className="flex flex-col gap-4 mb-4 md:flex-row md:items-end">
-              {/* Company Select */}
-              <div className="w-full md:w-1/3">
-                <Select
-                  labelInValue
-                  allowClear
-                  value={
-                    selectedCompany
-                      ? {
-                        value: selectedCompany,
-                        label: companyList.find(
-                          (c) => c.Id === selectedCompany
-                        )?.Name,
-                      }
-                      : undefined
-                  }
-                  onChange={(option) => {
-                    setSelectedCompany(option ? option.value : null);
+              <div>
+                <Title level={3} style={{ margin: 0, color: '#1e293b', fontWeight: 700 }}>Proforma Invoices</Title>
+                <Text style={{ color: '#64748b', fontSize: '15px' }}>Manage and track your proforma invoices with ease</Text>
+              </div>
+            </Space>
+          </Col>
+          <Col>
+            <UserPrivateComponent permission={"create-proformaInvoice"}>
+              <Link to={`/admin/add-proformaInvoice/${maxId + 1}`}>
+                <Button
+                  type="primary"
+                  icon={<PlusOutlined />}
+                  size="large"
+                  style={{
+                    backgroundColor: '#0891b2',
+                    borderColor: '#0891b2',
+                    height: '45px',
+                    padding: '0 24px',
+                    fontSize: '16px',
+                    fontWeight: 600,
+                    borderRadius: '8px'
                   }}
-                  placeholder="Filter by Company"
-                  optionFilterProp="children"
-                  showSearch
-                  style={{ width: "100%" }}
+                  className="shadow-md hover:opacity-90 transition-all"
                 >
-                  {companyList?.map((company) => (
-                    <Select.Option key={company.Id} value={company.Id}>
-                      {company.Name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </div>
-
-              {/* Date Filter */}
-              <div className="w-full md:w-1/4">
-                <DatePicker
-                  allowClear
-                  placeholder="Filter by Date"
-                  onChange={(date) => setDateFilter(date)}
-                  style={{ width: "100%" }}
-                  value={dateFilter}
-                  format="DD-MM-YYYY"
-                />
-              </div>
-            </div>
-
-            <UserPrivateComponent permission={"readAll-proformaInvoice"}>
-              <TableComponent
-                list={filteredList}
-                columns={columns}
-                loading={loading}
-                total={total}
-                paginatedThunk={loadAllproformaInvoice}
-                pageSize={10}
-                scrollX={1700}
-                csvFileName={"Booking List"}
-              />
+                  Add New Invoice
+                </Button>
+              </Link>
             </UserPrivateComponent>
-          </Card>
-        </div>
-      </div>
-    </>
+          </Col>
+        </Row>
+
+        <Card
+          className="bg-white border-none mb-8 shadow-sm"
+          bodyStyle={{ padding: '24px', borderRadius: '16px', background: '#f1f5f9' }}
+        >
+          <Row gutter={[24, 24]} align="bottom">
+            <Col xs={24} sm={12} md={8} lg={7}>
+              <Text strong className="block mb-2" style={{ color: '#475569' }}>
+                <BankOutlined className="mr-2" style={{ color: '#0891b2' }} />Company
+              </Text>
+              <Select
+                allowClear
+                className="w-full custom-select"
+                placeholder="Select Company"
+                onChange={(val) => setSelectedCompany(val)}
+                showSearch
+                optionFilterProp="children"
+                size="large"
+                style={{ borderRadius: '8px' }}
+              >
+                {companyList?.map((company) => (
+                  <Select.Option key={company.Id} value={company.Id}>
+                    {company.Name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Col>
+            <Col xs={24} sm={12} md={8} lg={7}>
+              <Text strong className="block mb-2" style={{ color: '#475569' }}>
+                <CalendarOutlined className="mr-2" style={{ color: '#0891b2' }} />Invoice Date
+              </Text>
+              <DatePicker
+                allowClear
+                className="w-full"
+                placeholder="Select Date"
+                onChange={(date) => setDateFilter(date)}
+                format="DD-MM-YYYY"
+                size="large"
+                style={{ borderRadius: '8px' }}
+              />
+            </Col>
+            <Col xs={24} sm={24} md={8} lg={10}>
+              <Text strong className="block mb-2" style={{ color: '#475569' }}>
+                <SearchOutlined className="mr-2" style={{ color: '#0891b2' }} />Search
+              </Text>
+              <Input
+                placeholder="Search by Invoice No, Party, Contact..."
+                prefix={<SearchOutlined className="text-slate-400" />}
+                onChange={(e) => setSearchText(e.target.value)}
+                allowClear
+                className="rounded-lg"
+                size="large"
+                style={{ borderRadius: '8px' }}
+              />
+            </Col>
+          </Row>
+        </Card>
+
+        <UserPrivateComponent permission={"readAll-proformaInvoice"}>
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <TableComponent
+              list={list}
+              columns={columns}
+              loading={loading}
+              total={total}
+              paginatedThunk={loadAllproformaInvoice}
+              pageSize={10}
+              scrollX={1200}
+              showColVisibility={false}
+              csvFileName={"Proforma_Invoices"}
+              extraParams={{
+                companyId: selectedCompany,
+                invoiceDate: dateFilter ? dayjs(dateFilter).format("YYYY-MM-DD") : null,
+                searchText: searchText || null,
+              }}
+            />
+          </div>
+        </UserPrivateComponent>
+      </Card>
+    </div>
   );
 };
 
