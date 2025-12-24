@@ -128,12 +128,12 @@ const GetAllFuel = (props) => {
     },
   ];
   useEffect(() => {
-    dispatch(loadAllFuel({ page: 1, count: 1000, status: true }));
+    dispatch(loadAllFuel({ page: 1, count: 10, status: true }));
   }, [dispatch]);
   const onDelete = async (id) => {
     const res = await dispatch(deleteFuel(id));
     if (res) {
-      dispatch(loadAllFuel({ status: true, page: 1, count: 1000 }));
+      dispatch(loadAllFuel({ status: true, page: 1, count: 10 }));
     }
   };
   return (

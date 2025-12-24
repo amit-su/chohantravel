@@ -23,10 +23,8 @@ export default function CreateDrawer({
 }) {
   // Drawer state
   const [open, setOpen] = useState(false);
-  console.log("create drawer");
 
   useEffect(() => {
-    console.log("extOpen prop:", extOpen);
     if (extOpen != undefined) {
       setOpen(extOpen);
     }
@@ -73,9 +71,8 @@ export default function CreateDrawer({
     <UserPrivateComponent permission={permission}>
       <button
         onClick={() => setOpen(true)}
-        className={`xs:px-1 px-1 text-sm md:text-base py-2 lg:px-5  border ${
-          color ? color : `bg-violet-700`
-        } hover:bg-gray-500 text-white rounded cursor-pointer`}
+        className={`xs:px-1 px-1 text-sm md:text-base py-2 lg:px-5  border ${color ? color : `bg-violet-700`
+          } hover:bg-gray-500 text-white rounded cursor-pointer`}
       >
         <div className="flex items-center justify-center gap-1">
           {update ? <EditOutlined /> : <PlusOutlined />}

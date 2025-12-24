@@ -531,7 +531,7 @@ const TableComponent = ({
           columns={columnsToShow}
           dataSource={
             !!list?.length
-              ? list.map((item) => ({ ...item, key: item?.id }))
+              ? list.map((item) => ({ ...item, key: item?.id || item?.ID }))
               : []
           }
           pagination={false} // Disable default pagination, handled separately

@@ -18,7 +18,7 @@ import { generateProformaInvoicePDF } from "../../../utils/generateProformaInvoi
 import dayjs from "dayjs";
 import debounce from "lodash/debounce";
 
-const { Title, Text } = Typography;
+const { Title, Text, Paragraph } = Typography;
 
 const GetAllProformaInvoice = () => {
   const navigate = useNavigate();
@@ -34,7 +34,6 @@ const GetAllProformaInvoice = () => {
 
   const handleLinkClick = (id) => {
     navigate(`/admin/update-proformaInvoice/${id}`);
-    window.location.reload();
   };
 
   const onDelete = async (id) => {
@@ -143,32 +142,41 @@ const GetAllProformaInvoice = () => {
       fixed: "right",
       width: 80,
       render: (record) => {
-        const menu = (
-          <Menu>
-            <Menu.Item key="edit" icon={<EditOutlined style={{ color: '#0891b2' }} />} onClick={() => handleLinkClick(record.ID)}>
-              Edit
-            </Menu.Item>
-            <Menu.Item key="print" icon={<PrinterOutlined style={{ color: '#0891b2' }} />} onClick={() => handlePrintPDF(record.invoiceNo)}>
-              Print PDF
-            </Menu.Item>
-            <Menu.Item
-              key="transfer"
-              icon={<SwapOutlined style={{ color: record.status === "transfered" ? '#cbd5e1' : '#0891b2' }} />}
-              disabled={record.status === "transfered"}
-              onClick={() => onTransfer(record.invoiceNo, record)}
-            >
-              Transfer to Booking
-            </Menu.Item>
-            <Menu.Divider />
-            <Menu.Item key="delete" danger icon={<DeleteOutlined />} onClick={() => onDelete(record.invoiceNo)}>
-              Delete
-            </Menu.Item>
-          </Menu>
-        );
+        const items = [
+          {
+            key: 'edit',
+            icon: <EditOutlined style={{ color: '#0891b2' }} />,
+            label: 'Edit',
+            onClick: () => handleLinkClick(record.ID),
+          },
+          {
+            key: 'print',
+            icon: <PrinterOutlined style={{ color: '#0891b2' }} />,
+            label: 'Print PDF',
+            onClick: () => handlePrintPDF(record.invoiceNo),
+          },
+          {
+            key: 'transfer',
+            icon: <SwapOutlined style={{ color: record.status === "transfered" ? '#cbd5e1' : '#0891b2' }} />,
+            label: 'Transfer to Booking',
+            disabled: record.status === "transfered",
+            onClick: () => onTransfer(record.invoiceNo, record),
+          },
+          {
+            type: 'divider',
+          },
+          {
+            key: 'delete',
+            danger: true,
+            icon: <DeleteOutlined />,
+            label: 'Delete',
+            onClick: () => onDelete(record.invoiceNo),
+          },
+        ];
 
         return (
-          <Dropdown overlay={menu} trigger={['click']} placement="bottomRight">
-            <MoreOutlined style={{ fontSize: '24px', cursor: 'pointer', color: '#ebeef3ff', padding: '4px' }} />
+          <Dropdown menu={{ items }} trigger={['click']} placement="bottomRight">
+            <MoreOutlined style={{ fontSize: '24px', cursor: 'pointer', color: '#94a3b8', padding: '4px' }} />
           </Dropdown>
         );
       },
@@ -209,20 +217,22 @@ const GetAllProformaInvoice = () => {
   return (
     <div className=" bg-slate-50 min-h-screen">
       <Card bordered={false} className="shadow-none bg-transparent">
-        <Row justify="space-between" align="middle" className="mb-8">
+        <Row justify="space-between" align="middle" className="mb-10">
           <Col>
-            <Space align="center" size="middle">
+            <Space align="center" size="large">
               <div style={{
-                background: 'linear-gradient(135deg, #0891b2 0%, #06b6d4 100%)',
-                padding: '12px',
-                borderRadius: '12px',
-                boxShadow: '0 4px 12px rgba(8, 145, 178, 0.2)'
+                background: 'linear-gradient(135deg, #0891b2 0%, #0d9488 100%)',
+                padding: '16px',
+                borderRadius: '20px',
+                boxShadow: '0 10px 25px rgba(8, 145, 178, 0.25)'
               }}>
-                <FilterOutlined className="text-white text-2xl" />
+                <FilterOutlined className="text-white text-4xl" />
               </div>
               <div>
-                <Title level={3} style={{ margin: 0, color: '#1e293b', fontWeight: 700 }}>Proforma Invoices</Title>
-                <Text style={{ color: '#64748b', fontSize: '15px' }}>Manage and track your proforma invoices with ease</Text>
+                <Title level={2} style={{ margin: 0, color: '#0f172a', fontWeight: 800, letterSpacing: '-0.5px' }}>Proforma Invoices</Title>
+                <Paragraph style={{ color: '#64748b', fontSize: '16px', margin: 0, marginTop: '2px' }}>
+                  A comprehensive overview of your pending and transferred proforma invoices.
+                </Paragraph>
               </div>
             </Space>
           </Col>
@@ -234,15 +244,16 @@ const GetAllProformaInvoice = () => {
                   icon={<PlusOutlined />}
                   size="large"
                   style={{
-                    backgroundColor: '#0891b2',
-                    borderColor: '#0891b2',
-                    height: '45px',
-                    padding: '0 24px',
+                    background: 'linear-gradient(135deg, #0891b2 0%, #0d9488 100%)',
+                    border: 'none',
+                    height: '52px',
+                    padding: '0 32px',
                     fontSize: '16px',
-                    fontWeight: 600,
-                    borderRadius: '8px'
+                    fontWeight: 700,
+                    borderRadius: '14px',
+                    boxShadow: '0 6px 15px rgba(8, 145, 178, 0.3)'
                   }}
-                  className="shadow-md hover:opacity-90 transition-all"
+                  className="hover:scale-105 transition-all transform active:scale-95"
                 >
                   Add New Invoice
                 </Button>
@@ -252,12 +263,12 @@ const GetAllProformaInvoice = () => {
         </Row>
 
         <Card
-          className="bg-white border-none mb-8 shadow-sm"
-          bodyStyle={{ padding: '24px', borderRadius: '16px', background: '#f1f5f9' }}
+          className="bg-white border-none mb-10 shadow-md rounded-2xl overflow-hidden"
+          bodyStyle={{ padding: '32px', background: 'linear-gradient(to bottom right, #f8fafc, #f1f5f9)' }}
         >
-          <Row gutter={[24, 24]} align="bottom">
+          <Row gutter={[32, 24]} align="bottom">
             <Col xs={24} sm={12} md={8} lg={7}>
-              <Text strong className="block mb-2" style={{ color: '#475569' }}>
+              <Text strong className="block mb-2.5" style={{ color: '#334155', fontSize: '14px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                 <BankOutlined className="mr-2" style={{ color: '#0891b2' }} />Company
               </Text>
               <Select
@@ -268,7 +279,7 @@ const GetAllProformaInvoice = () => {
                 showSearch
                 optionFilterProp="children"
                 size="large"
-                style={{ borderRadius: '8px' }}
+                style={{ borderRadius: '10px' }}
               >
                 {companyList?.map((company) => (
                   <Select.Option key={company.Id} value={company.Id}>
@@ -278,7 +289,7 @@ const GetAllProformaInvoice = () => {
               </Select>
             </Col>
             <Col xs={24} sm={12} md={8} lg={7}>
-              <Text strong className="block mb-2" style={{ color: '#475569' }}>
+              <Text strong className="block mb-2.5" style={{ color: '#334155', fontSize: '14px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                 <CalendarOutlined className="mr-2" style={{ color: '#0891b2' }} />Invoice Date
               </Text>
               <DatePicker
@@ -288,21 +299,21 @@ const GetAllProformaInvoice = () => {
                 onChange={(date) => setDateFilter(date)}
                 format="DD-MM-YYYY"
                 size="large"
-                style={{ borderRadius: '8px' }}
+                style={{ borderRadius: '10px' }}
               />
             </Col>
             <Col xs={24} sm={24} md={8} lg={10}>
-              <Text strong className="block mb-2" style={{ color: '#475569' }}>
+              <Text strong className="block mb-2.5" style={{ color: '#334155', fontSize: '14px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                 <SearchOutlined className="mr-2" style={{ color: '#0891b2' }} />Search
               </Text>
               <Input
                 placeholder="Search by Invoice No, Party, Contact..."
-                prefix={<SearchOutlined className="text-slate-400" />}
+                prefix={<SearchOutlined className="text-slate-400" style={{ marginRight: '8px' }} />}
                 onChange={(e) => setSearchText(e.target.value)}
                 allowClear
                 className="rounded-lg"
                 size="large"
-                style={{ borderRadius: '8px' }}
+                style={{ borderRadius: '10px' }}
               />
             </Col>
           </Row>

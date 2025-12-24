@@ -6,16 +6,18 @@ import {
   InputNumber,
   Select,
   Space,
+  Card,
+  Row,
+  Col,
+  Typography,
+  Divider,
 } from "antd";
-
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import getStaffId from "../../../utils/getStaffId";
 import { loadPartyPaginated } from "../../../redux/rtk/features/party/partySlice";
 import { loadAllCompany } from "../../../redux/rtk/features/company/comapnySlice";
-import CreateProformaInvoice from "./CreateProformaInvoice";
-import { PercentageOutlined } from "@ant-design/icons";
+import { PercentageOutlined, PlusOutlined, InfoCircleOutlined, BankOutlined, UserOutlined, EnvironmentOutlined, FileTextOutlined } from "@ant-design/icons";
 import moment from "moment";
 import { useNavigate, useParams } from "react-router-dom";
 import { addproformaInvoice } from "../../../redux/rtk/features/proformaInvoice/proformaInvoiceSlice";
@@ -24,9 +26,10 @@ import FormItem from "antd/es/form/FormItem";
 import InvoiceAdd from "./CreateProformaInvoice";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
-import localProformaSlice from "../../../redux/rtk/features/localProformaInvoice/localProformaSlice";
 import AddParty from "../../Party/addParty";
 import CreateDrawer from "../../CommonUi/CreateDrawer";
+
+const { Title, Text } = Typography;
 
 const AddProformaInvoice = () => {
   const { Option } = Select;
@@ -163,7 +166,6 @@ const AddProformaInvoice = () => {
   };
 
   const onFormSubmit = async (values) => {
-    console.log("Form value data", values, bookingArray[0].ReportDate);
     try {
       const formattedBookingArray = bookingArray.map((booking) => ({
         ...booking,
@@ -178,7 +180,6 @@ const AddProformaInvoice = () => {
       const data = {
         PartyID: values.PartyID,
         BookingDate: values.date.format("YYYY-MM-DD"),
-
         invoiceNo: id,
         companyname: values.company_id,
         ContactPersonName: values.ContactPersonName,
@@ -208,10 +209,9 @@ const AddProformaInvoice = () => {
 
       if (bookingArray.length > 0) {
         const resp = await dispatch(addproformaInvoice(data));
-        console.log("res", resp);
         if (resp.payload.status == 1) {
           setLoader(false);
-          toast.success("Proforma Invoice Entry Sucessfull.");
+          toast.success("Proforma Invoice Entry Successful.");
           navigate("/admin/proforma-invoice");
         } else if (resp.payload.status == 3) {
           setLoader(false);
@@ -226,7 +226,6 @@ const AddProformaInvoice = () => {
   };
 
   const onBookingClose = (payload) => {
-    console.log(payload, "86");
     if (payload.length) {
       setBookingArray(payload);
     }
@@ -257,469 +256,320 @@ const AddProformaInvoice = () => {
     : [];
 
   return (
-    <Form
-      form={form}
-      name="dynamic_form_nest_item"
-      onFinish={onFormSubmit}
-      onFinishFailed={() => {
-        setLoader(false);
-      }}
-      size="medium"
-      autoComplete="off"
-      layout="vertical"
-      initialValues={initValues}
-    >
-      <div className="flex gap-5 my-5 ml-4 ">
-        <div className="w-1/2 ml-4 ">
-          <div className="my-2 mb-4">
-            {/* <h4>
-              Proforma Invoice No : <strong>{id}</strong>{" "}
-            </h4> */}
-          </div>
-          <div className="flex gap-5 mt-4">
-            <Form.Item
-              style={{ marginBottom: "10px" }}
-              label="company"
-              name="company_id"
-              className="w-80"
-              rules={[
-                {
-                  required: true,
-                  message: "Please provide input !",
-                },
-              ]}
-            >
-              <Select
-                // onSelect={handleCompanySelect}
-                onClick={handleLoadCompany}
-                placeholder="Select company"
-                optionFilterProp="children" // Filters options based on the content of the children (party names)
-                showSearch
+    <div className="bg-slate-50 min-h-screen">
+      <Form
+        form={form}
+        name="proforma_invoice_form"
+        onFinish={onFormSubmit}
+        onFinishFailed={() => setLoader(false)}
+        layout="vertical"
+        initialValues={initValues}
+        size="large"
+      >
+        <div className="p-4">
+          {/* Header Section */}
+          <Row justify="space-between" align="middle" className="mb-4">
+            <Col>
+              <Space align="center" size="middle">
+                <div style={{
+                  background: 'linear-gradient(135deg, #0891b2 0%, #0d9488 100%)',
+                  padding: '14px',
+                  borderRadius: '16px',
+                  boxShadow: '0 8px 20px rgba(8, 145, 178, 0.25)'
+                }}>
+                  <FileTextOutlined className="text-white text-3xl" />
+                </div>
+                <div>
+                  <Title level={3} style={{ margin: 0, color: '#0f172a', fontWeight: 800, letterSpacing: '-0.5px' }}>Create Proforma Invoice</Title>
+                  <Text style={{ color: '#64748b', fontSize: '14px' }}>Generate a new professional proforma invoice for your clients.</Text>
+                </div>
+              </Space>
+            </Col>
+            <Col>
+              <Space size="middle">
+                <Button size="large" onClick={() => navigate("/admin/proforma-invoice")} className="rounded-lg">
+                  Cancel
+                </Button>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  loading={loader}
+                  size="large"
+                  style={{ backgroundColor: '#0891b2', borderColor: '#0891b2' }}
+                  className="rounded-lg shadow-md hover:opacity-90 px-8"
+                >
+                  Create Invoice
+                </Button>
+              </Space>
+            </Col>
+          </Row>
+
+          <Row gutter={[16, 16]}>
+            {/* Left Column - Main Details */}
+            <Col xs={24} lg={16}>
+              <Card
+                title={<Space><div className="w-1.5 h-5 bg-cyan-500 rounded-full" /> <BankOutlined style={{ color: '#0891b2' }} /><span>Basic Information</span></Space>}
+                className="shadow-sm rounded-xl border-none mb-4 overflow-hidden"
+                headStyle={{ borderBottom: '1px solid #f1f5f9', padding: '12px 20px' }}
+                bodyStyle={{ padding: '16px 20px' }}
               >
-                {companyList?.map((company) => (
-                  <Select.Option key={company.Id} value={company.Name}>
-                    {company.Name}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Item>
-          </div>
-          <Form.Item
-            className="w-80"
-            label="Invoice No"
-            name="RefInvoiceNo"
-            rules={[
-              {
-                required: true,
-                message: "Please provide input !",
-              },
-            ]}
-          >
-            <Input
-              className=""
-              placeholder="Enter Invoice No"
-              type="text"
-              style={{ marginBottom: "2px" }}
-            />
-          </Form.Item>
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <Form.Item
+                      label="Company"
+                      name="company_id"
+                      rules={[{ required: true, message: "Please select a company" }]}
+                    >
+                      <Select
+                        placeholder="Select company"
+                        onClick={handleLoadCompany}
+                        showSearch
+                        optionFilterProp="children"
+                        className="rounded-lg"
+                      >
+                        {companyList?.map((company) => (
+                          <Select.Option key={company.Id} value={company.Name}>
+                            {company.Name}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item
+                      label="Invoice No"
+                      name="RefInvoiceNo"
+                      rules={[{ required: true, message: "Please enter invoice number" }]}
+                    >
+                      <Input placeholder="Enter Invoice No" className="rounded-lg" />
+                    </Form.Item>
+                  </Col>
+                </Row>
 
-          <Form.Item
-            label="Party"
-            name="PartyID"
-            className="mb-4"
-            rules={[
-              {
-                required: true,
-                message: "Please provide input!",
-              },
-            ]}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <Select
-                showSearch
-                onSelect={handlePartySelect}
-                onClick={handleLoadParty}
-                placeholder="Select party"
-                style={{ flex: 1 }}
-                optionFilterProp="children" // Search will filter based on the content of the options
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <Form.Item
+                      label="Party"
+                      name="PartyID"
+                      rules={[{ required: true, message: "Please select a party" }]}
+                    >
+                      <div className="flex gap-2">
+                        <Select
+                          showSearch
+                          onSelect={handlePartySelect}
+                          onClick={handleLoadParty}
+                          placeholder="Select party"
+                          className="flex-1 rounded-lg"
+                          optionFilterProp="children"
+                        >
+                          {sortedPartyList?.map((party) => (
+                            <Select.Option key={party.id} value={party.id}>
+                              {party.partyName}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                        <CreateDrawer width={60} permission={"create-party"} title={"Create Party"}>
+                          <AddParty />
+                        </CreateDrawer>
+                      </div>
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item label="Invoice Date" name="date">
+                      <DatePicker format="DD-MM-YYYY" className="w-full rounded-lg" />
+                    </Form.Item>
+                  </Col>
+                </Row>
+
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <Form.Item label="Contact Person" name="ContactPersonName">
+                      <Input placeholder="Name" prefix={<UserOutlined className="text-slate-400" />} className="rounded-lg" />
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item label="Contact Number" name="ContactPersonNo">
+                      <Input placeholder="Number" type="number" className="rounded-lg" />
+                    </Form.Item>
+                  </Col>
+                </Row>
+
+                <Form.Item label="Party Address" name="address" rules={[{ required: true, message: "Please enter address" }]}>
+                  <TextArea rows={3} placeholder="Enter full address" className="rounded-lg" />
+                </Form.Item>
+              </Card>
+
+              <Card
+                title={<Space><div className="w-1.5 h-5 bg-teal-500 rounded-full" /> <InfoCircleOutlined style={{ color: '#0d9488' }} /><span>Additional Details</span></Space>}
+                className="shadow-sm rounded-xl border-none overflow-hidden"
+                headStyle={{ borderBottom: '1px solid #f1f5f9', padding: '12px 20px' }}
+                bodyStyle={{ padding: '16px 20px' }}
               >
-                {sortedPartyList?.map((party) => (
-                  <Select.Option key={party.id} value={party.id}>
-                    {party.partyName}
-                  </Select.Option>
-                ))}
-              </Select>
-              <CreateDrawer
-                width={60}
-                permission={"create-party"}
-                title={"Create Party"}
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <Form.Item label="GST Type" name="GstType" rules={[{ required: true, message: "Select GST type" }]}>
+                      <Select placeholder="Select GST Type" onChange={setGstType} className="rounded-lg">
+                        <Select.Option value="CGST">CGST (Local)</Select.Option>
+                        <Select.Option value="IGST">IGST (Interstate)</Select.Option>
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item label="Party GST NO" name="GSTNO">
+                      <Input placeholder="Enter GST NO" className="rounded-lg" />
+                    </Form.Item>
+                  </Col>
+                </Row>
+
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <Form.Item label="Reference" name="ReferredBy">
+                      <Input placeholder="Referred By" className="rounded-lg" />
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item label="Permit Required" name="PermitReq">
+                      <Select placeholder="Select" className="rounded-lg">
+                        <Select.Option value="Yes">Yes</Select.Option>
+                        <Select.Option value="No">No</Select.Option>
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                </Row>
+
+                <Form.Item label="Remarks" name="Remarks">
+                  <Input placeholder="Any additional notes..." className="rounded-lg" />
+                </Form.Item>
+              </Card>
+            </Col>
+
+            {/* Right Column - Summary & Calculations */}
+            <Col xs={24} lg={8}>
+              <Card
+                title={<Space><div className="w-1.5 h-5 bg-indigo-500 rounded-full" /> <FileTextOutlined style={{ color: '#6366f1' }} /><span>Order Summary</span></Space>}
+                className="shadow-md rounded-xl border-none sticky top-4 overflow-hidden"
+                headStyle={{ borderBottom: '1px solid #f1f5f9', padding: '12px 20px' }}
+                bodyStyle={{ padding: '16px 20px' }}
               >
-                <AddParty />
-              </CreateDrawer>
-            </div>
-          </Form.Item>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center text-slate-600">
+                    <Text>Subtotal</Text>
+                    <Text strong>₹{total.toLocaleString(undefined, { minimumFractionDigits: 2 })}</Text>
+                  </div>
 
-          <Form.Item
-            className="mb-2 w-80 pb-15"
-            label="Contact Person Name"
-            name="ContactPersonName"
-            rules={[
-              {
-                required: false,
-                message: "Please provide input !",
-              },
-            ]}
-          >
-            <Input placeholder="Enter contact Person Name" />
-          </Form.Item>
+                  <Divider className="my-2" />
 
-          <Form.Item
-            className="w-80"
-            label="Contact Persion No"
-            name="ContactPersonNo"
-            rules={[
-              {
-                required: false,
-                message: "Please provide input !",
-              },
-            ]}
-          >
-            <Input
-              className=""
-              placeholder="Enter Number"
-              size={"small"}
-              type="number"
-              style={{ marginBottom: "10px" }}
-            />
-          </Form.Item>
+                  <Form.Item label="Extra / Description" name="extra" className="mb-2">
+                    <Input placeholder="e.g. Toll & Parking" className="rounded-lg" />
+                  </Form.Item>
 
-          {/* <Form.Item
-            className="w-80"
-            label="Contact Person Name"
-            name="ContactPersonName"
-            rules={[
-              {
-                required: true,
-                message: "Please provide input !",
-              },
-            ]}
-          >
-            <Input placeholder="Enter contact Person Name" />
-          </Form.Item> */}
-          <Form.Item
-            style={{ width: "30rem" }}
-            label="Party Address"
-            name="address"
-            rules={[
-              {
-                required: true,
-                message: "Please provide input !",
-              },
-            ]}
-          >
-            <TextArea rows={4} placeholder="Enter Party address" />
-          </Form.Item>
-          <Form.Item
-            style={{ marginBottom: "10px" }}
-            label="GST Type"
-            name="GstType"
-            className="w-80"
-            rules={[
-              {
-                required: true,
-                message: "Please select GST Type!",
-              },
-            ]}
-          >
-            <Select
-              placeholder="Select GST Type"
-              onChange={(value) => {
-                setGstType(value);
-              }}
+                  <Form.Item label="Toll & Parking Amount" name="tollParking" className="mb-4">
+                    <InputNumber
+                      className="w-full rounded-lg"
+                      onChange={handleTollParkingChange}
+                      formatter={value => `₹ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                      parser={value => value.replace(/\₹\s?|(,*)/g, '')}
+                      placeholder="0.00"
+                    />
+                  </Form.Item>
+
+                  <div className="flex justify-between items-center bg-slate-50 p-3 rounded-lg border border-slate-100">
+                    <Text strong className="text-slate-700">Gross Amount</Text>
+                    <Text strong className="text-slate-900 text-lg">₹{afterTollParking.toLocaleString(undefined, { minimumFractionDigits: 2 })}</Text>
+                  </div>
+
+                  <Divider className="my-4" />
+
+                  {GstType === "CGST" ? (
+                    <>
+                      <Row gutter={8} align="bottom">
+                        <Col span={10}>
+                          <Form.Item label="SGST (%)" name="SGST" rules={[{ required: true, message: "Required" }]}>
+                            <InputNumber className="w-full rounded-lg" onChange={handleSGSTChange} suffix="%" />
+                          </Form.Item>
+                        </Col>
+                        <Col span={14}>
+                          <Form.Item label="SGST Amount" name="SGSTamt">
+                            <InputNumber className="w-full rounded-lg" disabled prefix="₹" />
+                          </Form.Item>
+                        </Col>
+                      </Row>
+                      <Row gutter={8} align="bottom">
+                        <Col span={10}>
+                          <Form.Item label="CGST (%)" name="CGST" rules={[{ required: true, message: "Required" }]}>
+                            <InputNumber className="w-full rounded-lg" onChange={handleCGSTChange} suffix="%" />
+                          </Form.Item>
+                        </Col>
+                        <Col span={14}>
+                          <Form.Item label="CGST Amount" name="CGSTamt">
+                            <InputNumber className="w-full rounded-lg" disabled prefix="₹" />
+                          </Form.Item>
+                        </Col>
+                      </Row>
+                    </>
+                  ) : (
+                    <Row gutter={8} align="bottom">
+                      <Col span={10}>
+                        <Form.Item label="IGST (%)" name="IGST" rules={[{ required: true, message: "Required" }]}>
+                          <InputNumber className="w-full rounded-lg" onChange={handleIGSTChange} suffix="%" />
+                        </Form.Item>
+                      </Col>
+                      <Col span={14}>
+                        <Form.Item label="IGST Amount" name="IGSTamt">
+                          <InputNumber className="w-full rounded-lg" disabled prefix="₹" />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                  )}
+
+                  <Divider className="my-3" />
+
+                  <div className="bg-gradient-to-br from-cyan-500 to-teal-600 p-4 rounded-xl shadow-md shadow-cyan-100 mb-4 transform hover:scale-[1.01] transition-transform">
+                    <div className="flex justify-between items-center mb-1">
+                      <Text className="text-white/90 font-medium text-base">Net Payable Amount</Text>
+                      <Text className="text-white text-2xl font-black">₹{netAmount.toLocaleString()}</Text>
+                    </div>
+                    <Text className="text-white/70 text-xs italic">Inclusive of all taxes and charges</Text>
+                  </div>
+
+                  <Card className="bg-slate-50 border-slate-200 rounded-lg" bodyStyle={{ padding: '16px' }}>
+                    <Text strong className="block mb-3 text-slate-700">Advance Payment</Text>
+                    <Row gutter={8}>
+                      <Col span={10}>
+                        <Form.Item name="AdvAmtPer" className="mb-0">
+                          <InputNumber className="w-full rounded-lg" onChange={handleAdvancePaymentChange} suffix="%" placeholder="%" />
+                        </Form.Item>
+                      </Col>
+                      <Col span={14}>
+                        <Form.Item name="advAmount" className="mb-0">
+                          <InputNumber className="w-full rounded-lg" prefix="₹" placeholder="Amount" />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                  </Card>
+                </div>
+              </Card>
+            </Col>
+          </Row>
+
+          {/* Booking Items Section */}
+          <div className="mt-6">
+            <Card
+              title={<Space><div className="w-1.5 h-5 bg-cyan-500 rounded-full" /> <EnvironmentOutlined style={{ color: '#0891b2' }} /><span>Trip Details & Bookings</span></Space>}
+              className="shadow-sm rounded-xl border-none overflow-hidden"
+              headStyle={{ borderBottom: '1px solid #f1f5f9', padding: '12px 20px' }}
+              bodyStyle={{ padding: 0 }}
             >
-              <Select.Option value="CGST">CGST</Select.Option>
-              <Select.Option value="IGST">IGST</Select.Option>
-            </Select>
-          </Form.Item>
-        </div>
-
-        <div className="float-right w-1/2">
-          <Form.Item
-            label="Date"
-            className="mt-12 mb-2 w-80"
-            name="date"
-            rules={[
-              {
-                required: false,
-                message: "Please input Date!",
-              },
-            ]}
-          >
-            <DatePicker
-              style={{ marginBottom: "", width: "100%" }}
-              label="date"
-              format={"DD-MM-YYYY"}
-              value={moment(initValues.date, "DD-MM-YYYY")}
-            />
-          </Form.Item>
-
-          <Form.Item
-            style={{ width: "30rem" }}
-            label="Party GST NO"
-            name="GSTNO"
-          >
-            <Input
-              className=""
-              placeholder="Enter Party GST NO"
-              size={"small"}
-              style={{ marginBottom: "10px" }}
-            />
-          </Form.Item>
-
-          <Form.Item
-            style={{ width: "30rem" }}
-            label="Party Reference"
-            name="ReferredBy"
-          >
-            <Input
-              className=""
-              placeholder="Enter Party Reference"
-              size={"small"}
-              style={{ marginBottom: "10px" }}
-            />
-          </Form.Item>
-          <Form.Item
-            style={{ marginBottom: "10px" }}
-            label="Permit Required"
-            name="PermitReq"
-            className="w-80"
-          >
-            <Select
-              onChange={handleIncludepermit}
-              placeholder="Permint Required?"
-            >
-              <Select.Option value="Yes">Yes</Select.Option>
-              <Select.Option value="No">No</Select.Option>
-            </Select>
-          </Form.Item>
-          <Form.Item style={{ width: "30rem" }} label="Remarks" name="Remarks">
-            <Input
-              className=""
-              placeholder="Remarks"
-              size={"small"}
-              style={{ marginBottom: "10px" }}
-            />
-          </Form.Item>
-        </div>
-      </div>
-
-      <InvoiceAdd
-        list={bookingArray}
-        loading={false}
-        onBookingClose={onBookingClose}
-      />
-      <div className="float-right w-1/2 mx-5">
-        <div className="py-2">
-          <div className="flex justify-between p-1">
-            <strong>Total: </strong>
-            <strong>{total.toFixed(2)} </strong>
-          </div>
-          <div className="flex items-center justify-between py-2">
-            <span className="">Toll & Parking: </span>
-            <Form.Item className="mb-0" name="extra">
-              <Input className="w-40" size={"small"} placeholder="Add Extra" />
-            </Form.Item>
-
-            <Form.Item className="mb-0" name="tollParking">
-              <InputNumber
-                className="w-80"
-                size={"small"}
-                onChange={handleTollParkingChange}
-                addonAfter="₹"
-                placeholder="Enter Toll and Parking Cost"
+              <InvoiceAdd
+                list={bookingArray}
+                loading={false}
+                onBookingClose={onBookingClose}
               />
-            </Form.Item>
-          </div>
-          <div className="flex items-center justify-between py-1 mb-1">
-            <span>Gross Amount: </span>
-            <span>{afterTollParking.toFixed(2)}</span>
-          </div>
-          {GstType === "CGST" && (
-            <div className="flex items-center justify-between py-2">
-              <span className="">SGST: </span>
-
-              <Space.Compact className="w-80">
-                <Form.Item
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please provide input !",
-                    },
-                  ]}
-                  className="mb-0"
-                  name="SGST"
-                >
-                  <InputNumber
-                    style={{
-                      width: "100%",
-                      marginRight: "5px",
-                    }}
-                    onChange={handleSGSTChange}
-                    addonAfter={<PercentageOutlined />}
-                  />
-                </Form.Item>
-                <FormItem name={"SGSTamt"}>
-                  <InputNumber
-                    style={{
-                      width: "100%",
-                    }}
-                    disabled
-                    value={SGSTamt.toFixed(2)} // Display SGST amount here
-                    addonAfter="₹"
-                  />
-                </FormItem>
-              </Space.Compact>
-            </div>
-          )}
-          {GstType === "CGST" && (
-            <div className="flex items-center justify-between py-2">
-              <span className="">CGST: </span>
-
-              <Space.Compact className="w-80">
-                <Form.Item
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please provide input !",
-                    },
-                  ]}
-                  className="mb-0"
-                  name="CGST"
-                >
-                  <InputNumber
-                    style={{
-                      width: "100%",
-                      marginRight: "5px",
-                    }}
-                    onChange={handleCGSTChange}
-                    addonAfter={<PercentageOutlined />}
-                  />
-                </Form.Item>
-                <FormItem name={"CGSTamt"}>
-                  <InputNumber
-                    style={{
-                      width: "100%",
-                    }}
-                    disabled
-                    value={CGSTamt.toFixed(2)} // Display CGST amount here
-                    addonAfter="₹"
-                  />
-                </FormItem>
-              </Space.Compact>
-            </div>
-          )}
-          {GstType === "IGST" && (
-            <div className="flex items-center justify-between py-2">
-              <span className="">IGST: </span>
-
-              <Space.Compact className="w-80">
-                <Form.Item
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please provide input !",
-                    },
-                  ]}
-                  className="mb-0"
-                  name="IGST"
-                >
-                  <InputNumber
-                    style={{
-                      width: "100%",
-                      marginRight: "5px",
-                    }}
-                    onChange={handleIGSTChange}
-                    addonAfter={<PercentageOutlined />}
-                  />
-                </Form.Item>
-                <FormItem name={"IGSTamt"}>
-                  <InputNumber
-                    style={{
-                      width: "100%",
-                    }}
-                    disabled
-                    value={IGSTamt.toFixed(2)} // Display IGST amount here
-                    addonAfter="₹"
-                  />
-                </FormItem>
-              </Space.Compact>
-            </div>
-          )}
-          <div className="flex items-center justify-between py-1 mb-1">
-            <span>Net Amount: </span>
-            <span>{netAmount}</span>
-          </div>
-          {/* <div className="flex items-center justify-between py-2">
-            <span className="">Advance Payment: </span>
-            <Form.Item className="mb-0" name="advancePayment">
-              <InputNumber
-                placeholder="Enter Payment Percent %"
-                className="w-80"
-                style={{
-                  // width: "100%",
-                  marginRight: "5px",
-                }}
-                
-                onChange={handleAdvancePaymentChange}
-                addonAfter={<PercentageOutlined />}
-              />
-            </Form.Item>
-            <div className="flex justify-between py-1 mx-0 mb-1">
-            <span>{advancePayment.toFixed(2)}</span>
-          </div>
-          </div>
-           */}
-          <div className="flex items-center justify-between py-2">
-            <span className="">Advance Payment: </span>
-
-            <Space.Compact className="w-80">
-              <Form.Item name="AdvAmtPer">
-                <InputNumber
-                  style={{
-                    width: "100%",
-                    marginRight: "5px",
-                  }}
-                  onChange={handleAdvancePaymentChange}
-                  addonAfter={<PercentageOutlined />}
-                />
-              </Form.Item>
-              <Form.Item name="advAmount">
-                <InputNumber
-                  style={{
-                    width: "100%",
-                  }}
-                  value={advancePayment.toFixed(2)} // Display CGST amount here
-                  addonAfter="₹"
-                />
-              </Form.Item>
-            </Space.Compact>
+            </Card>
           </div>
         </div>
-        <div className="flex gap-2">
-          <Form.Item style={{ marginTop: "10px" }} className="w-full">
-            <Button
-              block
-              type="primary"
-              htmlType="submit"
-              loading={loader}
-              onClick={() => setLoader(true)}
-            >
-              Create Invoice
-            </Button>
-          </Form.Item>
-        </div>
-      </div>
-    </Form>
+      </Form>
+    </div>
   );
 };
 

@@ -11,6 +11,7 @@ const TableNoPagination = ({
   rightElement,
   children,
   scrollX,
+  summary,
 }) => {
   // column select
   const [columnsToShow, setColumnsToShow] = useState([]);
@@ -59,6 +60,7 @@ const TableNoPagination = ({
           }
           pagination={false}
           scroll={{ x: scrollX || 1000, y: window.innerHeight - 319 }}
+          summary={summary}
         />
       </div>
       {children && children}

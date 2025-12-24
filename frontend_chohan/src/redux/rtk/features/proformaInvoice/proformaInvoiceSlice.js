@@ -143,6 +143,7 @@ const proformaInvoiceSlice = createSlice({
 
     builder.addCase(loadSingleproformaInvoice.pending, (state) => {
       state.loading = true;
+      state.proformaInvoice = null;
     });
 
     builder.addCase(loadSingleproformaInvoice.fulfilled, (state, action) => {
