@@ -109,9 +109,15 @@ const UpdateAdvanceToStaffEntryDrawer = () => {
     ]);
   };
 
-  // Remove new staff member
-  const handleRemoveNewStaff = (id) => {
-    setNewEntries(newEntries.filter((entry) => entry.id !== id));
+  // Remove staff member (both new and existing)
+  const handleRemoveEntry = (record) => {
+    if (record.isNew) {
+      setNewEntries(newEntries.filter((entry) => entry.id !== record.id));
+    } else {
+      setExistingEntries(
+        existingEntries.filter((entry) => entry.entryId !== record.entryId)
+      );
+    }
   };
 
   // Handle changes to existing entries
@@ -139,10 +145,10 @@ const UpdateAdvanceToStaffEntryDrawer = () => {
       newEntries.map((entry) =>
         entry.id === id
           ? {
-              ...entry,
-              employeeId,
-              Name: selectedEmployee?.name || "",
-            }
+            ...entry,
+            employeeId,
+            Name: selectedEmployee?.name || "",
+          }
           : entry
       )
     );
@@ -256,10 +262,10 @@ const UpdateAdvanceToStaffEntryDrawer = () => {
             record.isNew
               ? handleNewEntryChange(record.id, "remark", e.target.value)
               : handleExistingEntryChange(
-                  record.entryId,
-                  "remark",
-                  e.target.value
-                )
+                record.entryId,
+                "remark",
+                e.target.value
+              )
           }
         />
       ),
@@ -267,14 +273,13 @@ const UpdateAdvanceToStaffEntryDrawer = () => {
     {
       title: "Actions",
       key: "actions",
-      render: (_, record) =>
-        record.isNew && (
-          <Button
-            danger
-            icon={<DeleteOutlined />}
-            onClick={() => handleRemoveNewStaff(record.id)}
-          />
-        ),
+      render: (_, record) => (
+        <Button
+          danger
+          icon={<DeleteOutlined />}
+          onClick={() => handleRemoveEntry(record)}
+        />
+      ),
     },
   ];
 
