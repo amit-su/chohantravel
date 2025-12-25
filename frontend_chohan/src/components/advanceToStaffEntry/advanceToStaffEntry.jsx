@@ -9,7 +9,7 @@ import axios from "axios";
 import CreateDrawer from "../CommonUi/CreateDrawer";
 import UpdateAdvanceToStaffEntryDrawer from "./updateAdvanceToStaffEntryDrawer";
 import { Button } from "antd";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, PrinterOutlined } from "@ant-design/icons";
 import Advancetostaffdrawer from "./advancetostaffprintdrawer";
 
 import TableComponent from "../CommonUi/TableComponent";
@@ -265,12 +265,14 @@ const AdvanceToStaffEntry = (props) => {
           >
             Edit
           </Button>
-          <button
-            className="px-4 py-2 font-bold text-white transition duration-300 bg-blue-500 rounded hover:bg-blue-700"
+          <Button
+            type="primary"
+            icon={<PrinterOutlined />}
             onClick={() => handleGenerateReport(AdvanceNo)}
+            style={{ marginRight: "10px", backgroundColor: "#4b5563", borderColor: "#4b5563" }}
           >
-            Print Page
-          </button>
+            Print
+          </Button>
           <UserPrivateComponent permission={"delete-proformaInvoice"}>
             <DeleteOutlined
               onClick={() => onDelete(AdvanceNo)}
