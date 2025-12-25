@@ -8,6 +8,7 @@ const {
   getAllAdvanceEntry,
   getAdvanceToStaffEntry,
   getAdvanceToStaffEntryByType,
+  getAdvanceToStaffEntryReportByAdvanceNo
 } = require("./advanceToStaffEntry.controllers");
 
 const advanceToStaffEntryRoutes = express.Router();
@@ -19,4 +20,5 @@ advanceToStaffEntryRoutes.get("/", getAllAdvanceEntry);
 advanceToStaffEntryRoutes.patch("/:id", updateAdvanceToStaffEntry);
 advanceToStaffEntryRoutes.delete("/:id", deleteSingleAdvanceToStaffEntry);
 advanceToStaffEntryRoutes.get("/staff/:type/:id", getAdvanceToStaffEntryByType);
+advanceToStaffEntryRoutes.post("/report", getAdvanceToStaffEntryReportByAdvanceNo);
 module.exports = advanceToStaffEntryRoutes;
