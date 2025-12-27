@@ -18,7 +18,7 @@ import getStaffId from "../../../utils/getStaffId";
 import { loadPartyPaginated } from "../../../redux/rtk/features/party/partySlice";
 import { loadAllCompany } from "../../../redux/rtk/features/company/comapnySlice";
 import { PercentageOutlined, PlusOutlined, InfoCircleOutlined, BankOutlined, UserOutlined, EnvironmentOutlined, FileTextOutlined } from "@ant-design/icons";
-import moment from "moment";
+
 import { useNavigate, useParams } from "react-router-dom";
 import { addproformaInvoice } from "../../../redux/rtk/features/proformaInvoice/proformaInvoiceSlice";
 import TextArea from "antd/es/input/TextArea";
@@ -43,7 +43,7 @@ const AddProformaInvoice = () => {
 
   const [afterTollParking, setAfterTollParking] = useState(0);
   const [afterGST, setAfterGST] = useState(0);
-  const [initValues, setInitValues] = useState({ date: moment() });
+  const [initValues, setInitValues] = useState({ date: dayjs() });
   const [SGSTamt, setSGSTamt] = useState(0);
   const [CGSTamt, setCGSTamt] = useState(0);
   const [IGSTamt, setIGSTamt] = useState(0);
@@ -242,6 +242,10 @@ const AddProformaInvoice = () => {
     totalCalculator();
   }, [bookingArray]);
 
+  useEffect(() => {
+    handleLoadParty();
+  }, []);
+
   const handleAdvancePaymentChange = (value) => {
     const percent = parseFloat(value);
     const amountToSubtract = (percent / 100) * total || 0;
@@ -268,49 +272,50 @@ const AddProformaInvoice = () => {
       >
         <div className="p-4">
           {/* Header Section */}
-          <Row justify="space-between" align="middle" className="mb-4">
-            <Col>
-              <Space align="center" size="middle">
-                <div style={{
-                  background: 'linear-gradient(135deg, #0891b2 0%, #0d9488 100%)',
-                  padding: '14px',
-                  borderRadius: '16px',
-                  boxShadow: '0 8px 20px rgba(8, 145, 178, 0.25)'
-                }}>
-                  <FileTextOutlined className="text-white text-3xl" />
-                </div>
-                <div>
-                  <Title level={3} style={{ margin: 0, color: '#0f172a', fontWeight: 800, letterSpacing: '-0.5px' }}>Create Proforma Invoice</Title>
-                  <Text style={{ color: '#64748b', fontSize: '14px' }}>Generate a new professional proforma invoice for your clients.</Text>
-                </div>
-              </Space>
-            </Col>
-            <Col>
-              <Space size="middle">
-                <Button size="large" onClick={() => navigate("/admin/proforma-invoice")} className="rounded-lg">
-                  Cancel
-                </Button>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  loading={loader}
-                  size="large"
-                  style={{ backgroundColor: '#0891b2', borderColor: '#0891b2' }}
-                  className="rounded-lg shadow-md hover:opacity-90 px-8"
-                >
-                  Create Invoice
-                </Button>
-              </Space>
-            </Col>
-          </Row>
+          <div className="flex flex-col gap-4 mb-6 md:flex-row md:items-center md:justify-between px-6 py-5 bg-white rounded-2xl border border-slate-100 shadow-sm">
+            <div className="flex items-center gap-4">
+              <div style={{
+                background: 'linear-gradient(135deg, #0891b2 0%, #0d9488 100%)',
+                padding: '12px',
+                borderRadius: '16px',
+                boxShadow: '0 4px 12px rgba(8, 145, 178, 0.2)'
+              }}>
+                <FileTextOutlined className="text-white text-2xl" />
+              </div>
+              <div>
+                <Title level={4} style={{ margin: 0, color: '#0f172a', fontWeight: 700 }}>Create Proforma Invoice</Title>
+                <Text className="text-slate-500 text-xs">Generate a new professional proforma invoice.</Text>
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <Button
+                size="large"
+                onClick={() => navigate("/admin/proforma-invoice")}
+                className="rounded-xl hover:bg-slate-50 border-slate-200 text-slate-600 font-medium"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="primary"
+                htmlType="submit"
+                loading={loader}
+                size="large"
+                style={{ background: 'linear-gradient(135deg, #0891b2 0%, #0d9488 100%)', border: 'none' }}
+                className="rounded-xl shadow-lg shadow-cyan-500/20 px-6 font-semibold hover:opacity-90 transition-all"
+              >
+                Create Invoice
+              </Button>
+            </div>
+          </div>
 
           <Row gutter={[16, 16]}>
             {/* Left Column - Main Details */}
             <Col xs={24} lg={16}>
               <Card
-                title={<Space><div className="w-1.5 h-5 bg-cyan-500 rounded-full" /> <BankOutlined style={{ color: '#0891b2' }} /><span>Basic Information</span></Space>}
-                className="shadow-sm rounded-xl border-none mb-4 overflow-hidden"
-                headStyle={{ borderBottom: '1px solid #f1f5f9', padding: '12px 20px' }}
+                title={<span className="text-blue-600 font-bold flex items-center gap-2"><BankOutlined /> Basic Information</span>}
+                className="mb-6 shadow-md border-t-4 border-blue-500 rounded-xl bg-white/80 backdrop-blur-sm"
+                bordered={false}
                 bodyStyle={{ padding: '16px 20px' }}
               >
                 <Row gutter={16}>
@@ -368,14 +373,23 @@ const AddProformaInvoice = () => {
                             </Select.Option>
                           ))}
                         </Select>
-                        <CreateDrawer width={60} permission={"create-party"} title={"Create Party"}>
+                        <CreateDrawer
+                          width={60}
+                          permission={"create-party"}
+                          title={"New Party"}
+                          color="bg-gradient-to-r from-teal-500 to-emerald-500 border-none shadow hover:from-teal-600 hover:to-emerald-600"
+                        >
                           <AddParty />
                         </CreateDrawer>
                       </div>
                     </Form.Item>
                   </Col>
                   <Col span={12}>
-                    <Form.Item label="Invoice Date" name="date">
+                    <Form.Item
+                      label="Invoice Date"
+                      name="date"
+                      rules={[{ required: true, message: "Please select invoice date" }]}
+                    >
                       <DatePicker format="DD-MM-YYYY" className="w-full rounded-lg" />
                     </Form.Item>
                   </Col>
@@ -400,9 +414,9 @@ const AddProformaInvoice = () => {
               </Card>
 
               <Card
-                title={<Space><div className="w-1.5 h-5 bg-teal-500 rounded-full" /> <InfoCircleOutlined style={{ color: '#0d9488' }} /><span>Additional Details</span></Space>}
-                className="shadow-sm rounded-xl border-none overflow-hidden"
-                headStyle={{ borderBottom: '1px solid #f1f5f9', padding: '12px 20px' }}
+                title={<span className="text-purple-600 font-bold flex items-center gap-2"><InfoCircleOutlined /> Additional Details</span>}
+                className="mb-6 shadow-md border-t-4 border-purple-500 rounded-xl bg-white/80 backdrop-blur-sm"
+                bordered={false}
                 bodyStyle={{ padding: '16px 20px' }}
               >
                 <Row gutter={16}>
@@ -446,9 +460,9 @@ const AddProformaInvoice = () => {
             {/* Right Column - Summary & Calculations */}
             <Col xs={24} lg={8}>
               <Card
-                title={<Space><div className="w-1.5 h-5 bg-indigo-500 rounded-full" /> <FileTextOutlined style={{ color: '#6366f1' }} /><span>Order Summary</span></Space>}
-                className="shadow-md rounded-xl border-none sticky top-4 overflow-hidden"
-                headStyle={{ borderBottom: '1px solid #f1f5f9', padding: '12px 20px' }}
+                title={<span className="text-indigo-600 font-bold flex items-center gap-2"><FileTextOutlined /> Order Summary</span>}
+                className="shadow-md border-t-4 border-indigo-500 rounded-xl bg-white/80 backdrop-blur-sm sticky top-4 overflow-hidden"
+                bordered={false}
                 bodyStyle={{ padding: '16px 20px' }}
               >
                 <div className="space-y-4">
@@ -555,9 +569,9 @@ const AddProformaInvoice = () => {
           {/* Booking Items Section */}
           <div className="mt-6">
             <Card
-              title={<Space><div className="w-1.5 h-5 bg-cyan-500 rounded-full" /> <EnvironmentOutlined style={{ color: '#0891b2' }} /><span>Trip Details & Bookings</span></Space>}
-              className="shadow-sm rounded-xl border-none overflow-hidden"
-              headStyle={{ borderBottom: '1px solid #f1f5f9', padding: '12px 20px' }}
+              title={<span className="text-pink-600 font-bold flex items-center gap-2"><EnvironmentOutlined /> Trip Details & Bookings</span>}
+              className="mb-8 shadow-md border-0 border-t-4 border-pink-500 rounded-xl bg-white/90 backdrop-blur-sm"
+              bordered={false}
               bodyStyle={{ padding: 0 }}
             >
               <InvoiceAdd

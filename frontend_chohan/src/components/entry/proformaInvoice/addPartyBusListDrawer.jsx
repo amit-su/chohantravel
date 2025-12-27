@@ -1,7 +1,5 @@
 import {
   Button,
-  Card,
-  DatePicker,
   Form,
   Input,
   Select,
@@ -178,7 +176,23 @@ const AddPartyBusListDrawer = ({ onClose }) => {
           <Form.Item
             label="Trip Start Date"
             name="ReportDate"
-            rules={[{ required: false, message: "Please fill input!" }]}
+            rules={[
+              { required: false, message: "Please fill input!" },
+              {
+                validator: (_, value) => {
+                  if (!value) return Promise.resolve();
+                  // Parse DD-MM-YYYY format
+                  const parts = value.split('-');
+                  if (parts.length === 3) {
+                    const year = parseInt(parts[2], 10);
+                    if (year < 1900 || year > 2079) {
+                      return Promise.reject(new Error('Year must be between 1900 and 2079'));
+                    }
+                  }
+                  return Promise.resolve();
+                }
+              }
+            ]}
           >
             <Input
               maxLength={10}
@@ -190,7 +204,23 @@ const AddPartyBusListDrawer = ({ onClose }) => {
           <Form.Item
             label="Trip End Date"
             name="tripEndDate"
-            rules={[{ required: false, message: "Please fill input!" }]}
+            rules={[
+              { required: false, message: "Please fill input!" },
+              {
+                validator: (_, value) => {
+                  if (!value) return Promise.resolve();
+                  // Parse DD-MM-YYYY format
+                  const parts = value.split('-');
+                  if (parts.length === 3) {
+                    const year = parseInt(parts[2], 10);
+                    if (year < 1900 || year > 2079) {
+                      return Promise.reject(new Error('Year must be between 1900 and 2079'));
+                    }
+                  }
+                  return Promise.resolve();
+                }
+              }
+            ]}
           >
             <Input
               maxLength={10}

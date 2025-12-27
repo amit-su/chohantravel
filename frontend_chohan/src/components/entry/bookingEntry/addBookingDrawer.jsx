@@ -9,573 +9,454 @@ import {
   Select,
   TimePicker,
   Typography,
+  Card,
+  Row,
+  Col,
+  Space,
+  Divider,
 } from "antd";
 import { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addLocalBooking } from "../../../redux/rtk/features/localBusBooking/localBusBookingSlice";
-import TextArea from "antd/es/input/TextArea";
 import { loadAllBusCategory } from "../../../redux/rtk/features/busCategory/busCategorySlice";
 import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+dayjs.extend(customParseFormat);
 import { CheckBusAvalability } from "../../../redux/rtk/features/bookingEntry/bookingsEntrySlice";
-import axios from "axios";
-import { CiViewList } from "react-icons/ci";
+import { CiCircleInfo, CiViewList } from "react-icons/ci";
+import {
+  CalendarOutlined,
+  ClockCircleOutlined,
+  EnvironmentOutlined,
+  PlusOutlined,
+  InfoCircleOutlined,
+  CarOutlined,
+  TagOutlined,
+  DollarOutlined
+} from "@ant-design/icons";
 import TableNoPagination from "../../CommonUi/TableNoPagination";
+import TextArea from "antd/es/input/TextArea";
+
+const { Title, Text } = Typography;
+
 const AddBooking = ({ isIncludeGST, onClose }) => {
   const dispatch = useDispatch();
-  var buscattpe = "";
-  const { Title } = Typography;
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [initValues, setInitValues] = useState({
-    ReportDate: dayjs(),
-    tripEndDate: dayjs(),
-  });
-  const [selectedTime, setSelectedTime] = useState("");
-  const [selectedTime1, setSelectedTime1] = useState("");
+  const [fixedRate, setFixedRate] = useState(true);
+  const [amount, setAmount] = useState(0);
 
   const { stock, list: availableBusList } = useSelector(
     (state) => state.bookingEntry
   );
 
-  const [fixedRate, setFixedRate] = useState(false);
-  const [amount, setAmount] = useState(0);
-  const handleRateType = (value) => {
-    value == "FR" ? setFixedRate(true) : setFixedRate(false);
-    calculateAmount(0, 0);
-  };
-  const handleLoadBus = () => {
-    dispatch(loadAllBusCategory({ page: 1, count: 10000, status: true }));
-  };
-  //API CALL//
-  const [list2, setList] = useState([]);
+  const { list: busCatList, loading: busCatLoading } = useSelector(
+    (state) => state.busCategories
+  );
 
-  const [loading2, setLoading2] = useState(true);
-  const [error, setError] = useState(null);
-  const apiUrl = import.meta.env.VITE_APP_API;
+  const handleLoadBus = useCallback(() => {
+    if (!busCatList || busCatList.length === 0) {
+      dispatch(loadAllBusCategory({ page: 1, count: 10000, status: true }));
+    }
+  }, [dispatch, busCatList]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${apiUrl}/busCategory`);
-        setList(response.data.data);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading2(false);
-      }
-    };
+    handleLoadBus();
+    // Sync fixedRate with form's initial values if needed
+    const currentRateType = form.getFieldValue("rateType") || "FR";
+    setFixedRate(currentRateType === "FR");
+  }, [handleLoadBus, form]);
 
-    // Call the function
-    fetchData();
-  }, []);
-  //END//
-  const busCatList = list2;
-  // const { list: busCatList } = useSelector((state) => state.busCategories);
+  const handleRateType = (value) => {
+    setFixedRate(value === "FR");
+    calculateAmount(form.getFieldValue("rate") || 0, form.getFieldValue("busQty") || 0);
+  };
 
-  const handleBusAvailabilityCheck = async (values) => {
+  const handleBusAvailabilityCheck = useCallback((values) => {
     const { busType, ReportDate, tripEndDate, busQty } = values;
     if (busType && ReportDate && tripEndDate && busQty) {
-      try {
-        const resp = dispatch(CheckBusAvalability(values));
-      } catch (error) {
-        console.error("Error checking bus availability:", error);
-        setLoading(false);
-      }
+      dispatch(CheckBusAvalability({
+        ...values,
+        ReportDate: ReportDate.format("DD-MM-YYYY"),
+        tripEndDate: tripEndDate.format("DD-MM-YYYY"),
+      }));
     }
-  };
-  const onFinish = async (values) => {
-    console.log("value", values);
-    try {
-      const selectedBusTypeId = values?.busType;
+  }, [dispatch]);
 
+  const onFinish = async (values) => {
+    try {
+      setLoading(true);
+      const selectedBusTypeId = values?.busType;
       const selectedBusCategory = busCatList?.find(
         (busCategory) => busCategory.id === selectedBusTypeId
       );
 
       const busCategoryName = selectedBusCategory?.buscategory || "";
 
-      values.busCategory = busCategoryName;
-      values.BusTypeID = selectedBusTypeId;
+      const formattedValues = {
+        ...values,
+        busCategory: busCategoryName,
+        BusTypeID: selectedBusTypeId,
+        ReportDate: values.ReportDate.format("DD-MM-YYYY"),
+        tripEndDate: values.tripEndDate.format("DD-MM-YYYY"),
+        reportTime: values.reportTime.format("hh:mm a"),
+        ReturnTime: values.ReturnTime.format("hh:mm a"),
+      };
 
-      // Safely format selected dates
-      // values.ReportDate = selectedDate?.isValid?.() ? selectedDate.format("DD-MM-YYYY") : "";
-
-      // values.tripEndDate = selectedDate2?.isValid?.()
-      //   ? selectedDate2.format("DD-MM-YYYY")
-      //   : "";
-
-      // values.reportTime = selectedTime?.format("hh:mm a") || "";
-      // values.ReturnTime = selectedTime1?.format("hh:mm a") || "";
-
-      setLoading(false);
-      onClose(values);
+      onClose(formattedValues);
     } catch (error) {
-      console.error("Error on form submission:", error);
       setLoading(false);
     }
   };
 
-  const handleBusQtyChange = (busQty) => {
-    const rate = form.getFieldValue("rate") || 1;
-    calculateAmount(rate, busQty);
-  };
-  const calculateAmount = (rate = 1, busQty = 1) => {
+  const calculateAmount = (rate = 0, busQty = 0) => {
     const newAmount = rate * busQty;
     setAmount(newAmount);
     form.setFieldsValue({ Amt: newAmount });
   };
-  const onFinishFailed = () => {
-    setLoading(false);
-  };
-
-  const handleChange = (time) => {
-    setSelectedTime(time);
-  };
-  const handleChange1 = (time) => {
-    setSelectedTime1(time);
-  };
 
   const handleValuesChange = (changedValues, allValues) => {
-    handleBusAvailabilityCheck(allValues);
-  };
-  const [selectedDate, setSelectedDate] = useState(dayjs());
-
-  const handleDateChange = useCallback((date) => {
-    const newDate = dayjs(date, "DD-MM-YYYY");
-    setSelectedDate(newDate.isValid() ? newDate : dayjs());
-  }, []);
-  const [selectedDate2, setSelectedDate2] = useState(dayjs());
-
-  const handleDateChange2 = useCallback((date) => {
-    const newDate = dayjs(date, "DD-MM-YYYY");
-    setSelectedDate2(newDate.isValid() ? newDate : dayjs());
-  }, []);
-
-  const formatDateInput = (e, fieldName) => {
-    let value = e.target.value.replace(/\D/g, ""); // Keep only digits
-
-    if (value.length > 8) value = value.slice(0, 8);
-
-    let formatted = value;
-    if (value.length >= 5) {
-      formatted = `${value.slice(0, 2)}-${value.slice(2, 4)}-${value.slice(4)}`;
-    } else if (value.length >= 3) {
-      formatted = `${value.slice(0, 2)}-${value.slice(2)}`;
+    if (changedValues.busType || changedValues.ReportDate || changedValues.tripEndDate || changedValues.busQty) {
+      handleBusAvailabilityCheck(allValues);
     }
 
-    form.setFieldsValue({ [fieldName]: formatted });
+    if (changedValues.rate || changedValues.busQty) {
+      const rate = allValues.rate || 0;
+      const busQty = allValues.busQty || 0;
+      calculateAmount(rate, busQty);
+    }
   };
 
   const modalCol = [
     {
-      id: 1,
       title: "Bus No.",
       dataIndex: "busNo",
       key: "busNo",
     },
     {
-      id: 2,
       title: "Sitting Capacity",
       dataIndex: "sittingCapacity",
       key: "sittingCapacity",
     },
     {
-      id: 3,
       title: "Bus Category",
       dataIndex: "buscategory",
       key: "buscategory",
     },
   ];
 
-  useEffect(() => {
-    handleLoadBus();
-    console.log("handleLoadBus");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   return (
-    <>
-      <div className="h-full ">
-        <Title level={4} className="m-3 text-center">
-          Add Booking Details
-        </Title>
-        <div className="flex items-center justify-between ">
+    <div className="bg-slate-50 min-h-screen">
+      <div className="p-6">
+        {/* Header section with gradient */}
+        <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <Space align="start" size="middle">
+            <div style={{
+              background: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
+              padding: '12px',
+              borderRadius: '12px',
+              boxShadow: '0 4px 12px rgba(99, 102, 241, 0.2)'
+            }}>
+              <PlusOutlined className="text-white text-2xl" />
+            </div>
+            <div>
+              <Title level={4} style={{ margin: 0, fontWeight: 700 }}>Add Trip Details</Title>
+              <Text type="secondary">Configuration for vehicle booking and schedule</Text>
+            </div>
+          </Space>
+
           <Alert
+            className="rounded-xl border-none shadow-sm"
+            style={{
+              backgroundColor: stock > 0 ? '#f0fdf4' : stock === -1 ? '#f8fafc' : '#fef2f2',
+              minWidth: '240px'
+            }}
             message={
-              <div className="flex items-center">
-                {stock > 0
-                  ? `${stock} Bus Available`
-                  : stock === -1
-                  ? "Please select values to check Bus availability"
-                  : "No Bus Available"}
+              <div className="flex items-center justify-between">
+                <Space>
+                  <CiCircleInfo className={stock > 0 ? "text-green-600" : stock === -1 ? "text-slate-500" : "text-red-600"} size={20} />
+                  <Text strong style={{ color: stock > 0 ? '#166534' : stock === -1 ? '#475569' : '#991b1b' }}>
+                    {stock > 0
+                      ? `${stock} Bus Available`
+                      : stock === -1
+                        ? "Select requirements to check stock"
+                        : "No Vehicles Available"}
+                  </Text>
+                </Space>
                 {stock > 0 && (
-                  <button
-                    className="flex items-center ml-3 text-center bg-green-500 "
-                    type="primary"
-                    style={{
-                      height: "30px",
-                      width: "75px",
-                      color: "white",
-                      borderRadius: "10px",
-                    }}
+                  <Button
+                    size="small"
+                    type="text"
+                    className="flex items-center text-green-700 hover:text-green-800 font-semibold ml-2"
                     onClick={() => setModalVisible(true)}
+                    icon={<CiViewList size={16} />}
                   >
-                    <CiViewList
-                      style={{
-                        fontSize: "20px",
-                        color: "white",
-                        marginRight: "5px",
-                        marginInline: "5px",
-                      }}
-                    />
-                    Show
-                  </button>
+                    View
+                  </Button>
                 )}
               </div>
             }
-            type={stock > 0 ? "success" : "error"}
-            className="text-center "
-            style={{ margin: "auto", marginTop: "20px" }}
           />
         </div>
-        <Modal
-          title="Available Bus Details"
-          visible={modalVisible}
-          onCancel={() => setModalVisible(false)}
-          footer={null}
-        >
-          <TableNoPagination
-            scrollX={400}
-            columns={modalCol}
-            list={availableBusList}
-          />
-        </Modal>
+
         <Form
           form={form}
-          className=""
-          name="basicForm"
           layout="vertical"
-          style={{ marginLeft: "40px", marginRight: "40px" }}
-          initialValues={{
-            remember: true,
-            initValues,
-          }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
           onValuesChange={handleValuesChange}
-          autoComplete="off"
+          initialValues={{
+            ReportDate: dayjs(),
+            tripEndDate: dayjs(),
+            busQty: 1,
+            rateType: "FR"
+          }}
+          requiredMark="optional"
         >
-          <div className="flex flex-wrap justify-between">
-            <div className="w-full p-2 md:w-1/2">
-              <Form.Item
-                style={{ marginBottom: "10px" }}
-                label="Bus Type"
-                name="busType"
-                rules={[
-                  {
-                    required: false,
-                    message: "Please fill input !",
-                  },
-                ]}
+          <Row gutter={24}>
+            <Col xs={24} lg={15}>
+              <Card
+                className="shadow-sm border-none rounded-2xl mb-6"
+                title={<Space><EnvironmentOutlined className="text-indigo-500" /><span>Voyage Information</span></Space>}
               >
-                <Select
-                  placeholder="Select bus type"
-                  defaultValue={initValues?.buscattpe}
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <Form.Item
+                      label="Vehicle Category"
+                      name="busType"
+                      rules={[{ required: true, message: "Required" }]}
+                    >
+                      <Select
+                        placeholder="Select type"
+                        loading={busCatLoading}
+                        className="rounded-lg"
+                      >
+                        {busCatList?.map((cat) => (
+                          <Select.Option key={cat.id} value={cat.id}>
+                            {cat.buscategory}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item
+                      label="Seating Capacity"
+                      name="sittingCapacity"
+                      rules={[{ required: true, message: "Required" }]}
+                    >
+                      <InputNumber className="w-full rounded-lg" placeholder="e.g. 50" min={1} />
+                    </Form.Item>
+                  </Col>
+                </Row>
+
+                <Form.Item
+                  label="Itinerary Description"
+                  name="tripDescription"
+                  rules={[{ required: true, message: "Required" }]}
                 >
-                  {busCatList?.map((busCategory) => (
-                    <Select.Option key={busCategory.id} value={busCategory.id}>
-                      {busCategory.buscategory}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Item>
+                  <TextArea placeholder="Details about the destination and purpose..." rows={4} className="rounded-lg" />
+                </Form.Item>
 
-              <Form.Item
-                style={{ marginBottom: "10px" }}
-                label="Sitting Capacity"
-                name="sittingCapacity"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please fill input !",
-                  },
-                ]}
-              >
-                <Input
-                  placeholder="Enter Sitting Capacity of Bus"
-                  type="number"
-                />
-              </Form.Item>
-              <Form.Item
-                style={{ marginBottom: "10px" }}
-                label="Trip Description"
-                name="tripDescription"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please fill input !",
-                  },
-                ]}
-              >
-                <TextArea placeholder="Enter  Description" rows={4} />
-              </Form.Item>
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <Form.Item
+                      label="Start Date"
+                      name="ReportDate"
+                      rules={[{ required: true, message: "Required" }]}
+                    >
+                      <DatePicker className="w-full rounded-lg" format="DD-MM-YYYY" prefix={<CalendarOutlined />} />
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item
+                      label="End Date"
+                      name="tripEndDate"
+                      rules={[{ required: true, message: "Required" }]}
+                    >
+                      <DatePicker className="w-full rounded-lg" format="DD-MM-YYYY" prefix={<CalendarOutlined />} />
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </Card>
 
-              <Form.Item
-                label="Trip Start Date"
-                name="ReportDate"
-                rules={[{ required: false, message: "Please fill input!" }]}
+              <Card
+                className="shadow-sm border-none rounded-2xl"
+                title={<Space><ClockCircleOutlined className="text-indigo-500" /><span>Schedule & Metrics</span></Space>}
               >
-                <Input
-                  maxLength={10}
-                  placeholder="DD-MM-YYYY"
-                  onChange={(e) => formatDateInput(e, "ReportDate")}
-                />
-              </Form.Item>
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <Form.Item
+                      label="Reporting Time"
+                      name="reportTime"
+                      rules={[{ required: true, message: "Required" }]}
+                    >
+                      <TimePicker className="w-full rounded-lg" format="hh:mm a" use12Hours />
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item
+                      label="Estimated Return"
+                      name="ReturnTime"
+                      rules={[{ required: true, message: "Required" }]}
+                    >
+                      <TimePicker className="w-full rounded-lg" format="hh:mm a" use12Hours />
+                    </Form.Item>
+                  </Col>
+                </Row>
 
-              <Form.Item
-                label="Trip End Date"
-                name="tripEndDate"
-                rules={[{ required: false, message: "Please fill input!" }]}
-              >
-                <Input
-                  maxLength={10}
-                  placeholder="DD-MM-YYYY"
-                  onChange={(e) => formatDateInput(e, "tripEndDate")}
-                />
-              </Form.Item>
+                {!fixedRate && (
+                  <Row gutter={16}>
+                    <Col span={12}>
+                      <Form.Item
+                        label="Usage Hours"
+                        name="hours"
+                        rules={[{ required: true, message: "Required" }]}
+                      >
+                        <InputNumber className="w-full rounded-lg" min={0} />
+                      </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                      <Form.Item
+                        label="Est. Kilometers"
+                        name="kms"
+                        rules={[{ required: true, message: "Required" }]}
+                      >
+                        <InputNumber className="w-full rounded-lg" min={0} />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                )}
+              </Card>
+            </Col>
 
-              <Form.Item
-                style={{ marginBottom: "10px" }}
-                label="Hours"
-                name="hours"
-                hidden={fixedRate}
-                rules={[
-                  {
-                    required: !fixedRate,
-                    message: "Please provide input !",
-                  },
-                ]}
+            <Col xs={24} lg={9}>
+              <Card
+                className="shadow-sm border-none rounded-2xl overflow-hidden mb-6"
+                title={<Space><DollarOutlined className="text-indigo-500" /><span>Commercials</span></Space>}
+                bodyStyle={{ padding: '0px' }}
               >
-                <InputNumber />
-              </Form.Item>
+                <div className="p-5 bg-indigo-50/50">
+                  <Form.Item
+                    label="Rate Structure"
+                    name="rateType"
+                    rules={[{ required: true, message: "Required" }]}
+                  >
+                    <Select onChange={handleRateType} className="rounded-lg shadow-sm">
+                      <Select.Option value="FR">Fixed Rate Package</Select.Option>
+                      <Select.Option value="KMPH">Time & Mileage (KM/HR)</Select.Option>
+                    </Select>
+                  </Form.Item>
 
-              <Form.Item
-                style={{ marginBottom: "10px" }}
-                label="Kilometers"
-                name="kms"
-                hidden={fixedRate}
-                rules={[
-                  {
-                    required: !fixedRate,
-                    message: "Please provide input !",
-                  },
-                ]}
-              >
-                <InputNumber />
-              </Form.Item>
-            </div>
-            <div className="w-full p-2 md:w-1/2">
-              <Form.Item
-                style={{ marginBottom: "10px" }}
-                label="Report Time"
-                name="reportTime"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please fill input!",
-                  },
-                ]}
-              >
-                <Input
-                  placeholder="HH:mm"
-                  maxLength={5}
-                  onInput={(e) => {
-                    let value = e.target.value.replace(/\D/g, ""); // Remove non-digits
-                    if (value.length > 4) value = value.slice(0, 4);
+                  <div className="grid grid-cols-2 gap-4">
+                    <Form.Item
+                      label="No. of Vehicles"
+                      name="busQty"
+                      rules={[{ required: true, message: "Required" }]}
+                    >
+                      <InputNumber className="w-full rounded-lg" min={1} prefix={<CarOutlined />} />
+                    </Form.Item>
 
-                    let formatted = value;
-                    if (value.length >= 3) {
-                      formatted = `${value.slice(0, 2)}:${value.slice(2)}`;
-                    } else if (value.length >= 1) {
-                      formatted = value;
-                    }
+                    {fixedRate && (
+                      <Form.Item
+                        label="Rate Per Unit"
+                        name="rate"
+                        rules={[{ required: true, message: "Required" }]}
+                      >
+                        <InputNumber
+                          className="w-full rounded-lg"
+                          prefix="₹"
+                          formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                          parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                        />
+                      </Form.Item>
+                    )}
+                  </div>
+                </div>
 
-                    e.target.value = formatted;
-                    form.setFieldsValue({ reportTime: formatted });
-                  }}
-                />
-              </Form.Item>
+                <div className="p-6">
+                  {fixedRate ? (
+                    <div className="bg-gradient-to-br from-emerald-600 to-teal-700 p-5 rounded-2xl shadow-lg shadow-emerald-200">
+                      <Text className="text-indigo-100 text-sm font-medium uppercase tracking-wider block mb-1">Total Trip Value</Text>
+                      <Title level={2} style={{ color: 'white', margin: 0, fontWeight: 800 }}>
+                        ₹{amount.toLocaleString()}
+                      </Title>
+                      <Divider className="opacity-10 my-3" />
+                      <Text className="text-indigo-200 text-xs italic opacity-80 decoration-slate-200">• Base fare calculated on fixed rate package</Text>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      <Form.Item
+                        label="Extra Hour Rate"
+                        name="extraHourRate"
+                        rules={[{ required: true, message: "Required" }]}
+                      >
+                        <InputNumber className="w-full rounded-lg" prefix="₹/hr" />
+                      </Form.Item>
+                      <Form.Item
+                        label="Extra KM Rate"
+                        name="extraKMRate"
+                        rules={[{ required: true, message: "Required" }]}
+                      >
+                        <InputNumber className="w-full rounded-lg" prefix="₹/km" />
+                      </Form.Item>
+                      <div className="p-4 bg-slate-100/50 rounded-xl border border-dashed border-slate-300">
+                        <Text type="secondary" size="small">Final billing will be adjusted based on actual logs.</Text>
+                      </div>
+                    </div>
+                  )}
 
-              <Form.Item
-                style={{ marginBottom: "10px" }}
-                label="Bus Return Time"
-                name="ReturnTime"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please fill input!",
-                  },
-                ]}
-              >
-                <Input
-                  placeholder="HH:mm"
-                  maxLength={5}
-                  onInput={(e) => {
-                    let value = e.target.value.replace(/\D/g, ""); // Remove non-digits
-                    if (value.length > 4) value = value.slice(0, 4);
+                  <div className="mt-8">
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      size="large"
+                      block
+                      className="h-14 rounded-2xl shadow-lg shadow-indigo-100 border-none font-bold text-lg hover:scale-[1.02] transition-transform"
+                      style={{ background: 'linear-gradient(90deg, #4f46e5 0%, #6366f1 100%)' }}
+                      loading={loading}
+                    >
+                      Confirm Booking Entry
+                    </Button>
+                  </div>
+                </div>
+              </Card>
 
-                    let formatted = value;
-                    if (value.length >= 3) {
-                      formatted = `${value.slice(0, 2)}:${value.slice(2)}`;
-                    } else if (value.length >= 1) {
-                      formatted = value;
-                    }
-
-                    e.target.value = formatted;
-                    form.setFieldsValue({ ReturnTime: formatted });
-                  }}
-                />
-              </Form.Item>
-
-              <Form.Item
-                style={{ marginBottom: "10px" }}
-                label="Rate type"
-                name="rateType"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please provide input !",
-                  },
-                ]}
-              >
-                <Select
-                  onChange={handleRateType}
-                  placeholder="Select Rate type"
-                >
-                  <Select.Option value="FR">Fixed Rate</Select.Option>
-                  <Select.Option value="KMPH">KM-HRS</Select.Option>
-                </Select>
-              </Form.Item>
-              <Form.Item
-                style={{ marginBottom: "10px" }}
-                label="No of Bus"
-                name="busQty"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please fill input !",
-                  },
-                ]}
-              >
-                <Input
-                  type="number"
-                  placeholder="Enter Bus Quantity"
-                  onChange={(e) => {
-                    const busQty = e.target.value;
-                    form.setFieldsValue({ busQty }); // Update busQty in form
-                    handleBusQtyChange(busQty); // Update amount
-                  }}
-                />
-              </Form.Item>
-              <Form.Item
-                style={{ marginBottom: "10px" }}
-                label="Rate"
-                name="rate"
-                hidden={!fixedRate}
-                rules={[
-                  {
-                    required: false,
-                    message: "Please fill input !",
-                  },
-                ]}
-              >
-                <Input
-                  type="number"
-                  onChange={(e) => {
-                    const rate = e.target.value;
-                    form.setFieldsValue({ rate }); // Update rate in form
-                    const busQty = form.getFieldValue("busQty"); // Get busQty from form
-                    const amount = calculateAmount(rate, busQty);
-                    form.setFieldsValue({ Amt }); // Update amount in form
-                  }}
-                />
-              </Form.Item>
-              <Form.Item
-                style={{ marginBottom: "10px" }}
-                label="Amount"
-                name="Amt"
-                hidden={!fixedRate}
-                rules={[
-                  {
-                    required: false,
-                    message: "Please input branch!",
-                  },
-                ]}
-              >
-                <InputNumber />
-              </Form.Item>
-
-              {/* <Form.Item
-                style={{ marginBottom: "10px" }}
-                hidden={isIncludeGST === "0" ? true : false}
-                label="Include GST"
-                name="includeGST"
-                rules={[
-                  {
-                    required: false,
-                    message: "Please provide input !",
-                  },
-                ]}
-              >
-                <Select placeholder="Include GST?">
-                  <Select.Option value="1">Yes</Select.Option>
-                  <Select.Option value="0">No</Select.Option>
-                </Select>
-              </Form.Item> */}
-              <Form.Item
-                style={{ marginBottom: "0px", marginTop: "10em" }}
-                label="Extra Hour Rate"
-                name="extraHourRate"
-                hidden={fixedRate}
-                rules={[
-                  {
-                    required: !fixedRate,
-                    message: "Please provide input !",
-                  },
-                ]}
-              >
-                <InputNumber />
-              </Form.Item>
-              <Form.Item
-                style={{ marginBottom: "5px", marginTop: "7px" }}
-                label="Extra KM Rate"
-                name="extraKMRate"
-                hidden={fixedRate}
-                rules={[
-                  {
-                    required: !fixedRate,
-                    message: "Please provide input !",
-                  },
-                ]}
-              >
-                <InputNumber />
-              </Form.Item>
-            </div>
-          </div>
-          <Form.Item className="flex justify-center mt-[24px]">
-            <Button
-              type="primary"
-              htmlType="submit"
-              shape="round"
-              className="mb-3"
-              loading={loading}
-            >
-              Add Entry
-            </Button>
-          </Form.Item>
+              {stock <= 0 && stock !== -1 && (
+                <div className="p-4 bg-orange-50 rounded-2xl border border-orange-100">
+                  <Space align="start">
+                    <InfoCircleOutlined className="text-orange-500 mt-1" />
+                    <div>
+                      <Text strong className="text-orange-800">Operational Warning</Text>
+                      <br />
+                      <Text className="text-orange-700 text-xs text-pretty">You are attempting to book more vehicles than currently available in stock for this category/date.</Text>
+                    </div>
+                  </Space>
+                </div>
+              )}
+            </Col>
+          </Row>
         </Form>
       </div>
-    </>
+
+      <Modal
+        title={
+          <Space>
+            <CarOutlined className="text-indigo-500" />
+            <span>Vehicles Available in Stock</span>
+          </Space>
+        }
+        visible={modalVisible}
+        onCancel={() => setModalVisible(false)}
+        footer={null}
+        width={600}
+        className="rounded-3xl overflow-hidden"
+      >
+        <TableNoPagination
+          columns={modalCol}
+          list={availableBusList}
+        />
+      </Modal>
+    </div>
   );
 };
 

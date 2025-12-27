@@ -216,7 +216,7 @@ const CreateProformaInvoice = ({
         <CreateDrawer
           permission={"create-bus"}
           title={"Add New Bus Entry"}
-          width={400}
+          width={40}
           open={open}
         >
           <AddPartyBusListDrawer onClose={handleAddItem} />

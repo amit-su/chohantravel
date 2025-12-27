@@ -262,10 +262,8 @@ const GetAllProformaInvoice = () => {
           </Col>
         </Row>
 
-        <Card
-          className="bg-white border-none mb-10 shadow-md rounded-2xl overflow-hidden"
-          bodyStyle={{ padding: '32px', background: 'linear-gradient(to bottom right, #f8fafc, #f1f5f9)' }}
-        >
+        <Card className="mb-6 shadow-md border-0 border-t-4 border-blue-500 rounded-xl bg-white/80 backdrop-blur-sm" bordered={false}>
+
           <Row gutter={[32, 24]} align="bottom">
             <Col xs={24} sm={12} md={8} lg={7}>
               <Text strong className="block mb-2.5" style={{ color: '#334155', fontSize: '14px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
@@ -320,7 +318,7 @@ const GetAllProformaInvoice = () => {
         </Card>
 
         <UserPrivateComponent permission={"readAll-proformaInvoice"}>
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+          <Card className="shadow-lg border-0 border-t-4 border-purple-500 rounded-xl overflow-hidden bg-white/90 backdrop-blur-sm" bordered={false} bodyStyle={{ padding: 0 }}>
             <TableComponent
               list={list}
               columns={columns}
@@ -337,7 +335,7 @@ const GetAllProformaInvoice = () => {
                 searchText: searchText || null,
               }}
             />
-          </div>
+          </Card>
         </UserPrivateComponent>
       </Card>
     </div>

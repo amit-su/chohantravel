@@ -508,13 +508,13 @@ const TableComponent = ({
                 </CSVLink> */}
 
                 {/* Column Visibility Dropdown */}
-                {showColVisibility && (
+                {/* {showColVisibility && (
                   <ColVisibilityDropdown
                     options={columns}
                     columns={columns}
                     columnsToShowHandler={columnsToShowHandler}
                   />
-                )}
+                )} */}
 
                 {/* Filter Input (optional) */}
                 {FilterOptionList && (

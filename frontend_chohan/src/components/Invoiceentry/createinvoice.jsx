@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import UserPrivateComponent from "../PrivacyComponent/UserPrivateComponent";
 import CreateDrawer from "../CommonUi/CreateDrawer";
-import { DeleteOutlined } from "@ant-design/icons";
-import { Card } from "antd";
+import { DeleteOutlined, EnvironmentOutlined } from "@ant-design/icons";
+import { Card, Typography, Space, Button } from "antd";
 import { useDispatch } from "react-redux";
 import TableNoPagination from "../CommonUi/TableNoPagination";
 import AddPartyBookinglistdrawer from "./addinvoicedrawer";
@@ -13,6 +13,8 @@ import {
   deleteLocalProforma,
 } from "../../redux/rtk/features/localProformaInvoice/localProformaSlice";
 import UpdatePartyBookinglistdrawer from "./updateinvoicedrawer";
+
+const { Text, Title } = Typography;
 
 const CreateInvoice = ({
   isIncludeGST,
@@ -25,13 +27,11 @@ const CreateInvoice = ({
   const [open, setOpen] = useState(false);
   const [bookingArray, setBookingArray] = useState([]);
   const [childrenDrawer, setChildrenDrawer] = useState(false);
+  const apiUrl = import.meta.env.VITE_APP_API;
+
   useEffect(() => {
-    // Use the partyId as needed within this component
-    console.log("Party ID:", partyId);
-    // Add your logic here that needs to use the partyId
-  }, [partyId]);
-  useEffect(() => {
-    setBookingArray(list);
+    // Sync list props to local state
+    setBookingArray(list || []);
   }, [list]);
 
   const onClose = (selectedData) => {
@@ -52,16 +52,18 @@ const CreateInvoice = ({
       title: "Bus Type",
       dataIndex: "busCategory",
       key: "busCategory",
+      render: (text) => <Text strong className="text-slate-700">{text}</Text>
     },
     {
       id: 9,
       title: "Booking No",
       dataIndex: "BookingID",
       key: "BookingID",
+      render: (text) => <Text className="text-slate-600">{text}</Text>
     },
     {
       id: 3,
-      title: "Sitting Capacity",
+      title: "Capacity",
       dataIndex: "SittingCapacity",
       key: "SittingCapacity",
     },
@@ -70,16 +72,17 @@ const CreateInvoice = ({
       title: "Trip Description",
       dataIndex: "TripDesc",
       key: "TripDesc",
+      width: 200,
     },
     {
       id: 5,
-      title: "Trip Start Date",
+      title: "Start Date",
       dataIndex: "TripStartDate",
       key: "TripStartDate",
     },
     {
       id: 6,
-      title: "Trip End Date",
+      title: "End Date",
       dataIndex: "TripEndDate",
       key: "TripEndDate",
     },
@@ -88,18 +91,21 @@ const CreateInvoice = ({
       title: "No of Bus",
       dataIndex: "BusQty",
       key: "BusQty",
+      render: (text) => <Text strong className="text-cyan-600">{text}</Text>
     },
     {
       id: 9,
       title: "Rate",
       dataIndex: "Rate",
       key: "Rate",
+      render: (text) => <Text>₹{Number(text).toLocaleString()}</Text>
     },
     {
       id: 10,
       title: "Amount",
       dataIndex: "Amt",
       key: "Amt",
+      render: (text) => <Text strong className="text-slate-900">₹{Number(text).toLocaleString()}</Text>
     },
     {
       id: 3,
@@ -108,25 +114,17 @@ const CreateInvoice = ({
       key: "action",
       render: ({ SLNO, ...restData }) => (
         <div className="flex items-center gap-2">
-          {/* <CreateDrawer
-            update={1}
-            permission={"update-driver"}
-            title={"Edit Bus"}
-            open={open}
-            width={70}
-            minimalEdit
-          >
-            <UpdatePartyBookinglistdrawer data={restData} id={SLNO} onClose={onClose}/>
-          </CreateDrawer> */}
-          <DeleteOutlined
+          <Button
+            type="text"
+            danger
+            icon={<DeleteOutlined />}
             onClick={() => onDelete(restData)}
-            className="p-2 text-white bg-red-600 rounded-md"
+            className="hover:bg-red-50 rounded-lg flex items-center justify-center"
           />
         </div>
       ),
     },
   ];
-  const apiUrl = import.meta.env.VITE_APP_API;
 
   const onDelete = async (restData) => {
     if (window.confirm("Are you sure you want to delete this invoice?")) {
@@ -149,38 +147,50 @@ const CreateInvoice = ({
       } catch (error) {
         console.error("Error:", error);
       }
-    } else {
-      console.log("Delete action canceled by user.");
     }
   };
 
   return (
     <Card
-      className="border-0 md:border md:p-6 bg-transparent md:bg-[#fafafa]"
-      bodyStyle={{ padding: 0 }}
+      className="border-none shadow-none bg-white rounded-xl overflow-hidden"
+      bodyStyle={{ padding: '24px' }}
     >
-      <div className="items-center justify-between pb-3 md:flex">
-        <h1 className="text-lg font-bold">Party Booking Details</h1>
-        <div className="flex items-center justify-between gap-1 md:justify-start md:gap-3">
-          <CreateDrawer
-            permission={"create-bus"}
-            title={"Add Bookings"}
-            width={70}
-            open={open}
-          >
-            <AddPartyBookinglistdrawer
-              onClose={onClose}
-              existingBookingIDs={bookingArray.map((item) => item.BookingID)}
-              partyId={partyId}
-            />
-          </CreateDrawer>
-        </div>
+      <div className="flex items-center justify-between mb-6">
+        <Space align="center" size="middle">
+          <div style={{
+            background: 'linear-gradient(135deg, #0891b2 0%, #06b6d4 100%)',
+            padding: '10px',
+            borderRadius: '10px',
+            boxShadow: '0 4px 10px rgba(8, 145, 178, 0.15)'
+          }}>
+            <EnvironmentOutlined className="text-white text-xl" />
+          </div>
+          <div>
+            <Title level={4} style={{ margin: 0, color: '#1e293b', fontWeight: 700 }}>Trip Details & Bookings</Title>
+            <Text style={{ color: '#64748b', fontSize: '14px' }}>Manage individual bus entries</Text>
+          </div>
+        </Space>
+
+        <CreateDrawer
+          permission={"create-bus"}
+          title={"Add Bookings"}
+          width={70}
+          open={open}
+        >
+          <AddPartyBookinglistdrawer
+            onClose={onClose}
+            existingBookingIDs={bookingArray.map((item) => item.BookingID)}
+            partyId={partyId}
+          />
+        </CreateDrawer>
       </div>
+
       <UserPrivateComponent permission={"readAll-setup"}>
         <TableNoPagination
           columns={columns}
           list={bookingArray}
           loading={loading}
+        //   scrollX={1200} // Optional
         />
       </UserPrivateComponent>
     </Card>

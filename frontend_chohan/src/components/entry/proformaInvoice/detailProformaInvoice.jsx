@@ -106,14 +106,14 @@ const DetailProformaInvoice = () => {
     dispatch(loadPartyPaginated({ page: 1, count: 10000, status: true }));
   }, [dispatch, formattedBookingID, form, decodedBookingID]);
 
-  // console.log("bookingEntry in update", bookingEntry);
+
   useEffect(() => {
     // Parse the LocalBookingList string into an array of objects
     if (bookingEntry && bookingEntry[0]?.LocalBookingList) {
       const parsedList = JSON.parse(
         bookingEntry && bookingEntry[0]?.LocalBookingList
       );
-      console.log("parsedList", parsedList);
+
       dispatch(clearLocalBooking());
       // dispatch(addLocalBooking(parsedList[0]));
       if (parsedList && parsedList.length > 0) {

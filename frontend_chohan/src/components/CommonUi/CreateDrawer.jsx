@@ -70,6 +70,7 @@ export default function CreateDrawer({
   return (
     <UserPrivateComponent permission={permission}>
       <button
+        type="button"
         onClick={() => setOpen(true)}
         className={`xs:px-1 px-1 text-sm md:text-base py-2 lg:px-5  border ${color ? color : `bg-violet-700`
           } hover:bg-gray-500 text-white rounded cursor-pointer`}

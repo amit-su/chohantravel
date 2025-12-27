@@ -753,7 +753,29 @@ const Sidenav = () => {
 
   return (
     <div className="">
-      <Menu theme="dark" mode="inline" items={menu} />
+      <Menu
+        theme="dark"
+        mode="inline"
+        items={menu}
+        style={{ background: "transparent", borderRight: "none" }}
+        className="custom-sidenav-menu"
+      />
+      <style>{`
+        .custom-sidenav-menu .ant-menu-item-selected {
+          background: linear-gradient(90deg, rgba(18, 170, 197, 0.2) 0%, rgba(59, 130, 246, 0.1) 100%) !important;
+          border-right: 3px solid #06b6d4;
+          color: #fff !important;
+        }
+        .custom-sidenav-menu .ant-menu-item:hover {
+           background: rgba(255, 255, 255, 0.05) !important;
+        }
+        .custom-sidenav-menu .ant-menu-submenu-title:hover {
+           background: rgba(255, 255, 255, 0.05) !important;
+        }
+        .custom-sidenav-menu {
+          background: transparent !important;
+        }
+      `}</style>
     </div>
   );
 };

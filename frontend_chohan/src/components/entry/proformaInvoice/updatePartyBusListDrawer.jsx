@@ -74,7 +74,7 @@ function UpdatePartyBusListDrawer({ data, id, onClose }) {
       dispatch(updateLocalProforma({ id, values }));
       toast.success("Update successful!");
 
-      console.log("value", values);
+
 
       setLoader(false);
 
@@ -91,7 +91,7 @@ function UpdatePartyBusListDrawer({ data, id, onClose }) {
     }
   };
 
-  const onFinishFailed = () => {};
+  const onFinishFailed = () => { };
 
   const formatDateInput = (e, fieldName) => {
     let value = e.target.value.replace(/\D/g, ""); // Keep only digits

@@ -43,6 +43,9 @@ const getAllBookingBusAllotment = async (req, res) => {
       AllotmentStatus: req.query.IsClosed ? parseInt(req.query.IsClosed) : 1,
       PageNumber: req.query.page,
       PageSize: req.query.count,
+      PartyID: req.query.partyId ? parseInt(req.query.partyId) : null,
+      BookingDate: req.query.bookingDate || null,
+      SearchValue: req.query.search || null,
     };
 
     const resultdata = await databaseService.callStoredProcedure(

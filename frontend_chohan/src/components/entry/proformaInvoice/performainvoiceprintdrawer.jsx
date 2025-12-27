@@ -1,5 +1,5 @@
 import { Button, DatePicker, Form, Input, Select, TimePicker } from "antd";
-import React, { useBusCategory, useState,useCallback,useEffect } from "react";
+import React, { useBusCategory, useState, useCallback, useEffect } from "react";
 import { PowerBIEmbed } from "powerbi-client-react";
 import moment from "moment";
 import dayjs from "dayjs";
@@ -8,9 +8,9 @@ import { loadPowerbiToken } from "../../../redux/rtk/features/powerBi/powerBiBoo
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 function Performainvoicedrawer() {
-  // console.log(invoiceNo,"iv")
+
   const { companyId, invoiceNo } = useParams();
-  const data1=companyId;
+  const data1 = companyId;
   // const invoiceNo=invoiceNo;
 
 
@@ -23,7 +23,7 @@ function Performainvoicedrawer() {
     if (moment(date, moment.ISO_8601, true).isValid()) {
       return date;
     }
-    
+
     if (moment(date, 'DD-MM-YYYY', true).isValid()) {
       return moment(date, 'DD-MM-YYYY').format('YYYY-MM-DD');
     }
@@ -31,10 +31,10 @@ function Performainvoicedrawer() {
     return null;
   };
   //END//
-  console.log(invoiceNo,"987876")
-  console.log("data",data1)
- 
- 
+
+
+
+
   const [reportInfo, setReportInfo] = useState(null);
 
   useEffect(() => {
@@ -45,25 +45,25 @@ function Performainvoicedrawer() {
     }
     if (data) {
       setReportInfo(data);
-      console.log("report data",reportInfo);
+
     }
   }, [dispatch, data, reportInfo]);
-  
- 
- 
-  
 
 
-  
 
 
-  
 
- 
- 
-  
- 
-  
+
+
+
+
+
+
+
+
+
+
+
   const onClick = () => {
     setLoading(true);
   };
@@ -73,38 +73,38 @@ function Performainvoicedrawer() {
     <>
       <div className="text-center">
         <div className="">
-         <h1><strong>Invoice </strong></h1>
+          <h1><strong>Invoice </strong></h1>
         </div>
         <div>
-      {reportInfo && data && reportInfo.embedUrl ? (
-        <PowerBIEmbed
-          embedConfig={{
-            type: "report",
-            id: reportInfo.id,
-            embedUrl: reportInfo.embedUrl+"&rp:HeadInvoiceID="+invoiceNo+"&rp:CompanyID="+data1,
-            accessToken: reportInfo.token,
-            settings: {
-              panes: {
-                filters: {
-                  expanded: false,
-                  visible: true,
+          {reportInfo && data && reportInfo.embedUrl ? (
+            <PowerBIEmbed
+              embedConfig={{
+                type: "report",
+                id: reportInfo.id,
+                embedUrl: reportInfo.embedUrl + "&rp:HeadInvoiceID=" + invoiceNo + "&rp:CompanyID=" + data1,
+                accessToken: reportInfo.token,
+                settings: {
+                  panes: {
+                    filters: {
+                      expanded: false,
+                      visible: true,
+                    },
+                  },
                 },
-              },
-            },
-          }}
-          cssClassName={"Embed-container"}
-          getEmbeddedComponent={(embeddedReport) => {
-            window.report = embeddedReport;
-          }}
-        />
-      ) : (
-        <>
-          <div className="flex justify-center items-center col-lg-2">
-           
-          </div>
-        </>
-      )}
-    </div>
+              }}
+              cssClassName={"Embed-container"}
+              getEmbeddedComponent={(embeddedReport) => {
+                window.report = embeddedReport;
+              }}
+            />
+          ) : (
+            <>
+              <div className="flex justify-center items-center col-lg-2">
+
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </>
   );

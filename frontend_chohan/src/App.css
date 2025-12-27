@@ -1,50 +1,84 @@
 .dark-theme {
-  --bg: #1c1b20;
-  --bg-secondary: #2e2d35;
-  --bg-item-selected: #2e2d35;
-  --bg-item-active: #46464a;
-  --text: #ffffff;
-  --body-bg: #1c1b20;
-  --sidenav-bg: #831818;
-  --table-cell-row-hover: #26252b;
-  --form-item-label: rgba(255, 255, 255, 1);
-  --table-head: #1c1b20;
-  --input-border: none;
-  --quick-links-bg: #2e2d35;
-  --shadow-color: #3730a3;
+  --bg: #111827;
+  /* gray-900 */
+  --bg-secondary: #1f2937;
+  /* gray-800 */
+  --bg-item-selected: rgba(6, 182, 212, 0.15);
+  /* cyan-500 low opacity */
+  --bg-item-active: #374151;
+  /* gray-700 */
+  --text: #f3f4f6;
+  /* gray-100 */
+  --body-bg: #111827;
+  --sidenav-bg: #111827;
+  --table-cell-row-hover: #1f2937;
+  --form-item-label: rgba(229, 231, 235, 0.9);
+  /* gray-200 */
+  --table-head: #374151;
+  /* gray-700 - Distinct header */
+  --input-border: 1px solid #374151;
+  /* gray-700 */
+  --quick-links-bg: #1f2937;
+  --shadow-color: rgba(0, 0, 0, 0.4);
+  --accent: #06b6d4;
+  /* cyan-500 */
+  --accent-hover: #0891b2;
+  /* cyan-600 */
 }
 
 .light-theme {
-  --bg: #f1fbfd; /* soft airy blue-tinted white (for freshness) */
-  --bg-secondary: #ffffff; /* pure white background */
-  --bg-item-selected: #ffcfc7; /* softened coral highlight */
-  --bg-item-active: #ff6f61; /* vibrant coral */
-  --text: #1a1f71; /* dark navy blue (kept) */
-  --body-bg: #f9fafc; /* cleaner light gray-blue */
-  --sidenav-bg: #1e2566; /* deep navy (matches table-head) for consistency */
-  --table-cell-row-hover: #e3f3fc; /* ultra soft coral tint */
-  --form-item-label: rgba(26, 31, 113, 0.85); /* navy with opacity (kept) */
-  --table-head: #1a1f71; /* same as text — stronger navy for uniformity */
-  --input-border: 1px solid #ff7b6b; /* slightly brighter coral border */
-  --quick-links-bg: #ffe7e4; /* pale coral, slightly brighter for clarity */
-  --shadow-color: rgba(255, 111, 97, 0.3); /* soft coral shadow (kept) */
-  --accent: #ff6f61; /* vibrant coral accent (reuse active color) */
-  --accent-hover: #ff3b2e; /* stronger coral red for hover effect */
-  
+  --bg: #f8fafc;
+  /* slate-50 */
+  --bg-secondary: #ffffff;
+  /* white */
+  --bg-item-selected: rgba(6, 182, 212, 0.1);
+  /* cyan-500 very low opacity */
+  --bg-item-active: #06b6d4;
+  /* cyan-500 */
+  --text: #334155;
+  /* slate-700 */
+  --body-bg: #f1f5f9;
+  /* slate-100 */
+  --sidenav-bg: #ffffff;
+  /* white, but overridden by layout sider style usually */
+  --table-cell-row-hover: #f1f5f9;
+  /* slate-100 */
+  --form-item-label: #475569;
+  /* slate-600 */
+  --table-head: #1a1f71;
+  /* same as text — stronger navy for uniformity */
+  /* slate-200 - Distinct darker header */
+  --input-border: 1px solid #cbd5e1;
+  /* slate-300 */
+  --quick-links-bg: #e2e8f0;
+  /* slate-200 */
+  --shadow-color: rgba(148, 163, 184, 0.2);
+  /* slate-400 shadow */
+  --accent: #0891b2;
+  /* cyan-600 */
+  --accent-hover: #0e7490;
+  /* cyan-700 */
+
   /* Shadow effects */
-  --input-shadow: 0 2px 5px rgba(255, 123, 107, 0.3); /* soft coral shadow for inputs */
-  --card-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* subtle shadow for cards or containers */
-  --button-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* soft shadow for buttons */
+  --input-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --button-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 
 body {
   background-color: var(--body-bg) !important;
+  color: var(--text) !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 .ant-card {
   background-color: var(--bg-secondary) !important;
   color: var(--text) !important;
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+  border: var(--input-border) !important;
 }
 
 .ant-row {
@@ -63,15 +97,35 @@ body {
   color: var(--text) !important;
 }
 
-.ant-layout-sider {
-  background: var(--sidenav-bg) !important;
-  color: ;
-}
+/* Sider styles handled in Main.jsx now */
 
 .ant-menu.ant-menu-dark,
 .ant-menu-dark .ant-menu-sub,
 .ant-menu.ant-menu-dark .ant-menu-sub {
-  background: var(--sidenav-bg) !important;
+  background: transparent !important;
+}
+
+/* Force dark background for the floating submenu popups */
+.ant-menu-submenu-popup .ant-menu {
+  background: #111827 !important;
+  color: #f3f4f6 !important;
+}
+
+.ant-menu-submenu-popup .ant-menu-item {
+  color: #f3f4f6 !important;
+}
+
+/* Hover state for popup items */
+.ant-menu-submenu-popup .ant-menu-item:hover,
+.ant-menu-submenu-popup .ant-menu-item-active {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: #06b6d4 !important;
+}
+
+/* Selected state for popup items */
+.ant-menu-submenu-popup .ant-menu-item-selected {
+  background-color: rgba(6, 182, 212, 0.15) !important;
+  color: #06b6d4 !important;
 }
 
 .logout-text {
@@ -86,400 +140,118 @@ body {
   color: var(--text) !important;
 }
 
-.ant-form-item-label > label {
+.ant-form-item-label>label {
   color: var(--form-item-label) !important;
+  font-weight: 500;
 }
-
-/* .card {
-	background-color: var(--bg);
-  } */
 
 .ant-table {
   color: var(--text) !important;
+  background: var(--bg-secondary) !important;
 }
 
 .ant-table-cell-row-hover {
   background-color: var(--table-cell-row-hover) !important;
 }
 
-.ant-table .ant-table-container .ant-table-content table thead.ant-table-thead {
+.ant-table-thead>tr>th {
   background-color: var(--table-head) !important;
-}
-
-:is(
-    .recent
-      .ant-table
-      .ant-table-container
-      .ant-table-content
-      table
-      thead.ant-table-thead
-  ) {
-  background-color: #fafafa !important;
-  color: black !important;
-}
-
-.ant-table-thead > tr > th {
-  background-color: var(--table-head) !important;
-  padding-top: 0.6rem !important;
-  padding-bottom: 0.6rem !important;
-}
-
-:is(.recent .ant-table-thead > tr > th) {
-  background-color: #fafafa !important;
-  color: black !important;
-}
-
-.ant-table-tbody > tr > .ant-table-cell {
-  padding-top: 0.5rem !important;
-  padding-bottom: 0.5rem !important;
-}
-
-.card-header {
-  background-color: var(--bg) !important;
-}
-
-.card-header > div > h5 {
   color: var(--text) !important;
+  font-weight: 600;
+  border-bottom: var(--input-border) !important;
 }
 
-.table-responsive > h5 {
-  color: var(--text) !important;
+.ant-table-tbody>tr>td {
+  border-bottom: var(--input-border) !important;
 }
 
-.card-custom {
-  background-color: var(--bg) !important;
-}
-
-.card-custom h5 {
-  color: var(--text) !important;
-}
-
-.card-custom h4 {
-  color: var(--text) !important;
-}
-
-.report-section-table,
-.detail-account-table {
-  color: var(--text) !important;
-}
-
-.report-section-table h5,
-.detail-account-table h5 {
-  color: var(--text) !important;
-}
-
-.report-section-table thead,
-.detail-account-table thead {
-  background-color: var(--table-head) !important;
-}
-
-.report-section-table thead th,
-.detail-account-table thead th {
-  background-color: var(--table-head) !important;
-}
-
-.ant-empty-description {
-  color: var(--text) !important;
-}
-
-.ant-table-placeholder:hover .ant-table-cell {
-  background-color: var(--table-cell-row-hover) !important;
-}
-
-.loading h5 {
-  color: var(--text) !important;
-}
-
-.ant-page-header-heading {
-  color: var(--text) !important;
-}
-
-.ant-page-header-back-button {
-  color: var(--text) !important;
-}
-
-.range-picker {
-  background-color: var(--bg-secondary) !important;
-  border: var(--input-border) !important;
-}
-
+.ant-input,
+.ant-input-number,
+.ant-select:not(.ant-select-customize-input) .ant-select-selector,
 .ant-picker {
   background-color: var(--bg-secondary) !important;
+  color: var(--text) !important;
+  border: var(--input-border) !important;
+  border-radius: 8px !important;
+  box-shadow: var(--input-shadow);
 }
 
-.ant-picker-input > input {
-  color: var(--text) !important;
+.ant-input:focus,
+.ant-input-focused,
+.ant-input-number:focus,
+.ant-input-number-focused,
+.ant-select-focused:not(.ant-select-customize-input) .ant-select-selector,
+.ant-picker-focused {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.2) !important;
 }
 
-.ant-picker-separator,
-.ant-picker-suffix,
-.ant-picker-clear {
-  color: var(--text) !important;
+.ant-btn-primary {
+  background-color: var(--accent) !important;
+  border-color: var(--accent) !important;
+  box-shadow: var(--button-shadow);
+  font-weight: 500;
 }
 
-.ant-input {
-  color: var(--text) !important;
-  background-color: var(--bg-secondary) !important;
+.ant-btn-primary:hover {
+  background-color: var(--accent-hover) !important;
+  border-color: var(--accent-hover) !important;
 }
 
 .ant-btn-dashed {
   color: var(--text) !important;
   background-color: var(--bg) !important;
-}
-
-.ant-btn-dashed:hover {
-  background-color: var(--bg-secondary) !important;
-}
-
-.ant-input-number {
-  color: var(--text) !important;
-  background-color: var(--bg-secondary) !important;
-}
-
-.ant-input-number-status-error:not(.ant-input-number-disabled):not(
-    .ant-input-number-borderless
-  ).ant-input-number,
-.ant-input-number-status-error:not(.ant-input-number-disabled):not(
-    .ant-input-number-borderless
-  ).ant-input-number:hover {
-  background-color: var(--bg-secondary) !important;
-}
-
-.ant-input-status-error:not(.ant-input-disabled):not(
-    .ant-input-borderless
-  ).ant-input,
-.ant-input-status-error:not(.ant-input-disabled):not(
-    .ant-input-borderless
-  ).ant-input:hover {
-  background-color: var(--bg) !important;
-}
-
-.ant-input-number-handler-wrap span {
-  color: var(--text) !important;
-  background-color: var(--bg-secondary) !important;
-}
-
-.ant-select:not(.ant-select-customize-input) .ant-select-selector {
-  color: var(--text) !important;
-  background-color: var(--bg-secondary) !important;
+  border-color: var(--input-border) !important;
 }
 
 .ant-select-dropdown {
-  color: var(--text) !important;
-  background-color: var(--bg) !important;
-}
-
-.ant-select-item .ant-select-item-option {
-  color: var(--text) !important;
   background-color: var(--bg-secondary) !important;
+  border: var(--input-border) !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-.ant-select-item-option-content {
+.ant-select-item {
   color: var(--text) !important;
-}
-
-.ant-select-multiple .ant-select-selection-item {
-  background-color: transparent !important;
 }
 
 .ant-select-item-option-selected {
   background-color: var(--bg-item-selected) !important;
+  color: var(--accent) !important;
+  font-weight: 500;
 }
 
-/* .ant-select-item-option-active {
-  background-color: var(--bg-item-active) !important;
-} */
-
-.ant-select-item-option-active:not(.ant-select-item-option-disabled) {
-  background-color: var(--bg-item-active) !important;
+.ant-select-item-option-active {
+  background-color: var(--table-cell-row-hover) !important;
 }
 
-.dashboard-card {
-  color: white;
-  border: none;
-  border-radius: 10px;
-  /* background-color: var(--bg-secondary); */
-}
-
-.dashboard-card h3 {
-  color: white;
-  /* color: var(--text); */
-}
-
-.dashboard-card span {
-  color: white;
-  /* color: var(--text); */
-}
-
-.dashboard-card-bg {
-  background-color: var(--bg-secondary);
-}
-
-.ant-card-head-title {
-  color: var(--text) !important;
-}
-
-.ant-card-head {
+.ant-modal-content,
+.ant-modal-header {
   background-color: var(--bg-secondary) !important;
 }
 
-.ant-card-bordered {
-  background-color: var(--bg-secondary) !important;
-  border: var(--input-border) !important;
-}
-
-.ant-page-header {
-  background-color: var(--bg-secondary) !important;
-  color: var(--text) !important;
-  border: var(--input-border) !important;
-}
-
-.ant-page-header span {
+.ant-modal-title {
   color: var(--text) !important;
 }
 
-.column-design {
-  background-color: var(--bg-secondary) !important;
-  border: var(--input-border) !important;
-}
-
-.column-design h5 {
+.ant-modal-close {
   color: var(--text) !important;
 }
 
-.ant-select-arrow {
-  color: var(--text) !important;
+/* Helpers */
+.text-accent {
+  color: var(--accent) !important;
 }
 
-.ant-upload.ant-upload-select-picture-card {
-  background-color: var(--bg) !important;
-}
-
-.ant-upload.ant-upload-select-picture-card div {
-  color: var(--text) !important;
-}
-
-.ant-upload.ant-upload-select-picture-card .anticon-plus {
-  color: var(--text) !important;
-}
-
-#csvFileInput {
-  color: var(--text) !important;
-  background-color: var(--bg) !important;
-}
-
-.ant-dropdown-trigger {
-  color: var(--text) !important;
-  background-color: var(--bg) !important;
-}
-
-.ant-dropdown-open {
-  background-color: var(--bg-secondary) !important;
-}
-
-.report-section-card-title {
-  color: var(--text) !important;
-}
-
-.role-list-title {
-  color: var(--text) !important;
-}
-
-.ant-pagination-prev .ant-pagination-item-link,
-.ant-pagination-next .ant-pagination-item-link:hover span {
-  color: var(--text) !important;
-  background-color: var(--bg) !important;
-}
-
-.ant-pagination-prev .ant-pagination-item-link,
-.ant-pagination-next .ant-pagination-item-link {
-  color: var(--text) !important;
-  background-color: var(--bg) !important;
-}
-
-.ant-pagination-item-active {
-  color: var(--text) !important;
-  background-color: var(--bg) !important;
-}
-
-.table-hover {
-  color: var(--text) !important;
-}
-
-/* ====== REACT SLICK SLIDER - Additional styles to make contents fill full height ====== */
-
-.slick-track {
-  display: flex !important;
-}
-
-.slick-slide {
-  height: inherit !important;
-}
-
-.product-single-details .slick-slide > div {
-  height: 100% !important;
-  width: 100% !important;
-  overflow: hidden !important;
-  aspect-ratio: 1 / 1 !important;
-}
-
-.slick-prev {
-  z-index: 10;
-  left: 15px !important;
-}
-
-.slick-next {
-  right: 15px !important;
-}
-
-.ant-shadow {
-  box-shadow: 0 1px 15px -1px var(--shadow-color),
-    0 1px 6px -4px var(--shadow-color);
-}
-
-/* :where(.css-dev-only-do-not-override-byeoj0).ant-table-wrapper .ant-table-container table>thead>tr:first-child>*:first-child {
-  border-start-start-radius: 0px !important;
-}
-
-:where(.css-dev-only-do-not-override-byeoj0).ant-table-wrapper .ant-table-container table>thead>tr:first-child>*:last-child {
-  border-start-end-radius: 0px !important;
-} */
-
-.dark th,
-.dark tr,
-.dark table {
-  color: white !important;
-}
-
-:is(.dark .ant-pagination-total-text) {
-  color: white !important;
-}
-
-:is(.dark .ant-drawer-content) {
-  background-color: #2e2d35 !important;
-  color: white !important;
-}
-
-:is(.dark .ant-drawer-title) {
-  color: white !important;
-}
-
-/* print module css  */
-
-.invoice {
-  --size: 210mm 297mm !important;
-}
-
-.packg {
-  --size: auto !important;
-}
-
-.pos {
-  --size: unset !important;
+/* Dark Mode Specifics which were missed by generic overrides */
+.dark-theme .ant-picker-suffix,
+.dark-theme .ant-select-arrow,
+.dark-theme .ant-input-password-icon,
+.dark-theme .ant-tree-switcher {
+  color: var(--text);
 }
 
 @media print {
   @page {
-    size: var(--size);
+    size: auto;
   }
 }

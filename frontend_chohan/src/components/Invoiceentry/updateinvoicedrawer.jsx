@@ -1,22 +1,14 @@
-import { Button, DatePicker, Form, Input, Select, TimePicker,Card } from "antd";
-import React, { useBusCategory, useState,useCallback,useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { Card, Typography, Space } from "antd";
+import React, { useState, useEffect } from "react";
 import moment from "moment";
-import dayjs from "dayjs";
-import { toast } from "react-toastify";
 import axios from "axios";
-import TableComponentwithcheckbox from '../CommonUi/Tablecomponentwithcheck'; // Adjust import path as necessary
+import TableComponentwithcheckbox from '../CommonUi/Tablecomponentwithcheck';
+import { UnorderedListOutlined } from "@ant-design/icons";
 
+const { Title, Text } = Typography;
 
-import { loadAllBusCategory } from "../../redux/rtk/features/busCategory/busCategorySlice";
-import { updateLocalProforma } from "../../redux/rtk/features/localProformaInvoice/localProformaSlice";
-let arraydata=[];
-function UpdatePartyBookinglistdrawer({ data, id,onClose }) {
-  console.log(data,"977787777777777",id)
-  arraydata=data;
-  console.log(arraydata,"777676")
+function UpdatePartyBookinglistdrawer({ data, id, onClose }) {
 
-  //Date issue//
   const [data1, setList1] = useState([]);
   const [loading2, setLoading2] = useState(true);
   const apiUrl = import.meta.env.VITE_APP_API;
@@ -24,9 +16,8 @@ function UpdatePartyBookinglistdrawer({ data, id,onClose }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${apiUrl}/invoiceentry/booking`,);
+        const response = await axios.get(`${apiUrl}/invoiceentry/booking`);
         setList1(response.data.data);
-        console.log(response.data.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -43,12 +34,14 @@ function UpdatePartyBookinglistdrawer({ data, id,onClose }) {
       title: 'Bus Type',
       dataIndex: 'busCategory',
       key: 'busCategory',
+      render: (text) => <Text strong className="text-slate-700">{text}</Text>
     },
     {
       id: 9,
       title: 'Booking No',
       dataIndex: 'BookingID',
       key: 'BookingID',
+      render: (text) => <Text className="text-slate-600">{text}</Text>
     },
     {
       id: 3,
@@ -61,6 +54,7 @@ function UpdatePartyBookinglistdrawer({ data, id,onClose }) {
       title: 'Trip Description',
       dataIndex: 'TripDesc',
       key: 'TripDesc',
+      width: 200,
     },
     {
       id: 5,
@@ -87,50 +81,59 @@ function UpdatePartyBookinglistdrawer({ data, id,onClose }) {
       title: 'No of Bus',
       dataIndex: 'BusQty',
       key: 'BusQty',
+      render: (text) => <Text strong className="text-cyan-600">{text}</Text>
     },
     {
       id: 9,
       title: 'Rate',
       dataIndex: 'Rate',
       key: 'Rate',
+      render: (text) => <Text>₹{Number(text).toLocaleString()}</Text>
     },
     {
       id: 10,
       title: 'Amount',
       dataIndex: 'Amt',
       key: 'Amt',
+      render: (text) => <Text strong className="text-slate-900">₹{Number(text).toLocaleString()}</Text>
     },
   ];
 
   const handleClickButton = (selectedData) => {
-    console.log('Selected Data in Drawer:', selectedData);
     onClose(selectedData);
   };
-  const staticBookingData = {
-    SlNo: 2,
-    BookingID: bi.join(","),
-    Rate: 100.0,
-    Amt: 1000.0
-};
 
   return (
-    <div className="card card-custom mt-2">
-      <div className="card-body">
-        <Card
-          className="border-0 md:border md:p-6 bg-transparent md:bg-[#fafafa]"
-          bodyStyle={{ padding: 0 }}
-        >
-          <div className="md:flex items-center justify-between pb-3">
-            <h1 className="text-lg font-bold">Booking List</h1>
+    <Card
+      className="border-none shadow-none bg-white rounded-xl overflow-hidden"
+      bodyStyle={{ padding: '0px' }}
+    >
+      <div className="flex items-center justify-between mb-6 p-1">
+        <Space align="center" size="middle">
+          <div style={{
+            background: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)',
+            padding: '10px',
+            borderRadius: '10px',
+            boxShadow: '0 4px 10px rgba(139, 92, 246, 0.2)'
+          }}>
+            <UnorderedListOutlined className="text-white text-xl" />
           </div>
-          <TableComponentwithcheckbox
-            list={data1}
-            columns={columns}
-            csvFileName={'Booking List'}
-            onClose={handleClickButton}
-          />
-        </Card>
+          <div>
+            <Title level={5} style={{ margin: 0, color: '#1e293b', fontWeight: 700 }}>Booking List</Title>
+            <Text style={{ color: '#64748b', fontSize: '13px' }}>Select bookings to update invoice</Text>
+          </div>
+        </Space>
       </div>
-    </div>
-  );}
+
+      <div className="border border-slate-100 rounded-lg overflow-hidden">
+        <TableComponentwithcheckbox
+          list={data1}
+          columns={columns}
+          csvFileName={'Booking List'}
+          onClose={handleClickButton}
+        />
+      </div>
+    </Card>
+  );
+}
 export default UpdatePartyBookinglistdrawer;

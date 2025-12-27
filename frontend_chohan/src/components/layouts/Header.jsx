@@ -6,6 +6,7 @@ import { Button, Dropdown } from "antd";
 import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
 import { RiFullscreenExitLine, RiFullscreenLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
+import { DarkModeSwitch } from "react-toggle-dark-mode";
 import BreadcrumbCustom from "./BreadcrumbCustom";
 
 const toggler = [
@@ -101,7 +102,7 @@ function Header({ onPress, collapsed, handleCollapsed }) {
   }, []);
   return (
     <>
-      <div className="flex w-full justify-between items-center pr-8 mr-4 py-1 bg-white dark:bg-[#1C1B20] md:mb-4">
+      <div className="flex w-full justify-between items-center pr-8 mr-4 py-1 bg-white dark:bg-[#1C1B20]">
         <div className="relative flex items-center">
           <div className="hidden md:flex dark:bg-transparent bg-[rgb(62,87,113)]/90 dark:border-gray-50 border-violet-500 hover:bg-violet-500 border-2 text-white absolute  -left-[38px] w-[33px] h-[33px] rounded-full justify-center items-center z-20">
             {collapsed ? (

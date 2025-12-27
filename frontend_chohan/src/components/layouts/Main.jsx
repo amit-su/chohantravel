@@ -70,7 +70,7 @@ function Main({ children }) {
             <Sider
               trigger={null}
               width={220}
-              theme="light"
+              style={{ background: "linear-gradient(180deg, #111827 0%, #171e2e 100%)", border: "none" }}
               className="pt-[16px] min-h-screen"
             >
               <Sidenav color={sidenavColor} sideNavOpenKeys={sideNavOpenKeys} />
@@ -79,15 +79,15 @@ function Main({ children }) {
         </Drawer>
       )}
       {isLogged && (
-       <Sider
-       breakpoint="lg"
-       trigger={null}
-       collapsible
-       collapsed={collapsed}
-       width={220}
-       theme="light"
-       className="hidden md:block pt-[16px] fixed top-0 left-0 bottom-0 h-screen z-10 overflow-y-auto"
-     >
+        <Sider
+          breakpoint="lg"
+          trigger={null}
+          collapsible
+          collapsed={collapsed}
+          width={220}
+          style={{ background: "linear-gradient(180deg, #111827 0%, #171e2e 100%)", border: "none" }}
+          className="hidden md:block pt-[16px] fixed top-0 left-0 bottom-0 h-screen z-10 overflow-y-auto"
+        >
           {collapsed ? (
             ""
           ) : (

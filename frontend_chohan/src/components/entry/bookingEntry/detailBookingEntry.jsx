@@ -15,7 +15,7 @@ import UserPrivateComponent from "../../PrivacyComponent/UserPrivateComponent";
 import AddBooking from "./addBookingDrawer";
 import TableComponent from "../../CommonUi/TableComponent";
 const DetailBookingEntry = ({ bookingNo }) => {
-  console.log("bookingNo", bookingNo);
+
   const dispatch = useDispatch();
   const { bookingEntry } = useSelector((state) => state.bookingEntry);
 
@@ -35,14 +35,14 @@ const DetailBookingEntry = ({ bookingNo }) => {
     );
   }, [dispatch, bookingNo]);
 
-  // console.log("bookingEntry in update", bookingEntry);
+
   useEffect(() => {
     // Parse the LocalBookingList string into an array of objects
     if (bookingEntry && bookingEntry[0]?.LocalBookingList) {
       const parsedList = JSON.parse(
         bookingEntry && bookingEntry[0]?.LocalBookingList
       );
-      console.log("parsedList", parsedList);
+
       dispatch(clearLocalBooking());
       // dispatch(addLocalBooking(parsedList[0]));
       if (parsedList && parsedList.length > 0) {
@@ -60,7 +60,7 @@ const DetailBookingEntry = ({ bookingNo }) => {
   const { list, total, loading } = useSelector(
     (state) => state.localBookingsData
   );
-  console.log("localBookings", list);
+
   const columns = [
     {
       id: 2,

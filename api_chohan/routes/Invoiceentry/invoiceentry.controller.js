@@ -27,7 +27,7 @@ const createInvoice = async (req, res) => {
       GSTNo: req.body.GSTNO,
       ReferredBy: req.body.ReferredBy,
       TollParkingAmt: req.body.tollParking,
-      GrossAmount: req.body.RoundOff,
+      GrossAmount: req.body.GrossAmount,
       CGSTPer: req.body.CGSTPer,
       CGSTAmt: req.body.CGSTAmt,
       SGSTPer: req.body.SGSTPer,
@@ -46,6 +46,16 @@ const createInvoice = async (req, res) => {
       localProformaList: req.body.localProformaList,
     };
     console.log(params)
+    const deleteParams = {
+      table_name: "InvoiceTran",
+      column_name: "InvHeadSlNo",
+      column_value: req.body.invoiceNo,
+    };
+    await databaseService.callStoredProcedure(req,
+      DELETE_PROCEDURE,
+      deleteParams
+    );
+
     const result = await databaseService.callStoredProcedure(req,
       INSERT_INVOICE_ENTRY,
       params
@@ -63,6 +73,10 @@ const getAllProformaInvoice = async (req, res) => {
     const params = {
       PageNumber: req.query.page,
       PageSize: req.query.count,
+      CompanyID: req.query.companyId ? parseInt(req.query.companyId) : 0,
+      PartyID: req.query.partyId ? parseInt(req.query.partyId) : null,
+      InvoiceDate: req.query.date || null,
+      SearchValue: req.query.search || null,
     };
 
     const resultdata = await databaseService.callStoredProcedure(req,
@@ -139,7 +153,7 @@ const updateProformaInvoice = async (req, res) => {
         GSTNo: req.body.GSTNO,
         ReferredBy: req.body.ReferredBy,
         TollParkingAmt: req.body.tollParking,
-        GrossAmount: req.body.RoundOff,
+        GrossAmount: req.body.GrossAmount,
         CGSTPer: req.body.CGSTPer,
         CGSTAmt: req.body.CGSTAmt,
         SGSTPer: req.body.SGSTPer,

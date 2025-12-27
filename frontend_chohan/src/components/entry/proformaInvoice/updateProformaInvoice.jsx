@@ -18,7 +18,7 @@ import getStaffId from "../../../utils/getStaffId";
 import { loadPartyPaginated } from "../../../redux/rtk/features/party/partySlice";
 import { loadAllCompany } from "../../../redux/rtk/features/company/comapnySlice";
 import { PercentageOutlined, PlusOutlined, InfoCircleOutlined, BankOutlined, UserOutlined, EnvironmentOutlined, FileTextOutlined, SaveOutlined, EditOutlined } from "@ant-design/icons";
-import moment from "moment";
+
 import { useNavigate, useParams } from "react-router-dom";
 import FormItem from "antd/es/form/FormItem";
 import TextArea from "antd/es/input/TextArea";
@@ -41,9 +41,9 @@ import CreateDrawer from "../../CommonUi/CreateDrawer";
 const { Title, Text } = Typography;
 const UpdateProformaInvoice = () => {
   const { id } = useParams();
-  console.log(id, "jsdj");
+
   const [bookingArray, setBookingArray] = useState([]);
-  const [initValues, setInitValues] = useState({ date: moment() });
+  const [initValues, setInitValues] = useState({ date: dayjs() });
   const navigate = useNavigate();
   const [loader, setLoader] = useState(false);
   const [GstType, setGstType] = useState("");
@@ -66,7 +66,7 @@ const UpdateProformaInvoice = () => {
 
   const [form] = Form.useForm();
   const handleLoadParty = () => {
-    dispatch(loadPartyPaginated({ page: 1, count: 10000, status: true }));
+    dispatch(loadPartyPaginated({ page: 1, count: 10000 }));
   };
   const { list: companyList } = useSelector((state) => state.companies);
 
@@ -87,7 +87,7 @@ const UpdateProformaInvoice = () => {
   const [CGSTamt, setCGSTamt] = useState(0);
   const [IGSTamt, setIGSTamt] = useState(0);
   const onBookingClose = (payload) => {
-    console.log("onBookingClose");
+
 
     if (payload.length) {
       setBookingArray(payload);
@@ -168,29 +168,20 @@ const UpdateProformaInvoice = () => {
 
     if (selectedParty) {
       const {
-        partyName,
-        mobileNo,
         partyAddr,
         gstNo,
-        ReferredBy,
-        SGSTPer,
-        CGSTPer,
+        referredBy,
+        cpName,
+        cpNumber,
       } = selectedParty;
 
       const fieldsToUpdate = {
-        ContactPersonName: partyName,
-        ContactPersonNo: mobileNo,
+        ContactPersonName: cpName,
+        ContactPersonNo: cpNumber,
         address: partyAddr,
         GSTNO: gstNo,
-        ReferredBy: ReferredBy,
+        ReferredBy: referredBy,
       };
-
-      // Only update GST percentages if it's NOT the initial load
-      // This prevents overwriting saved invoice data with party defaults
-      if (!isInitialLoad) {
-        fieldsToUpdate.SGST = SGSTPer;
-        fieldsToUpdate.CGST = CGSTPer;
-      }
 
       form.setFieldsValue(fieldsToUpdate);
 
@@ -280,7 +271,7 @@ const UpdateProformaInvoice = () => {
     };
   }, [id, dispatch]);
   const { proformaInvoice } = useSelector((state) => state.proformaInvoices);
-  console.log("single proforma INv", proformaInvoice);
+
 
   useEffect(() => {
     // Parse the LocalBookingList string into an array of objects
@@ -298,58 +289,91 @@ const UpdateProformaInvoice = () => {
       }
     }
   }, [proformaInvoice, dispatch]);
+  // useEffect(() => {
+  //   if (proformaInvoice) {
+  //     const entry = proformaInvoice;
+
+  //     // Set all other fields immediately
+  //     form.setFieldsValue({
+  //       date: dayjs(entry.invoiceDate),
+  //       GSTNO: entry.GSTNo,
+  //       PartyID: parseInt(entry.partyName),
+  //       company_id: entry.companyname,
+  //       ContactPersonName: entry.contactPersonName,
+  //       includeGST: entry.GSTInclude,
+  //       ContactPersonNo: entry.contactPersonNo,
+  //       address: entry.partyAddr,
+  //       email: entry.Email,
+  //       tollParking: entry.tollParkingAmt,
+  //       SGST: entry.SGSTPer,
+  //       CGST: entry.CGSTPer,
+  //       IGST: entry.IGSTPer,
+  //       IGSTamt: entry.IGSTAmt,
+  //       advAmount: entry.advAmount,
+  //       AdvAmtPer: entry.AdvAmtPer,
+  //       ReferredBy: entry.ReferredBy,
+  //       Remarks: entry.Remarks,
+  //       PermitReq: entry.PermitReq,
+  //       GstType: entry.GstType,
+  //       RefInvoiceNo: entry.RefInvoiceNo,
+  //       extra: entry.extra,
+  //     });
+  //     setGstType(entry.GstType);
+  //     setAdvancePayment(
+  //       (parseInt(entry.advAmount || 0) / 100) * (proformaInvoice.roundOff || 0)
+  //     );
+
+  //     // Handle PartyID selection
+  //     if (entry.partyName) {
+  //       const partyId = Number(entry.partyName);
+  //       form.setFieldsValue({ PartyID: partyId });
+  //     }
+
+  //     // Trigger final calculation after all fields are set
+  //     calculateAll();
+  //   }
+  // }, [proformaInvoice, form, partyList]);
+
   useEffect(() => {
-    if (proformaInvoice) {
-      const entry = proformaInvoice;
+    if (!proformaInvoice || !partyList?.length) return;
 
-      // Set all other fields immediately
-      form.setFieldsValue({
-        date: moment(entry.invoiceDate),
-        GSTNO: entry.GSTNo,
-        company_id: entry.companyname,
-        ContactPersonName: entry.contactPersonName,
-        includeGST: entry.GSTInclude,
-        ContactPersonNo: entry.contactPersonNo,
-        address: entry.partyAddr,
-        email: entry.Email,
-        tollParking: entry.tollParkingAmt,
-        SGST: entry.SGSTPer,
-        CGST: entry.CGSTPer,
-        IGST: entry.IGSTPer,
-        IGSTamt: entry.IGSTAmt,
-        advAmount: entry.advAmount,
-        AdvAmtPer: entry.AdvAmtPer,
-        ReferredBy: entry.ReferredBy,
-        Remarks: entry.Remarks,
-        PermitReq: entry.PermitReq,
-        GstType: entry.GstType,
-        RefInvoiceNo: entry.RefInvoiceNo,
-        extra: entry.extra,
-      });
-      setGstType(entry.GstType);
-      setAdvancePayment(
-        (parseInt(entry.advAmount || 0) / 100) * (proformaInvoice.roundOff || 0)
-      );
+    const entry = proformaInvoice;
 
-      // Handle PartyID selection only when partyList is available
-      if (partyList?.length > 0 && entry.partyName) {
-        const partyId = Number(entry.partyName);
-        const exists = partyList.some((p) => Number(p.id) === partyId);
+    form.setFieldsValue({
+      date: dayjs(entry.invoiceDate),
+      GSTNO: entry.GSTNo,
+      PartyID: parseInt(entry.partyName),
+      company_id: entry.companyname,
+      ContactPersonName: entry.contactPersonName,
+      ContactPersonNo: entry.contactPersonNo,
+      address: entry.partyAddr,
+      tollParking: entry.tollParkingAmt,
+      SGST: entry.SGSTPer,
+      CGST: entry.CGSTPer,
+      IGST: entry.IGSTPer,
+      IGSTamt: entry.IGSTAmt,
+      advAmount: entry.advAmount,
+      AdvAmtPer: entry.AdvAmtPer,
+      ReferredBy: entry.ReferredBy,
+      Remarks: entry.Remarks,
+      PermitReq: entry.PermitReq,
+      GstType: entry.GstType,
+      RefInvoiceNo: entry.RefInvoiceNo,
+      extra: entry.extra,
+    });
 
-        if (exists) {
-          form.setFieldsValue({ PartyID: partyId });
-          handlePartySelect(partyId, true);
-        }
-      }
+    setGstType(entry.GstType);
+    calculateAll();
+  }, [proformaInvoice, partyList]);
 
-      // Trigger final calculation after all fields are set
-      calculateAll();
-    }
-  }, [proformaInvoice, form, partyList]);
+  const uniquePartyList = partyList?.filter(
+    (party, index, self) =>
+      index === self.findIndex((p) => p.id === party.id)
+  ) || [];
 
-  const sortedPartyList = Array.isArray(partyList)
-    ? [...partyList].sort((a, b) => a.partyName.localeCompare(b.partyName))
-    : [];
+  const sortedPartyList = [...uniquePartyList].sort((a, b) =>
+    a.partyName.localeCompare(b.partyName)
+  );
 
   return (
     <div className="bg-slate-50 min-h-screen">
@@ -364,51 +388,52 @@ const UpdateProformaInvoice = () => {
       >
         <div className="p-4">
           {/* Header Section */}
-          <Row justify="space-between" align="middle" className="mb-4">
-            <Col>
-              <Space align="center" size="middle">
-                <div style={{
-                  background: 'linear-gradient(135deg, #0891b2 0%, #0d9488 100%)',
-                  padding: '14px',
-                  borderRadius: '16px',
-                  boxShadow: '0 8px 20px rgba(8, 145, 178, 0.25)'
-                }}>
-                  <EditOutlined className="text-white text-3xl" />
-                </div>
-                <div>
-                  <Title level={3} style={{ margin: 0, color: '#0f172a', fontWeight: 800, letterSpacing: '-0.5px' }}>Update Proforma Invoice</Title>
-                  <Text style={{ color: '#64748b', fontSize: '14px' }}>Modify the details of proforma invoice: <Text strong className="text-cyan-600">{id}</Text></Text>
-                </div>
-              </Space>
-            </Col>
-            <Col>
-              <Space size="middle">
-                <Button size="large" onClick={() => navigate("/admin/proforma-invoice")} className="rounded-lg">
-                  Cancel
-                </Button>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  loading={loader}
-                  size="large"
-                  onClick={handleConfirm}
-                  icon={<SaveOutlined />}
-                  style={{ backgroundColor: '#0891b2', borderColor: '#0891b2' }}
-                  className="rounded-lg shadow-md hover:opacity-90 px-8"
-                >
-                  Update Invoice
-                </Button>
-              </Space>
-            </Col>
-          </Row>
+          <div className="flex flex-col gap-4 mb-6 md:flex-row md:items-center md:justify-between px-6 py-5 bg-white rounded-2xl border border-slate-100 shadow-sm">
+            <div className="flex items-center gap-4">
+              <div style={{
+                background: 'linear-gradient(135deg, #0891b2 0%, #0d9488 100%)',
+                padding: '12px',
+                borderRadius: '16px',
+                boxShadow: '0 4px 12px rgba(8, 145, 178, 0.2)'
+              }}>
+                <EditOutlined className="text-white text-2xl" />
+              </div>
+              <div>
+                <Title level={4} style={{ margin: 0, color: '#0f172a', fontWeight: 700 }}>Update Proforma Invoice</Title>
+                <Text className="text-slate-500 text-xs">Modify the details of proforma invoice: <Text strong className="text-cyan-600">{id}</Text></Text>
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <Button
+                size="large"
+                onClick={() => navigate("/admin/proforma-invoice")}
+                className="rounded-xl hover:bg-slate-50-50 border-slate-200 text-slate-600 font-medium"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="primary"
+                htmlType="submit"
+                loading={loader}
+                size="large"
+                onClick={handleConfirm}
+                icon={<SaveOutlined />}
+                style={{ background: 'linear-gradient(135deg, #0891b2 0%, #0d9488 100%)', border: 'none' }}
+                className="rounded-xl shadow-lg shadow-cyan-500/20 px-6 font-semibold hover:opacity-90 transition-all"
+              >
+                Update Invoice
+              </Button>
+            </div>
+          </div>
 
           <Row gutter={[16, 16]}>
             {/* Left Column - Main Details */}
             <Col xs={24} lg={16}>
               <Card
-                title={<Space><div className="w-1.5 h-5 bg-cyan-500 rounded-full" /> <BankOutlined style={{ color: '#0891b2' }} /><span>Basic Information</span></Space>}
-                className="shadow-sm rounded-xl border-none mb-4 overflow-hidden"
-                headStyle={{ borderBottom: '1px solid #f1f5f9', padding: '12px 20px' }}
+                title={<span className="text-blue-600 font-bold flex items-center gap-2"><BankOutlined /> Basic Information</span>}
+                className="mb-6 shadow-md border-t-4 border-blue-500 rounded-xl bg-white/80 backdrop-blur-sm"
+                bordered={false}
                 bodyStyle={{ padding: '16px 20px' }}
               >
                 <Row gutter={16}>
@@ -445,25 +470,37 @@ const UpdateProformaInvoice = () => {
                 <Row gutter={16}>
                   <Col span={12}>
                     <Form.Item
-                      label="Party"
-                      name="PartyID"
-                      rules={[{ required: true, message: "Please select a party" }]}
+                      label={<span className="font-semibold text-gray-700">Party</span>}
+                      required
+                      style={{ marginBottom: "24px" }}
                     >
                       <div className="flex gap-2">
-                        <Select
-                          showSearch
-                          onSelect={handlePartySelect}
-                          placeholder="Select party"
-                          className="flex-1 rounded-lg"
-                          optionFilterProp="children"
+                        <Form.Item
+                          name="PartyID"
+                          rules={[{ required: true, message: "Please Select Party!" }]}
+                          noStyle
                         >
-                          {sortedPartyList?.map((party) => (
-                            <Select.Option key={party.id} value={Number(party.id)}>
-                              {party.partyName}
-                            </Select.Option>
-                          ))}
-                        </Select>
-                        <CreateDrawer width={60} permission={"create-party"} title={"Create Party"}>
+                          <Select
+                            showSearch
+                            onSelect={handlePartySelect}
+                            onClick={handleLoadParty}
+                            placeholder="Select party"
+                            optionFilterProp="children"
+                            className="flex-1"
+                          >
+                            {sortedPartyList?.map((party) => (
+                              <Select.Option key={party.id} value={party.id}>
+                                {party.partyName}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </Form.Item>
+                        <CreateDrawer
+                          width={60}
+                          permission={"create-party"}
+                          title={"New Party"}
+                          color="bg-gradient-to-r from-teal-500 to-emerald-500 border-none shadow hover:from-teal-600 hover:to-emerald-600"
+                        >
                           <AddParty />
                         </CreateDrawer>
                       </div>
@@ -495,9 +532,9 @@ const UpdateProformaInvoice = () => {
               </Card>
 
               <Card
-                title={<Space><div className="w-1.5 h-5 bg-teal-500 rounded-full" /> <InfoCircleOutlined style={{ color: '#0d9488' }} /><span>Additional Details</span></Space>}
-                className="shadow-sm rounded-xl border-none overflow-hidden"
-                headStyle={{ borderBottom: '1px solid #f1f5f9', padding: '12px 20px' }}
+                title={<span className="text-purple-600 font-bold flex items-center gap-2"><InfoCircleOutlined /> Additional Details</span>}
+                className="mb-6 shadow-md border-t-4 border-purple-500 rounded-xl bg-white/80 backdrop-blur-sm"
+                bordered={false}
                 bodyStyle={{ padding: '16px 20px' }}
               >
                 <Row gutter={16}>
@@ -541,9 +578,9 @@ const UpdateProformaInvoice = () => {
             {/* Right Column - Summary & Calculations */}
             <Col xs={24} lg={8}>
               <Card
-                title={<Space><div className="w-1.5 h-5 bg-indigo-500 rounded-full" /> <FileTextOutlined style={{ color: '#6366f1' }} /><span>Order Summary</span></Space>}
-                className="shadow-md rounded-xl border-none sticky top-4 overflow-hidden"
-                headStyle={{ borderBottom: '1px solid #f1f5f9', padding: '12px 20px' }}
+                title={<span className="text-indigo-600 font-bold flex items-center gap-2"><FileTextOutlined /> Order Summary</span>}
+                className="shadow-md border-t-4 border-indigo-500 rounded-xl bg-white/80 backdrop-blur-sm sticky top-4 overflow-hidden"
+                bordered={false}
                 bodyStyle={{ padding: '16px 20px' }}
               >
                 <div className="space-y-4">
@@ -650,9 +687,9 @@ const UpdateProformaInvoice = () => {
           {/* Booking Items Section */}
           <div className="mt-6">
             <Card
-              title={<Space><div className="w-1.5 h-5 bg-cyan-500 rounded-full" /> <EnvironmentOutlined style={{ color: '#0891b2' }} /><span>Trip Details & Bookings</span></Space>}
-              className="shadow-sm rounded-xl border-none overflow-hidden"
-              headStyle={{ borderBottom: '1px solid #f1f5f9', padding: '12px 20px' }}
+              title={<span className="text-pink-600 font-bold flex items-center gap-2"><EnvironmentOutlined /> Trip Details & Bookings</span>}
+              className="mb-8 shadow-md border-0 border-t-4 border-pink-500 rounded-xl bg-white/90 backdrop-blur-sm"
+              bordered={false}
               bodyStyle={{ padding: 0 }}
             >
               <InvoiceAdd
