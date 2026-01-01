@@ -9,6 +9,7 @@ if (pdfFonts.pdfMake && pdfFonts.pdfMake.vfs) {
 }
 
 const STEMP_IMAGE_URL = window.location.origin + "/images/stemp.jpeg";
+const COMPANY_LOGO_URL = window.location.origin + "/images/logo-white-new.png";
 
 const getBase64ImageFromURL = (url) => {
     return new Promise((resolve, reject) => {
@@ -20,7 +21,7 @@ const getBase64ImageFromURL = (url) => {
             canvas.height = img.height;
             const ctx = canvas.getContext("2d");
             ctx.drawImage(img, 0, 0);
-            const dataURL = canvas.toDataURL("image/jpeg");
+            const dataURL = canvas.toDataURL("image/png");
             resolve(dataURL);
         };
         img.onerror = (error) => {
@@ -87,6 +88,13 @@ export const generateProformaInvoicePDF = async (data) => {
         console.error("Could not load signature image", error);
     }
 
+    let companyLogoBase64 = null;
+    try {
+        companyLogoBase64 = await getBase64ImageFromURL(COMPANY_LOGO_URL);
+    } catch (error) {
+        console.error("Could not load company logo image", error);
+    }
+
     const tripDetailsRows = data.map((item, index) => {
         return [
             { text: index + 1, alignment: 'center', style: 'tableCell' },
@@ -111,15 +119,21 @@ export const generateProformaInvoicePDF = async (data) => {
                     y: -5,
                     w: 595, // Wider than page width to ensure full bleed
                     h: 50,
-                    color: '#1e3a8a'
+                    color: '#1e3a8a' // Dark Blue Background
                 }]
             },
+            // Logo (Left Aligned - Absolute Position)
+            ...(companyLogoBase64 ? [{
+                image: companyLogoBase64,
+                width: 120,
+                absolutePosition: { x: 10, y: 35 }
+            }] : []),
             {
-                text: invoiceData.CompanyName || 'CHOHAN TOURS AND TRAVELS',
+                text: invoiceData.CompanyName || 'CHOHAN TOURS & TRAVELS',
                 style: 'compactCompanyName',
                 alignment: 'center',
                 color: 'white',
-                margin: [0, -45, 0, 2] // Adjusting Y-margin to place text over canvas
+                margin: [0, -45, 0, 2] // Adjusted Y-margin to place text over canvas
             },
             {
                 text: `${invoiceData.BranchAddr || ''}, ${invoiceData.BranchCity || ''}, ${invoiceData.BranchPinCode || ''}, ${invoiceData.BranchState || ''}`,
@@ -266,10 +280,40 @@ export const generateProformaInvoicePDF = async (data) => {
                 margin: [0, 0, 0, 5]
             },
 
-            // --- FIXED SUMMARY/TOTAL ---
+            // --- FIXED SUMMARY/TOTAL & PAYMENT INFO ---
             {
                 columns: [
-                    { width: '*', text: '' }, // Spacer column
+                    // LEFT: Payment Information (Moved from bottom)
+                    {
+                        width: '*',
+                        stack: [
+                            { text: 'PAYMENT INFORMATION', style: 'sectionLabel', alignment: 'left', margin: [0, 0, 0, 5] },
+                            {
+                                table: {
+                                    widths: ['*'],
+                                    body: [[{
+                                        stack: [
+                                            { text: [{ text: 'PAN NO: ', style: 'compactLabel' }, { text: invoiceData.BranchPanno, style: 'compactText' }] },
+                                            { text: [{ text: 'GST No: ', style: 'compactLabel' }, { text: invoiceData.BranchGSTNo, style: 'compactText' }], margin: [0, 0, 0, 4] },
+                                            { text: 'OUR BANK DETAILS', style: 'compactLabel', decoration: 'underline', margin: [0, 0, 0, 2] },
+                                            { text: invoiceData.BankAcName, style: 'compactBankName' },
+                                            { text: [{ text: 'Bank: ', style: 'compactLabel' }, { text: invoiceData.BankName, style: 'compactText' }] },
+                                            { text: [{ text: 'Branch: ', style: 'compactLabel' }, { text: invoiceData.BranchAddr, style: 'compactText' }] },
+                                            { text: [{ text: 'A/c No: ', style: 'compactLabel' }, { text: invoiceData.BankAcNo, style: 'compactText' }] },
+                                            { text: [{ text: 'IFSC: ', style: 'compactLabel' }, { text: invoiceData.BankIFSCode, style: 'compactText' }] }
+                                        ],
+                                        border: [true, true, true, true],
+                                        borderColor: ['#e5e7eb', '#e5e7eb', '#e5e7eb', '#e5e7eb'],
+                                        fillColor: '#f9fafb',
+                                        padding: [8, 5, 8, 5]
+                                    }]]
+                                },
+                                layout: 'noBorders'
+                            }
+                        ],
+                        margin: [0, 0, 10, 0] // Add right margin to separate from totals
+                    },
+                    // RIGHT: Amount Calculation (Totals)
                     {
                         width: 200,
                         table: {
@@ -331,13 +375,12 @@ export const generateProformaInvoicePDF = async (data) => {
                                 ]
                             ]
                         },
-                        // Removed layout properties and used cell-level borders for better control
                         layout: {
                             hLineWidth: () => 0,
                             vLineWidth: () => 0,
                             paddingLeft: () => 5,
                             paddingRight: () => 5,
-                            paddingTop: (i, node) => (i === 0 || i === 4) ? 5 : 3, // Add extra padding around horizontal lines
+                            paddingTop: (i, node) => (i === 0 || i === 4) ? 5 : 3,
                             paddingBottom: (i, node) => (i === 0 || i === 4) ? 5 : 3
                         }
                     }
@@ -347,7 +390,6 @@ export const generateProformaInvoicePDF = async (data) => {
 
             // --- AMOUNT IN WORDS ---
             {
-                // This block is for the light blue background
                 canvas: [{
                     type: 'rect',
                     x: 0, y: 0, w: 535, h: 20,
@@ -361,126 +403,68 @@ export const generateProformaInvoicePDF = async (data) => {
                     { text: 'Amount in Words: ', style: 'compactLabel' },
                     { text: `${invoiceData.AmtInWords} Only`, style: 'amountWords' }
                 ],
-                margin: [6, -20, 6, 10] // Adjusted Y-margin to place text over canvas
+                margin: [6, -20, 6, 10]
             },
 
-            // --- FIXED BOTTOM SECTION (Signature & Payment) ---
+            // --- BOTTOM SECTION: TERMS on Left (50%) & SIGNATURE on Right (50%) ---
             {
                 columns: [
-                    // Signature Block
+                    // Left Column: Terms & Conditions
+                    {
+                        width: '50%',
+                        stack: [
+                            { text: 'NOTE / T&C:', style: 'sectionLabel', margin: [0, 5, 0, 2] },
+                            {
+                                // Reduced width for the T&C box to fit in 50% column (approx 260px)
+                                canvas: [{ type: 'rect', x: 0, y: 0, w: 250, h: 45, r: 2, lineColor: '#e5e7eb', lineWidth: 0.5 }]
+                            },
+                            {
+                                text: "• This is a proforma invoice and not a booking confirmation.\n• Booking confirmation against advance only.",
+                                style: 'tncText',
+                                margin: [8, -40, 8, 10]
+                            }
+                        ],
+                        margin: [0, 0, 10, 0]
+                    },
+                    // Right Column: Signature
                     {
                         width: '50%',
                         stack: [
                             {
-                                text: 'FOR ' + (invoiceData.CompanyName || 'CHOHAN TOURS AND TRAVELS'),
+                                text: 'FOR ' + (invoiceData.CompanyName || 'CHOHAN TOURS & TRAVELS'),
                                 style: 'compactLabel',
-                                margin: [0, 15, 0, 5]
-                            },
-
-                            ...(stempImageBase64 ? [{
-                                image: stempImageBase64,
-                                width: 60,
-                                alignment: 'left',
-                                margin: [10, 0, 0, 0]
-                            }] : []),
-                            {
-                                text: 'Authorized Signatory',
-                                style: 'compactText',
+                                alignment: 'right', // Align right
                                 margin: [0, 5, 0, 5]
                             },
-                            {
-                                text: 'E. & O. E.',
-                                style: 'compactLabel',
-                                italics: true,
-                                margin: [0, 5, 0, 0]
-                            }
-                        ]
-                    },
-                    // Payment Information (Bank Details)
-                    {
-                        width: '50%',
-                        stack: [
-                            {
-                                text: 'PAYMENT INFORMATION',
-                                style: 'sectionLabel',
+                            ...(stempImageBase64 ? [{
+                                image: stempImageBase64,
+                                width: 70,
                                 alignment: 'right',
-                                margin: [0, 0, 0, 5]
-                            },
+                                margin: [0, 0, 5, 2]
+                            }] : []),
+                            // Box for Signature
                             {
-                                // Use a simple table for the bank details box for better border control
                                 table: {
-                                    widths: ['*'],
+                                    widths: [120],
                                     body: [
                                         [{
-                                            stack: [
-                                                {
-                                                    text: [
-                                                        { text: 'PAN NO: ', style: 'compactLabel' },
-                                                        { text: invoiceData.BranchPanno, style: 'compactText' }
-                                                    ],
-                                                    margin: [0, 2, 0, 2]
-                                                },
-                                                {
-                                                    text: [
-                                                        { text: 'GST No: ', style: 'compactLabel' },
-                                                        { text: invoiceData.BranchGSTNo, style: 'compactText' }
-                                                    ],
-                                                    margin: [0, 0, 0, 5]
-                                                },
-                                                {
-                                                    text: 'OUR BANK DETAILS',
-                                                    style: 'compactLabel',
-                                                    decoration: 'underline',
-                                                    margin: [0, 0, 0, 3]
-                                                },
-                                                {
-                                                    text: invoiceData.BankAcName,
-                                                    style: 'compactBankName',
-                                                    margin: [0, 0, 0, 2]
-                                                },
-                                                {
-                                                    text: [
-                                                        { text: 'Bank: ', style: 'compactLabel' },
-                                                        { text: invoiceData.BankName, style: 'compactText' }
-                                                    ],
-                                                    margin: [0, 0, 0, 2]
-                                                },
-                                                {
-                                                    text: [
-                                                        { text: 'Branch: ', style: 'compactLabel' },
-                                                        { text: invoiceData.BankBranchAddr, style: 'compactText' }
-                                                    ],
-                                                    margin: [0, 0, 0, 2]
-                                                },
-                                                {
-                                                    text: [
-                                                        { text: 'A/c No: ', style: 'compactLabel' },
-                                                        { text: invoiceData.BankAcNo, style: 'compactText' }
-                                                    ],
-                                                    margin: [0, 0, 0, 2]
-                                                },
-                                                {
-                                                    text: [
-                                                        { text: 'IFSC: ', style: 'compactLabel' },
-                                                        { text: invoiceData.BankIFSCode, style: 'compactText' }
-                                                    ],
-                                                    margin: [0, 0, 0, 5]
-                                                }
-                                            ],
-                                            // The whole stack is the content of a single table cell
+                                            height: 60,
+                                            text: '',
                                             border: [true, true, true, true],
-                                            borderColor: ['#e5e7eb', '#e5e7eb', '#e5e7eb', '#e5e7eb'],
-                                            fillColor: '#f9fafb',
-                                            padding: [8, 8, 8, 8]
+                                            borderColor: ['#cbd5e1', '#cbd5e1', '#cbd5e1', '#cbd5e1']
                                         }]
                                     ]
                                 },
-                                layout: 'noBorders'
-                            }
+                                layout: 'noBorders',
+                                alignment: 'right', // Align box right
+                                margin: [0, 0, 0, 5]
+                            },
+                            { text: 'Authorized Signatory', style: 'compactLabel', alignment: 'right' },
+                            { text: 'E. & O. E.', style: 'compactLabel', italics: true, alignment: 'right', margin: [0, 5, 0, 0] }
                         ]
                     }
                 ],
-                margin: [0, 0, 0, 0]
+                margin: [0, 10, 0, 10]
             }
         ],
 
@@ -570,6 +554,12 @@ export const generateProformaInvoicePDF = async (data) => {
                 fontSize: 8,
                 bold: true,
                 color: '#1e293b'
+            },
+            tncText: {
+                fontSize: 8,
+                lineHeight: 1.4,
+                color: '#475569',
+                italics: true
             },
             footer: {
                 fontSize: 7,

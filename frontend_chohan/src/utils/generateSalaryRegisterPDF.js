@@ -115,7 +115,7 @@ export const generateSalaryRegisterPDF = (data, monthYear) => {
                 }]
             },
             {
-                text: 'CHOHAN TOURS AND TRAVELS',
+                text: 'CHOHAN TOURS & TRAVELS',
                 style: 'companyName',
                 alignment: 'center',
                 color: 'white',

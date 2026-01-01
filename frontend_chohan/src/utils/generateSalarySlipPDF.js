@@ -125,7 +125,7 @@ export const generateSalarySlipPDF = async (data) => {
                 }]
             },
             {
-                text: 'CHOHAN TOURS AND TRAVELS',
+                text: 'CHOHAN TOURS & TRAVELS',
                 style: 'companyName',
                 alignment: 'center',
                 color: 'white',

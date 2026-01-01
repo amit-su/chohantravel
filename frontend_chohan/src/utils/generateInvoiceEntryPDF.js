@@ -110,7 +110,7 @@ export const generateInvoiceEntryPDF = async (data) => {
                 }]
             },
             {
-                text: invoiceData.CompanyName || 'CHOHAN TOURS AND TRAVELS',
+                text: invoiceData.CompanyName || 'CHOHAN TOURS & TRAVELS',
                 style: 'compactCompanyName',
                 alignment: 'center',
                 color: 'white',
@@ -351,7 +351,7 @@ export const generateInvoiceEntryPDF = async (data) => {
                         width: '50%',
                         stack: [
                             {
-                                text: 'FOR ' + (invoiceData.CompanyName || 'CHOHAN TOURS AND TRAVELS'),
+                                text: 'FOR ' + (invoiceData.CompanyName || 'CHOHAN TOURS & TRAVELS'),
                                 style: 'compactLabel',
                                 margin: [0, 15, 0, 5]
                             },

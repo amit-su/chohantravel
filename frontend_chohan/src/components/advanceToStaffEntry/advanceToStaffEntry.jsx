@@ -62,7 +62,7 @@ const AdvanceToStaffEntry = (props) => {
         // Company Header
         doc.setFontSize(18);
         doc.setFont("helvetica", "bold");
-        doc.text("CHOHAN TOURS AND TRAVELS", centerX, 15, { align: "center" });
+        doc.text("CHOHAN TOURS & TRAVELS", centerX, 15, { align: "center" });
 
         doc.setFontSize(10);
         doc.setFont("helvetica", "normal");
