@@ -33,7 +33,7 @@ import {
 
 const { Title, Text } = Typography;
 
-function UpdateBookingDrawer({ data, id, isIncludeGST, onClose }) {
+function UpdateBookingDrawer({ data, id, isIncludeGST, onClose, drawerClose }) {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const [fixedRate, setFixedRate] = useState(data?.rateType === "FR");
@@ -106,6 +106,9 @@ function UpdateBookingDrawer({ data, id, isIncludeGST, onClose }) {
       toast.success("Changes saved successfully!");
       setLoader(false);
       onClose({ id: id, values: formattedValues });
+      if (drawerClose) {
+        drawerClose();
+      }
     } catch (error) {
       setLoader(false);
     }

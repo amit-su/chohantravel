@@ -4,7 +4,7 @@ import {
   PlusOutlined,
 } from "@ant-design/icons";
 import { Drawer } from "antd";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import UserPrivateComponent from "../PrivacyComponent/UserPrivateComponent";
 import { Link } from "react-router-dom";
 import { MdAssignmentTurnedIn } from "react-icons/md";
@@ -50,7 +50,13 @@ export default function CreateDrawer({
           onClose={onClose}
           open={open}
         >
-          <div className="px-5 pt-5"> {children}</div>
+          <div className="px-5 pt-5">
+            {React.Children.map(children, (child) =>
+              React.isValidElement(child)
+                ? React.cloneElement(child, { drawerClose: onClose })
+                : child
+            )}
+          </div>
         </Drawer>
       </UserPrivateComponent>
     );

@@ -14,6 +14,7 @@ import {
   Col,
   Space,
   Divider,
+  message,
 } from "antd";
 import { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -104,6 +105,11 @@ const AddBooking = ({ isIncludeGST, onClose }) => {
       };
 
       onClose(formattedValues);
+      message.success("Booking Added Successfully");
+      form.resetFields();
+      setAmount(0);
+      setFixedRate(true);
+      setLoading(false);
     } catch (error) {
       setLoading(false);
     }
