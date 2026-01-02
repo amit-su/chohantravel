@@ -411,24 +411,43 @@ export const generateProformaInvoicePDF = async (data) => {
                 columns: [
                     // Left Column: Terms & Conditions
                     {
-                        width: '50%',
+                        width: '80%',
                         stack: [
-                            { text: 'NOTE / T&C:', style: 'sectionLabel', margin: [0, 5, 0, 2] },
+                            { text: 'NOTE / T&C:', style: 'sectionLabel', margin: [0, 5, 0, 5] },
                             {
-                                // Reduced width for the T&C box to fit in 50% column (approx 260px)
-                                canvas: [{ type: 'rect', x: 0, y: 0, w: 250, h: 45, r: 2, lineColor: '#e5e7eb', lineWidth: 0.5 }]
-                            },
-                            {
-                                text: "• This is a proforma invoice and not a booking confirmation.\n• Booking confirmation against advance only.",
-                                style: 'tncText',
-                                margin: [8, -40, 8, 10]
+                                table: {
+                                    widths: ['*'],
+                                    body: [[
+                                        {
+                                            text:
+                                                `1. THIS IS A PROFORMA INVOICE AND NOT A BOOKING CONFIRMATION.
+2. BOOKING CONFIRMATION AGAINST ADVANCE ONLY.
+3. ALL PAYMENTS HAVE TO BE FULLY CLEARED AT OUR AFORESAID OFFICE.
+4. 7 DAYS PRIOR TO COMMENCEMENT OF JOURNEY.
+5. NO STANDING ALLOWED, PASSENGERS ALLOWED AS PER SEATING CAPACITY ONLY.
+6. NO PASSENGERS ARE ALLOWED TO SIT INTO DRIVING CABIN.
+7. ALL ADVANCES OR PAYMENTS MADE ABOVE WHETHER IN PART OR FULL SHALL STAND TOTALLY FORFEITED IN CASE OF CANCELLATION.
+8. ANY DAMAGE TO THE BUS INCLUDING ITS FITTINGS AND ACCESSORIES SHALL HAVE TO BE FULLY BORNE BY THE HIRER.
+9. IN CASE OF ONE-DAY OR LESS BOOKINGS, EXTRA DETENTION CHARGES @ RS. 1000/- PER HOUR SHALL BE PAYABLE.
+10. THE BUS SHALL NOT ENTER ANY LANES; PICKUP AND DROP WILL BE DONE FROM MAIN ROADS ONLY.`,
+                                            style: 'tncText',
+                                            margin: [8, 6, 8, 6]
+                                        }
+                                    ]]
+                                },
+                                layout: {
+                                    hLineColor: '#e5e7eb',
+                                    vLineColor: '#e5e7eb',
+                                    hLineWidth: () => 0.5,
+                                    vLineWidth: () => 0.5
+                                }
                             }
                         ],
                         margin: [0, 0, 10, 0]
                     },
                     // Right Column: Signature
                     {
-                        width: '50%',
+                        width: '20%',
                         stack: [
                             {
                                 text: 'FOR ' + (invoiceData.CompanyName || 'CHOHAN TOURS & TRAVELS'),
