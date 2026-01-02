@@ -1,0 +1,54 @@
+<header id="header" class="header">
+    <div class="header-top bg-theme-color-2 sm-text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-7 pt-10 pb-10">
+            <div class="widget no-border m-0">
+              <ul class="list-inline">
+                <li class="m-0 pl-10 pr-10">  <a class="text-white" href="#"> <i class="fa fa-phone text-white"></i> +1 <?php echo $setting->contact_no; ?></a> </li>           
+                <li class="m-0 pl-10 pr-10">  <a class="text-white" href="#"> <i class="fa fa-envelope-o text-white"></i> <?php echo $setting->contact_email; ?></a> </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-3 pt-10 pb-10">
+            <div class="widget no-border m-0">
+      
+            </div>
+          </div>
+          <div class="col-md-2 pb-10">
+            <div class="widget no-border m-0">
+              <ul class="list-inline pull-right flip sm-pull-none sm-text-center mt-5">
+                <li class="mt-sm-10 mb-sm-10">
+                  <!-- Modal: Appointment Starts -->
+                  <a class="btn btn-default btn-flat btn-xs bg-light p-5 font-11 pl-10 pr-10 ajaxload-popup text-white" href="">Donate Now</a>
+                </li>
+                <li class="mt-sm-10 mb-sm-10">
+                  <a class="btn btn-default btn-flat btn-xs bg-light p-5 font-11 pl-10 pr-10 ajaxload-popup text-white" href="">Join Us</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="header-nav">
+      <div class="header-nav-wrapper navbar-scrolltofixed bg-white">
+        <div class="container">
+          <nav id="menuzord-right" class="menuzord default">
+            <a class="menuzord-brand pull-left flip" href="javascript:void(0)">
+              <img src="<?php echo URL::to('/'); ?>/assets/images/logo-wide-white.png" alt="">
+            </a>
+            <ul class="menuzord-menu">
+              
+              <?php foreach($pages as $page): ?>
+                <li <?php echo (($page_id == $page->id) ? 'class="active"':''); ?>>
+                  <a href="<?php echo URL::Route('get-page-details',$page->id); ?>"><?php echo $page->name; ?></a>
+                </li>
+              <?php endforeach; ?>
+              
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>

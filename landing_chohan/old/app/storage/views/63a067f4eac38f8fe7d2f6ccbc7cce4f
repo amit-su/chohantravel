@@ -1,0 +1,142 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Chohan - Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Minimal Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<?php echo $__env->make('admin.includes.header', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+</head>
+<body>
+<div id="wrapper">
+     <!----->
+        <?php echo $__env->make('admin.includes.sidebar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+		 <div id="page-wrapper" class="gray-bg dashbard-1">
+       <div class="content-main">
+ 
+ 	
+		     <div class="banner">
+		    	<h2>
+				<span>Dashboard</span>
+				</h2>
+		    </div>
+			<!---728x90--->
+		<!--//banner-->
+ 	<!--grid-->
+ 	<div class="content-top">
+ 		<div class="col-sm-6" >
+		<div class="grid-form1">
+ 		<h3 id="forms-example" class="">Create Gallery Categories</h3>
+ 		<form>
+  <div class="form-group">
+    <label for="exampleInputEmail1">Name</label>
+    <input type="text" class="form-control" id="category_name" placeholder="Enter category name">
+  </div>
+  
+  <button type="submit" class="btn btn-default" id="create_new_gallery_cat">Create</button>
+</form>
+</div>
+</div>
+
+<div  class="col-sm-6" >
+<div class="grid-form1">
+ <h3 id="forms-example" class="">Gallery Categories</h3>
+  <span id='cats_block'>
+  <?php if($cats): ?>
+	  <?php foreach($cats as $cat): ?>	  
+	  <p><?php echo $cat->name; ?> - <?php if($cat->status == 1): ?> <font color='green'>Active</font><?php else: ?> <font color='red'>Deactivated</font><?php endif; ?> <br/><input type='submit' class="change_status" value="Change Status" data-b="<?php echo $cat->id; ?>"> &nbsp; <input type='submit' value='Manage Images' data-b="<?php echo $cat->id; ?>" class="manage_images"> &nbsp; <input type='submit' class="delete" value='Delete' data-b="<?php echo $cat->id; ?>"></p>
+	  <p><hr/></p>
+	  <?php endforeach; ?>
+  <?php endif; ?>
+  <span>
+</div>
+</div>
+
+</div>
+<script src="<?php echo URL::to('/'); ?>/assets/admin/js/jquery.nicescroll.js"></script>
+<script src="<?php echo URL::to('/'); ?>/assets/admin/js/scripts.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+$(document).ready(function(){
+	var base_url = "<?php echo URL::to('/'); ?>";
+	$('.change_status').click(function(){
+		var id = $(this).attr("data-b");
+		swal({
+			  title: "Are you sure?",
+			  text: "You want to deactivate the category",
+			  icon: "warning",
+			  buttons: true,
+			  dangerMode: true,
+			})
+			.then((willDelete) => {
+			  if (willDelete) {
+				 $.post(base_url+'/deactivate-gallery-category',{id:id},function(data){
+					 if(data.status == 1)
+					 {
+						 swal("Category has been deactivated", {
+						  icon4: "success", 
+						});
+						window.location.reload();
+					 }
+				 });
+				
+			  } 
+			});
+	});
+	
+	$('.delete').click(function(){
+		var id = $(this).attr("data-b");
+		swal({
+			  title: "Are you sure you want to delete?",
+			  text: "Deleting the category will delete the images also",
+			  icon: "warning",
+			  buttons: true,
+			  dangerMode: true,
+			})
+			.then((willDelete) => {
+			  if (willDelete) {
+				 $.post(base_url+'/delete-gallery-category',{id:id},function(data){
+					 if(data.status == 1)
+					 {
+						 swal("Category has been deleted, with all images", {
+						  icon4: "success", 
+						});
+						window.location.reload();
+					 }
+				 });
+				
+			  } 
+			});
+	});
+	
+	$('#create_new_gallery_cat').click(function(){
+		var category_name = $('#category_name').val();
+		if(category_name == "")
+		{
+			swal("Oops", "Enter new gallery category name", "error");
+			return;
+		}
+		else{
+			$.post(base_url+'/add-new-category',{category_name:category_name},function(data){
+				if(data.status == 1)
+				{
+					swal("Done","New gallery category added", "success");
+					window.location.reload();
+				}
+			});
+		}
+	});
+	
+	$('.manage_images').click(function(){
+		var id = $(this).attr("data-b");
+		window.location.replace(base_url+'/admin/manage-images/'+id);
+	});
+});
+</script>
+</body>
+</html>
+

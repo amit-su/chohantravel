@@ -1,0 +1,146 @@
+<div id="sidebar" class="sidebar">
+			<!-- begin sidebar scrollbar -->
+			<div data-scrollbar="true" data-height="100%">
+				<!-- begin sidebar user -->
+				<ul class="nav">
+					<li class="nav-profile">
+						<div class="image">
+							<a href="javascript:;"><img src="assets/img/user-13.jpg" alt="" /></a>
+						</div>
+						<div class="info">
+							Sangita P Mallik
+							<small>Administrator</small>
+						</div>
+					</li>
+				</ul>
+				<!-- end sidebar user -->
+				<!-- begin sidebar nav -->
+				<ul class="nav">
+					<li class="nav-header">Navigation</li>
+					
+					<li class="active">
+						<a href="<?php echo URL::Route('get-admin-dashboard'); ?>">
+							<i class="fa fa-inbox"></i> <span>Dashboard</span>
+						</a>
+					</li>
+					<li class="has-sub">
+						<a href="javascript:void(0);">
+						    <b class="caret pull-right"></b>
+						    <i class="fa fa-cogs"></i>
+						    <span> Pages</span>
+						</a>
+						<ul class="sub-menu">
+							  <?php foreach($pages as $page): ?>
+				                <li>
+				                  <a href="<?php echo URL::Route('get-admin-page',$page->id); ?>"><?php echo $page->name; ?></a>
+				                </li>
+				              <?php endforeach; ?>
+							
+						</ul>
+					</li>
+
+					<li>
+						<a href="<?php echo URL::Route('get-admin-settings'); ?>">
+							<i class="fa fa-inbox"></i> <span>Settings</span>
+						</a>
+					</li>
+					<li class="has-sub">
+						<a href="javascript:;">
+						    <b class="caret pull-right"></b>
+						    <i class="fa fa-suitcase"></i>
+						    <span>
+						        UI Elements
+					            <span class="label label-theme m-l-5">NEW</span>
+						    </span> 
+						</a>
+						<ul class="sub-menu">
+							<li><a href="ui_general.html">General</a></li>
+							<li><a href="ui_typography.html">Typography</a></li>
+							<li><a href="ui_tabs_accordions.html">Tabs & Accordions</a></li>
+							<li><a href="ui_modal_notification.html">Modal & Notification</a></li>
+							<li><a href="ui_widget_boxes.html">Widget Boxes</a></li>
+							<li><a href="ui_media_object.html">Media Object</a></li>
+							<li><a href="ui_buttons.html">Buttons</a></li>
+							<li><a href="ui_icons.html">Icons</a></li>
+							<li><a href="ui_simple_line_icons.html">Simple Line Icons <i class="fa fa-paper-plane text-theme m-l-5"></i></a></li>
+						</ul>
+					</li>
+					<li class="has-sub">
+						<a href="javascript:;">
+						    <b class="caret pull-right"></b>
+						    <i class="fa fa-file-o"></i>
+						    <span>
+						        Form Stuff
+					        </span> 
+						</a>
+						<ul class="sub-menu">
+							<li><a href="form_elements.html">Form Elements</a></li>
+							<li><a href="form_plugins.html">Form Plugins</a></li>
+							<li><a href="form_slider_switcher.html">Form Slider + Switcher</a></li>
+							<li><a href="form_validation.html">Form Validation</a></li>
+							<li><a href="form_wizards.html">Wizards</a></li>
+							<li><a href="form_wizards_validation.html">Wizards + Validation</a></li>
+							<li><a href="form_wysiwyg.html">WYSIWYG</a></li>
+							<li><a href="form_editable.html">X-Editable</a></li>
+							<li><a href="form_multiple_upload.html">Multiple File Upload</a></li>
+						</ul>
+					</li>
+					<li class="has-sub">
+						<a href="javascript:;">
+						    <b class="caret pull-right"></b>
+						    <i class="fa fa-th"></i>
+						    <span>Tables</span>
+						</a>
+						<ul class="sub-menu">
+							<li><a href="table_basic.html">Basic Tables</a></li>
+							<li><a href="table_manage.html">Managed Tables</a></li>
+						</ul>
+					</li>
+					
+					
+					
+					<li class="has-sub">
+					    <a href="javascript:;">
+						    <b class="caret pull-right"></b>
+						    <i class="fa fa-camera"></i>
+						    <span>
+						        Gallery
+					            <span class="label label-theme m-l-5">NEW</span>
+						    </span>
+						</a>
+					    <ul class="sub-menu">
+					        <li><a href="gallery.html">Gallery v1</a></li>
+					        <li><a href="gallery_v2.html">Gallery v2 <i class="fa fa-paper-plane text-theme m-l-5"></i></a></li>
+					    </ul>
+					</li>
+					
+					<li class="has-sub">
+						<a href="javascript:;">
+						    <b class="caret pull-right"></b>
+						    <i class="fa fa-gift"></i>
+						    <span>Extra</span>
+						</a>
+						<ul class="sub-menu">
+						    <li><a href="extra_timeline.html">Timeline</a></li>
+						    <li><a href="extra_coming_soon.html">Coming Soon Page</a></li>
+							<li><a href="extra_search_results.html">Search Results</a></li>
+							<li><a href="extra_invoice.html">Invoice</a></li>
+							<li><a href="extra_404_error.html">404 Error Page</a></li>
+						</ul>
+					</li>
+					
+					<li class="active">
+						<a href="<?php echo URL::Route('get-admin-logout'); ?>">
+							<i class="fa fa-inbox"></i> <span>Logout</span>
+						</a>
+					</li>
+					
+			        <!-- begin sidebar minify button -->
+					<li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
+			        <!-- end sidebar minify button -->
+				</ul>
+				<!-- end sidebar nav -->
+			</div>
+			<!-- end sidebar scrollbar -->
+		</div>
+		<div class="sidebar-bg"></div>

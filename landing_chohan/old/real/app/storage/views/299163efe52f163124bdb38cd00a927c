@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Real Estate</title>
+
+<!-- Bootstrap -->
+<link href="https://fonts.googleapis.com/css?family=Libre+Franklin:100,200,300,400,500,700" rel="stylesheet">
+
+<link href="<?php echo URL::to('/'); ?>/assets/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="<?php echo URL::to('/'); ?>/assets/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+<link href="<?php echo URL::to('/'); ?>/assets/lib/animate.css" rel="stylesheet">
+<link href="<?php echo URL::to('/'); ?>/assets/lib/selectric/selectric.css" rel="stylesheet">
+<link href="<?php echo URL::to('/'); ?>/assets/lib/swiper/css/swiper.min.css" rel="stylesheet">
+<link href="<?php echo URL::to('/'); ?>/assets/lib/aos/aos.css" rel="stylesheet">
+<link href="<?php echo URL::to('/'); ?>/assets/lib/Magnific-Popup/magnific-popup.css" rel="stylesheet">
+<link href="<?php echo URL::to('/'); ?>/assets/css/style.css" rel="stylesheet">
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="<?php echo URL::to('/'); ?>/assets/lib/jquery-3.2.1.min.js"></script>
+<script src="<?php echo URL::to('/'); ?>/assets/lib/popper.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="<?php echo URL::to('/'); ?>/assets/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="<?php echo URL::to('/'); ?>/assets/lib/selectric/jquery.selectric.js"></script>
+<script src="<?php echo URL::to('/'); ?>/assets/lib/swiper/js/swiper.min.js"></script>
+<script src="<?php echo URL::to('/'); ?>/assets/lib/aos/aos.js"></script>
+<script src="<?php echo URL::to('/'); ?>/assets/lib/Magnific-Popup/jquery.magnific-popup.min.js"></script>
+<script src="<?php echo URL::to('/'); ?>/assets/lib/sticky-sidebar/ResizeSensor.min.js"></script>
+<script src="<?php echo URL::to('/'); ?>/assets/lib/sticky-sidebar/theia-sticky-sidebar.min.js"></script>
+<script src="<?php echo URL::to('/'); ?>/assets/lib/lib.js"></script>
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div id="main">
+<nav class="navbar navbar-expand-lg navbar-dark" id="menu">
+  <div class="container">
+  <a class="navbar-brand" href="index-2.html"><span class="icon-uilove icon-uilove-realestate"></span></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu-content" aria-controls="menu-content" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="menu-content">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#">
+         About Us</span>
+        </a>
+      </li>
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Services
+        </a>
+        <div class="dropdown-menu">
+            <a href="agent_list.html" class="dropdown-item">Book A Trip</a>
+            <a href="agent.html" class="dropdown-item">Schedule Internet Conference</a>
+            <a href="agent.html" class="dropdown-item">Secure your land</a>
+            <a href="agent.html" class="dropdown-item">Build A Cottage</a>
+            <a href="agent.html" class="dropdown-item">Develop A Farm</a>
+            <a href="agent.html" class="dropdown-item">Land Survey & Soil Test</a>
+        </div>
+      </li>
+      
+      
+      
+    </ul>
+    
+    <ul class="navbar-nav ml-auto">
+      
+      <li class="nav-item"><a class="nav-link nav-btn" href="<?php echo URL::Route('get-contact-us'); ?>"><span><i class="fa fa-plus" aria-hidden="true"></i> Contact Us</span></a></li>
+    </ul>
+    
+  </div>
+  </div>
+</nav>
+<div class="home-search">
+<div id="map_wrapper">
+<div id="map_canvas" class="mapping"></div>
+</div>
+
+<!--<div class="search-form v4">
+  <div class="container">
+  <div class="row justify-content-lg-center">
+        <div class="col-lg-6">
+          <div class="form-group">
+            <input type="text" class="form-control form-control-lg" placeholder="Country, State, County, City, Zip, Title, Address, ID.">
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="row">
+            <div class="col-md-7">
+              <div class="form-group">
+                <select class="form-control form-control-lg ui-select">
+                        <option value="">Property Type</option>
+                        <option value="house">House</option>
+                        <option value="flat">Flat</option>
+                        <option value="apartment">Apartment</option>
+                        <option value="land">Land</option>
+                        <option value="room">Room</option>
+                      </select>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <div class="form-group">
+                <button type="submit" class="btn btn-lg btn-primary btn-block">Search</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>-->
+</div>
+<?php echo $__env->yieldContent('content'); ?>
+<button class="btn btn-primary btn-circle" id="to-top"><i class="fa fa-angle-up"></i></button>
+<?php echo $__env->make('includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+</div>
+<script src="<?php echo URL::to('/'); ?>/assets/lib/map/markerclusterer.js"></script>
+<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBvuspZieDAMlpAVAe2qwlvkk8oQU34dtg&amp;callback=initMap"></script>
+<script>
+function initMap() {
+ 
+  var bounds = new google.maps.LatLngBounds();
+  var map;
+  map = new google.maps.Map(document.getElementById("map_canvas"));
+  map.setTilt(45);
+  var arrow_icon = {
+    path: 'M50,0C31.294,0,16.129,15.165,16.129,33.87c0,0.401,0.012,0.809,0.03,1.221c0.127,3.558,0.798,6.975,1.939,10.172  C25.324,69.015,50,100,50,100s24.673-30.982,31.9-54.734c1.143-3.197,1.813-6.617,1.939-10.175c0.02-0.412,0.031-0.819,0.031-1.221  C83.871,15.165,68.706,0,50,0z M50,50.459c-9.161,0-16.589-7.428-16.589-16.589c0-9.16,7.428-16.588,16.589-16.588  c9.162,0,16.589,7.428,16.589,16.588C66.589,43.031,59.162,50.459,50,50.459z',
+    strokeOpacity: 1,
+    strokeWeight: 1,
+    fillColor: '#563d7c',
+    fillOpacity: 1,
+    rotation: 0,
+    scale: 0.4
+  };
+  var infoWin = new google.maps.InfoWindow();
+  var markers = locations.map(function(location, i) {
+  var position = new google.maps.LatLng(location.lat, location.lng);
+  bounds.extend(position);
+    var marker = new google.maps.Marker({
+    position: position,
+    map: map,
+    icon: arrow_icon,
+    });
+  google.maps.event.addListener(marker, 'click', function(evt) {
+    infoWin.setContent(location.info);
+    infoWin.open(map, marker);
+  })
+  map.fitBounds(bounds);
+  return marker;
+  });
+  var markerCluster = new MarkerClusterer(map, markers, {
+    imagePath: 'img/cluster/m'
+  });
+
+}
+
+
+var locations = [{
+  lat: 33.685355,
+  lng: 73.047049,
+  info: "Marker 1"
+},
+{
+  lat: 33.686132,
+  lng: 73.043787,
+  info: "Marker 2"
+},
+{
+  lat: 33.686619,
+  lng: 73.044661,
+  info: "Marker 3"
+},
+{
+  lat: 33.689003,
+  lng: 73.045535,
+  info: "Marker 4"
+}];
+
+$(window).resize(function() {
+  initMap();
+});
+</script>
+</body>
+
+</html>

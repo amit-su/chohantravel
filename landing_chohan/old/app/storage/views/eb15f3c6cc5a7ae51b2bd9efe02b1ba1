@@ -1,0 +1,83 @@
+<?php $__env->startSection('content'); ?>
+<div class="main-content bg-lighter">
+    <!-- Section: inner-header -->
+    <section class="inner-header divider parallax layer-overlay overlay-dark-5" data-bg-img="images/mt-0999-home-sl-02.jpg" style="background-image: url(&quot;images/mt-0999-home-sl-02.jpg&quot;); background-position: 50% 64px;">
+      <div class="container pt-70 pb-20">
+        <!-- Section Content -->
+        <div class="section-content">
+          <div class="row">
+            <div class="col-md-12">
+              <h2 class="title text-white text-center"><?php echo $content->gallery_title; ?></h2>
+			  <p class="para-text"><?php echo $content->gallery_text; ?></p>
+            
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Volunteers -->
+    <section id="volunteers">
+      <div class="container ">
+       <div class="inner-container">
+	    <h2><?php echo $content->gallery_header; ?></h2>
+		
+		<div class="row">
+	<div class="col-sm-4">
+		    <div class="project gallery_ind_blk">
+                  <div class="thumb">
+				    <div class="video-play"><a data-width="800" data-toggle="lightbox" href="images/how-study-img2.jpg" frameborder="0" allowfullscreen"="" style="width: 800px;"><i class="fa fa-search" aria-hidden="true"></i></a></div>
+                    <img class="img-fullwidth" alt="" src="images/how-study-img2.jpg">                   
+                  </div>                 
+                </div>
+		  </div>
+		  
+		  <div class="col-sm-4">
+		    <div class="project gallery_ind_blk">
+                  <div class="thumb">
+				    <div class="video-play"><a data-width="800" data-toggle="lightbox" href="images/how-study-img2.jpg" frameborder="0" allowfullscreen"="" style="width: 800px;"><i class="fa fa-search" aria-hidden="true"></i></a></div>
+                    <img class="img-fullwidth" alt="" src="images/how-study-img2.jpg">                   
+                  </div>                 
+                </div>
+		  </div>
+		  
+		  <div class="col-sm-4">
+		    <div class="project gallery_ind_blk">
+                  <div class="thumb">
+				    <div class="video-play"><a data-width="800" data-toggle="lightbox" href="images/how-study-img2.jpg" frameborder="0" allowfullscreen"="" style="width: 800px;"><i class="fa fa-search" aria-hidden="true"></i></a></div>
+                    <img class="img-fullwidth" alt="" src="images/how-study-img2.jpg">                   
+                  </div>                 
+                </div>
+		  </div>
+		  
+		 <div class="col-sm-4">
+		    <div class="project gallery_ind_blk">
+                  <div class="thumb">
+				    <div class="video-play"><a data-width="800" data-toggle="lightbox" href="images/how-study-img2.jpg" frameborder="0" allowfullscreen"="" style="width: 800px;"><i class="fa fa-search" aria-hidden="true"></i></a></div>
+                    <img class="img-fullwidth" alt="" src="images/how-study-img2.jpg">                   
+                  </div>                 
+                </div>
+		  </div>
+		  <div class="col-sm-4">
+		    <div class="project gallery_ind_blk">
+                  <div class="thumb">
+				    <div class="video-play"><a data-width="800" data-toggle="lightbox" href="images/how-study-img2.jpg" frameborder="0" allowfullscreen"="" style="width: 800px;"><i class="fa fa-search" aria-hidden="true"></i></a></div>
+                    <img class="img-fullwidth" alt="" src="images/how-study-img2.jpg">                   
+                  </div>                 
+                </div>
+		  </div>
+		  
+		</div>
+		
+		
+	   </div>
+        
+      </div>
+    </section>
+
+  </div>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('scripts'); ?>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('site.mainwrapper', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

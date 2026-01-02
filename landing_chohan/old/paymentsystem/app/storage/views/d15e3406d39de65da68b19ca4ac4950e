@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+
+<!-- Meta Tags -->
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+
+
+<!-- Page Title -->
+<title>Sangita P Mallik</title>
+
+<!-- Favicon and Touch Icons -->
+
+
+<!-- Stylesheet -->
+<link href="<?php echo URL::to('/'); ?>/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="<?php echo URL::to('/'); ?>/assets/css/jquery-ui.min.css" rel="stylesheet" type="text/css">
+<link href="<?php echo URL::to('/'); ?>/assets/css/animate.css" rel="stylesheet" type="text/css">
+<link href="<?php echo URL::to('/'); ?>/assets/css/css-plugin-collections.css" rel="stylesheet"/>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<!-- CSS | menuzord megamenu skins -->
+<link id="menuzord-menu-skins" href="<?php echo URL::to('/'); ?>/assets/css/menuzord-rounded-boxed.css" rel="stylesheet"/>
+<!-- CSS | Main style file -->
+<link href="<?php echo URL::to('/'); ?>/assets/css/style-main.css" rel="stylesheet" type="text/css">
+<!-- CSS | Preloader Styles -->
+<link href="<?php echo URL::to('/'); ?>/assets/css/preloader.css" rel="stylesheet" type="text/css">
+<!-- CSS | Custom Margin Padding Collection -->
+<link href="<?php echo URL::to('/'); ?>/assets/css/custom-bootstrap-margin-padding.css" rel="stylesheet" type="text/css">
+<!-- CSS | Responsive media queries -->
+<link href="<?php echo URL::to('/'); ?>/assets/css/responsive.css" rel="stylesheet" type="text/css">
+<!-- CSS | For Dark Layout -->
+<link href="<?php echo URL::to('/'); ?>/assets/css/style-main-dark.css" rel="stylesheet" type="text/css">
+
+<link  href="<?php echo URL::to('/'); ?>/assets/css/settings.css" rel="stylesheet" type="text/css"/>
+<link  href="<?php echo URL::to('/'); ?>/assets/css/layers.css" rel="stylesheet" type="text/css"/>
+<link  href="<?php echo URL::to('/'); ?>/assets/css/navigation.css" rel="stylesheet" type="text/css"/>
+
+<!-- CSS | Theme Color -->
+<link href="<?php echo URL::to('/'); ?>/assets/css/colors/theme-skin-color-set-1.css" rel="stylesheet" type="text/css">
+
+<!-- external javascripts -->
+<script src="<?php echo URL::to('/'); ?>/assets/js/jquery-2.2.4.min.js"></script>
+<script src="<?php echo URL::to('/'); ?>/assets/js/jquery-ui.min.js"></script>
+<script src="<?php echo URL::to('/'); ?>/assets/js/bootstrap.min.js"></script>
+<!-- JS | jquery plugin collection for this theme -->
+<script src="<?php echo URL::to('/'); ?>/assets/js/jquery-plugin-collection.js"></script>
+
+<!-- Revolution Slider 5.x SCRIPTS -->
+<script src="<?php echo URL::to('/'); ?>/assets/js/jquery.themepunch.tools.min.js"></script>
+<script src="<?php echo URL::to('/'); ?>/assets/js/jquery.themepunch.revolution.min.js"></script>
+
+
+</head>
+<body class="dark">
+<div id="wrapper" class="clearfix">
+
+  
+  <!-- Header -->
+  <?php echo $__env->make('site.includes.header', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+  
+  <!-- Start main-content -->
+  <div class="main-content">
+    <?php echo $__env->yieldContent('content'); ?>
+  </div>
+  <!-- end main-content -->
+  
+  
+  <!-- Footer -->
+  <?php echo $__env->make('site.includes.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+</div>
+<!-- end wrapper --> 
+
+<!-- Footer Scripts --> 
+<!-- JS | Custom script for all pages --> 
+<script src="<?php echo URL::to('/'); ?>/assets/js/custom.js"></script>
+
+<script type="text/javascript" src="<?php echo URL::to('/'); ?>/assets/js/revolution.extension.actions.min.js"></script> 
+<script type="text/javascript" src="<?php echo URL::to('/'); ?>/assets/js/revolution.extension.carousel.min.js"></script> 
+<script type="text/javascript" src="<?php echo URL::to('/'); ?>/assets/js/revolution.extension.kenburn.min.js"></script> 
+<script type="text/javascript" src="<?php echo URL::to('/'); ?>/assets/js/revolution.extension.layeranimation.min.js"></script> 
+<script type="text/javascript" src="<?php echo URL::to('/'); ?>/assets/js/revolution.extension.migration.min.js"></script> 
+<script type="text/javascript" src="<?php echo URL::to('/'); ?>/assets/js/revolution.extension.navigation.min.js"></script> 
+<script type="text/javascript" src="<?php echo URL::to('/'); ?>/assets/js/revolution.extension.parallax.min.js"></script> 
+<script type="text/javascript" src="<?php echo URL::to('/'); ?>/assets/js/revolution.extension.slideanims.min.js"></script> 
+<script type="text/javascript" src="<?php echo URL::to('/'); ?>/assets/js/revolution.extension.video.min.js"></script>
+</body>
+</html>

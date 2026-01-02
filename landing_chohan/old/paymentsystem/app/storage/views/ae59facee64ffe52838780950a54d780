@@ -1,0 +1,39 @@
+<footer id="footer" class="footer bg-black-222">
+    
+    <div class="footer-bottom bg-black-333">
+      <div class="container pt-10 pb-10">
+        <div class="row">
+          <div class="col-md-6">
+            <p>© <?php echo date("Y"); ?> <?php echo $setting->footer_text; ?>.</p>
+          </div>
+          <div class="col-md-6 text-right">
+            <div class="widget no-border m-0">
+              <ul class="footer_social">
+                <?php if($setting->facebook_link != ""): ?>
+                <li>
+                  <a href="<?php echo $setting->facebook_link; ?>" target='_blank'><i class="fa fa-facebook-square" aria-hidden="true"></i></a>
+                </li> 
+                <?php endif; ?> 
+                <?php if($setting->twitter_link != ""): ?>              
+                <li>
+                  <a href="<?php echo $setting->twitter_link; ?>" target='_blank'><i class="fa fa-twitter-square" aria-hidden="true"></i></a>
+                </li> 
+                <?php endif; ?> 
+                 <?php if($setting->linkedin_link != ""): ?>             
+                <li>
+                  <a href="<?php echo $setting->linkedin_link; ?>" target='_blank'><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
+                </li>
+                <?php endif; ?> 
+                 <?php if($setting->google_plus_link != ""): ?>
+				      <li><a href="<?php echo $setting->google_plus_link; ?>" target='_blank'><i class="fa fa-google-plus-square" aria-hidden="true"></i></a></li>
+				      <?php endif; ?> 
+               <?php if($setting->youtube_link != ""): ?>
+              <li><a href="<?php echo $setting->youtube_link; ?>" target='_blank'><i class="fa fa-youtube-square" aria-hidden="true"></i></a></li>
+             <?php endif; ?> 
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>

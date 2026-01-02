@@ -1,0 +1,138 @@
+<?php $__env->startSection('content'); ?>
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+<div class="img-top-shadow"></div>
+      <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+      </ol>
+      <div class="carousel-inner" role="listbox">
+        <div class="carousel-item active">
+          <img class="first-slide" src="<?php echo URL::to('/'); ?>/assets/images/banner1.jpg" alt="First slide">
+          <div class="container">
+		   
+            <div class="carousel-caption d-none d-md-block text-left">
+              <h1 class="animation animated-item-1">MODERN AND COMFORTABLE</h1>
+              <p class="animation animated-item-1">The new Chohan Tours & Travels has been redesigned to ensure the safest ride for our passengers, from large adults to small infants.</p>
+              
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item">
+           <img class="first-slide" src="<?php echo URL::to('/'); ?>/assets/images/banner2.jpg" alt="First slide">
+          <div class="container">
+            <div class="carousel-caption d-none d-md-block text-left">
+             <h1 class="animation animated-item-1">SAFE AND RELIABLE</h1>
+              <p class="animation animated-item-1">We wont just get you there, we’ll get you there safely</p>
+              
+            
+            </div>
+          </div>
+        </div>
+     
+      </div>
+      <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+
+<section class="welcome_info_blk">
+ <div class="container">
+  <div class="row">
+    <div class="col-sm-7">
+	 <div class="text_blk">
+	   <h1>Welcome to Chohan Tours and Travel</h1>
+	   <p>Introducing the brand new Chohan Tours & Travels buses
+We’ve redefined the bus ride up experience. You’ll find brand new state of art amenities to make sure your travel experience is more confortable.</p>
+         <p>Since the last 5 decades Chohan Tours & Travels have been the leading the travel trade in Kolkata. We offer services to the client’s satisfaction, to meet the growing and varied needs of the travel...</p>
+	 <a href ="#" class="btn btn-lg btn-primary">Read More..</a>
+	 </div>
+	</div>
+    <div class="col-sm-5">
+	<div><img src="<?php echo URL::to('/'); ?>/assets/images/about_image.png"></div>
+	</div>
+  </div>
+ </div>
+</section>	
+<section class="expand_service_expert">
+  <div class="container">
+    <div class="expand_ser_head">
+	<h2 class="landing_text-head">Our Services</h2>
+	<p class="landing_subhead">Now if your legs are asleep then the rest of you is 12 inch, 14 inch & 16 inch of legroom so relax and catch some sweet eye.</p>
+	<p class="landing_subhead">We wont just get you there, we’ll get you there safely.</p>
+	<p class="landing_subhead">Chohan Tours & Travels buses is greener means of transportation, it’s more environmentally friendly fuel efficient.</p>
+	</div>
+	
+	<div class="row">
+	 <div class="col-sm-4">
+	    <div class="expert_block">
+		 <div class="expert_img"><img src="<?php echo URL::to('/'); ?>/assets/images/service1.jpg"></div>
+		 <div class="expert_info">
+		   <h3>Tour Service</h3>		  
+		   <p>Considering just how important the makeup arts are for these industries, the quality of my work was required to match the class. </p>
+		 
+		 </div>		
+		</div>	 
+	 </div>
+	<div class="col-sm-4">
+	    <div class="expert_block">
+		 <div class="expert_img"><img src="<?php echo URL::to('/'); ?>/assets/images/service3.jpg"></div>
+		 <div class="expert_info">
+		   <h3>Party bus</h3>		  
+		   <p>Considering just how important the makeup arts are for these industries, the quality of my work was required to match the class. </p>
+		 
+		 </div>		
+		</div>	 
+	 </div>
+	 <div class="col-sm-4">
+	    <div class="expert_block">
+		 <div class="expert_img"><img src="<?php echo URL::to('/'); ?>/assets/images/service2.jpg"></div>
+		 <div class="expert_info">
+		   <h3>Educational Excursions & Tours</h3>		  
+		   <p>Considering just how important the makeup arts are for these industries, the quality of my work was required to match the class. </p>
+		 
+		 </div>		
+		</div>	 
+	 </div>
+	 
+	</div>
+   
+  </div>
+  
+
+</section>
+
+<section class="glams_work_slder_blk">
+  <div class="container">
+  <h2 class="landing_text-head">Our Image Gallery </h2>
+	
+	   <div class="owl-carousel owl-theme glams_work_sldr">           
+		 <div class="item">
+		   <div class="sldr_indi_block"><img src="<?php echo URL::to('/'); ?>/assets/images/home_slide_1.jpg"></div>
+		 </div>  
+ <div class="item">
+		   <div class="sldr_indi_block"><img src="<?php echo URL::to('/'); ?>/assets/images/home_slide_2.jpg"></div>
+		 </div>    
+ <div class="item">
+		   <div class="sldr_indi_block"><img src="<?php echo URL::to('/'); ?>/assets/images/home_slide_3.jpg"></div>
+		 </div>    
+ <div class="item">
+		   <div class="sldr_indi_block"><img src="<?php echo URL::to('/'); ?>/assets/images/home_slide_4.jpg"></div>
+		 </div>    
+ <div class="item">
+		   <div class="sldr_indi_block"><img src="<?php echo URL::to('/'); ?>/assets/images/home_slide_5.jpg"></div>
+		 </div>    
+ <div class="item">
+		   <div class="sldr_indi_block"><img src="<?php echo URL::to('/'); ?>/assets/images/home_slide_6.jpg"></div>
+		 </div>    		 
+	   </div>  
+  </div>
+</section>
+</div>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('site.main', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

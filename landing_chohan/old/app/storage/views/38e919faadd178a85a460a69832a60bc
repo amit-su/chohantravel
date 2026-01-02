@@ -1,0 +1,83 @@
+<?php $__env->startSection('content'); ?>
+<section class="inner_static_banner" style="background:url(<?php echo URL::to('/'); ?>/assets/images/new_14.jpg) no-repeat center top;background-size:cover;  background-position:50%">
+<div class="img-top-shadow"></div>
+<div class="banner_text">
+<h2>Chohan Tours And Travels Gallery</h2>
+<?php if(empty($cat)): ?>
+  <p>Explore our gallery</p>
+<?php else: ?>
+	<p>Explore our gallery for <?php echo $cat->name; ?> buses</p>	
+	
+<?php endif; ?>
+
+</div>
+
+</section>
+<section class="gallery_blk">
+ <div class="container">
+
+<?php if(empty($cat)): ?>
+  <p>All Images</p>
+<?php else: ?>
+	 <h1><?php echo $cat->name; ?></h1>
+<?php endif; ?>
+  <div class="row gallery_spacing">
+  <?php if(empty($cat)): ?>
+	  <?php if($images): ?>
+		  <?php foreach($images as $image): ?>
+	         
+				<div class="col-md-4 col-sm-6">
+				 <div class="travel_gallry_colmn">
+				 <a href='<?php echo URL::to("/"); ?>/assets/images/<?php echo $image->name; ?>'
+					 class='fresco'
+					 data-fresco-group='example'
+					 data-fresco-caption="All Images">
+				 <img src="<?php echo URL::to("/"); ?>/assets/images/<?php echo $image->name; ?>" class="gl_img">
+				 <div class="project__hover__info">
+				  <div class="project__action">
+				  <h2> <img src="<?php echo URL::to("/"); ?>/assets/images/<?php echo $image->name; ?>"></h2>       
+				   </div>
+				  </div>
+				  </a>
+				 </div>
+			   </div>
+			  
+	      <?php endforeach; ?>
+	  <?php endif; ?>
+  <?php else: ?>
+	  <?php if($cat->images): ?>
+		  <?php foreach($cat->images as $cat): ?>
+			<div class="col-md-4 col-sm-6">
+			 <div class="travel_gallry_colmn">
+			 <a href='<?php echo URL::to("/"); ?>/assets/images/<?php echo $cat->name; ?>'
+				 class='fresco'
+				 data-fresco-group='example'
+				 data-fresco-caption="<?php echo $cat->name; ?>">
+			 <img src="<?php echo URL::to("/"); ?>/assets/images/<?php echo $cat->name; ?>" class="gl_img">
+			 <div class="project__hover__info">
+			  <div class="project__action">
+			  <h2> <img src="<?php echo URL::to("/"); ?>/assets/images/<?php echo $cat->name; ?>"></h2>       
+			   </div>
+			  </div>
+			  </a>
+			 </div>
+		   </div>
+		  <?php endforeach; ?>
+	  <?php endif; ?>
+  <?php endif; ?>
+  
+   
+  
+   
+  </div>
+ </div>
+
+</section>	
+
+
+
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('scripts'); ?>
+<script src="<?php echo URL::to('/'); ?>/assets/js/fresco.js"></script> 
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('site.main', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

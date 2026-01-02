@@ -1,0 +1,418 @@
+<?php $__env->startSection('content'); ?>
+
+   <div id="content" class="content">
+			<!-- begin breadcrumb -->
+			<ol class="breadcrumb pull-right">
+				<li><a href="<?php echo URL::Route('get-admin-dashboard'); ?>">Dashboard</a></li>
+				<li class="active">Homepage</li>
+			</ol>
+			<!-- end breadcrumb -->
+			<!-- begin page-header -->
+			<h1 class="page-header">Homepage <small>Edit landing page details</small></h1>
+			<!-- end page-header -->
+			
+			<!-- begin row -->
+			<div class="row">
+                <!-- begin col-6 -->
+			    <div class="col-md-6 ui-sortable">
+			        <!-- begin panel -->
+                    <div class="panel panel-inverse">
+                        <div class="panel-heading">
+                            <div class="panel-heading-btn">
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                            </div>
+                            <h4 class="panel-title">Page Settings</h4>
+                        </div>
+                        <div class="panel-body panel-form">
+                            <div id="form_homepage" class="form-horizontal form-bordered" data-parsley-validate="true" name="demo-form" novalidate="">
+								<div class="form-group">
+									<label class="control-label col-md-4 col-sm-4 ui-sortable" for="fullname">Page Name * :</label>
+									<div class="col-md-6 col-sm-6 ui-sortable">
+										<input class="form-control" type="text" id="page_name" name="page_name" value="<?php echo $page->name; ?>" placeholder="Page title" data-parsley-required="true" data-parsley-id="4539"><ul class="parsley-errors-list" id="parsley-id-4539"></ul>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-md-4 col-sm-4 ui-sortable" for="email">Welcome text * :</label>
+									<div class="col-md-6 col-sm-6 ui-sortable">
+										<input class="form-control" type="text" id="welcome_text" name="welcome_text"  value="<?php echo $content->welcome_content; ?>" placeholder="Welcome Text" data-parsley-required="true" data-parsley-id="2595"><ul class="parsley-errors-list" id="parsley-id-2595"></ul>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="control-label col-md-4 col-sm-4 ui-sortable" for="message">Welcome content :</label>
+									<div class="col-md-6 col-sm-6 ui-sortable">
+										<textarea class="form-control" id="welcome_content" name="message" rows="4"  placeholder="Welcome content" data-parsley-id="8409"><?php echo $content->welcome_text; ?></textarea><ul class="parsley-errors-list" id="parsley-id-8409"></ul>
+									</div>
+								</div>
+
+
+
+
+								<div class="form-group">
+									<label class="control-label col-md-4 col-sm-4 ui-sortable" for="priorities">Priorities header:</label>
+									<div class="col-md-6 col-sm-6 ui-sortable">
+										<input class="form-control" type="text" id="priorities" name="priorities" value="<?php echo $content->priorities_header; ?>" placeholder="Priorities header" data-parsley-required="true" data-parsley-id="4539"><ul class="parsley-errors-list" id="parsley-id-4539"></ul>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="control-label col-md-4 col-sm-4 ui-sortable" for="priorities_text">Priorities text:</label>
+									<div class="col-md-6 col-sm-6 ui-sortable">
+										<input class="form-control" type="text" id="priorities_text" name="priorities_text" value="<?php echo $content->priorities_text; ?>" maxlength="100" placeholder="Priorities text within 100 characters" data-parsley-required="true" data-parsley-id="4539"><ul class="parsley-errors-list" id="parsley-id-4539"></ul>
+									</div>
+								</div>
+
+
+								<div class="form-group">
+									<label class="control-label col-md-4 col-sm-4 ui-sortable" for="video_gallery_header">Video gallery header:</label>
+									<div class="col-md-6 col-sm-6 ui-sortable">
+										<input class="form-control" type="text" id="video_gallery_header" name="video_gallery_header" value="<?php echo $content->video_gallery_header; ?>" placeholder="Video gallery header" data-parsley-required="true" data-parsley-id="4539"><ul class="parsley-errors-list" id="parsley-id-4539"></ul>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="control-label col-md-4 col-sm-4 ui-sortable" for="video_gallery_text">Video gallery text:</label>
+									<div class="col-md-6 col-sm-6 ui-sortable">
+										<input class="form-control" type="text" id="video_gallery_text" name="video_gallery_text" value="<?php echo $content->video_gallery_text; ?>" maxlength="100" placeholder="Gallery text within 100 characters" data-parsley-required="true" data-parsley-id="4539"><ul class="parsley-errors-list" id="parsley-id-4539"></ul>
+									</div>
+								</div>
+
+
+								<div class="form-group">
+									<label class="control-label col-md-4 col-sm-4 ui-sortable" for="blog_header">Blog header:</label>
+									<div class="col-md-6 col-sm-6 ui-sortable">
+										<input class="form-control" type="text" id="blog_header" name="blog_header" value="<?php echo $content->homepage_blog_header; ?>" placeholder="Blog header" data-parsley-required="true" data-parsley-id="4539"><ul class="parsley-errors-list" id="parsley-id-4539"></ul>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="control-label col-md-4 col-sm-4 ui-sortable" for="blog_text">Blog text:</label>
+									<div class="col-md-6 col-sm-6 ui-sortable">
+										<input class="form-control" type="text" id="blog_text" name="blog_text" value="<?php echo $content->homepage_blog_text; ?>" maxlength="100" placeholder="Blog text within 100 characters" data-parsley-required="true" data-parsley-id="4539"><ul class="parsley-errors-list" id="parsley-id-4539"></ul>
+									</div>
+								</div>
+
+                <div class="form-group">
+                  <label class="control-label col-md-4 col-sm-4 ui-sortable" for="red_circle_text">Red circle text:</label>
+                  <div class="col-md-6 col-sm-6 ui-sortable">
+                    <input class="form-control" type="text" id="red_circle_text" name="red_circle_text" value="<?php echo $content->red_circle_text; ?>" maxlength="20" placeholder="Enter red circle text within 20 characters" data-parsley-required="true" data-parsley-id="4539"><ul class="parsley-errors-list" id="parsley-id-4539"></ul>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-md-4 col-sm-4 ui-sortable" for="green_circle_text">Green circle text:</label>
+                  <div class="col-md-6 col-sm-6 ui-sortable">
+                    <input class="form-control" type="text" id="green_circle_text" name="green_circle_text" value="<?php echo $content->green_circle_text; ?>" maxlength="20" placeholder="Enter green circle text within 20 characters" data-parsley-required="true" data-parsley-id="4539"><ul class="parsley-errors-list" id="parsley-id-4539"></ul>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-md-4 col-sm-4 ui-sortable" for="blue_circle_text">Blue circle text:</label>
+                  <div class="col-md-6 col-sm-6 ui-sortable">
+                    <input class="form-control" type="text" id="blue_circle_text" name="blue_circle_text" value="<?php echo $content->blue_circle_text; ?>" maxlength="20" placeholder="Enter blue circle text within 20 characters" data-parsley-required="true" data-parsley-id="4539"><ul class="parsley-errors-list" id="parsley-id-4539"></ul>
+                  </div>
+                </div>
+
+
+								
+								<div class="form-group">
+									<label class="control-label col-md-4 col-sm-4 ui-sortable"></label>
+									<div class="col-md-6 col-sm-6 ui-sortable">
+										<button type="submit" class="btn btn-primary" id="update_homepage_content">Submit</button>
+									</div>
+								</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end panel -->
+                </div>
+                <!-- end col-6 -->
+                <!-- begin col-6 -->
+			    <div class="col-md-6 ui-sortable">
+			        <!-- begin panel -->
+                    <div class="panel panel-inverse">
+                        <div class="panel-heading">
+                            <div class="panel-heading-btn">
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                            </div>
+                            <h4 class="panel-title">Extra Validation Field</h4>
+                        </div>
+                        <div class="panel-body panel-form">
+                            <form class="form-horizontal form-bordered" data-parsley-validate="true" novalidate="">
+								<div class="form-group">
+									<label class="control-label col-md-4 col-sm-4 ui-sortable">AlphaNum* :</label>
+									<div class="col-md-6 col-sm-6 ui-sortable">
+										<input class="form-control" type="text" id="alphanum" name="alphanum" data-type="alphanum" placeholder="Alphanumeric String." data-parsley-required="true" data-parsley-id="8450"><ul class="parsley-errors-list" id="parsley-id-8450"></ul>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-md-4 col-sm-4 ui-sortable">Date ISO* :</label>
+									<div class="col-md-6 col-sm-6 ui-sortable">
+										<input class="form-control" type="text" id="data-dateIso" placeholder="YYYY-MM-DD" data-parsley-required="true" data-parsley-id="9969"><ul class="parsley-errors-list" id="parsley-id-9969"></ul>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-md-4 col-sm-4 ui-sortable">Required Select Box :</label>
+									<div class="col-md-6 col-sm-6 ui-sortable">
+										<select class="form-control" id="select-required" name="selectBox" data-parsley-required="true" data-parsley-id="7848">
+											<option value="">Please choose</option>
+											<option value="foo">Foo</option>
+											<option value="bar">Bar</option>
+										</select><ul class="parsley-errors-list" id="parsley-id-7848"></ul>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-md-4 col-sm-4 ui-sortable">Required Radio Button :</label>
+									<div class="col-md-6 col-sm-6 ui-sortable">
+										<div class="radio">
+											<label>
+												<input type="radio" name="radiorequired" value="foo" id="radio-required" data-parsley-required="true" data-parsley-multiple="radiorequired" data-parsley-id="3890"> Radio Button 1
+											</label><ul class="parsley-errors-list" id="parsley-id-multiple-radiorequired"></ul>
+										</div>
+										<div class="radio">
+											<label>
+												<input type="radio" name="radiorequired" id="radio-required2" value="bar" data-parsley-multiple="radiorequired" data-parsley-id="3890"> Radio Button 2
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-md-4 col-sm-4 ui-sortable">Check at least 2 checkboxes :</label>
+									<div class="col-md-6 col-sm-6 ui-sortable">
+										<div class="checkbox"><label><input type="checkbox" id="mincheck" name="mincheck[]" data-parsley-mincheck="2" value="foo" required="" data-parsley-multiple="mincheck" data-parsley-id="1769"> Checkbox 1</label><ul class="parsley-errors-list" id="parsley-id-multiple-mincheck"></ul></div>
+										<div class="checkbox"><label><input type="checkbox" name="mincheck[]" value="bar" data-parsley-multiple="mincheck" data-parsley-id="1769"> Checkbox 2</label></div>
+										<div class="checkbox"><label><input type="checkbox" name="mincheck[]" value="baz" data-parsley-multiple="mincheck" data-parsley-id="1769"> Checkbox 3</label></div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-md-4 col-sm-4 ui-sortable">Regular Expression :</label>
+									<div class="col-md-6 col-sm-6 ui-sortable">
+										<input class="form-control parsley-validated" type="text" id="data-regexp" data-parsley-pattern="#[A-Fa-f0-9]{6}" placeholder="hexa color code" data-required="true" data-parsley-id="4423"><ul class="parsley-errors-list" id="parsley-id-4423"></ul>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-md-4 col-sm-4 ui-sortable"></label>
+									<div class="col-md-6 col-sm-6 ui-sortable">
+										<button type="submit" class="btn btn-danger">Validate</button>
+									</div>
+								</div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- end panel -->
+                </div>
+                <!-- end col-6 -->
+            </div>
+            <!-- end row -->
+		</div>
+   
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('scripts'); ?>
+<!-- ================== BEGIN PAGE LEVEL JS ================== -->
+	<script src="<?php echo URL::to('/'); ?>/assets/admin/plugins/parsley/dist/parsley.js"></script>
+	<script src="<?php echo URL::to('/'); ?>/assets/admin/js/apps.min.js"></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<!-- ================== END PAGE LEVEL JS ================== -->
+<script>
+$(document).ready(function() {
+   $('#update_homepage_content').click(function(){
+   	 var flag = 0;
+
+   	  var page_name    = $('#page_name').val();
+   	  var welcome_text = $('#welcome_text').val();
+   	  var welcome_content = $('#welcome_content').val();
+   	  var priorities    = $('#priorities').val();
+   	  var priorities_text = $('#priorities_text').val();
+   	  var video_gallery_header = $('#video_gallery_header').val();
+   	  var video_gallery_text = $('#video_gallery_text').val();
+   	  var blog_header = $('#blog_header').val();
+   	  var blog_text = $('#blog_text').val();
+      var red_circle_text = $('#red_circle_text').val();
+      var green_circle_text = $('#green_circle_text').val();
+      var blue_circle_text = $('#blue_circle_text').val();
+
+   	  if(page_name == "")
+   	  {
+       swal("Enter page name", {
+          buttons: false,
+          timer: 3000,
+          icon: "error"
+        });
+   	  }
+   	  else{
+   	  	  flag++;
+   	  }
+
+   	  if(welcome_text == "")
+   	  {
+   	  	 swal("Enter Welcome text", {
+          buttons: false,
+          timer: 3000,
+          icon: "error"
+        });
+   	  }
+   	  else{
+   	  	  flag++;
+   	  }
+
+   	  if(welcome_content == "")
+   	  {
+   	  	swal("Enter Welcome content", {
+          buttons: false,
+          timer: 3000,
+          icon: "error"
+        });
+   	  }
+   	  else{
+   	  	  flag++;
+   	  }
+
+   	  if(priorities == "")
+   	  {
+   	  	swal("Enter priority header", {
+          buttons: false,
+          timer: 3000,
+          icon: "error"
+        });
+   	  }
+   	  else{
+   	  	flag++;
+   	  }
+
+   	  if(priorities_text == "")
+   	  {
+   	  	swal("Enter priority content", {
+          buttons: false,
+          timer: 3000,
+          icon: "error"
+        });
+   	  }
+   	  else{
+   	  	flag++;
+   	  }
+
+   	  if(video_gallery_header == "")
+   	  {
+   	  	swal("Enter video gallery header", {
+          buttons: false,
+          timer: 3000,
+          icon: "error"
+        });
+   	  }
+   	  else{
+   	  	flag++
+   	  }
+
+
+   	  if(video_gallery_text == "")
+   	  {
+   	  	swal("Enter video gallery content", {
+          buttons: false,
+          timer: 3000,
+          icon: "error"
+        });
+   	  }
+   	  else{
+   	  	flag++
+   	  }
+
+   	  if(blog_header == "")
+   	  {
+   	  	swal("Enter blog header", {
+          buttons: false,
+          timer: 3000,
+          icon: "error"
+        });
+   	  }
+   	  else{
+   	  	flag++
+   	  }
+
+   	  if(blog_text == "")
+   	  {
+   	  	swal("Enter blog content", {
+          buttons: false,
+          timer: 3000,
+          icon: "error"
+        });
+   	  }
+   	  else{
+   	  	flag++
+   	  }
+
+      if(red_circle_text == "")
+      {
+        swal("Enter red circle text", {
+          buttons: false,
+          timer: 3000,
+          icon: "error"
+        });
+      }
+      else{
+        flag++
+      }
+
+      if(green_circle_text == "")
+      {
+        swal("Enter green circle text", {
+          buttons: false,
+          timer: 3000,
+          icon: "error"
+        });
+      }
+      else{
+        flag++
+      }
+
+      if(blue_circle_text == "")
+      {
+        swal("Enter blue circle text", {
+          buttons: false,
+          timer: 3000,
+          icon: "error"
+        });
+      }
+      else{
+        flag++
+      }
+
+     if(flag == 12)
+     {
+
+     		$.post(base_url+'/update-home-page-content',{
+		   	 	page_name:page_name,
+		   	 	welcome_text:welcome_text,
+		   	 	welcome_content:welcome_content,
+		   	 	priorities:priorities,
+		   	 	priorities_text:priorities_text,
+		   	 	video_gallery_header:video_gallery_header,
+		   	 	video_gallery_text:video_gallery_text,
+		   	 	blog_header:blog_header,
+		   	 	blog_text:blog_text,
+          red_circle_text:red_circle_text,
+          green_circle_text:green_circle_text,
+          blue_circle_text:blue_circle_text
+		   	  },function(data){
+		   	  	if(data.status == 1)
+		   	  	{
+		   	  		    swal("Home page details updated", {
+                          buttons: false,
+                          timer: 3000,
+                          icon: "success"
+                        });
+		   	  	}
+		   	  });
+     		
+     }
+
+   });
+});
+</script>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('admin.main', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
