@@ -119,7 +119,7 @@ export const generateProformaInvoicePDF = async (data) => {
                     y: -5,
                     w: 595, // Wider than page width to ensure full bleed
                     h: 50,
-                    color: '#1e3a8a' // Dark Blue Background
+                    color: '#991b1b' // Cherry Red Background
                 }]
             },
             // Logo (Left Aligned - Absolute Position)
@@ -264,7 +264,7 @@ export const generateProformaInvoicePDF = async (data) => {
                 layout: {
                     // Use standard borders and fill color for header
                     fillColor: function (rowIndex) {
-                        return (rowIndex === 0) ? '#1e3a8a' : (rowIndex % 2 === 0 ? '#f9fafb' : null);
+                        return (rowIndex === 0) ? '#991b1b' : (rowIndex % 2 === 0 ? '#f9fafb' : null);
                     },
                     hLineWidth: function (i, node) {
                         // Top, header bottom, and final bottom borders
@@ -370,8 +370,8 @@ export const generateProformaInvoicePDF = async (data) => {
                                 ],
                                 // Net Amount (Blue Bar)
                                 [
-                                    { text: 'Net Amount', style: 'totalLabel', border: [false, false, false, false], fillColor: '#1e3a8a', color: 'white' },
-                                    { text: formatCurrency(totals.netAmount), style: 'totalValue', alignment: 'right', border: [false, false, false, false], fillColor: '#1e3a8a', color: 'white' }
+                                    { text: 'Net Amount', style: 'totalLabel', border: [false, false, false, false], fillColor: '#991b1b', color: 'white' },
+                                    { text: formatCurrency(totals.netAmount), style: 'totalValue', alignment: 'right', border: [false, false, false, false], fillColor: '#991b1b', color: 'white' }
                                 ]
                             ]
                         },
@@ -394,7 +394,7 @@ export const generateProformaInvoicePDF = async (data) => {
                     type: 'rect',
                     x: 0, y: 0, w: 535, h: 20,
                     r: 3,
-                    color: '#eff6ff'
+                    color: '#fef2f2'
                 }],
                 margin: [0, 0, 0, 5]
             },
@@ -504,7 +504,7 @@ export const generateProformaInvoicePDF = async (data) => {
             compactTitle: {
                 fontSize: 13,
                 bold: true,
-                color: '#1e3a8a',
+                color: '#991b1b',
                 letterSpacing: 1.5
             },
             sectionLabel: {
@@ -530,7 +530,7 @@ export const generateProformaInvoicePDF = async (data) => {
             compactInvoiceNo: {
                 fontSize: 9,
                 bold: true,
-                color: '#1e3a8a'
+                color: '#991b1b'
             },
             compactTableHeader: {
                 fontSize: 8,
@@ -566,7 +566,7 @@ export const generateProformaInvoicePDF = async (data) => {
             amountWords: {
                 fontSize: 8,
                 bold: true,
-                color: '#1e3a8a',
+                color: '#991b1b',
                 italics: true
             },
             compactBankName: {
