@@ -36,7 +36,7 @@ export const generateSalarySlipPDF = async (data) => {
         return `${day}/${month}/${year}`;
     };
 
-    // --- CALCULATIONS ---
+    const isHelper = salaryData.empType?.toLowerCase() === 'helper';
 
     // 1. Salary Components (Earnings)
     const basic = parseFloat(salaryData.BASIC) || 0;
@@ -44,9 +44,11 @@ export const generateSalarySlipPDF = async (data) => {
     const medical = parseFloat(salaryData.MedicalAllowance) || 0;
     const washing = parseFloat(salaryData.WashingAllowance) || 0;
     const ta = parseFloat(salaryData.TA) || 0;
-    const others = 0;
 
-    // Salary Gross (Excluding Khoraki)
+    // For Helper, Khoraki is moved to 'Others' on the salary side
+    const others = isHelper ? (parseFloat(salaryData.KhurakiTotalAmt) || 0) : 0;
+
+    // Salary Gross (Excluding Khoraki usually, but includes it for Helper via 'others')
     const salaryGross = basic + hra + medical + washing + ta + others;
 
     // 2. Khoraki Components
@@ -54,9 +56,9 @@ export const generateSalarySlipPDF = async (data) => {
     const advanceAdjustedTotal = parseFloat(salaryData.AdvanceAdjusted) || 0;
 
     // Split Advance Adjustment logic:
-    // First deduct from Khoraki, then from Salary if remaining.
-    const khorakiAdjustment = Math.min(advanceAdjustedTotal, khorakiGross);
-    const salaryAdjustment = Math.max(0, advanceAdjustedTotal - khorakiAdjustment);
+    // For Helper, everything is deducted from Salary. For others, split between Khoraki and Salary.
+    const khorakiAdjustment = isHelper ? 0 : Math.min(advanceAdjustedTotal, khorakiGross);
+    const salaryAdjustment = isHelper ? advanceAdjustedTotal : Math.max(0, advanceAdjustedTotal - khorakiAdjustment);
 
     // 3. Salary Deductions (Standard + Advance Split)
     const pf = parseFloat(salaryData.PF) || 0;
@@ -67,7 +69,8 @@ export const generateSalarySlipPDF = async (data) => {
 
     // 4. Net Amounts
     const netSalaryOnly = salaryGross - salaryDeductionsTotal;
-    const netKhorakiPayable = khorakiGross - khorakiAdjustment;
+    // For helper, netKhoraki is 0 because it's already added to salary gross via 'others'
+    const netKhorakiPayable = isHelper ? 0 : khorakiGross - khorakiAdjustment;
 
     // 5. Final Payable
     const totalPayable = netSalaryOnly + netKhorakiPayable;
@@ -301,16 +304,18 @@ export const generateSalarySlipPDF = async (data) => {
                                             {}, {},
                                             { text: khorakiGross.toFixed(0), style: 'totalValue', alignment: 'right' }
                                         ],
-                                        [
-                                            { text: 'Less Weekly Advance', style: 'tableCell', colSpan: 3 },
-                                            {}, {},
-                                            { text: khorakiAdjustment.toFixed(0), style: 'tableCell', alignment: 'right' }
-                                        ],
-                                        [
-                                            { text: 'Net Khoraki Payable', style: 'totalLabel', colSpan: 3 },
-                                            {}, {},
-                                            { text: netKhorakiPayable.toFixed(0), style: 'totalValue', alignment: 'right' }
-                                        ]
+                                        ...(salaryData.empType?.toLowerCase() !== 'helper' ? [
+                                            [
+                                                { text: 'Less Weekly Advance', style: 'tableCell', colSpan: 3 },
+                                                {}, {},
+                                                { text: khorakiAdjustment.toFixed(0), style: 'tableCell', alignment: 'right' }
+                                            ],
+                                            [
+                                                { text: 'Net Khoraki Payable', style: 'totalLabel', colSpan: 3 },
+                                                {}, {},
+                                                { text: netKhorakiPayable.toFixed(0), style: 'totalValue', alignment: 'right' }
+                                            ]
+                                        ] : [])
                                     ]
                                 },
                                 layout: { hLineWidth: () => 1, vLineWidth: () => 1 },
@@ -370,29 +375,31 @@ export const generateSalarySlipPDF = async (data) => {
                             },
 
                             // SUMMARY TABLES
-                            {
-                                table: {
-                                    widths: ['*', 100],
-                                    body: [
-                                        [{ text: 'TOTAL SALARY', style: 'totalLabel' }, { text: salaryGross.toFixed(2), style: 'totalValue', alignment: 'right' }],
-                                        [{ text: 'TOTAL KHORAKHI', style: 'totalLabel' }, { text: khorakiGross.toFixed(2), style: 'totalValue', alignment: 'right' }],
-                                        [{ text: 'TOTAL', style: 'totalLabel', fillColor: '#f3f4f6' }, { text: (salaryGross + khorakiGross).toFixed(2), style: 'totalValue', alignment: 'right', fillColor: '#f3f4f6' }]
-                                    ]
+                            ...(salaryData.empType?.toLowerCase() !== 'helper' ? [
+                                {
+                                    table: {
+                                        widths: ['*', 100],
+                                        body: [
+                                            [{ text: 'TOTAL SALARY', style: 'totalLabel' }, { text: salaryGross.toFixed(2), style: 'totalValue', alignment: 'right' }],
+                                            [{ text: 'TOTAL KHORAKHI', style: 'totalLabel' }, { text: khorakiGross.toFixed(2), style: 'totalValue', alignment: 'right' }],
+                                            [{ text: 'TOTAL', style: 'totalLabel', fillColor: '#f3f4f6' }, { text: (salaryGross + khorakiGross).toFixed(2), style: 'totalValue', alignment: 'right', fillColor: '#f3f4f6' }]
+                                        ]
+                                    },
+                                    layout: { hLineWidth: () => 1, vLineWidth: () => 1 },
+                                    margin: [0, 0, 0, 5]
                                 },
-                                layout: { hLineWidth: () => 1, vLineWidth: () => 1 },
-                                margin: [0, 0, 0, 5]
-                            },
-                            {
-                                table: {
-                                    widths: ['*', 100],
-                                    body: [
-                                        [{ text: 'NET KHORAKHI', style: 'totalLabel' }, { text: netKhorakiPayable.toFixed(2), style: 'totalValue', alignment: 'right' }],
-                                        [{ text: 'NET SALARY', style: 'totalLabel' }, { text: netSalaryOnly.toFixed(2), style: 'totalValue', alignment: 'right' }],
-                                        [{ text: 'PAYABLE', style: 'netSalaryLabel', fillColor: '#ffff00' }, { text: totalPayable.toFixed(2), style: 'netSalaryValue', alignment: 'right', fillColor: '#ffff00' }]
-                                    ]
-                                },
-                                layout: { hLineWidth: () => 1, vLineWidth: () => 1 }
-                            },
+                                {
+                                    table: {
+                                        widths: ['*', 100],
+                                        body: [
+                                            [{ text: 'NET KHORAKHI', style: 'totalLabel' }, { text: netKhorakiPayable.toFixed(2), style: 'totalValue', alignment: 'right' }],
+                                            [{ text: 'NET SALARY', style: 'totalLabel' }, { text: netSalaryOnly.toFixed(2), style: 'totalValue', alignment: 'right' }],
+                                            [{ text: 'PAYABLE', style: 'netSalaryLabel', fillColor: '#ffff00' }, { text: totalPayable.toFixed(2), style: 'netSalaryValue', alignment: 'right', fillColor: '#ffff00' }]
+                                        ]
+                                    },
+                                    layout: { hLineWidth: () => 1, vLineWidth: () => 1 }
+                                }
+                            ] : []),
 
                             // Signatures Right
                             {
