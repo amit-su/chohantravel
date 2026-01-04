@@ -13,12 +13,32 @@ import {
   DatePicker,
   Space,
   Statistic,
+  ConfigProvider,
 } from "antd";
+import enUS from "antd/locale/en_US";
 import React, { useEffect, useState, useMemo } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import dayjs from "dayjs";
+import "dayjs/locale/en";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+import weekday from "dayjs/plugin/weekday";
+import localeData from "dayjs/plugin/localeData";
+import weekOfYear from "dayjs/plugin/weekOfYear";
+import weekYear from "dayjs/plugin/weekYear";
+
+// Set dayjs locale
+dayjs.locale("en");
+
+// Extend dayjs with required plugins for Ant Design RangePicker
+dayjs.extend(customParseFormat);
+dayjs.extend(advancedFormat);
+dayjs.extend(weekday);
+dayjs.extend(localeData);
+dayjs.extend(weekOfYear);
+dayjs.extend(weekYear);
 import { motion } from "framer-motion";
 import {
   SearchOutlined,
@@ -283,292 +303,304 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 p-6">
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="max-w-[1600px] mx-auto space-y-8"
-      >
-        {/* --- Header --- */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <Title level={2} style={{ margin: 0, fontWeight: 700, color: '#1e293b' }}>
-              Admin Dashboard
-            </Title>
-            <Text className="text-slate-500">
-              Welcome back! Here's what's happening today.
-            </Text>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="bg-white px-4 py-2 rounded-full shadow-sm border border-slate-100 flex items-center gap-2">
-              <CalendarOutlined className="text-blue-500" />
-              <Text strong className="text-slate-700">{dayjs().format("DD MMMM, YYYY")}</Text>
-            </div>
-          </div>
-        </div>
-
-        {/* --- Stats Cards --- */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Total Bookings */}
-          <motion.div variants={itemVariants} whileHover={{ scale: 1.02 }} className="h-full">
-            <Link to="/admin/booking-entry">
-              <Card
-                bordered={false}
-                className="h-full overflow-hidden relative border-0 shadow-lg shadow-blue-500/10 cursor-pointer group"
-                style={{
-                  background: "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)",
-                }}
-              >
-                <div className="absolute right-0 top-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-500">
-                  <CarOutlined style={{ fontSize: '120px', color: '#fff' }} />
-                </div>
-                <div className="relative z-10 flex flex-col justify-between h-full text-white">
-                  <div className="mb-4 bg-white/20 w-12 h-12 rounded-lg flex items-center justify-center backdrop-blur-sm">
-                    <CarOutlined style={{ fontSize: '24px' }} />
-                  </div>
-                  <div>
-                    <Text className="text-blue-100 text-sm font-medium uppercase tracking-wider block mb-1">Total Bookings</Text>
-                    <Title level={1} style={{ color: "white", margin: 0, fontWeight: 700 }}>
-                      <Statistic value={summary[0]?.TotalBookings || 0} valueStyle={{ color: '#fff', fontWeight: 700 }} />
-                    </Title>
-                  </div>
-                </div>
-              </Card>
-            </Link>
-          </motion.div>
-
-          {/* Pending Allotment */}
-          <motion.div variants={itemVariants} whileHover={{ scale: 1.02 }} className="h-full">
-            <Card
-              bordered={false}
-              className="h-full overflow-hidden relative border-0 shadow-lg shadow-orange-500/10"
-              style={{
-                background: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
-              }}
-            >
-              <div className="absolute right-0 top-0 p-4 opacity-10">
-                <ClockCircleOutlined style={{ fontSize: '120px', color: '#fff' }} />
-              </div>
-              <div className="relative z-10 flex flex-col justify-between h-full text-white">
-                <div className="mb-4 bg-white/20 w-12 h-12 rounded-lg flex items-center justify-center backdrop-blur-sm">
-                  <ClockCircleOutlined style={{ fontSize: '24px' }} />
-                </div>
-                <div>
-                  <Text className="text-orange-100 text-sm font-medium uppercase tracking-wider block mb-1">Pending Allotment</Text>
-                  <div className="flex items-baseline gap-2">
-                    <Title level={1} style={{ color: "white", margin: 0, fontWeight: 700 }}>
-                      {summary[0]?.PendingBusQty || 0}
-                    </Title>
-                    {summary[0]?.PartBooking && (
-                      <span className="bg-white/20 px-2 py-1 rounded text-xs font-medium backdrop-blur-sm">
-                        {summary[0]?.PartBooking} Part
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </Card>
-          </motion.div>
-
-          {/* Pending Invoices */}
-          <motion.div variants={itemVariants} whileHover={{ scale: 1.02 }} className="h-full">
-            <Link to="/admin/invoiceentry">
-              <Card
-                bordered={false}
-                className="h-full overflow-hidden relative border-0 shadow-lg shadow-purple-500/10 cursor-pointer group"
-                style={{
-                  background: "linear-gradient(135deg, #a855f7 0%, #7e22ce 100%)",
-                }}
-              >
-                <div className="absolute right-0 top-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-500">
-                  <FileTextOutlined style={{ fontSize: '120px', color: '#fff' }} />
-                </div>
-                <div className="relative z-10 flex flex-col justify-between h-full text-white">
-                  <div className="mb-4 bg-white/20 w-12 h-12 rounded-lg flex items-center justify-center backdrop-blur-sm">
-                    <FileTextOutlined style={{ fontSize: '24px' }} />
-                  </div>
-                  <div>
-                    <Text className="text-purple-100 text-sm font-medium uppercase tracking-wider block mb-1">Bill Not Generated</Text>
-                    <Title level={1} style={{ color: "white", margin: 0, fontWeight: 700 }}>
-                      <Statistic value={summary[0]?.UninvoicedBookings || 0} valueStyle={{ color: '#fff', fontWeight: 700 }} />
-                    </Title>
-                  </div>
-                </div>
-              </Card>
-            </Link>
-          </motion.div>
-
-          {/* Expired Documents */}
-          <motion.div variants={itemVariants} whileHover={{ scale: 1.02 }} className="h-full">
-            <Card
-              bordered={false}
-              onClick={() => setShowExpiredDetails(!showExpiredDetails)}
-              className="h-full overflow-hidden relative border-0 shadow-lg shadow-red-500/10 cursor-pointer group"
-              style={{
-                background: "linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)",
-              }}
-            >
-              <div className="absolute right-0 top-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-500">
-                <WarningOutlined style={{ fontSize: '120px', color: '#fff' }} />
-              </div>
-              <div className="relative z-10 flex flex-col justify-between h-full text-white">
-                <div className="mb-4 bg-white/20 w-12 h-12 rounded-lg flex items-center justify-center backdrop-blur-sm">
-                  <WarningOutlined style={{ fontSize: '24px' }} />
-                </div>
-                <div>
-                  <Text className="text-red-100 text-sm font-medium uppercase tracking-wider block mb-1">Expired Documents</Text>
-                  <Title level={1} style={{ color: "white", margin: 0, fontWeight: 700 }}>
-                    {expiredDocs[0]?.TotalExpiringDocuments || 0}
-                  </Title>
-                  <Text className="text-red-100 text-xs">
-                    Across {expiredDocs[0]?.TotalBusesWithExpiringDocuments || 0} Buses
-                  </Text>
-                </div>
-              </div>
-            </Card>
-          </motion.div>
-        </div>
-
-        {/* --- Expired Documents Table Section --- */}
-        <motion.div
-          initial={false}
-          animate={{ height: showExpiredDetails ? "auto" : 0, opacity: showExpiredDetails ? 1 : 0 }}
-          className="overflow-hidden"
-        >
-          <Card
-            title={<span className="text-red-600 font-bold flex items-center gap-2"><WarningOutlined /> Expired / Expiring Documents</span>}
-            extra={
-              <Button type="text" onClick={() => setShowExpiredDetails(false)}>Close</Button>
+    <ConfigProvider locale={enUS}>
+      <div className="min-h-screen bg-slate-50 p-6">
+        <style>
+          {`
+            .ant-picker-dropdown .ant-picker-panel-container .ant-picker-panels {
+              display: flex !important;
             }
-            className="shadow-md border-t-4 border-red-500 rounded-xl"
-          >
-            <Table
-              columns={expiredDocsColumns}
-              dataSource={expiredDocs}
-              rowKey={(record) => `${record.BusNumber}-${record.DocumentType}`}
-              loading={expiredDocsLoading}
-              pagination={{ pageSize: 5 }}
-              scroll={{ x: true }}
-            />
-          </Card>
-        </motion.div>
-
-
-        {/* --- Bus Availability Section --- */}
-        <motion.div variants={itemVariants}>
-          <Card
-            bordered={false}
-            className="rounded-2xl shadow-sm border border-slate-100"
-            styles={{ body: { padding: '24px' } }}
-          >
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-              <div>
-                <Title level={4} style={{ margin: 0, fontWeight: 700 }}>Bus Availability Check</Title>
-                <Text className="text-slate-500">Check fleet availability for a specific time range.</Text>
+            .ant-picker-dropdown .ant-picker-panel {
+              display: block !important;
+            }
+          `}
+        </style>
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="max-w-[1600px] mx-auto space-y-8"
+        >
+          {/* --- Header --- */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <Title level={2} style={{ margin: 0, fontWeight: 700, color: '#1e293b' }}>
+                Admin Dashboard
+              </Title>
+              <Text className="text-slate-500">
+                Welcome back! Here's what's happening today.
+              </Text>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="bg-white px-4 py-2 rounded-full shadow-sm border border-slate-100 flex items-center gap-2">
+                <CalendarOutlined className="text-blue-500" />
+                <Text strong className="text-slate-700">{dayjs().format("DD MMMM, YYYY")}</Text>
               </div>
             </div>
+          </div>
 
-            <div className="bg-slate-50 p-6 rounded-xl border border-slate-200 mb-6">
-              <Row gutter={[24, 24]} align="bottom">
-                <Col xs={24} md={8} lg={6}>
-                  <Text strong className="mb-2 block text-slate-600">Bus Category</Text>
-                  <Select
-                    className="w-full"
-                    size="large"
-                    placeholder="Select Category"
-                    loading={busCategoryLoading}
-                    onChange={setBusType}
-                    value={busType}
-                    allowClear
-                    showSearch
-                    optionFilterProp="children"
-                  >
-                    {busCategoryList?.map((item) => (
-                      <Option key={item.id} value={item.id}>
-                        {item.buscategory}
-                      </Option>
-                    ))}
-                  </Select>
-                </Col>
+          {/* --- Stats Cards --- */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Total Bookings */}
+            <motion.div variants={itemVariants} whileHover={{ scale: 1.02 }} className="h-full">
+              <Link to="/admin/booking-entry">
+                <Card
+                  bordered={false}
+                  className="h-full overflow-hidden relative border-0 shadow-lg shadow-blue-500/10 cursor-pointer group"
+                  style={{
+                    background: "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)",
+                  }}
+                >
+                  <div className="absolute right-0 top-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-500">
+                    <CarOutlined style={{ fontSize: '120px', color: '#fff' }} />
+                  </div>
+                  <div className="relative z-10 flex flex-col justify-between h-full text-white">
+                    <div className="mb-4 bg-white/20 w-12 h-12 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                      <CarOutlined style={{ fontSize: '24px' }} />
+                    </div>
+                    <div>
+                      <Text className="text-blue-100 text-sm font-medium uppercase tracking-wider block mb-1">Total Bookings</Text>
+                      <Title level={1} style={{ color: "white", margin: 0, fontWeight: 700 }}>
+                        <Statistic value={summary[0]?.TotalBookings || 0} valueStyle={{ color: '#fff', fontWeight: 700 }} />
+                      </Title>
+                    </div>
+                  </div>
+                </Card>
+              </Link>
+            </motion.div>
 
-                <Col xs={24} md={10} lg={8}>
-                  <Text strong className="mb-2 block text-slate-600">Date & Time Range</Text>
-                  <RangePicker
-                    showTime={{ format: "HH:mm" }}
-                    format="YYYY-MM-DD HH:mm"
-                    size="large"
-                    className="w-full"
-                    value={dateRange}
-                    onChange={(dates) => setDateRange(dates)}
-                    allowClear={false}
-                  />
-                </Col>
-
-                <Col xs={24} md={6} lg={4}>
-                  <Button
-                    type="primary"
-                    size="large"
-                    icon={<SearchOutlined />}
-                    onClick={handleSubmit}
-                    loading={loading}
-                    block
-                    style={{ background: '#0f172a', borderColor: '#0f172a' }}
-                    className="hover:bg-slate-800 transition-colors"
-                  >
-                    Check Availability
-                  </Button>
-                </Col>
-              </Row>
-            </div>
-
-            {/* --- Results --- */}
-            {loading ? (
-              <div className="py-20 text-center">
-                <Spin size="large" />
-                <Text type="secondary" className="block mt-4">Checking fleet status...</Text>
-              </div>
-            ) : apiError ? (
-              <div className="py-10 text-center text-red-500 bg-red-50 rounded-lg border border-red-100">
-                <ExclamationCircleOutlined className="text-3xl mb-2" />
-                <div className="font-medium">{apiError}</div>
-              </div>
-            ) : result.length > 0 ? (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
+            {/* Pending Allotment */}
+            <motion.div variants={itemVariants} whileHover={{ scale: 1.02 }} className="h-full">
+              <Card
+                bordered={false}
+                className="h-full overflow-hidden relative border-0 shadow-lg shadow-orange-500/10"
+                style={{
+                  background: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
+                }}
               >
-                <div className="flex justify-between items-center mb-4">
-                  <Tag color="blue" className="px-3 py-1 text-sm">{filteredResult.length} Buses Found</Tag>
-                  <Input
-                    placeholder="Search results..."
-                    prefix={<SearchOutlined className="text-slate-400" />}
-                    className="max-w-xs rounded-lg"
-                    value={searchText}
-                    onChange={(e) => setSearchText(e.target.value)}
-                    allowClear
-                  />
+                <div className="absolute right-0 top-0 p-4 opacity-10">
+                  <ClockCircleOutlined style={{ fontSize: '120px', color: '#fff' }} />
                 </div>
-                <Table
-                  columns={busAvailabilityColumns}
-                  dataSource={filteredResult}
-                  rowKey="BusNo"
-                  pagination={{ pageSize: 10, showSizeChanger: true }}
-                  scroll={{ x: true }}
-                  className="border border-slate-200 rounded-lg overflow-hidden"
-                  rowClassName="hover:bg-slate-50 transition-colors"
-                />
-              </motion.div>
-            ) : (
-              <div className="py-12 text-center text-slate-400">
-                <CarOutlined style={{ fontSize: '48px', marginBottom: '16px', opacity: 0.5 }} />
-                <p>No availability data found. Try adjusting your filters.</p>
+                <div className="relative z-10 flex flex-col justify-between h-full text-white">
+                  <div className="mb-4 bg-white/20 w-12 h-12 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                    <ClockCircleOutlined style={{ fontSize: '24px' }} />
+                  </div>
+                  <div>
+                    <Text className="text-orange-100 text-sm font-medium uppercase tracking-wider block mb-1">Pending Allotment</Text>
+                    <div className="flex items-baseline gap-2">
+                      <Title level={1} style={{ color: "white", margin: 0, fontWeight: 700 }}>
+                        {summary[0]?.PendingBusQty || 0}
+                      </Title>
+                      {summary[0]?.PartBooking && (
+                        <span className="bg-white/20 px-2 py-1 rounded text-xs font-medium backdrop-blur-sm">
+                          {summary[0]?.PartBooking} Part
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            </motion.div>
+
+            {/* Pending Invoices */}
+            <motion.div variants={itemVariants} whileHover={{ scale: 1.02 }} className="h-full">
+              <Link to="/admin/invoiceentry">
+                <Card
+                  bordered={false}
+                  className="h-full overflow-hidden relative border-0 shadow-lg shadow-purple-500/10 cursor-pointer group"
+                  style={{
+                    background: "linear-gradient(135deg, #a855f7 0%, #7e22ce 100%)",
+                  }}
+                >
+                  <div className="absolute right-0 top-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-500">
+                    <FileTextOutlined style={{ fontSize: '120px', color: '#fff' }} />
+                  </div>
+                  <div className="relative z-10 flex flex-col justify-between h-full text-white">
+                    <div className="mb-4 bg-white/20 w-12 h-12 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                      <FileTextOutlined style={{ fontSize: '24px' }} />
+                    </div>
+                    <div>
+                      <Text className="text-purple-100 text-sm font-medium uppercase tracking-wider block mb-1">Bill Not Generated</Text>
+                      <Title level={1} style={{ color: "white", margin: 0, fontWeight: 700 }}>
+                        <Statistic value={summary[0]?.UninvoicedBookings || 0} valueStyle={{ color: '#fff', fontWeight: 700 }} />
+                      </Title>
+                    </div>
+                  </div>
+                </Card>
+              </Link>
+            </motion.div>
+
+            {/* Expired Documents */}
+            <motion.div variants={itemVariants} whileHover={{ scale: 1.02 }} className="h-full">
+              <Card
+                bordered={false}
+                onClick={() => setShowExpiredDetails(!showExpiredDetails)}
+                className="h-full overflow-hidden relative border-0 shadow-lg shadow-red-500/10 cursor-pointer group"
+                style={{
+                  background: "linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)",
+                }}
+              >
+                <div className="absolute right-0 top-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-500">
+                  <WarningOutlined style={{ fontSize: '120px', color: '#fff' }} />
+                </div>
+                <div className="relative z-10 flex flex-col justify-between h-full text-white">
+                  <div className="mb-4 bg-white/20 w-12 h-12 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                    <WarningOutlined style={{ fontSize: '24px' }} />
+                  </div>
+                  <div>
+                    <Text className="text-red-100 text-sm font-medium uppercase tracking-wider block mb-1">Expired Documents</Text>
+                    <Title level={1} style={{ color: "white", margin: 0, fontWeight: 700 }}>
+                      {expiredDocs[0]?.TotalExpiringDocuments || 0}
+                    </Title>
+                    <Text className="text-red-100 text-xs">
+                      Across {expiredDocs[0]?.TotalBusesWithExpiringDocuments || 0} Buses
+                    </Text>
+                  </div>
+                </div>
+              </Card>
+            </motion.div>
+          </div>
+
+          {/* --- Expired Documents Table Section --- */}
+          <motion.div
+            initial={false}
+            animate={{ height: showExpiredDetails ? "auto" : 0, opacity: showExpiredDetails ? 1 : 0 }}
+            className="overflow-hidden"
+          >
+            <Card
+              title={<span className="text-red-600 font-bold flex items-center gap-2"><WarningOutlined /> Expired / Expiring Documents</span>}
+              extra={
+                <Button type="text" onClick={() => setShowExpiredDetails(false)}>Close</Button>
+              }
+              className="shadow-md border-t-4 border-red-500 rounded-xl"
+            >
+              <Table
+                columns={expiredDocsColumns}
+                dataSource={expiredDocs}
+                rowKey={(record) => `${record.BusNumber}-${record.DocumentType}`}
+                loading={expiredDocsLoading}
+                pagination={{ pageSize: 5 }}
+                scroll={{ x: true }}
+              />
+            </Card>
+          </motion.div>
+
+
+          {/* --- Bus Availability Section --- */}
+          <motion.div variants={itemVariants}>
+            <Card
+              bordered={false}
+              className="rounded-2xl shadow-sm border border-slate-100"
+              styles={{ body: { padding: '24px' } }}
+            >
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                <div>
+                  <Title level={4} style={{ margin: 0, fontWeight: 700 }}>Bus Availability Check</Title>
+                  <Text className="text-slate-500">Check fleet availability for a specific time range.</Text>
+                </div>
               </div>
-            )}
-          </Card>
+
+              <div className="bg-slate-50 p-6 rounded-xl border border-slate-200 mb-6">
+                <Row gutter={[24, 24]} align="bottom">
+                  <Col xs={24} md={8} lg={6}>
+                    <Text strong className="mb-2 block text-slate-600">Bus Category</Text>
+                    <Select
+                      className="w-full"
+                      size="large"
+                      placeholder="Select Category"
+                      loading={busCategoryLoading}
+                      onChange={setBusType}
+                      value={busType}
+                      allowClear
+                      showSearch
+                      optionFilterProp="children"
+                    >
+                      {busCategoryList?.map((item) => (
+                        <Option key={item.id} value={item.id}>
+                          {item.buscategory}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Col>
+
+                  <Col xs={24} md={10} lg={8}>
+                    <Text strong className="mb-2 block text-slate-600">Date & Time Range</Text>
+                    <RangePicker
+                      showTime={{ format: "HH:mm" }}
+                      format="YYYY-MM-DD HH:mm"
+                      size="large"
+                      className="w-full"
+                      value={dateRange}
+                      onChange={(dates) => setDateRange(dates)}
+                      allowClear={false}
+                    />
+                  </Col>
+
+                  <Col xs={24} md={6} lg={4}>
+                    <Button
+                      type="primary"
+                      size="large"
+                      icon={<SearchOutlined />}
+                      onClick={handleSubmit}
+                      loading={loading}
+                      block
+                      style={{ background: '#0f172a', borderColor: '#0f172a' }}
+                      className="hover:bg-slate-800 transition-colors"
+                    >
+                      Check Availability
+                    </Button>
+                  </Col>
+                </Row>
+              </div>
+
+              {/* --- Results --- */}
+              {loading ? (
+                <div className="py-20 text-center">
+                  <Spin size="large" />
+                  <Text type="secondary" className="block mt-4">Checking fleet status...</Text>
+                </div>
+              ) : apiError ? (
+                <div className="py-10 text-center text-red-500 bg-red-50 rounded-lg border border-red-100">
+                  <ExclamationCircleOutlined className="text-3xl mb-2" />
+                  <div className="font-medium">{apiError}</div>
+                </div>
+              ) : result.length > 0 ? (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                >
+                  <div className="flex justify-between items-center mb-4">
+                    <Tag color="blue" className="px-3 py-1 text-sm">{filteredResult.length} Buses Found</Tag>
+                    <Input
+                      placeholder="Search results..."
+                      prefix={<SearchOutlined className="text-slate-400" />}
+                      className="max-w-xs rounded-lg"
+                      value={searchText}
+                      onChange={(e) => setSearchText(e.target.value)}
+                      allowClear
+                    />
+                  </div>
+                  <Table
+                    columns={busAvailabilityColumns}
+                    dataSource={filteredResult}
+                    rowKey="BusNo"
+                    pagination={{ pageSize: 10, showSizeChanger: true }}
+                    scroll={{ x: true }}
+                    className="border border-slate-200 rounded-lg overflow-hidden"
+                    rowClassName="hover:bg-slate-50 transition-colors"
+                  />
+                </motion.div>
+              ) : (
+                <div className="py-12 text-center text-slate-400">
+                  <CarOutlined style={{ fontSize: '48px', marginBottom: '16px', opacity: 0.5 }} />
+                  <p>No availability data found. Try adjusting your filters.</p>
+                </div>
+              )}
+            </Card>
+          </motion.div>
         </motion.div>
-      </motion.div>
-    </div>
+      </div>
+    </ConfigProvider>
   );
 };
 
