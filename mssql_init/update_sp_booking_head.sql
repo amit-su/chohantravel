@@ -25,7 +25,11 @@ BEGIN
         WHERE CompanyID = @CompanyID
           AND (@ClosedStatus IS NULL OR [closedStatus] = @ClosedStatus)
           AND (@PartyID IS NULL OR PartyID = @PartyID)
-          AND (@BookingDate IS NULL OR CAST(BookingDate AS DATE) = @BookingDate)
+          AND (@BookingDate IS NULL OR EXISTS (
+              SELECT 1 FROM [dbo].[BookingTran] BT 
+              WHERE BT.BookingID = CAST(BH.BookingNo AS VARCHAR)
+              AND CAST(BT.TripStartDate AS DATE) = @BookingDate
+          ))
           AND (@SearchValue IS NULL OR 
                BH.BookingNo LIKE '%' + @SearchValue + '%' OR 
                BH.ContactPersonName LIKE '%' + @SearchValue + '%' OR
@@ -83,7 +87,11 @@ BEGIN
             WHERE CompanyID = @CompanyID
               AND (@ClosedStatus IS NULL OR [closedStatus] = @ClosedStatus)
               AND (@PartyID IS NULL OR PartyID = @PartyID)
-              AND (@BookingDate IS NULL OR CAST(BookingDate AS DATE) = @BookingDate)
+              AND (@BookingDate IS NULL OR EXISTS (
+                  SELECT 1 FROM [dbo].[BookingTran] BT 
+                  WHERE BT.BookingID = CAST(BookingHead.BookingNo AS VARCHAR)
+                  AND CAST(BT.TripStartDate AS DATE) = @BookingDate
+              ))
               AND (@SearchValue IS NULL OR 
                    BookingNo LIKE '%' + @SearchValue + '%' OR 
                    ContactPersonName LIKE '%' + @SearchValue + '%' OR
