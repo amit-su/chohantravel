@@ -1,0 +1,27 @@
+@extends('site.main')
+@section('content')
+<section class="inner_static_banner" style="background:url({{URL::to('/')}}/assets/images/office_transfers.jpg) no-repeat center top;background-size:cover;  background-position:70% 60%">
+<div class="img-top-shadow"></div>
+<div class="banner_text">
+<h2>Chohan Tours and Travel</h2>
+<p>We provide buses for office pickups and drops</p>
+</div>
+
+</section>
+<section class="service_info_blk">
+ <div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+	 <div class="text_blk">
+	   <h1>Office Pickups And Drops</h1>
+	   <p>Our service in the Corporate Sector is excellent as we have clients to whom we provide services 24X7/365 days in a year without any issues. Our pick-up and Drop services from various locations in Kolkata will bring your Staff to your respective offices and will drop them back safely.</p>
+	   <p><a href='{{URL::Route("get-contact-us")}}' class='book_nw_btn'>Book Now</a></p>
+	 </div>
+	</div>
+   
+  </div>
+ </div>
+</section>	
+
+
+@stop

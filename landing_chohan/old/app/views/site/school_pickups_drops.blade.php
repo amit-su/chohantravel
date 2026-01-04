@@ -1,0 +1,27 @@
+@extends('site.main')
+@section('content')
+<section class="inner_static_banner" style="background:url({{URL::to('/')}}/assets/images/school_children_pickup.jpg) no-repeat center top;background-size:cover;  background-position:70% 60%">
+<div class="img-top-shadow"></div>
+<div class="banner_text">
+<h2>Chohan Tours and Travel</h2>
+<p>We provide buses for school pickups and drops</p>
+</div>
+
+</section>
+<section class="service_info_blk">
+ <div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+	 <div class="text_blk">
+	   <h1>School Pickups And Drops</h1>
+	   <p>Our modern Buses equipped with GPS Technologies and Cameras will keep a track of the Buses and under surveillance. We provide Lady Escorts to look after the children while they travel from their homes to the school and vice-versa. We provide AC and Non AC Coaches, also small coaches from 25 seaters to large coaches upto 50 seater.</p>
+	   <p><a href='{{URL::Route("get-contact-us")}}' class='book_nw_btn'>Book Now</a></p>
+	 </div>
+	</div>
+   
+  </div>
+ </div>
+</section>	
+
+
+@stop

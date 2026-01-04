@@ -1,0 +1,55 @@
+@extends('site.main')
+@section('content')
+<section class="inner_static_banner" style="background:url({{URL::to('/')}}/assets/images/marriage_ban.jpg) no-repeat center top;background-size:cover;  background-position:70% 60%">
+<div class="img-top-shadow"></div>
+<div class="banner_text">
+<h2>Chohan Tours and Travel</h2>
+<p>We provide our luxurious buses for marriage services</p>
+</div>
+
+</section>
+<section class="service_info_blk">
+ <div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+	 <div class="text_blk">
+	   <h1>Marriage Services</h1>
+	   <p>Our Super Deluxe luxury good looking, neat and clean coaches will impress your ‘Baraatis’ and on time reporting is our priority. You can carry your Baraatis from your destination to the marriage hall or reception point in a good looking bus with on time service.
+</p>
+<p><a href='{{URL::Route("get-contact-us")}}' class="book_nw_btn">Book Now</a></p>
+	
+	 </div>
+	</div>
+   
+  </div>
+ </div>
+</section>	
+
+<!--<section class="glams_work_slder_blk">
+  <div class="container">
+  <h2 class="landing_text-head">Image Gallery </h2>
+	
+	   <div class="owl-carousel owl-theme glams_work_sldr">           
+		 <div class="item">
+		   <div class="sldr_indi_block"><img src="{{URL::to('/')}}/assets/images/home_slide_1.jpg"></div>
+		 </div>  
+ <div class="item">
+		   <div class="sldr_indi_block"><img src="{{URL::to('/')}}/assets/images/home_slide_2.jpg"></div>
+		 </div>    
+ <div class="item">
+		   <div class="sldr_indi_block"><img src="{{URL::to('/')}}/assets/images/home_slide_3.jpg"></div>
+		 </div>    
+ <div class="item">
+		   <div class="sldr_indi_block"><img src="{{URL::to('/')}}/assets/images/home_slide_4.jpg"></div>
+		 </div>    
+ <div class="item">
+		   <div class="sldr_indi_block"><img src="{{URL::to('/')}}/assets/images/home_slide_5.jpg"></div>
+		 </div>    
+ <div class="item">
+		   <div class="sldr_indi_block"><img src="{{URL::to('/')}}/assets/images/home_slide_6.jpg"></div>
+		 </div>    		 
+	   </div>  
+  </div>
+</section>-->
+
+@stop

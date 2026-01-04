@@ -1,0 +1,104 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Chohan Admin Panel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Minimal Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<link href="css/bootstrap.min.css" rel='stylesheet' type='text/css' />
+<!-- Custom Theme files -->
+<link href="{{URL::to('/')}}/assets/admin/css/style.css" rel='stylesheet' type='text/css' />
+<link href="{{URL::to('/')}}/assets/admin/css/font-awesome.css" rel="stylesheet"> 
+<script src="{{URL::to('/')}}/assets/admin/js/jquery.min.js"> </script>
+<script src="{{URL::to('/')}}/assets/admin/js/bootstrap.min.js"> </script>
+</head>
+<body>
+<!---728x90--->
+	<div class="login">
+		<h1><a href="index.html">Admin Panel </a></h1>
+		<div class="login-bottom">
+			<h2>Login</h2>
+			
+			<div class="col-md-12">
+				<div class="login-mail">
+					<input type="text" placeholder="Email" required="" id="email">
+					<i class="fa fa-envelope"></i>
+				</div>
+				<div class="login-mail">
+					<input type="password" placeholder="Password" required="" id="password">
+					<i class="fa fa-lock"></i>
+				</div>
+				 
+			</div>
+			<div class="col-md-12 login-do">
+				<label class="hvr-shutter-in-horizontal login-sub">
+					<input type="submit" value="Login" id="login">
+				</label>
+					
+			</div>
+			
+			<div class="clearfix"> </div>
+			
+		</div>
+	</div>
+		<!---->
+		<!---728x90--->
+<div class="copy-right">
+            <p> &copy; 2017 chohantoursandtravel.com. All Rights Reserved </p>	    
+			</div>  
+
+	<script src="{{URL::to('/')}}/assets/admin/js/jquery.nicescroll.js"></script>
+	<script src="{{URL::to('/')}}/assets/admin/js/scripts.js"></script>
+	<script>
+	var base_url ="{{URL::to('/')}}";
+	  $(document).ready(function(){
+		  $('#login').click(function(){
+			  var flag = 0;
+			  var email = $('#email').val();
+			  var password = $('#password').val();
+			  
+			  if(email == "")
+			  {
+				  alert("Enter email address");
+				  return;
+			  }
+			  else{
+				  flag++;
+			  }
+			  
+			  
+			  if(password == "")
+			  {
+				  alert("Enter password");
+				  return;
+			  }
+			  else{
+				  flag++
+			  }
+			  
+			  if(flag == 2)
+			  {
+				  $('#login').val("Logging you in...");
+				  $('#login').attr("disabled","disabled");
+				  $.post(base_url+'/admin/login',{email:email,password:password},function(data){
+					  if(data.status == 1)
+					  {
+						  window.location.replace(base_url+"/admin/dashboard");
+					  }
+					  else{
+						   $('#login').attr("disabled",false);
+						   $('#login').val("Login");
+				           alert(data.data);
+					  }
+				  });
+			  }
+		  });
+	  });
+	</script>
+</body>
+
+</html>
+

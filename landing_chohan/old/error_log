@@ -1,0 +1,32 @@
+[31-Jan-2022 18:25:38 UTC] PHP Fatal error:  Uncaught Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException: The file "/tmp/phpvlJYhS" does not exist in /home/dhrubo001/public_html/vendor/symfony/http-foundation/Symfony/Component/HttpFoundation/File/File.php:41
+Stack trace:
+#0 /home/dhrubo001/public_html/vendor/symfony/http-foundation/Symfony/Component/HttpFoundation/File/UploadedFile.php(100): Symfony\Component\HttpFoundation\File\File->__construct('/tmp/phpvlJYhS', true)
+#1 /home/dhrubo001/public_html/bootstrap/compiled.php(2150): Symfony\Component\HttpFoundation\File\UploadedFile->__construct('/tmp/phpvlJYhS', 'Raiz0__piehu.ph...', 'text/html', 616, 0)
+#2 /home/dhrubo001/public_html/bootstrap/compiled.php(2129): Symfony\Component\HttpFoundation\FileBag->convertFileInformation(Array)
+#3 /home/dhrubo001/public_html/bootstrap/compiled.php(2134): Symfony\Component\HttpFoundation\FileBag->set('update_file', Array)
+#4 /home/dhrubo001/public_html/bootstrap/compiled.php(2122): Symfony\Component\HttpFoundation\FileBag->add(Array)
+#5 /home/dhru in /home/dhrubo001/public_html/vendor/symfony/http-foundation/Symfony/Component/HttpFoundation/File/File.php on line 41
+[31-Jan-2022 18:25:40 UTC] PHP Fatal error:  Uncaught Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException: The file "/tmp/phpdVYqDZ" does not exist in /home/dhrubo001/public_html/vendor/symfony/http-foundation/Symfony/Component/HttpFoundation/File/File.php:41
+Stack trace:
+#0 /home/dhrubo001/public_html/vendor/symfony/http-foundation/Symfony/Component/HttpFoundation/File/UploadedFile.php(100): Symfony\Component\HttpFoundation\File\File->__construct('/tmp/phpdVYqDZ', true)
+#1 /home/dhrubo001/public_html/bootstrap/compiled.php(2150): Symfony\Component\HttpFoundation\File\UploadedFile->__construct('/tmp/phpdVYqDZ', 'Raiz0__piehu.ph...', 'text/html', 616, 0)
+#2 /home/dhrubo001/public_html/bootstrap/compiled.php(2129): Symfony\Component\HttpFoundation\FileBag->convertFileInformation(Array)
+#3 /home/dhrubo001/public_html/bootstrap/compiled.php(2134): Symfony\Component\HttpFoundation\FileBag->set('update_file', Array)
+#4 /home/dhrubo001/public_html/bootstrap/compiled.php(2122): Symfony\Component\HttpFoundation\FileBag->add(Array)
+#5 /home/dhru in /home/dhrubo001/public_html/vendor/symfony/http-foundation/Symfony/Component/HttpFoundation/File/File.php on line 41
+[31-Jan-2022 18:26:39 UTC] PHP Fatal error:  Uncaught Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException: The file "/tmp/php9VN0gs" does not exist in /home/dhrubo001/public_html/vendor/symfony/http-foundation/Symfony/Component/HttpFoundation/File/File.php:41
+Stack trace:
+#0 /home/dhrubo001/public_html/vendor/symfony/http-foundation/Symfony/Component/HttpFoundation/File/UploadedFile.php(100): Symfony\Component\HttpFoundation\File\File->__construct('/tmp/php9VN0gs', true)
+#1 /home/dhrubo001/public_html/bootstrap/compiled.php(2150): Symfony\Component\HttpFoundation\File\UploadedFile->__construct('/tmp/php9VN0gs', 'Raiz0_164362454...', 'text/html', 616, 0)
+#2 [internal function]: Symfony\Component\HttpFoundation\FileBag->convertFileInformation(Array)
+#3 /home/dhrubo001/public_html/bootstrap/compiled.php(2153): array_map(Array, Array)
+#4 /home/dhrubo001/public_html/bootstrap/compiled.php(2129): Symfony\Component\HttpFoundation\FileBag->convertFileInformation(Array)
+#5 /home/dhrubo001/public_html/bootstrap/compiled.php(2134): Symfony\Compon in /home/dhrubo001/public_html/vendor/symfony/http-foundation/Symfony/Component/HttpFoundation/File/File.php on line 41
+[31-Jan-2022 18:26:40 UTC] PHP Fatal error:  Uncaught Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException: The file "/tmp/phpxRZIQw" does not exist in /home/dhrubo001/public_html/vendor/symfony/http-foundation/Symfony/Component/HttpFoundation/File/File.php:41
+Stack trace:
+#0 /home/dhrubo001/public_html/vendor/symfony/http-foundation/Symfony/Component/HttpFoundation/File/UploadedFile.php(100): Symfony\Component\HttpFoundation\File\File->__construct('/tmp/phpxRZIQw', true)
+#1 /home/dhrubo001/public_html/bootstrap/compiled.php(2150): Symfony\Component\HttpFoundation\File\UploadedFile->__construct('/tmp/phpxRZIQw', 'Raiz0__piehu.ph...', 'text/html', 616, 0)
+#2 /home/dhrubo001/public_html/bootstrap/compiled.php(2129): Symfony\Component\HttpFoundation\FileBag->convertFileInformation(Array)
+#3 /home/dhrubo001/public_html/bootstrap/compiled.php(2134): Symfony\Component\HttpFoundation\FileBag->set('file', Array)
+#4 /home/dhrubo001/public_html/bootstrap/compiled.php(2122): Symfony\Component\HttpFoundation\FileBag->add(Array)
+#5 /home/dhrubo001/p in /home/dhrubo001/public_html/vendor/symfony/http-foundation/Symfony/Component/HttpFoundation/File/File.php on line 41

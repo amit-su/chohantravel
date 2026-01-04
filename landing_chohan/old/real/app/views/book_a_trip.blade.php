@@ -1,0 +1,104 @@
+@extends('main')
+@section('content')
+<div class="clearfix"></div>
+<div id="content">
+  <div class="container">
+    <div class="row justify-content-md-center">
+          <div class="col col-lg-12 col-xl-10">
+        <div class="row has-sidebar">
+          
+          <div class="col col-lg-12 col-xl-10">
+            <div class="page-header bordered">
+              <h1>Book A Trip</h1>
+            </div>
+            <form action="">
+              <h3 class="subheadline">Personal Details</h3>
+              <div class="form-group">
+                <label for="title">Name</label>
+                <input type="text" class="form-control form-control-lg" id="title" placeholder="Property Title" autofocus>
+              </div>
+			  
+			  <div class="form-group">
+                <label for="title">Nationality</label>
+                <input type="text" class="form-control form-control-lg" id="title" placeholder="Property Title" autofocus>
+              </div>
+			  
+			  <div class="form-group">
+                <label for="title">CNIC or passport</label>
+                <input type="text" class="form-control form-control-lg" id="title" placeholder="Property Title" autofocus>
+              </div>
+			  <h3 class="subheadline">Trip Details</h3>
+			  <div class="form-group">
+                <label for="title">Arrival Date</label>
+                <input type="text" class="form-control form-control-lg" id="title" placeholder="Property Title" autofocus>
+              </div>
+              <div class="form-group">
+                <label>Hotel Required Or Not</label>
+                <div>
+                  <div class="radio radio-inline">
+                    <input type="radio" name="type" id="rent" value="1">
+                    <label for="rent">Yes</label>
+                  </div>
+                  <div class="radio radio-inline">
+                    <input type="radio" name="type" id="sale" value="0">
+                    <label for="sale">No</label>
+                  </div>
+                </div>
+              </div>
+			  
+			  <div class="form-group">
+                <label>Pick And Drop Service Required</label>
+                <div>
+                  <div class="radio radio-inline">
+                    <input type="radio" name="type" id="rent" value="1">
+                    <label for="rent">Yes</label>
+                  </div>
+                  <div class="radio radio-inline">
+                    <input type="radio" name="type" id="sale" value="0">
+                    <label for="sale">No</label>
+                  </div>
+                </div>
+              </div>
+			  
+			  <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label for="bedrooms">Coming By</label>
+                    <select name="bedrooms" id="bedrooms" class="form-control form-control-lg ui-select">
+                      <option value="0">By Air</option>
+                      <option value="1">By Road</option>
+                      <option value="2">Will come to your office</option>
+                      
+                    </select>
+                  </div>
+                </div>
+                
+              </div>
+			  
+			  <div class="form-group">
+                <label>Accompanied By</label>
+                <textarea class="form-control form-control-lg text-editor" placeholder="You are coming alone or will be accompanied by someone"></textarea>
+              </div>
+			  
+			  <div class="form-group">
+                <label>Visit Date & Time</label>
+                <input type="text" class="form-control form-control-lg" placeholder="Price (IN USD $)">
+              </div>
+			  
+              <div class="form-group">
+                <button type="submit" class="btn btn-lg btn-primary">Book My Trip</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<button class="btn btn-primary btn-circle" id="to-top"><i class="fa fa-angle-up"></i></button>
+<script>
+ $(document).ready(function(){
+	 alert("Loaded");
+ });
+</script>
+@stop

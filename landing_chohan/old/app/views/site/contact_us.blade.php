@@ -1,0 +1,129 @@
+@extends('site.main')
+@section('content')
+<section class="inner_static_banner" style="background:url(assets/images/new_20.jpg) no-repeat center top;background-size:cover;  background-position:50%">
+<div class="img-top-shadow"></div>
+<div class="banner_text">
+<h2>Book our services</h2>
+<p>Just fill the form and we will get in touch with you</p>
+</div>
+
+</section>
+<section class="contact_info_blk">
+ <div class="container">
+ <h1>Book our buses online</h1>
+  <p>We will contact you as soon as possible</p>
+  <div class="row">
+    <div class="col-sm-7">
+	 <div class="text_blk">
+	   
+	   <form id="frm" method="post" class="contact-form" action="{{URL::Route('post-contact-us')}}">
+         <input type="text" class="form-control" id="name" name="name" placeholder="Name" required="">
+          <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+          <input type="text" class="form-control" id="mobile" name="mobile" placeholder="Mobile" required="">
+		  <select class="select_control" id="bus_category" name="bus_category">
+		    <option value="0">Bus Category</option>
+		    <option value="School Buses">School Buses</option>
+		    <option value="Office transfer coaches">Office transfer coaches</option>
+		    <option value="Traveller 26 AC">Traveller 26 AC</option>
+		    <option value="3 by 2 Ac">3 by 2 Ac</option>
+		    <option value="3 by 2 Non-AC">3 by 2 Non-AC</option>
+		    <option value="2 by 2 Non-AC">2 by 2 Non-AC</option>
+		    <option value="Semi Deluxe Non-AC">Semi Deluxe Non-AC</option>
+		    
+		  </select>
+          <textarea class="form-control" id="message" name="message" placeholder="Message"></textarea>
+         <button class="btn btn-primary contact-submit" id="submit">Request Booking</button>
+         </form>
+        
+	
+	 </div>
+	</div>
+    <div class="col-sm-5">
+	<div class="address_blk">
+	<h3>Chohan Tours & Travels</h3>
+	  <h5>70/1, Hazra Road,
+       Kolkata – 700 019.</h5>
+
+		<h5><strong>Mob:</strong>+91 98360 00999</h5>
+		<h5><strong>Tel:</strong> 033 2475 3106</h5>
+	
+	</div>
+	</div>
+  </div>
+ </div>
+ <div><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3685.4547985083364!2d88.35356931453526!3d22.524629885207457!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a02772ef969d281%3A0x4c189d8fd792ab44!2s70%2C+Hazra+Road%2C+Dover+Terrace%2C+Ballygunge%2C+Kolkata%2C+West+Bengal+700019!5e0!3m2!1sen!2sin!4v1507143252187" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe></div>
+</section>	
+@stop
+@section('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert"></script>
+<script>
+var base_url = "{{URL::to('/')}}";
+
+@if(Session::has('success'))
+  swal("Done", "{{Session::get('success')}}", "success");
+@endif
+
+
+function validateEmail($email) {
+  var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+  return emailReg.test( $email );
+}
+  $(document).ready(function(){
+
+    $('#mobile').on('keydown',function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||/65|67|86|88/.test(e.keyCode)&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});
+
+  	  $('#submit').click(function(){
+         var flag = 0;
+         var name = $('#name').val();
+         var email = $('#email').val();
+         var mobile = $('#mobile').val();
+         var bus_category = $('#bus_category').val();
+         var messege = $('#message').val();
+
+         if(name == "")
+         {
+         	$('#name').focus();
+            swal("Oops!", "Enter your full name", "error");
+            return;
+         }
+         else{
+         	flag++;
+         }
+
+         if(email != "")
+		 {
+			 if(!validateEmail(email)) { 
+				$('#email').val("");
+				$('#email').focus();
+				swal("Oops!", "Email address not valid", "error");
+				return;
+			 }
+			 else{
+				flag++;
+			 }
+		 }
+
+         
+
+         if(mobile.length < 10 || mobile.length > 10) { 
+         	$('#mobile').val("");
+         	$('#mobile').focus();
+            swal("Oops!", "Enter 10 digit mobile number", "error");
+            return;
+         }
+         else{
+         	flag++;
+         }
+
+
+         if(flag == 3)
+         {
+         	$('#frm').submit();
+
+         }
+
+
+  	  });
+  });
+</script>
+@stop
