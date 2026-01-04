@@ -134,7 +134,7 @@ const Invoiceentry = () => {
       width: 110,
       render: (date) => (
         <span className="text-gray-600">
-          {moment(date).format("DD-MM-YYYY")}
+          {moment(date).format("DD/MM/YYYY")}
         </span>
       ),
     },
@@ -342,7 +342,7 @@ const Invoiceentry = () => {
               </Text>
               <DatePicker
                 placeholder="Filter by Date"
-                format="DD-MM-YYYY"
+                format="DD/MM/YYYY"
                 value={dateFilter}
                 onChange={setDateFilter}
                 className="w-full rounded-lg"

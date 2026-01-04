@@ -88,9 +88,9 @@ const DetailBookingEntry = ({ bookingNo }) => {
       dataIndex: "ReportDate",
       key: "ReportDate",
       render: (createdAt) => {
-        const parsedDate = dayjs(createdAt, "DD-MM-YYYY"); // or just dayjs(createdAt)
+        const parsedDate = dayjs(createdAt, "DD/MM/YYYY"); // or just dayjs(createdAt)
         return parsedDate.isValid()
-          ? parsedDate.format("DD-MM-YYYY")
+          ? parsedDate.format("DD/MM/YYYY")
           : "Invalid date";
       },
     },
@@ -100,9 +100,9 @@ const DetailBookingEntry = ({ bookingNo }) => {
       dataIndex: "tripEndDate",
       key: "tripEndDate",
       render: (createdAt) => {
-        const parsedDate = dayjs(createdAt, "DD-MM-YYYY"); // or just dayjs(createdAt)
+        const parsedDate = dayjs(createdAt, "DD/MM/YYYY"); // or just dayjs(createdAt)
         return parsedDate.isValid()
-          ? parsedDate.format("DD-MM-YYYY")
+          ? parsedDate.format("DD/MM/YYYY")
           : "Invalid date";
       },
     },

@@ -89,7 +89,7 @@ const GetAllProformaInvoice = () => {
       dataIndex: "invoiceDate",
       key: "invoiceDate",
       width: 110,
-      render: (date) => moment(date).format("DD-MM-YYYY"),
+      render: (date) => moment(date).format("DD/MM/YYYY"),
     },
     {
       title: "Party",
@@ -295,7 +295,7 @@ const GetAllProformaInvoice = () => {
                 className="w-full"
                 placeholder="Select Date"
                 onChange={(date) => setDateFilter(date)}
-                format="DD-MM-YYYY"
+                format="DD/MM/YYYY"
                 size="large"
                 style={{ borderRadius: '10px' }}
               />

@@ -389,7 +389,7 @@ const AddInvoice = () => {
                       name="date"
                     >
                       <DatePicker
-                        format={"DD-MM-YYYY"}
+                        format={"DD/MM/YYYY"}
                         className="w-full rounded-lg"
                       />
                     </Form.Item>

@@ -124,7 +124,7 @@ const GetAllBookingEntry = () => {
       dataIndex: "BookingDate",
       key: "BookingDate",
       width: 120,
-      render: (date) => date ? dayjs(date).format("DD-MM-YYYY") : "-",
+      render: (date) => date ? dayjs(date).format("DD/MM/YYYY") : "-",
     },
     {
       title: "Party Name",
@@ -287,7 +287,7 @@ const GetAllBookingEntry = () => {
                 style={{ width: '220px' }}
                 onChange={setDateFilter}
                 placeholder="Filter by Date"
-                format="DD-MM-YYYY"
+                format="DD/MM/YYYY"
                 size="large"
                 className="rounded-lg"
                 suffixIcon={<CalendarOutlined className="text-blue-500" />}

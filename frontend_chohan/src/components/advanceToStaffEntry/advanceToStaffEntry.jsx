@@ -87,11 +87,17 @@ const AdvanceToStaffEntry = (props) => {
 
         // Advance Details Header (using the first record for common details)
         const firstRecord = reportData[0];
+        const date = new Date(firstRecord.AdvancedDate);
+        const day = String(date.getDate()).padStart(2, "0");
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const year = date.getFullYear();
+        const formattedDate = `${day}/${month}/${year}`;
+
         doc.setFontSize(10);
         doc.setFont("helvetica", "normal");
         doc.text(`Advance No: ${firstRecord.AdvanceNo}`, 14, 48);
         doc.text(
-          `Date: ${new Date(firstRecord.AdvancedDate).toLocaleDateString()}`,
+          `Date: ${formattedDate}`,
           14,
           54
         );
@@ -205,7 +211,7 @@ const AdvanceToStaffEntry = (props) => {
         const day = String(date.getDate()).padStart(2, "0");
         const month = String(date.getMonth() + 1).padStart(2, "0");
         const year = date.getFullYear();
-        return `${day}-${month}-${year}`;
+        return `${day}/${month}/${year}`;
       },
     },
     {
