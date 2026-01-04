@@ -18,6 +18,8 @@ import {
   InfoCircleOutlined,
   PlusOutlined,
   MinusOutlined,
+  SwapOutlined,
+  SwapRightOutlined,
 } from "@ant-design/icons";
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { useDispatch } from "react-redux";
@@ -50,6 +52,8 @@ const GetSalaryDetails = () => {
   const [isAdvanceModalVisible, setIsAdvanceModalVisible] = useState(false);
   const [advanceReportData, setAdvanceReportData] = useState([]);
   const [advanceLoading, setAdvanceLoading] = useState(false);
+  const [selectedRecordId, setSelectedRecordId] = useState(null);
+  const [advanceAdjustments, setAdvanceAdjustments] = useState({});
 
   const apiUrl = import.meta.env.VITE_APP_API;
   const dispatch = useDispatch();
@@ -158,8 +162,27 @@ const GetSalaryDetails = () => {
     }
   };
 
+  const syncAdvanceTotal = (adjustments, recordId, advanceData) => {
+    const totalAdjusted = Object.values(adjustments).reduce((acc, val) => acc + (val || 0), 0);
+
+    // Map adjustments to the required detailed format
+    const detailedAdjustments = advanceData.map((adv, idx) => ({
+      advanceId: adv.ID,
+      advanceAmount: adv.advanceAmount,
+      AdjusAmt: adjustments[idx] || 0
+    })).filter(adj => adj.AdjusAmt > 0);
+
+    const newData = data.map((item) =>
+      item.id === recordId
+        ? { ...item, AdvanceAdjusted: Math.round(totalAdjusted), DetailedAdjustments: detailedAdjustments }
+        : item
+    );
+    setData(newData);
+  };
+
   const handleAdvanceClick = async (record) => {
     setSelectedEmployeeName(record.EmployeeName);
+    setSelectedRecordId(record.id);
     setIsAdvanceModalVisible(true);
     setAdvanceLoading(true);
     try {
@@ -173,7 +196,31 @@ const GetSalaryDetails = () => {
         `${apiUrl}/salarydetails/advance-report`,
         payload
       );
-      setAdvanceReportData(response.data.data || []);
+      const advances = response.data.data || [];
+      setAdvanceReportData(advances);
+
+      // Initialize adjustments state for each advance
+      // We don't have individual adjustment data from backend yet, so we set to 0 or spread existing total if it's only one?
+      // For now, if there's only one advance, we can pre-fill it with the record's current AdvanceAdjusted
+      const initialAdjustments = {};
+      const existingDetails = record.DetailedAdjustments || [];
+
+      advances.forEach((adv, idx) => {
+        // Try to find if we already have an adjustment for this specific advance ID
+        const existingAdj = existingDetails.find(d => d.advanceId === adv.ID);
+        if (existingAdj) {
+          initialAdjustments[idx] = existingAdj.AdjusAmt;
+        } else {
+          // Fallback logic for single advance if no details yet
+          initialAdjustments[idx] = (advances.length === 1 && !record.DetailedAdjustments) ? record.AdvanceAdjusted : 0;
+        }
+      });
+
+      setAdvanceAdjustments(initialAdjustments);
+      if (advances.length === 1 && !record.DetailedAdjustments) {
+        syncAdvanceTotal(initialAdjustments, record.id, advances);
+      }
+
     } catch (err) {
       toast.error("Failed to fetch advance report");
       console.error(err);
@@ -307,8 +354,10 @@ const GetSalaryDetails = () => {
           amountadjust: Math.round(rawAdvance),
           iddel,
           totaldeduction,
+          DetailedAdvanceAdj: item.DetailedAdjustments || [], // 💡 Added detailed adjustments
         };
       });
+      console.log(payload);
       const response = await axios.post(
         `${apiUrl}/salarydetails/save`,
         payload
@@ -899,7 +948,7 @@ const GetSalaryDetails = () => {
             Close
           </Button>,
         ]}
-        width={600}
+        width={700}
       >
         <Table
           dataSource={advanceReportData}
@@ -925,22 +974,58 @@ const GetSalaryDetails = () => {
               dataIndex: "advanceAmount",
               key: "advanceAmount",
               align: "right",
-              render: (text) => Math.round(text),
+              render: (text, record, index) => (
+                <div className="flex items-center justify-end gap-2">
+                  <span>{Math.round(text)}</span>
+                  <SwapRightOutlined
+                    className="cursor-pointer text-blue-500 hover:text-blue-700 hover:scale-125 transition-all text-lg"
+                    title="Transfer to Adjusted"
+                    onClick={() => {
+                      const newAdjustments = { ...advanceAdjustments, [index]: record.advanceAmount };
+                      setAdvanceAdjustments(newAdjustments);
+                      syncAdvanceTotal(newAdjustments, selectedRecordId, advanceReportData);
+                    }}
+                  />
+                </div>
+              ),
+            },
+            {
+              title: "Adjusted",
+              key: "adjusted",
+              width: 120,
+              render: (_, __, index) => (
+                <InputNumber
+                  value={advanceAdjustments[index] || 0}
+                  onChange={(value) => {
+                    const newAdjustments = { ...advanceAdjustments, [index]: value };
+                    setAdvanceAdjustments(newAdjustments);
+                    syncAdvanceTotal(newAdjustments, selectedRecordId, advanceReportData);
+                  }}
+                  style={{ width: "100%" }}
+                  size="small"
+                  placeholder="0"
+                />
+              ),
             },
           ]}
           summary={(pageData) => {
-            let totalAmount = 0;
-            pageData.forEach(({ advanceAmount }) => {
-              totalAmount += advanceAmount;
+            let totalDue = 0;
+            let totalAdjusted = 0;
+            pageData.forEach((record, index) => {
+              totalDue += record.advanceAmount;
+              totalAdjusted += (advanceAdjustments[index] || 0);
             });
 
             return (
               <Table.Summary.Row className="bg-gray-50 font-bold">
                 <Table.Summary.Cell index={0} colSpan={2}>
-                  Total Advance
+                  Totals
                 </Table.Summary.Cell>
                 <Table.Summary.Cell index={1} align="right">
-                  {Math.round(totalAmount)}
+                  {Math.round(totalDue)}
+                </Table.Summary.Cell>
+                <Table.Summary.Cell index={2}>
+                  {Math.round(totalAdjusted)}
                 </Table.Summary.Cell>
               </Table.Summary.Row>
             );
