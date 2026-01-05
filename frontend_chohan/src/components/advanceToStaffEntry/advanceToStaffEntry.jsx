@@ -15,9 +15,7 @@ import Advancetostaffdrawer from "./advancetostaffprintdrawer";
 import TableComponent from "../CommonUi/TableComponent";
 import UserPrivateComponent from "../PrivacyComponent/UserPrivateComponent";
 import { loadAdvanceToStaffEntryPaginated } from "../../redux/rtk/features/advanceToStaffEntry/advanceToStaffEntrySlice";
-
-import jsPDF from "jspdf";
-import "jspdf-autotable";
+import { generateSalaryAdvancePDF } from "../../utils/generateSalaryAdvancePDF";
 
 const AdvanceToStaffEntry = (props) => {
   const dispatch = useDispatch();
@@ -54,91 +52,7 @@ const AdvanceToStaffEntry = (props) => {
       );
 
       if (response.data.status === 1 && response.data.data.length > 0) {
-        const reportData = response.data.data;
-        const doc = new jsPDF();
-        const pageWidth = doc.internal.pageSize.getWidth();
-        const centerX = pageWidth / 2;
-
-        // Company Header
-        doc.setFontSize(18);
-        doc.setFont("helvetica", "bold");
-        doc.text("CHOHAN TOURS & TRAVELS", centerX, 15, { align: "center" });
-
-        doc.setFontSize(10);
-        doc.setFont("helvetica", "normal");
-        doc.text(
-          "FLAT 3A, 2, GREEN ACRES, NAZAR ALI LANE, KOLKATA, 700019, WEST BENGAL",
-          centerX,
-          22,
-          { align: "center" }
-        );
-        doc.text("GST: 19AKTPC8877A1ZP | PAN: AKTPC8877A", centerX, 28, {
-          align: "center",
-        });
-
-        // Horizontal Line
-        doc.setLineWidth(0.5);
-        doc.line(14, 32, pageWidth - 14, 32);
-
-        // Report Title
-        doc.setFontSize(14);
-        doc.setFont("helvetica", "bold");
-        doc.text("Advance To Staff Report", 14, 40);
-
-        // Advance Details Header (using the first record for common details)
-        const firstRecord = reportData[0];
-        const date = new Date(firstRecord.AdvancedDate);
-        const day = String(date.getDate()).padStart(2, "0");
-        const month = String(date.getMonth() + 1).padStart(2, "0");
-        const year = date.getFullYear();
-        const formattedDate = `${day}/${month}/${year}`;
-
-        doc.setFontSize(10);
-        doc.setFont("helvetica", "normal");
-        doc.text(`Advance No: ${firstRecord.AdvanceNo}`, 14, 48);
-        doc.text(
-          `Date: ${formattedDate}`,
-          14,
-          54
-        );
-        doc.text(`Total Amount: ${firstRecord.TotalAmount}`, 14, 60);
-
-        // Table
-        const tableColumn = [
-          "Sl No",
-          "Employee Name",
-          "Employee Type",
-          "Sort Name",
-          "Amount",
-          "Remark",
-          "Signature",
-        ];
-        const tableRows = [];
-
-        reportData.forEach((ticket, index) => {
-          const ticketData = [
-            index + 1,
-            ticket.EmpName,
-            ticket.EmpType,
-            ticket.SiteShortName || "",
-            ticket.advanceAmount,
-            ticket.Remark || "",
-            "", // Signature column
-          ];
-          tableRows.push(ticketData);
-        });
-
-        doc.autoTable({
-          startY: 65,
-          head: [tableColumn],
-          body: tableRows,
-          theme: "grid",
-          columnStyles: {
-            6: { minCellWidth: 30 }, // Make Signature column wider
-          },
-        });
-
-        doc.save(`AdvanceReport_${AdvanceNo}.pdf`);
+        generateSalaryAdvancePDF(response.data.data);
         toast.success("PDF generated successfully");
       } else {
         toast.error("No data found for this report");
