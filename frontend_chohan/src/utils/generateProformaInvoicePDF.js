@@ -411,7 +411,7 @@ export const generateProformaInvoicePDF = async (data) => {
                 columns: [
                     // Left Column: Terms & Conditions
                     {
-                        width: '80%',
+                        width: '60%',
                         stack: [
                             { text: 'NOTE / T&C:', style: 'sectionLabel', margin: [0, 5, 0, 5] },
                             {
@@ -422,14 +422,12 @@ export const generateProformaInvoicePDF = async (data) => {
                                             text:
                                                 `1. THIS IS A PROFORMA INVOICE AND NOT A BOOKING CONFIRMATION.
 2. BOOKING CONFIRMATION AGAINST ADVANCE ONLY.
-3. ALL PAYMENTS HAVE TO BE FULLY CLEARED AT OUR AFORESAID OFFICE.
-4. 7 DAYS PRIOR TO COMMENCEMENT OF JOURNEY.
-5. NO STANDING ALLOWED, PASSENGERS ALLOWED AS PER SEATING CAPACITY ONLY.
-6. NO PASSENGERS ARE ALLOWED TO SIT INTO DRIVING CABIN.
-7. ALL ADVANCES OR PAYMENTS MADE ABOVE WHETHER IN PART OR FULL SHALL STAND TOTALLY FORFEITED IN CASE OF CANCELLATION.
-8. ANY DAMAGE TO THE BUS INCLUDING ITS FITTINGS AND ACCESSORIES SHALL HAVE TO BE FULLY BORNE BY THE HIRER.
-9. IN CASE OF ONE-DAY OR LESS BOOKINGS, EXTRA DETENTION CHARGES @ RS. 1000/- PER HOUR SHALL BE PAYABLE.
-10. THE BUS SHALL NOT ENTER ANY LANES; PICKUP AND DROP WILL BE DONE FROM MAIN ROADS ONLY.`,
+3. ALL PAYMENTS HAVE TO BE FULLY CLEARED AT OUR AFORESAID OFFICE. 7 DAYS PRIOR TO COMMENCEMENT OF JOURNEY.
+4. NO STANDING ALLOWED, PASSENGERS ALLOWED AS PER SEATING CAPACITY ONLY.
+5. NO PASSENGERS ARE ALLOWED TO SIT INTO DRIVING CABIN.
+6. ALL ADVANCES OR PAYMENTS MADE ABOVE WHETHER IN PART OR FULL SHALL STAND TOTALLY FORFEITED IN CASE OF CANCELLATION.
+7. ANY DAMAGE TO THE BUS INCLUDING ITS FITTINGS AND ACCESSORIES SHALL HAVE TO BE FULLY BORNE BY THE HIRER.
+8. THE BUS SHALL NOT ENTER ANY LANES; PICKUP AND DROP WILL BE DONE FROM MAIN ROADS ONLY.`,
                                             style: 'tncText',
                                             margin: [8, 6, 8, 6]
                                         }
@@ -447,19 +445,19 @@ export const generateProformaInvoicePDF = async (data) => {
                     },
                     // Right Column: Signature
                     {
-                        width: '20%',
+                        width: '40%',
                         stack: [
                             {
                                 text: 'FOR ' + (invoiceData.CompanyName || 'CHOHAN TOURS & TRAVELS'),
                                 style: 'compactLabel',
                                 alignment: 'right', // Align right
-                                margin: [0, 5, 0, 5]
+                                margin: [0, 0, 10, 5]
                             },
                             ...(stempImageBase64 ? [{
                                 image: stempImageBase64,
                                 width: 70,
                                 alignment: 'right',
-                                margin: [0, 0, 5, 2]
+                                margin: [0, 0, 15, 5]
                             }] : []),
                             // Box for Signature
                             {
@@ -476,10 +474,10 @@ export const generateProformaInvoicePDF = async (data) => {
                                 },
                                 layout: 'noBorders',
                                 alignment: 'right', // Align box right
-                                margin: [0, 0, 0, 5]
+                                margin: [0, 0, 10, 5]
                             },
-                            { text: 'Authorized Signatory', style: 'compactLabel', alignment: 'right' },
-                            { text: 'E. & O. E.', style: 'compactLabel', italics: true, alignment: 'right', margin: [0, 5, 0, 0] }
+                            { text: 'Authorized Signatory', style: 'compactLabel', alignment: 'right', margin: [0, 0, 30, 5] },
+                            { text: 'E. & O. E.', style: 'compactLabel', italics: true, alignment: 'right', margin: [0, 2, 40, 0] }
                         ]
                     }
                 ],
@@ -524,7 +522,7 @@ export const generateProformaInvoicePDF = async (data) => {
                 color: '#64748b'
             },
             compactText: {
-                fontSize: 7.5,
+                fontSize: 7,
                 color: '#334155'
             },
             compactInvoiceNo: {
@@ -538,16 +536,16 @@ export const generateProformaInvoicePDF = async (data) => {
                 color: 'white'
             },
             tableCell: {
-                fontSize: 7.5,
+                fontSize: 7,
                 color: '#334155',
                 lineHeight: 1.3
             },
             summaryLabel: {
-                fontSize: 7.5,
+                fontSize: 7,
                 color: '#64748b'
             },
             summaryValue: {
-                fontSize: 7.5,
+                fontSize: 7,
                 color: '#334155'
             },
             summaryBold: {
@@ -564,7 +562,7 @@ export const generateProformaInvoicePDF = async (data) => {
                 bold: true
             },
             amountWords: {
-                fontSize: 8,
+                fontSize: 7.5,
                 bold: true,
                 color: '#991b1b',
                 italics: true
@@ -575,7 +573,7 @@ export const generateProformaInvoicePDF = async (data) => {
                 color: '#1e293b'
             },
             tncText: {
-                fontSize: 8,
+                fontSize: 6.5,
                 lineHeight: 1.4,
                 color: '#475569',
                 italics: true
