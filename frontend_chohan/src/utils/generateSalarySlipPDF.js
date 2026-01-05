@@ -296,7 +296,7 @@ export const generateSalarySlipPDF = async (data) => {
                                         ...khorakiDetails.map(item => [
                                             { text: item.SiteShortName || 'Duty', style: 'tableCell' },
                                             { text: item.DayCount || 0, style: 'tableCell', alignment: 'center' },
-                                            { text: (item.KhurakiRate || 0).toFixed(0), style: 'tableCell', alignment: 'center' },
+                                            { text: (item.Rate || 0).toFixed(0), style: 'tableCell', alignment: 'center' },
                                             { text: (item.TotalKhurakiAmount || 0).toFixed(0), style: 'tableCell', alignment: 'right' }
                                         ]),
                                         [
