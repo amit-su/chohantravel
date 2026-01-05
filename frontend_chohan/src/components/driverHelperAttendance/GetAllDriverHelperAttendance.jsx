@@ -122,9 +122,13 @@ const GetAllDriverHelperAttendance = () => {
         );
 
         if (allowedSites.length > 0 && siteId === 0) {
-          const defaultSiteId = allowedSites[0].siteID; // first allowed site
-          setSiteId(defaultSiteId);
-          form.setFieldsValue({ site: defaultSiteId });
+          // If NOT Admin (userId !== 1), auto-select the first site.
+          // If Admin, leave it as 0 (All Sites).
+          if (userId !== 1) {
+            const defaultSiteId = allowedSites[0].siteID; // first allowed site
+            setSiteId(defaultSiteId);
+            form.setFieldsValue({ site: defaultSiteId });
+          }
         }
       } catch (error) {
         console.error("Error fetching sites:", error);
@@ -135,25 +139,55 @@ const GetAllDriverHelperAttendance = () => {
 
   // siteId added to dependency array to re-run if it changes outside this hook (e.g., manually)
 
+  // --- ATTENDANCE PROTECTION LOGIC ---
+  const isEditable = (() => {
+    // 0. If Admin (userId === 1) -> Always Editable
+    if (userId === 1) {
+      return true;
+    }
+
+    const now = dayjs();
+    // 1. If viewing Current Month or Future Month -> Editable
+    if (
+      selectedMonth.isSame(now, "month") ||
+      selectedMonth.isAfter(now, "month")
+    ) {
+      return true;
+    }
+
+    // 2. If viewing Immediate Past Month -> Editable ONLY if today is <= 2nd
+    // Example: viewing Jan 2025. Current is Feb 2025.
+    // If Feb 1 or Feb 2 -> Editable.
+    // If Feb 3+ -> Not Editable.
+    const lastMonth = now.subtract(1, "month");
+    if (selectedMonth.isSame(lastMonth, "month")) {
+      return now.date() <= 2;
+    }
+
+    // 3. Older months -> Not Editable
+    return false;
+  })();
+
   // --- MODIFIED DATA LOADING LOGIC ---
   // Load drivers/helpers and attendance data, now dependent on the updated siteId state
   useEffect(() => {
     // Only load if siteId is set (either by default or user selection)
-    if (siteId > 0) {
+    // For Admin (userId === 1), siteId 0 is valid (All Sites).
+    if (siteId > 0 || (userId === 1 && siteId === 0)) {
       dispatch(
         DriverOrHelper === "Driver"
           ? loadAllDriver({
-              page: 1,
-              count: 10000,
-              status: true,
-              siteId: siteId,
-            })
+            page: 1,
+            count: 10000,
+            status: true,
+            siteId: siteId,
+          })
           : loadAllHelper({
-              page: 1,
-              count: 10000,
-              status: true,
-              siteId: siteId,
-            })
+            page: 1,
+            count: 10000,
+            status: true,
+            siteId: siteId,
+          })
       );
       dispatch(
         loadAllDriverHelperAttendance({
@@ -344,6 +378,7 @@ const GetAllDriverHelperAttendance = () => {
             <Space direction="vertical" size={4} style={{ width: "100%" }}>
               <Select
                 showSearch
+                disabled={!isEditable}
                 filterOption={(input, option) =>
                   (option?.label ?? "")
                     .toLowerCase()
@@ -371,17 +406,19 @@ const GetAllDriverHelperAttendance = () => {
                     >
                       {getSiteShortName(siteRecord.siteId)}
 
-                      <button
-                        type="button"
-                        className="ml-2 text-white/80 hover:text-white focus:outline-none"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleRemoveSite(record.id, date, siteRecord.dbId);
-                        }}
-                        aria-label="Remove site"
-                      >
-                        &times;
-                      </button>
+                      {isEditable && (
+                        <button
+                          type="button"
+                          className="ml-2 text-white/80 hover:text-white focus:outline-none"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleRemoveSite(record.id, date, siteRecord.dbId);
+                          }}
+                          aria-label="Remove site"
+                        >
+                          &times;
+                        </button>
+                      )}
                     </span>
                   ))}
               </div>
@@ -397,7 +434,11 @@ const GetAllDriverHelperAttendance = () => {
       fixed: "right",
       width: 100,
       render: (_, record) => (
-        <Button type="primary" onClick={() => saveSingleRecord(record.id)}>
+        <Button
+          type="primary"
+          onClick={() => saveSingleRecord(record.id)}
+          disabled={!isEditable}
+        >
           Save
         </Button>
       ),
@@ -743,7 +784,7 @@ const GetAllDriverHelperAttendance = () => {
               type="primary"
               onClick={saveAllRecords}
               loading={savingAll}
-              disabled={savingAll}
+              disabled={savingAll || !isEditable}
               className="w-full sm:w-auto"
             >
               Save All
@@ -762,11 +803,10 @@ const GetAllDriverHelperAttendance = () => {
             form.setFieldsValue({ site: null }); // Clear form value
           }}
           className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium shadow-sm transition-all 
-					${
-            isAllSites
+					${isAllSites
               ? "bg-gray-100 text-gray-700 hover:bg-gray-200"
               : "bg-blue-600 text-white hover:bg-blue-700"
-          }`}
+            }`}
         >
           {isAllSites ? (
             <svg

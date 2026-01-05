@@ -5,6 +5,7 @@ const {
   GET_ATTENDANCE_PROCEDURE_BY_MONTH,
   sp_insert_drv_helper_site_attend_json,
 } = require("../../utils/constants");
+const moment = require("moment");
 
 const databaseService = require("../../utils/dbClientService");
 
@@ -113,13 +114,49 @@ const getSingleAttendancebymonth = async (req, res) => {
     res.json(resultdata);
   } catch (error) {
     res.status(400).json(error.message);
-    console.log(error.message);
   }
 };
 
 const createAttendance = async (req, res) => {
   try {
     const userId = databaseService.getUserIdFromToken(req);
+
+    // --- BACKEND VALIDATION ---
+    // Skip validation for Admin (userId === 1)
+    if (userId !== 1) {
+      const attendanceList = req.body.attendance || [];
+      const now = moment();
+
+      for (const record of attendanceList) {
+        if (record.DutyDate) {
+          const dutyDate = moment(record.DutyDate, "YYYY-MM-DD");
+
+          // 1. If DutyDate is in the past month (strictly before current month)
+          if (dutyDate.isBefore(now, "month")) {
+            const lastMonth = moment().subtract(1, "month");
+
+            // 2. Check if it's the immediate previous month
+            if (dutyDate.isSame(lastMonth, "month")) {
+              // Allow ONLY if today is <= 2nd
+              if (now.date() > 2) {
+                return res
+                  .status(403)
+                  .json(
+                    "Attendance for the previous month can only be modified within the first 2 days of the new month."
+                  );
+              }
+            } else {
+              // 3. Older than previous month -> Block
+              return res
+                .status(403)
+                .json("Attendance for past months cannot be modified.");
+            }
+          }
+        }
+      }
+    }
+    // ---------------------------
+
     const attendanceWithMeta = req.body.attendance.map((att) => ({
       ...att,
     }));
