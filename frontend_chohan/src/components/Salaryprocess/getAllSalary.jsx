@@ -32,6 +32,7 @@ const GetAllSalary = () => {
   const [selectedMonth, setSelectedMonth] = useState(dayjs());
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [searchQuery, setSearchQuery] = useState(""); // 💡 State for search query
+  const [isBulkPrinting, setIsBulkPrinting] = useState(false);
 
   const apiUrl = import.meta.env.VITE_APP_API;
   const navigate = useNavigate();
@@ -108,6 +109,43 @@ const GetAllSalary = () => {
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
+  const handleBulkPrint = async () => {
+    if (selectedRowKeys.length === 0) {
+      toast.warning("Please select at least one record to print.");
+      return;
+    }
+
+    setIsBulkPrinting(true);
+    try {
+      console.log("Fetching data for IDs:", selectedRowKeys);
+      const printPromises = selectedRowKeys.map((id) =>
+        axios.post(`${apiUrl}/salarydetails/slip-report`, { id: parseInt(id) })
+      );
+
+      const responses = await Promise.all(printPromises);
+      const allSalaryData = responses
+        .map((res) => res.data)
+        .filter((item) => item);
+
+      if (allSalaryData.length > 0) {
+        // Iterate and generate individual PDFs
+        for (const salaryData of allSalaryData) {
+          await generateSalarySlipPDF(salaryData);
+          // Optional: Small delay to ensure browser handles downloads smoothly
+          await new Promise((resolve) => setTimeout(resolve, 500));
+        }
+        toast.success("All selected PDFs downloaded!");
+      } else {
+        toast.error("No valid data found for selected records.");
+      }
+    } catch (err) {
+      console.error("Bulk print error:", err);
+      toast.error("Failed to generate PDFs.");
+    } finally {
+      setIsBulkPrinting(false);
+    }
+  };
+
   const handlePrint = async (id) => {
     try {
       const response = await axios.post(
@@ -149,15 +187,14 @@ const GetAllSalary = () => {
         title: "ID",
         dataIndex: "id", // Assuming 'id' is the primary key from the API
         key: "id",
-        width: 20,
-        fixed: "left",
+        width: 60,
       },
       {
         id: 9,
         title: "Name",
         dataIndex: "name", // 💡 Using 'name' (Check against your actual API response field)
         key: "Name",
-        width: 30,
+        width: 250,
         fixed: "left",
       },
       {
@@ -165,14 +202,14 @@ const GetAllSalary = () => {
         title: "Days of work",
         dataIndex: "DaysWorked", // 💡 Assuming this is the finalized field name
         key: "DaysWorked",
-        width: 20,
+        width: 100,
       },
       {
         id: 1,
         title: "Basic",
         dataIndex: "BASIC", // 💡 Displaying the saved calculated value
         key: "BASIC",
-        width: 20,
+        width: 100,
         align: "right",
       },
       {
@@ -180,7 +217,7 @@ const GetAllSalary = () => {
         title: "HRA",
         dataIndex: "HRA",
         key: "HRA",
-        width: 20,
+        width: 100,
         align: "right",
       },
       {
@@ -188,7 +225,7 @@ const GetAllSalary = () => {
         title: "TA",
         dataIndex: "TA",
         key: "TA",
-        width: 20,
+        width: 100,
         align: "right",
       },
       {
@@ -196,7 +233,7 @@ const GetAllSalary = () => {
         title: "Medical Allowance",
         dataIndex: "MedicalAllowance",
         key: "MedicalAllowanc",
-        width: 20,
+        width: 120,
         align: "right",
       },
       {
@@ -204,7 +241,7 @@ const GetAllSalary = () => {
         title: "Washing Allowance",
         dataIndex: "WashingAllowance",
         key: "WashingAllowance",
-        width: 20,
+        width: 120,
         align: "right",
       },
       {
@@ -212,7 +249,7 @@ const GetAllSalary = () => {
         title: "Khuraki Total Amount",
         dataIndex: "KhurakiTotalAmt",
         key: "KhurakiAmt",
-        width: 20,
+        width: 140,
         align: "right",
       },
       {
@@ -220,7 +257,7 @@ const GetAllSalary = () => {
         title: "Gross Salary",
         key: "GrossSalary",
         dataIndex: "GrossSalary",
-        width: 20,
+        width: 120,
         align: "right",
       },
       {
@@ -228,7 +265,7 @@ const GetAllSalary = () => {
         title: "PF",
         dataIndex: "PF",
         key: "PF_Deduction",
-        width: 20,
+        width: 100,
         align: "right",
       },
       {
@@ -236,7 +273,7 @@ const GetAllSalary = () => {
         title: "ESIC",
         dataIndex: "ESIC",
         key: "ESIC_Deduction",
-        width: 20,
+        width: 100,
         align: "right",
       },
       {
@@ -244,7 +281,7 @@ const GetAllSalary = () => {
         title: "P Tax",
         dataIndex: "PTAX",
         key: "PTAX_Deduction",
-        width: 20,
+        width: 100,
         align: "right",
       },
       {
@@ -252,7 +289,7 @@ const GetAllSalary = () => {
         title: "Advance Adjusted",
         dataIndex: "AdvanceAdjusted",
         key: "AdvanceAdjusted",
-        width: 20,
+        width: 120,
         align: "right",
       },
       {
@@ -260,7 +297,7 @@ const GetAllSalary = () => {
         title: "Net Salary",
         key: "NetSalary",
         dataIndex: "NetSalary",
-        width: 20,
+        width: 120,
         align: "right",
       },
       {
@@ -269,7 +306,7 @@ const GetAllSalary = () => {
         dataIndex: "",
         key: "action",
         fixed: "right",
-        width: 30,
+        width: 120,
         render: (record) => (
           <div className="flex items-center gap-2">
             <button
@@ -371,6 +408,19 @@ const GetAllSalary = () => {
                     style={{ width: 250 }}
                   />
                 </div>
+
+                {/* Bulk Print Button - Visible only when rows are selected */}
+                {selectedRowKeys.length > 0 && (
+                  <Button
+                    type="primary"
+                    onClick={handleBulkPrint}
+                    loading={isBulkPrinting}
+                    className="bg-green-600 hover:bg-green-700 border-none"
+                  >
+                    Download Selected ({selectedRowKeys.length})
+                  </Button>
+                )}
+
                 {/* Button to go to Salary Process/Due */}
                 <Button
                   title="Salary Process"
@@ -386,7 +436,7 @@ const GetAllSalary = () => {
             {error && <p className="text-red-500 p-4">Error: {error}</p>}
             <UserPrivateComponent permission={"create-bookingEntry"}>
               <Table
-                // rowSelection={rowSelection} // Removed selection as this is a read-only view
+                rowSelection={rowSelection}
                 dataSource={filteredData} // 🎯 Using the filtered data
                 columns={columns}
                 loading={loading}
