@@ -280,7 +280,7 @@ const GetAllSalary = () => {
               Print
             </button>
 
-            <button
+            {/* <button
               className="bg-red-500 p-2 text-white rounded-md hover:bg-red-600 transition duration-300"
               onClick={() => onDelete(record.id)}
               style={{
@@ -293,7 +293,7 @@ const GetAllSalary = () => {
               title="Delete Salary Details"
             >
               <DeleteOutlined />
-            </button>
+            </button> */}
           </div>
         ),
       },
