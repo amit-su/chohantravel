@@ -287,7 +287,7 @@ const GetSalaryDetails = () => {
           }
 
           rawESIC = esicBaseAmount * 0.0075;
-          ESIC = Math.ceil(rawESIC);
+          ESIC = Math.round(rawESIC);
         }
 
         // PTAX
@@ -535,7 +535,7 @@ const GetSalaryDetails = () => {
               esicBaseAmount = basic + hra + ta + medical + washing + khuraki;
             }
 
-            return Math.ceil(esicBaseAmount * 0.0075);
+            return Math.round(esicBaseAmount * 0.0075);
           } else {
             return 0;
           }
@@ -660,7 +660,7 @@ const GetSalaryDetails = () => {
               esicBaseAmount = gross;
             }
 
-            esic = Math.ceil(esicBaseAmount * 0.0075);
+            esic = Math.round(esicBaseAmount * 0.0075);
           }
 
           // 3. P Tax: Needs to be calculated based on the P Tax slab logic
