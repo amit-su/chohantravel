@@ -22,7 +22,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { loadAllBookingEntry } from "../../redux/rtk/features/bookingEntry/bookingsEntrySlice";
 import { useNavigate } from "react-router-dom";
-import { generateSalarySlipPDF } from "../../utils/generateSalarySlipPDF";
+import { generateSalarySlipPDF, generateBulkSalarySlipPDF } from "../../utils/generateSalarySlipPDF";
 
 const GetAllSalary = () => {
   const [data, setData] = useState([]);
@@ -128,13 +128,9 @@ const GetAllSalary = () => {
         .filter((item) => item);
 
       if (allSalaryData.length > 0) {
-        // Iterate and generate individual PDFs
-        for (const salaryData of allSalaryData) {
-          await generateSalarySlipPDF(salaryData);
-          // Optional: Small delay to ensure browser handles downloads smoothly
-          await new Promise((resolve) => setTimeout(resolve, 500));
-        }
-        toast.success("All selected PDFs downloaded!");
+        // Use the new bulk generation function
+        await generateBulkSalarySlipPDF(allSalaryData);
+        toast.success("Bulk PDF downloaded successfully!");
       } else {
         toast.error("No valid data found for selected records.");
       }
@@ -317,7 +313,7 @@ const GetAllSalary = () => {
               Print
             </button>
 
-            {/* <button
+            <button
               className="bg-red-500 p-2 text-white rounded-md hover:bg-red-600 transition duration-300"
               onClick={() => onDelete(record.id)}
               style={{
@@ -330,7 +326,7 @@ const GetAllSalary = () => {
               title="Delete Salary Details"
             >
               <DeleteOutlined />
-            </button> */}
+            </button>
           </div>
         ),
       },
