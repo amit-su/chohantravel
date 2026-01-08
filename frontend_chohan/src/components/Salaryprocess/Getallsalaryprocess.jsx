@@ -613,7 +613,8 @@ const GetSalaryDetails = () => {
                 );
                 setData(newData);
               }}
-              style={{ width: "80px" }}
+              readOnly  // Added readOnly
+              style={{ width: "80px", cursor: "not-allowed" }}
             />
             <InfoCircleOutlined
               className="cursor-pointer text-blue-600 hover:text-blue-800"
