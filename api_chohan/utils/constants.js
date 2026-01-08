@@ -2,6 +2,7 @@
 const LOGIN_PROCEDURE = "[dbo].[sp_get_user_credentials]";
 const GET_PARTY_PROCEDURE = "[dbo].[sp_get_party]";
 const GET_CITY_PROCEDURE = "[dbo].[sp_get_city]";
+const DELETE_SALARY = "[dbo].[DeleteSalary]";
 const INSERT_OR_UPDATE_CITY_PROCEDURE = "[dbo].[sp_insert_or_update_city]";
 const DELETE_PROCEDURE = "[dbo].[sp_delete_data]";
 const INSERT_OR_UPDATE_PARTY_PROCEDURE = "[dbo].[sp_insert_or_update_party]";
@@ -121,6 +122,7 @@ const RPT_SALARY_SLIP_ADVANCE = "[dbo].[spRpt_SalarySlip_Advance_New]";
 module.exports = {
   RPT_SALARY_SLIP_KHORAKI,
   RPT_SALARY_SLIP_ADVANCE,
+  DELETE_SALARY,
   RPT_BUS_BOOKING,
   PROFORMA_INV_REG,
   INVOICE_REG,

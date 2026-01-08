@@ -12,6 +12,7 @@ const {
   RPT_SALARY_REGISTER,
   RPT_SALARY_SLIP_KHORAKI,
   RPT_SALARY_SLIP_ADVANCE,
+  DELETE_SALARY
 } = require("../../utils/constants");
 
 const getAllSalarydetail = async (req, res) => {
@@ -95,15 +96,15 @@ const updateSalarysetupdetails = async (req, res) => {
 const deleteSaldetals = async (req, res) => {
   try {
     // delete productcategory
+    const companyId = databaseService.getCompanyIdFromToken(req);
 
     const params = {
-      table_name: "SalaryDetl",
-      column_name: "id",
-      column_value: req.params.id,
+      Id: req.params.id,
+      CompanyID: companyId
     };
     const result = await databaseService.callStoredProcedure(
       req,
-      DELETE_PROCEDURE,
+      DELETE_SALARY,
       params
     );
     res.json(result);
