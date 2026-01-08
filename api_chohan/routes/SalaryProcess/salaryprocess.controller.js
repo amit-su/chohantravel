@@ -32,6 +32,19 @@ const getAllSalarydetail = async (req, res) => {
       params
     );
 
+    if (Array.isArray(resultdata)) {
+      resultdata.forEach((item) => {
+        if (item.AdvanceDetails && typeof item.AdvanceDetails === 'string') {
+          try {
+            item.AdvanceDetails = JSON.parse(item.AdvanceDetails);
+          } catch (e) {
+            console.error("Error parsing AdvanceDetails JSON", e);
+            item.AdvanceDetails = [];
+          }
+        }
+      });
+    }
+
     res.json(resultdata);
   } catch (error) {
     res.status(400).json(error.message);

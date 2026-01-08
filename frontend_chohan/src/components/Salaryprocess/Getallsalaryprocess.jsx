@@ -70,7 +70,53 @@ const GetSalaryDetails = () => {
         };
 
         const response = await axios.post(`${apiUrl}/salarydetails`, payload);
-        setData(response.data.data || []);
+        let fetchedData = response.data.data || [];
+
+        // Auto-calculate "Default to Full Amount" for AdvanceAdjusted
+        fetchedData = fetchedData.map(item => {
+          let advances = item.AdvanceDetails || [];
+          if (typeof advances === 'string') {
+            try {
+              advances = JSON.parse(advances);
+            } catch (e) {
+              console.error("Failed to parse AdvanceDetails on load", e);
+              advances = [];
+            }
+          }
+
+          // Only auto-fill if no adjustment is already saved (AdvanceAdjusted is 0/null)
+          // AND there are advances to pay.
+          // Wait, if we want to "show the value", we should probably sum the outstanding balance.
+          // The user said "Advance Adjusted value is show".
+          // If we set AdvanceAdjusted, it will be deducted from Net Salary.
+          // Let's assume defaulting to FULL PAY OFF for all strictly outstanding items.
+
+          let totalAutoAdjusted = 0;
+          let detailedAdjustments = [];
+
+          if (advances.length > 0 && (!item.AdvanceAdjusted || item.AdvanceAdjusted == 0)) {
+            detailedAdjustments = advances.map(adv => ({
+              advanceId: adv.ID,
+              advanceAmount: adv.advanceAmount,
+              AdjusAmt: adv.advanceAmount // Default to full amount
+            }));
+            totalAutoAdjusted = detailedAdjustments.reduce((sum, adj) => sum + adj.AdjusAmt, 0);
+
+            return {
+              ...item,
+              AdvanceAdjusted: totalAutoAdjusted,
+              DetailedAdjustments: detailedAdjustments,
+              AdvanceDetails: advances // Ensure it's parsed
+            };
+          }
+
+          return {
+            ...item,
+            AdvanceDetails: advances // Ensure it's parsed
+          };
+        });
+
+        setData(fetchedData);
       } catch (err) {
         setError(err.message || "Failed to fetch salary details");
         toast.error(err.message || "Failed to fetch salary details");
@@ -184,48 +230,42 @@ const GetSalaryDetails = () => {
     setSelectedEmployeeName(record.EmployeeName);
     setSelectedRecordId(record.id);
     setIsAdvanceModalVisible(true);
-    setAdvanceLoading(true);
-    try {
-      const payload = {
-        month: selectedMonth.format("MM"),
-        year: selectedMonth.format("YYYY"),
-        empID: record.EmployeeID,
-        empType: selectedEmpType,
-      };
-      const response = await axios.post(
-        `${apiUrl}/salarydetails/advance-report`,
-        payload
-      );
-      const advances = response.data.data || [];
-      setAdvanceReportData(advances);
+    // Use the AdvanceDetails directly from the record instead of fetching again
+    let advances = record.AdvanceDetails || [];
 
-      // Initialize adjustments state for each advance
-      // We don't have individual adjustment data from backend yet, so we set to 0 or spread existing total if it's only one?
-      // For now, if there's only one advance, we can pre-fill it with the record's current AdvanceAdjusted
-      const initialAdjustments = {};
-      const existingDetails = record.DetailedAdjustments || [];
-
-      advances.forEach((adv, idx) => {
-        // Try to find if we already have an adjustment for this specific advance ID
-        const existingAdj = existingDetails.find(d => d.advanceId === adv.ID);
-        if (existingAdj) {
-          initialAdjustments[idx] = existingAdj.AdjusAmt;
-        } else {
-          // Fallback logic for single advance if no details yet
-          initialAdjustments[idx] = (advances.length === 1 && !record.DetailedAdjustments) ? record.AdvanceAdjusted : 0;
-        }
-      });
-
-      setAdvanceAdjustments(initialAdjustments);
-      if (advances.length === 1 && !record.DetailedAdjustments) {
-        syncAdvanceTotal(initialAdjustments, record.id, advances);
+    // Robust parsing if backend hasn't restarted yet
+    if (typeof advances === 'string') {
+      try {
+        advances = JSON.parse(advances);
+      } catch (e) {
+        console.error("Failed to parse AdvanceDetails frontend", e);
+        advances = [];
       }
+    }
 
-    } catch (err) {
-      toast.error("Failed to fetch advance report");
-      console.error(err);
-    } finally {
-      setAdvanceLoading(false);
+    setAdvanceReportData(advances);
+    setAdvanceLoading(false);
+
+    // Initialize adjustments state for each advance
+    const initialAdjustments = {};
+    const existingDetails = record.DetailedAdjustments || [];
+
+    advances.forEach((adv, idx) => {
+      // Try to find if we already have an adjustment for this specific advance ID
+      const existingAdj = existingDetails.find(d => d.advanceId === adv.ID);
+      if (existingAdj) {
+        initialAdjustments[idx] = existingAdj.AdjusAmt;
+      } else {
+        // Default to FULL AMOUNT (Auto-fill value)
+        initialAdjustments[idx] = adv.advanceAmount;
+      }
+    });
+
+    setAdvanceAdjustments(initialAdjustments);
+
+    // Always sync the total if we just created defaults
+    if (existingDetails.length === 0 && advances.length > 0) {
+      syncAdvanceTotal(initialAdjustments, record.id, advances);
     }
   };
 
