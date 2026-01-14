@@ -12,43 +12,55 @@ export const generateSalaryRegisterExcel = (data, monthYear) => {
     }
 
     // Prepare the data for Excel
-    const excelData = data.map((item, index) => ({
-        'Sr. No.': index + 1,
-        'Employee Name': item.name || '',
-        'Employee Type': item.empType || '',
-        'Basic Salary': parseFloat(item.BasicSalary) || 0,
-        'HRA': parseFloat(item.HRA) || 0,
-        'Conveyance': parseFloat(item.Conveyance) || 0,
-        'Medical': parseFloat(item.Medical) || 0,
-        'Special Allowance': parseFloat(item.SpecialAllowance) || 0,
-        'Other Allowance': parseFloat(item.OtherAllowance) || 0,
-        'Gross Salary': parseFloat(item.GrossSalary) || 0,
-        'ESIC': parseFloat(item.ESIC) || 0,
-        'PF': parseFloat(item.PF) || 0,
-        'PTAX': parseFloat(item.PTAX) || 0,
-        'Advance Adjusted': parseFloat(item.AdvanceAdjusted) || 0,
-        'Other Deduction': parseFloat(item.Totaldecution) || 0,
-        'Total Deduction': (
-            (parseFloat(item.ESIC) || 0) +
-            (parseFloat(item.PF) || 0) +
-            (parseFloat(item.PTAX) || 0) +
-            (parseFloat(item.AdvanceAdjusted) || 0) +
-            (parseFloat(item.Totaldecution) || 0)
-        ),
-        'Net Salary': parseFloat(item.NetSalary) || 0,
-    }));
+    // DEBUG: Check data structure
+    if (data && data.length > 0) {
+        console.log("EXCEL GENERATION DEBUG - Data[0]:", data[0]);
+        console.log("EXCEL GENERATION DEBUG - Keys:", Object.keys(data[0]));
+    }
+
+    // Prepare the data for Excel
+    const excelData = data.map((item, index) => {
+        // Safe parsing helper
+        const parse = (val) => parseFloat(val) || 0;
+
+        return {
+            'Sr. No.': index + 1,
+            'Employee Name': item.name || '',
+            'Employee Type': item.empType || '',
+            'Basic Salary': parse(item.Basic),
+            'HRA': parse(item.Hra),
+            'Conveyance': parse(item.TA),
+            'Medical': parse(item.MedicalAllowance),
+            'Special Allowance': parse(item.WashingAllowance),
+            'Other Allowance': parse(item.KhurakiTotalAmt),
+            'Gross Salary': parse(item.GrossSalary),
+            'ESIC': parse(item.ESIC),
+            'PF': parse(item.PF),
+            'PTAX': parse(item.PTAX),
+            'Advance Adjusted': parse(item.AdvanceAdjusted),
+            'Other Deduction': parse(item.Totaldecution),
+            'Total Deduction': (
+                parse(item.ESIC) +
+                parse(item.PF) +
+                parse(item.PTAX) +
+                parse(item.AdvanceAdjusted) +
+                parse(item.Totaldecution)
+            ),
+            'Net Salary': parse(item.NetSalary),
+        };
+    });
 
     // Calculate totals
     const totals = {
         'Sr. No.': '',
         'Employee Name': 'TOTAL',
         'Employee Type': '',
-        'Basic Salary': data.reduce((sum, item) => sum + (parseFloat(item.BasicSalary) || 0), 0),
-        'HRA': data.reduce((sum, item) => sum + (parseFloat(item.HRA) || 0), 0),
-        'Conveyance': data.reduce((sum, item) => sum + (parseFloat(item.Conveyance) || 0), 0),
-        'Medical': data.reduce((sum, item) => sum + (parseFloat(item.Medical) || 0), 0),
-        'Special Allowance': data.reduce((sum, item) => sum + (parseFloat(item.SpecialAllowance) || 0), 0),
-        'Other Allowance': data.reduce((sum, item) => sum + (parseFloat(item.OtherAllowance) || 0), 0),
+        'Basic Salary': data.reduce((sum, item) => sum + (parseFloat(item.Basic) || 0), 0),
+        'HRA': data.reduce((sum, item) => sum + (parseFloat(item.Hra) || 0), 0),
+        'Conveyance': data.reduce((sum, item) => sum + (parseFloat(item.TA) || 0), 0),
+        'Medical': data.reduce((sum, item) => sum + (parseFloat(item.MedicalAllowance) || 0), 0),
+        'Special Allowance': data.reduce((sum, item) => sum + (parseFloat(item.WashingAllowance) || 0), 0),
+        'Other Allowance': data.reduce((sum, item) => sum + (parseFloat(item.KhurakiTotalAmt) || 0), 0),
         'Gross Salary': data.reduce((sum, item) => sum + (parseFloat(item.GrossSalary) || 0), 0),
         'ESIC': data.reduce((sum, item) => sum + (parseFloat(item.ESIC) || 0), 0),
         'PF': data.reduce((sum, item) => sum + (parseFloat(item.PF) || 0), 0),
