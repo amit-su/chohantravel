@@ -17,15 +17,15 @@ const {
 
 const getAllSalarydetail = async (req, res) => {
   try {
-    console.log("request", req.body);
     const { monthYear, employType } = req.body;
     const params = {
       employType: employType,
       monthYear: monthYear,
+      CompanyID: req.body.CompanyID,
       // PageNo: req.query.page,
       // PageSize: req.query.count,
     };
-
+    console.log(params, "params")
     const resultdata = await databaseService.callStoredProcedure(
       req,
       GET_SALARY_PROCESS_DETL,
@@ -210,10 +210,11 @@ const getAllSalary = async (req, res) => {
     const params = {
       EmpType: employType,
       MonthYear: monthYear,
+      CompanyID: req.body.CompanyID,
       // PageNo: req.query.page,
       // PageSize: req.query.count,
     };
-
+    console.log(params, "params");
     const resultdata = await databaseService.callStored(
       req,
       sp_get_salary,

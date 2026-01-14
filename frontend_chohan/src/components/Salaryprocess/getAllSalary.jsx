@@ -12,24 +12,24 @@ import {
   Input, // 💡 Import Input for search
 } from "antd";
 import { useEffect, useState, useCallback, useMemo } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import UserPrivateComponent from "../PrivacyComponent/UserPrivateComponent";
 import SimpleButton from "../Buttons/SimpleButton";
 import axios from "axios";
 import dayjs from "dayjs";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-import { loadAllBookingEntry } from "../../redux/rtk/features/bookingEntry/bookingsEntrySlice";
+import { loadAllCompany } from "../../redux/rtk/features/company/comapnySlice";
 import { useNavigate } from "react-router-dom";
 import { generateSalarySlipPDF, generateBulkSalarySlipPDF } from "../../utils/generateSalarySlipPDF";
 
 const GetAllSalary = () => {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [selectedEmpType, setSelectedEmpType] = useState("HELPER");
   const [selectedMonth, setSelectedMonth] = useState(dayjs());
+  const [selectedCompany, setSelectedCompany] = useState(null);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [searchQuery, setSearchQuery] = useState(""); // 💡 State for search query
   const [isBulkPrinting, setIsBulkPrinting] = useState(false);
@@ -37,15 +37,17 @@ const GetAllSalary = () => {
   const apiUrl = import.meta.env.VITE_APP_API;
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { list: companyList } = useSelector((state) => state.companies);
 
   const loadSalaryDetails = useCallback(
-    async (employeeType, month) => {
+    async (employeeType, month, companyID) => {
       setLoading(true);
       setError(null);
       try {
         const payload = {
           monthYear: month.format("YYYY-MM"),
           employType: employeeType,
+          CompanyID: companyID,
         };
 
         // 🎯 Using the specific endpoint for completed salaries
@@ -67,8 +69,10 @@ const GetAllSalary = () => {
   );
 
   useEffect(() => {
-    loadSalaryDetails(selectedEmpType, selectedMonth);
-  }, [selectedEmpType, selectedMonth, loadSalaryDetails]);
+    if (selectedEmpType && selectedMonth && selectedCompany) {
+      loadSalaryDetails(selectedEmpType, selectedMonth, selectedCompany);
+    }
+  }, [selectedEmpType, selectedMonth, selectedCompany, loadSalaryDetails]);
 
   const handleSelectChange = useCallback((value) => {
     setSelectedEmpType(value);
@@ -94,7 +98,7 @@ const GetAllSalary = () => {
 
       if (response.status === 200) {
         toast.success("Delete Details successful!");
-        loadSalaryDetails(selectedEmpType, selectedMonth);
+        loadSalaryDetails(selectedEmpType, selectedMonth, selectedCompany);
       }
     } catch (error) {
       toast.error("There was an error deleting the item!");
@@ -340,7 +344,7 @@ const GetAllSalary = () => {
   };
 
   useEffect(() => {
-    dispatch(loadAllBookingEntry({ status: true, page: 1, count: 1000 }));
+    dispatch(loadAllCompany({ page: 1, count: 100, status: "true" }));
   }, [dispatch]);
 
   return (
@@ -375,6 +379,25 @@ const GetAllSalary = () => {
                   defaultValue={selectedMonth}
                   format="YYYY-MM"
                 />
+              </Form.Item>
+              <Form.Item label="Select Company" name="company">
+                <Select
+                  showSearch
+                  placeholder="Select Company"
+                  optionFilterProp="children"
+                  onChange={(value) => setSelectedCompany(value)}
+                  filterOption={(input, option) =>
+                    (option?.children ?? "").toLowerCase().includes(input.toLowerCase())
+                  }
+                  style={{ width: 200 }}
+                  allowClear
+                >
+                  {companyList?.map((company) => (
+                    <Select.Option key={company.Id} value={company.Id}>
+                      {company.Name}
+                    </Select.Option>
+                  ))}
+                </Select>
               </Form.Item>
             </div>
           </Form>
