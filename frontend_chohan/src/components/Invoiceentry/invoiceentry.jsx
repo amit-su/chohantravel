@@ -19,7 +19,7 @@ import {
 } from "@ant-design/icons";
 import { Card, Button, Select, DatePicker, Table, Input, Tag, Tooltip, Row, Col, Space, Typography } from "antd";
 import moment from "moment";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import UserPrivateComponent from "../PrivacyComponent/UserPrivateComponent";
 import { loadAllCompany } from "../../redux/rtk/features/company/comapnySlice";
@@ -55,6 +55,19 @@ const Invoiceentry = () => {
       const max = ids.length === 0 ? 0 : Math.max(...ids);
       setMaxId(max);
     }
+  }, [list]);
+
+  const uniqueList = useMemo(() => {
+    if (!list) return [];
+    const uniqueIds = new Set();
+    return list.filter((item) => {
+      const id = item.ID;
+      if (uniqueIds.has(id)) {
+        return false;
+      }
+      uniqueIds.add(id);
+      return true;
+    });
   }, [list]);
 
   useEffect(() => {
@@ -288,7 +301,10 @@ const Invoiceentry = () => {
                 placeholder="Search Invoice..."
                 prefix={<SearchOutlined className="text-gray-400" />}
                 value={searchFilter}
-                onChange={(e) => setSearchFilter(e.target.value)}
+                onChange={(e) => {
+                  setSearchFilter(e.target.value);
+                  setCurrentPage(1);
+                }}
                 className="rounded-lg w-full"
                 size="large"
                 allowClear
@@ -305,7 +321,10 @@ const Invoiceentry = () => {
                 showSearch
                 optionFilterProp="children"
                 value={selectedCompany}
-                onChange={setSelectedCompany}
+                onChange={(val) => {
+                  setSelectedCompany(val);
+                  setCurrentPage(1);
+                }}
                 className="w-full"
                 size="large"
                 style={{ borderRadius: '10px' }}
@@ -326,7 +345,10 @@ const Invoiceentry = () => {
                 showSearch
                 optionFilterProp="children"
                 value={selectedParty}
-                onChange={setSelectedParty}
+                onChange={(val) => {
+                  setSelectedParty(val);
+                  setCurrentPage(1);
+                }}
                 className="w-full"
                 size="large"
               >
@@ -344,7 +366,10 @@ const Invoiceentry = () => {
                 placeholder="Filter by Date"
                 format="DD/MM/YYYY"
                 value={dateFilter}
-                onChange={setDateFilter}
+                onChange={(val) => {
+                  setDateFilter(val);
+                  setCurrentPage(1);
+                }}
                 className="w-full rounded-lg"
                 size="large"
               />
@@ -374,7 +399,7 @@ const Invoiceentry = () => {
         <Card className="shadow-lg border-0 border-t-4 border-purple-500 rounded-xl overflow-hidden bg-white/90 backdrop-blur-sm" bordered={false} bodyStyle={{ padding: 0 }}>
           <Table
             columns={columns}
-            dataSource={list || []}
+            dataSource={uniqueList || []}
             loading={loading}
             rowKey={(record) => record.id || record.ID || record.ReviewId || Math.random()}
             pagination={{
