@@ -43,6 +43,7 @@ const createProformaInvoice = async (req, res) => {
       localProformaList: req.body.localProformaList,
       RefInvoiceNo: req.body.RefInvoiceNo,
       extra: req.body.extra,
+      CompanyID: req.body.CompanyID,
     };
     const result = await databaseService.callStoredProcedure(
       req,
@@ -81,13 +82,9 @@ const getAllProformaInvoice = async (req, res) => {
 };
 const getSingleProformaInvoice = async (req, res) => {
   const { id } = req.params;
-  console.log("req", id);
 
   try {
     const { id } = req.params;
-
-    console.log("req.body", req.body);
-
     // get all product_category
 
     const params = {
@@ -141,6 +138,7 @@ const updateProformaInvoice = async (req, res) => {
         PermitReq: req.body.PermitReq,
         RefInvoiceNo: req.body.RefInvoiceNo,
         localProformaList: req.body.localProformaList,
+        CompanyID: req.body.CompanyID,
       }
     );
     res.json(result);
@@ -152,8 +150,6 @@ const updateProformaInvoice = async (req, res) => {
 
 const deleteSingleProformaInvoice = async (req, res) => {
   try {
-    console.log("params", req.params);
-    // console.log(req.body);
 
     const params = {
       table_name: "ProformaInvHead",
@@ -190,7 +186,6 @@ const powerBiLogin = async (req, res) => {
 
     powerbiservice(reportId)
       .then((data) => {
-        console.log("Access token:", data);
         0;
         return res.json({
           data,
@@ -230,7 +225,6 @@ const getPartyProformaInvoice = async (req, res) => {
 
 const deleteproformaInvoiceTran = async (req, res) => {
   try {
-    console.log("body", req.params);
     data = {
       SlNo: req.params,
     };

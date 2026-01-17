@@ -176,7 +176,7 @@ const AddProformaInvoice = () => {
           ? dayjs(booking.tripEndDate, "DD-MM-YYYY").format("YYYY-MM-DD")
           : "",
       }));
-
+      const selectedCompany = companyList?.find((c) => c.Name === values.company_id);
       const data = {
         PartyID: values.PartyID,
         BookingDate: values.date.format("YYYY-MM-DD"),
@@ -204,9 +204,9 @@ const AddProformaInvoice = () => {
         localProformaList: JSON.stringify(formattedBookingArray),
         RefInvoiceNo: values.RefInvoiceNo,
         GstType: values.GstType,
+        CompanyID: selectedCompany?.Id ? parseInt(selectedCompany.Id) : null,
         extra: values.extra,
       };
-
       if (bookingArray.length > 0) {
         const resp = await dispatch(addproformaInvoice(data));
         if (resp.payload.status == 1) {

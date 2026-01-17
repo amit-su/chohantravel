@@ -221,7 +221,7 @@ const AddProformaInvoice = () => {
       });
     }
   };
-
+  const selectedCompany = companyList?.find((c) => c.Name === values.company_id);
   const onFormSubmit = async (values) => {
     try {
       const data = {
@@ -252,10 +252,9 @@ const AddProformaInvoice = () => {
         localProformaList: JSON.stringify(bookingArray),
         RefInvoiceNo: values.RefInvoiceNo,
         GstType: values.GstType,
+        CompanyID: selectedCompany?.Id ? parseInt(selectedCompany.Id) : null,
         extra: values.extra,
       };
-
-      console.log("All Invoice Entry Is: ", values);
       if (bookingArray.length > 0) {
         const resp = await dispatch(addproformaInvoice(data));
         if (resp.payload.status == 1) {
@@ -679,7 +678,7 @@ const AddProformaInvoice = () => {
               title={"Add Bus"}
               width={35}
               open={open}
-              // Close the drawer on close
+            // Close the drawer on close
             >
               <AddPartyBusListDrawer onClose={onClose} />
             </CreateDrawer>

@@ -201,6 +201,7 @@ const UpdateProformaInvoice = () => {
           : "",
       }));
 
+      const selectedCompany = companyList?.find((c) => c.Name === values.company_id);
       const data = {
         ID: proformaInvoice.ID,
         PartyID: values.PartyID,
@@ -229,12 +230,11 @@ const UpdateProformaInvoice = () => {
         netAmount: netAmount,
         RefInvoiceNo: values.RefInvoiceNo,
         extra: values.extra,
+        CompanyID: selectedCompany?.Id ? parseInt(selectedCompany.Id) : null,
         localProformaList: JSON.stringify(formattedBookingArray),
       };
-
-      if (bookingArray.length > 0 && confirmBookings === true) {
+      if (bookingArray.length > 0) {
         const resp = await dispatch(addproformaInvoice(data));
-        setConfirmBookings(false);
 
         if (resp.payload.status == 1) {
           setLoader(false);
@@ -246,6 +246,9 @@ const UpdateProformaInvoice = () => {
         } else {
           setLoader(false);
         }
+      } else {
+        toast.error("Please add at least one booking item");
+        setLoader(false);
       }
     } catch (error) {
       setLoader(false);
