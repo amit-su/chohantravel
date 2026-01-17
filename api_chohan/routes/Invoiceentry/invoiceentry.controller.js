@@ -13,7 +13,6 @@ const powerbiservice = require("../../utils/powerbiService");
 const databaseService = require("../../utils/dbClientService");
 
 const createInvoice = async (req, res) => {
-  console.log(req.body, "76767")
   try {
     const params = {
       PartyID: req.body.PartyID,
@@ -44,8 +43,8 @@ const createInvoice = async (req, res) => {
       PermitReq: req.body.PermitReq,
       RefInvoiceNo: req.body.RefInvoiceNo,
       localProformaList: req.body.localProformaList,
+      CompanyID: req.body.CompanyID,
     };
-    console.log(params)
     const deleteParams = {
       table_name: "InvoiceTran",
       column_name: "InvHeadSlNo",
@@ -92,7 +91,6 @@ const getAllProformaInvoice = async (req, res) => {
 };
 const getAllInvoicebooking = async (req, res) => {
   try {
-    console.log(req.body, "tra")
     // get all product_category
     const params = {
       // InvHeadSlNo:req.body.InvHeadSlNo,
@@ -113,7 +111,6 @@ const getAllInvoicebooking = async (req, res) => {
 const getSingleInvoice = async (req, res) => {
   try {
 
-    console.log("req.body8787676", req.params.id);
     const { id } = req.params;
 
 
@@ -171,6 +168,7 @@ const updateProformaInvoice = async (req, res) => {
 
 
         localProformaList: req.body.localProformaList,
+        CompanyID: req.body.CompanyID,
       }
     );
     res.json(result);
@@ -182,7 +180,6 @@ const updateProformaInvoice = async (req, res) => {
 
 const deleteSingleInvoice = async (req, res) => {
   try {
-    console.log("params", req.params);
     // console.log(req.body);
 
     const params = {
@@ -213,7 +210,6 @@ const deleteSingleInvoice = async (req, res) => {
 };
 const deleteSinglebookingInvoice = async (req, res) => {
   try {
-    console.log("params", req.params, req.body);
     const { id, id2 } = req.params;
     // console.log(req.body);
 
@@ -243,7 +239,6 @@ const powerBiLogin = async (req, res) => {
 
     powerbiservice(reportId)
       .then((data) => {
-        console.log("Access token:", data);
         0;
         return res.json({
           data,
@@ -289,7 +284,6 @@ const getInvoiceReport = async (req, res) => {
     const params = {
       InvoiceId: InvoiceId,
     };
-    console.log(params);
 
     const pool = await databaseService.dbClientService();
     const request = pool.request();

@@ -226,6 +226,8 @@ const UpdateInvoice = () => {
       };
 
 
+      const selectedCompany = companyList?.find((c) => c.Name === values.company_id);
+
       const data = {
         PartyID: values.PartyID,
         companyname: values.company_id,
@@ -256,6 +258,7 @@ const UpdateInvoice = () => {
         RefInvoiceNo: values.RefInvoiceNo,
         PermitReq: values.PermitReq,
         localProformaList: JSON.stringify(simpleBookingList),
+        CompanyID: selectedCompany?.Id ? parseInt(selectedCompany.Id) : null,
       };
 
       const resp = await axios.post(

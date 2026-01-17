@@ -182,6 +182,7 @@ const AddInvoice = () => {
   async function onFormSubmit(values) {
     try {
       setLoader(true);
+      const selectedCompany = companyList?.find((c) => c.Name === values.company_id);
       const data = {
         PartyID: values.PartyID,
         BookingDate: values.date ? values.date.format("YYYY-MM-DD") : null,
@@ -210,6 +211,7 @@ const AddInvoice = () => {
         netAmount: netAmount,
         RefInvoiceNo: values.RefInvoiceNo,
         localProformaList: JSON.stringify(staticBookingData),
+        CompanyID: selectedCompany?.Id ? parseInt(selectedCompany.Id) : null,
       };
 
       if (bookingArray.length >= 0) {
