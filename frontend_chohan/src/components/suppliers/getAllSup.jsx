@@ -65,9 +65,9 @@ const GetAllSup = (props) => {
         <div className="flex justify-between md:justify-start gap-3 items-center">
           <StatusSelection paginatedThunk={loadSuppliers} />
           <CreateDrawer
-            permission={"create-supplier"}
+            permission={"create-vendor"}
             title={"Add Supplier"}
-            width={35}
+            width={45}
           >
             <AddSup />
           </CreateDrawer>

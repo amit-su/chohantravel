@@ -45,6 +45,7 @@ import salarysetupEntryReducer from "../features/Salarysetupslice/salarysetslice
 import staffslice from "../features/staff/staffslice";
 import staffattendenceslice from "../features/staffatendence/staffattendenceslice";
 import invoiceEntryReducer from "../features/invoiceEntry/invoiceEntrySlice";
+import vendorReducer from "../features/vendor/vendorSlice";
 const store = configureStore({
   reducer: {
     suppliers: supplierReducer,
@@ -65,7 +66,7 @@ const store = configureStore({
     city: cityReducer,
     designations: designationReducer,
     StateNames: stateReducer,
-    vendors: supplierReducer,
+    vendors: vendorReducer,
     bookings: bookingReducer,
     bookingTrans: bookingTranReducer,
     bookingHead: bookingHeadReducer,

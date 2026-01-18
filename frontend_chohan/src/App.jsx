@@ -104,6 +104,7 @@ import AddProformaInvoiceEntry from "./components/proformaInvoiceEntry/AddProfor
 import SalaryRegisterReport from "./components/Salaryprocess/SalaryRegisterReport";
 import DriverLicenseExpirePrint from "./components/reports/driverLisanceExpirePrint";
 import GetAllSalary from "./components/Salaryprocess/getAllSalary";
+import GetAllVendor from "./components/vendor/GetAllVendor";
 
 function App() {
   const dispatch = useDispatch();
@@ -473,7 +474,7 @@ function App() {
                        Vendor Permeation add here
                ================================================*/}
             <Route element={<UserPrivateRoute permission={"readAll-vendor"} />}>
-              <Route path="/admin/vendor" exact element={<Suppliers />} />
+              <Route path="/admin/vendor" exact element={<GetAllVendor />} />
             </Route>
             <Route
               element={<UserPrivateRoute permission={"readSingle-vendor"} />}

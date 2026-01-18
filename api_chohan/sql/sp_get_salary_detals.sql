@@ -133,12 +133,9 @@ BEGIN
                 SUM(s.advanceAmount - ISNULL(s.AdvAdjusted, 0)) AS OutstandingBalance,
                 SUM(s.advanceAmount) AS TotalAdvancesGiven -- Keeping this if needed for display, otherwise Balance is key
             FROM AdvanceToStaffEntry AS s
-            INNER JOIN AdvanceToStaffHead AS h ON s.AdvanceNo = h.AdvanceNo
-            -- MODIFIED: Use s.created_at (Real Date) to filter.
-            -- Using created_at is safer because AdvancedDate is text (DD-MM-YYYY) and caused '02-01-2026' < '31-12-2025' text bug.
-            -- created_at handles the year correctly.
+            -- Using ISNULL and CAST(created_at AS DATE) to match the subquery logic
             WHERE CAST(s.created_at AS DATE) <= @targetMonthEndDate
-              AND (@employType IS NULL OR h.Type = @employType)
+              AND s.advanceAmount <> ISNULL(s.AdvAdjusted, 0) -- Filter out fully adjusted
             GROUP BY s.empID,s.driverHelper
         ),
 
@@ -206,7 +203,22 @@ BEGIN
                 ISNULL(abc.TotalAdvancesGiven, 0) AS TotalAdvancesGiven,
                 0 AS TotalAdvancesAdjusted, -- Not strictly needed for calculation now, or could query sum(AdvAdjusted)
                 ISNULL(abc.OutstandingBalance, 0) AS TotalAdvanceDue, -- THIS IS THE FIXED VALUE
-                ISNULL(kc.TotalKhuraki,0) AS KhurakiAmt
+                ISNULL(kc.TotalKhuraki,0) AS KhurakiAmt,
+                
+                -- NEW: JSON subquery for Detailed Advance List matching spRpt_SalarySlip_Advance_New exactly
+                (
+                    SELECT 
+                        adv.ID,
+                        (adv.advanceAmount - ISNULL(adv.AdvAdjusted, 0)) AS advanceAmount, -- Renamed to advanceAmount like in source SP
+                        adv.remark,
+                        adv.created_at
+                    FROM AdvanceToStaffEntry adv
+                    WHERE adv.empID = d.id 
+                      AND adv.driverHelper = d.employType
+                      AND CAST(adv.created_at AS DATE) <= @targetMonthEndDate
+                      AND (adv.advanceAmount - ISNULL(adv.AdvAdjusted, 0)) <> 0
+                    FOR JSON PATH
+                ) AS AdvanceDetailsJson
             
             FROM ConsolidatedEmployeeMast d
             LEFT JOIN DriverHelperAttendance dha 
@@ -256,6 +268,9 @@ BEGIN
             TotalAdvancesGiven,
             TotalAdvancesAdjusted,
             TotalAdvanceDue,
+            
+            -- Provide default empty array if null
+            ISNULL(AdvanceDetailsJson, '[]') AS AdvanceDetails,
 
             -- Calculated fields (Per-day values for front-end calculation/display)
             CAST(LatestBasicSalary / NULLIF(DaysInMonth, 0) AS DECIMAL(10, 4)) AS PerDayBasic,

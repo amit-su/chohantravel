@@ -49,6 +49,7 @@ export default function CreateDrawer({
           placement="right"
           onClose={onClose}
           open={open}
+          destroyOnClose={true}
         >
           <div className="px-5 pt-5">
             {React.Children.map(children, (child) =>
@@ -92,8 +93,15 @@ export default function CreateDrawer({
         placement="right"
         onClose={onClose}
         open={open}
+        destroyOnClose={true}
       >
-        <div className="px-5 pt-5"> {children}</div>
+        <div className="px-5 pt-5">
+          {React.Children.map(children, (child) =>
+            React.isValidElement(child)
+              ? React.cloneElement(child, { drawerClose: onClose })
+              : child
+          )}
+        </div>
       </Drawer>
     </UserPrivateComponent>
   );
