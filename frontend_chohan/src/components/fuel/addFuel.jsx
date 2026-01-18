@@ -19,7 +19,7 @@ import { loadAllCompany } from "../../redux/rtk/features/company/comapnySlice";
 import { loadAllCity } from "../../redux/rtk/features/city/citySlice";
 import dayjs from "dayjs";
 
-const AddFuel = () => {
+const AddFuel = ({ drawerClose }) => {
   const dispatch = useDispatch();
   const { Title } = Typography;
   const [form] = Form.useForm();
@@ -30,6 +30,7 @@ const AddFuel = () => {
   const [filteredDriverList, setFilteredDriverList] = useState([]);
   useEffect(() => {
     dispatch(loadAllBus({ page: 1, count: 10000, status: true }));
+    dispatch(loadAllDriver({ page: 1, count: 10000, status: true }));
   }, [dispatch]);
   const { list: busList } = useSelector((state) => state.buses);
 
@@ -37,17 +38,23 @@ const AddFuel = () => {
     dispatch(loadSuppliers({ page: 1, count: 10000, status: true }));
   };
   const { list: supplierList } = useSelector((state) => state.suppliers);
-  const handleLoadDriver = () => {
-    dispatch(loadAllDriver({ page: 1, count: 10000, status: true }));
-  };
+  // const handleLoadDriver = () => {
+  //   dispatch(loadAllDriver({ page: 1, count: 10000, status: true }));
+  // };
   const { list: allDriverList } = useSelector((state) => state.drivers);
   useEffect(() => {
-    console.log("selectedBus", selectedBus);
+    // Deduplicate drivers by ID first to handle duplicates from API
+    const uniqueDrivers = Array.from(
+      new Map(allDriverList?.map((driver) => [driver.id, driver])).values()
+    );
 
-    const filteredList =
-      allDriverList?.filter(
-        (driver) => Number(driver?.bus_id) === selectedBus
-      ) || [];
+    const filteredList = selectedBus
+      ? uniqueDrivers.filter(
+        (driver) =>
+          Number(driver?.bus_id) === selectedBus || !driver?.bus_id
+      )
+      : uniqueDrivers;
+
     setFilteredDriverList(filteredList);
   }, [selectedBus, allDriverList]);
   const driverList = filteredDriverList;
@@ -82,6 +89,16 @@ const AddFuel = () => {
     });
   };
 
+  const handleBusChange = (value) => {
+    setSelectedBus(value);
+    const bus = busList?.find((item) => item.id === value);
+    if (bus && bus.driverID) {
+      form.setFieldsValue({
+        driver_id: bus.driverID,
+      });
+    }
+  };
+
   const onFinish = async (values) => {
     try {
       const uppercaseValues = Object.keys(values).reduce((acc, key) => {
@@ -94,10 +111,15 @@ const AddFuel = () => {
       const resp = await dispatch(
         addFuel({ values: uppercaseValues, dispatch })
       );
-
-      if (resp.payload.message === "success") {
+      console.log(resp);
+      if (resp.status == 1) {
         setLoading(false);
         form.resetFields();
+        setFuelQty(0);
+        setRate(0);
+        setSelectedBus(0);
+        setFilteredDriverList([]);
+        drawerClose();
       }
     } catch (error) {
       setLoading(false);
@@ -143,7 +165,7 @@ const AddFuel = () => {
                 },
               ]}
             >
-              <DatePicker format={"DD-MM-YYYY"} />
+              <DatePicker format={"DD/MM/YYYY"} />
             </Form.Item>
             <Form.Item
               style={{ marginBottom: "10px" }}
@@ -159,7 +181,7 @@ const AddFuel = () => {
               <Select
                 showSearch
                 optionFilterProp="children"
-                onChange={(value) => setSelectedBus(value)}
+                onChange={handleBusChange}
                 placeholder="Select Bus"
               >
                 {busList?.map((bus) => (
@@ -175,7 +197,7 @@ const AddFuel = () => {
               name="ReferenceNo"
               rules={[
                 {
-                  required: true,
+                  required: false,
                   message: "Please fill input !",
                 },
               ]}
@@ -253,16 +275,16 @@ const AddFuel = () => {
               <InputNumber disabled />
             </Form.Item>
 
-            <Form.Item
+            {/* <Form.Item
               style={{ marginBottom: "10px" }}
               label="Supplier"
               name="supplier_id"
-              // rules={[
-              //   {
-              //     required: true,
-              //     message: "Please fill input !",
-              //   },
-              // ]}
+            // rules={[
+            //   {
+            //     required: true,
+            //     message: "Please fill input !",
+            //   },
+            // ]}
             >
               <Select
                 // onChange={handleBusTypeChange}
@@ -275,7 +297,7 @@ const AddFuel = () => {
                   </Select.Option>
                 ))}
               </Select>
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item
               style={{ marginBottom: "10px" }}
               label="Driver"
@@ -290,7 +312,7 @@ const AddFuel = () => {
               <Select
                 showSearch
                 optionFilterProp="children"
-                onClick={handleLoadDriver}
+                // onClick={handleLoadDriver}
                 placeholder="Select driver"
               >
                 {driverList?.map((driver) => (
@@ -364,7 +386,7 @@ const AddFuel = () => {
               name="City"
               rules={[
                 {
-                  required: true,
+                  required: false,
                   message: "Please fill input !",
                 },
               ]}
@@ -421,19 +443,19 @@ const AddFuel = () => {
               </Select>
             </Form.Item>
 
-            {/* <Form.Item
+            <Form.Item
               style={{ marginBottom: "10px" }}
               label="Advance Amount"
               name="AdvAmount"
               rules={[
                 {
-                  required: true,
+                  required: false,
                   message: "Please fill input !",
                 },
               ]}
             >
-              <Input />
-            </Form.Item> */}
+              <InputNumber />
+            </Form.Item>
 
             {/* <Form.Item
               style={{ marginBottom: "10px" }}

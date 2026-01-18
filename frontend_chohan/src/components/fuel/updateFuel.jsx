@@ -28,11 +28,15 @@ function UpdateBus({ data, id }) {
     company_id: data?.company_id.toString(),
     Date: moment(data?.Date),
     FullTank: parseInt(data?.FullTank),
+    AdvAmount: data?.AdvAmount,
   });
 
   const { list: busList } = useSelector((state) => state.buses);
   const { list: vendorList } = useSelector((state) => state.vendors);
-  const { list: driverList } = useSelector((state) => state.drivers);
+  const driverListRaw = useSelector((state) => state.drivers.list);
+  const driverList = Array.from(
+    new Map(driverListRaw?.map((driver) => [driver.id, driver])).values()
+  );
   const { list: companyList } = useSelector((state) => state.companies);
   const { list: cityList } = useSelector((state) => state.city);
 
@@ -121,7 +125,7 @@ function UpdateBus({ data, id }) {
                 },
               ]}
             >
-              <DatePicker format={"DD-MM-YYYY"} />
+              <DatePicker format={"DD/MM/YYYY"} />
             </Form.Item>
             <Form.Item
               style={{ marginBottom: "10px" }}
@@ -153,7 +157,7 @@ function UpdateBus({ data, id }) {
               name="ReferenceNo"
               rules={[
                 {
-                  required: true,
+                  required: false,
                   message: "Please fill input !",
                 },
               ]}
@@ -257,7 +261,7 @@ function UpdateBus({ data, id }) {
               name="City"
               rules={[
                 {
-                  required: true,
+                  required: false,
                   message: "Please fill input !",
                 },
               ]}
@@ -311,6 +315,19 @@ function UpdateBus({ data, id }) {
                   </Select.Option>
                 ))}
               </Select>
+            </Form.Item>
+            <Form.Item
+              style={{ marginBottom: "10px" }}
+              label="Advance Amount"
+              name="AdvAmount"
+              rules={[
+                {
+                  required: false,
+                  message: "Please fill input !",
+                },
+              ]}
+            >
+              <InputNumber />
             </Form.Item>
           </div>
           <Form.Item style={{ marginBottom: "10px" }}>
