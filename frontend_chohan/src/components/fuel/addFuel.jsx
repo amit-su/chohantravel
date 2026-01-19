@@ -191,7 +191,7 @@ const AddFuel = ({ drawerClose }) => {
                 ))}
               </Select>
             </Form.Item>
-            <Form.Item
+            {/* <Form.Item
               style={{ marginBottom: "10px" }}
               label="Reference No"
               name="ReferenceNo"
@@ -203,7 +203,7 @@ const AddFuel = ({ drawerClose }) => {
               ]}
             >
               <Input />
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item
               style={{ marginBottom: "10px" }}
               label="Kilometer"
@@ -217,7 +217,7 @@ const AddFuel = ({ drawerClose }) => {
             >
               <InputNumber />
             </Form.Item>
-            <Form.Item
+            {/* <Form.Item
               style={{ marginBottom: "10px" }}
               label="Fuel Type"
               name="fuelType"
@@ -234,7 +234,7 @@ const AddFuel = ({ drawerClose }) => {
               >
                 <Select.Option value={"DIESEL"}>DIESEL</Select.Option>
               </Select>
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item
               style={{ marginBottom: "10px" }}
               label="Fuel Qty"
@@ -380,7 +380,7 @@ const AddFuel = ({ drawerClose }) => {
 
               </Select>
             </Form.Item> */}
-            <Form.Item
+            {/* <Form.Item
               style={{ marginBottom: "10px" }}
               label="City"
               name="City"
@@ -403,8 +403,8 @@ const AddFuel = ({ drawerClose }) => {
                   </Select.Option>
                 ))}
               </Select>
-            </Form.Item>
-            <Form.Item
+            </Form.Item> */}
+            {/* <Form.Item
               style={{ marginBottom: "10px" }}
               label="Remarks"
               name="Remarks"
@@ -416,7 +416,7 @@ const AddFuel = ({ drawerClose }) => {
               ]}
             >
               <Input />
-            </Form.Item>
+            </Form.Item> */}
 
             <Form.Item
               style={{ marginBottom: "10px" }}
@@ -443,7 +443,7 @@ const AddFuel = ({ drawerClose }) => {
               </Select>
             </Form.Item>
 
-            <Form.Item
+            {/* <Form.Item
               style={{ marginBottom: "10px" }}
               label="Advance Amount"
               name="AdvAmount"
@@ -455,7 +455,7 @@ const AddFuel = ({ drawerClose }) => {
               ]}
             >
               <InputNumber />
-            </Form.Item>
+            </Form.Item> */}
 
             {/* <Form.Item
               style={{ marginBottom: "10px" }}

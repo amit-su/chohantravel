@@ -151,7 +151,7 @@ function UpdateBus({ data, id }) {
                 ))}
               </Select>
             </Form.Item>
-            <Form.Item
+            {/* <Form.Item
               style={{ marginBottom: "10px" }}
               label="Reference No"
               name="ReferenceNo"
@@ -163,7 +163,7 @@ function UpdateBus({ data, id }) {
               ]}
             >
               <Input />
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item
               style={{ marginBottom: "10px" }}
               label="Kilometer"
@@ -177,7 +177,7 @@ function UpdateBus({ data, id }) {
             >
               <InputNumber />
             </Form.Item>
-            <Form.Item
+            {/* <Form.Item
               style={{ marginBottom: "10px" }}
               label="Fuel Type"
               name="fuelType"
@@ -191,7 +191,7 @@ function UpdateBus({ data, id }) {
               <Select placeholder="Select Unit">
                 <Select.Option value={"DIESEL"}>DIESEL</Select.Option>
               </Select>
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item
               style={{ marginBottom: "10px" }}
               label="Fuel Qty"
@@ -255,7 +255,7 @@ function UpdateBus({ data, id }) {
                 ))}
               </Select>
             </Form.Item>
-            <Form.Item
+            {/* <Form.Item
               style={{ marginBottom: "10px" }}
               label="City"
               name="City"
@@ -278,8 +278,8 @@ function UpdateBus({ data, id }) {
                   </Select.Option>
                 ))}
               </Select>
-            </Form.Item>
-            <Form.Item
+            </Form.Item> */}
+            {/* <Form.Item
               style={{ marginBottom: "10px" }}
               label="Remarks"
               name="Remarks"
@@ -291,7 +291,7 @@ function UpdateBus({ data, id }) {
               ]}
             >
               <Input />
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item
               style={{ marginBottom: "10px" }}
               label="Company"
@@ -316,7 +316,7 @@ function UpdateBus({ data, id }) {
                 ))}
               </Select>
             </Form.Item>
-            <Form.Item
+            {/* <Form.Item
               style={{ marginBottom: "10px" }}
               label="Advance Amount"
               name="AdvAmount"
@@ -328,7 +328,7 @@ function UpdateBus({ data, id }) {
               ]}
             >
               <InputNumber />
-            </Form.Item>
+            </Form.Item> */}
           </div>
           <Form.Item style={{ marginBottom: "10px" }}>
             <Button
