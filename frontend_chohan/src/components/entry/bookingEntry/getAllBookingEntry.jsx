@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Select, Button, DatePicker, Modal, Card, Table, Tooltip, Input, Space, Tag } from "antd";
+import { Select, Button, DatePicker, Modal, Card, Table, Tooltip, Input, Space, Tag, Dropdown, Menu } from "antd";
 import {
   DeleteOutlined,
   FormOutlined,
@@ -8,7 +8,8 @@ import {
   CarOutlined,
   TeamOutlined,
   CalendarOutlined,
-  RocketOutlined
+  RocketOutlined,
+  MoreOutlined
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -170,57 +171,68 @@ const GetAllBookingEntry = () => {
       title: "Action",
       key: "action",
       fixed: "right",
-      width: 140,
-      render: (_, record) => (
-        <Space size="small">
-          <UserPrivateComponent permission="update-driver">
-            <Link to={record.UsedInInvoice ? "#" : `/admin/update-bookingEntry/${encodeURIComponent(record.BookingNo)}`}>
-              <Tooltip title="Edit Booking">
-                <Button
-                  icon={<FormOutlined />}
-                  disabled={!!record.UsedInInvoice}
-                  size="middle"
-                  className={`${record.UsedInInvoice
-                    ? ''
-                    : 'bg-blue-500 hover:bg-blue-600 text-white border-none shadow-sm'
-                    } flex items-center justify-center`}
-                  shape="circle"
-                />
-              </Tooltip>
-            </Link>
-          </UserPrivateComponent>
+      width: 80,
+      render: (_, record) => {
+        const items = [
+          {
+            key: "edit",
+            label: (
+              <UserPrivateComponent permission="update-bookingEntry">
+                <Link
+                  to={record.UsedInInvoice ? "#" : `/admin/update-bookingEntry/${encodeURIComponent(record.BookingNo)}`}
+                  style={{ display: 'flex', alignItems: 'center', gap: '8px', color: record.UsedInInvoice ? '#ccc' : 'inherit' }}
+                >
+                  <FormOutlined />
+                  <span>Edit Booking</span>
+                </Link>
+              </UserPrivateComponent>
+            ),
+            disabled: !!record.UsedInInvoice,
+          },
+          {
+            key: "allotment",
+            label: (
+              <div
+                onClick={() => !record.UsedInInvoice && showModal(record)}
+                style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+              >
+                <CarOutlined />
+                <span>Bus Allotment</span>
+              </div>
+            ),
+            disabled: !!record.UsedInInvoice,
+          },
+          {
+            type: 'divider',
+          },
+          {
+            key: "delete",
+            label: (
+              <UserPrivateComponent permission="delete-bookingEntry">
+                <div
+                  onClick={() => !record.UsedInInvoice && onDelete(record.BookingNo)}
+                  style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+                >
+                  <DeleteOutlined />
+                  <span>Delete Booking</span>
+                </div>
+              </UserPrivateComponent>
+            ),
+            disabled: !!record.UsedInInvoice,
+            danger: true,
+          },
+        ];
 
-          <UserPrivateComponent permission="delete-driver">
-            <Tooltip title={record.UsedInInvoice ? "Cannot delete (invoice exists)" : "Delete Booking"}>
-              <Button
-                icon={<DeleteOutlined />}
-                size="middle"
-                disabled={!!record.UsedInInvoice}
-                onClick={() => onDelete(record.BookingNo)}
-                className={`${record.UsedInInvoice
-                  ? ''
-                  : 'bg-red-500 hover:bg-red-600 text-white border-none shadow-sm'
-                  } flex items-center justify-center`}
-                shape="circle"
-              />
-            </Tooltip>
-          </UserPrivateComponent>
-
-          <Tooltip title={record.UsedInInvoice ? "Cannot allot (invoice exists)" : "Bus Allotment"}>
+        return (
+          <Dropdown menu={{ items }} trigger={["click"]} placement="bottomRight">
             <Button
-              icon={<CarOutlined />}
-              size="middle"
-              disabled={!!record.UsedInInvoice}
-              onClick={() => showModal(record)}
-              className={`${record.UsedInInvoice
-                ? ''
-                : 'bg-teal-500 hover:bg-teal-600 text-white border-none shadow-sm'
-                } flex items-center justify-center`}
-              shape="circle"
+              type="text"
+              icon={<MoreOutlined style={{ fontSize: '20px' }} />}
+              className="flex items-center justify-center hover:bg-gray-100 rounded-full w-10 h-10"
             />
-          </Tooltip>
-        </Space>
-      ),
+          </Dropdown>
+        );
+      },
     },
   ];
 
