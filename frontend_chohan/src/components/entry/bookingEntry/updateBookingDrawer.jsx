@@ -99,6 +99,7 @@ function UpdateBookingDrawer({ data, id, isIncludeGST, onClose, drawerClose }) {
         tripEndDate: values.tripEndDate.format("DD-MM-YYYY"),
         reportTime: values.reportTime.format("hh:mm a"),
         ReturnTime: values.ReturnTime.format("hh:mm a"),
+        Amt: amount,
         ID: id,
       };
 

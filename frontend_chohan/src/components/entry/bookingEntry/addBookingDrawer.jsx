@@ -102,6 +102,7 @@ const AddBooking = ({ isIncludeGST, onClose }) => {
         tripEndDate: values.tripEndDate.format("DD-MM-YYYY"),
         reportTime: values.reportTime.format("hh:mm a"),
         ReturnTime: values.ReturnTime.format("hh:mm a"),
+        Amt: amount,
       };
 
       onClose(formattedValues);
