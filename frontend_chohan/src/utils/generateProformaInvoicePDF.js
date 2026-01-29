@@ -32,6 +32,22 @@ const getBase64ImageFromURL = (url) => {
     });
 };
 
+const bufferToBase64 = (buffer) => {
+    if (!buffer || !buffer.data) return null;
+    try {
+        const bytes = new Uint8Array(buffer.data);
+        let binary = '';
+        const len = bytes.byteLength;
+        for (let i = 0; i < len; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+        return `data:image/png;base64,${window.btoa(binary)}`;
+    } catch (error) {
+        console.error("Error converting buffer to base64:", error);
+        return null;
+    }
+};
+
 export const generateProformaInvoicePDF = async (data) => {
     if (!data || data.length === 0) {
         console.error('No data provided for PDF generation');
@@ -94,6 +110,11 @@ export const generateProformaInvoicePDF = async (data) => {
     } catch (error) {
         console.error("Could not load company logo image", error);
     }
+
+    console.log("Invoice Data:", invoiceData);
+    console.log("Payment QR Buffer:", invoiceData.payment_qr);
+    const paymentQrBase64 = bufferToBase64(invoiceData.payment_qr);
+    console.log("Payment QR Base64:", paymentQrBase64);
 
     const tripDetailsRows = data.map((item, index) => {
         return [
@@ -306,7 +327,16 @@ export const generateProformaInvoicePDF = async (data) => {
                                         borderColor: ['#e5e7eb', '#e5e7eb', '#e5e7eb', '#e5e7eb'],
                                         fillColor: '#f9fafb',
                                         padding: [8, 5, 8, 5]
-                                    }]]
+                                    }]],
+                                    // Add Payment QR row if available
+                                    ...(paymentQrBase64 ? [[{
+                                        image: paymentQrBase64,
+                                        width: 100,
+                                        alignment: 'center',
+                                        margin: [0, 5, 0, 0],
+                                        border: [true, true, true, true],
+                                        borderColor: ['#e5e7eb', '#e5e7eb', '#e5e7eb', '#e5e7eb'],
+                                    }]] : [])
                                 },
                                 layout: 'noBorders'
                             }
