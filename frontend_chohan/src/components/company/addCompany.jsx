@@ -1,4 +1,5 @@
-import { Button, Card, Form, Input, Select, Typography } from "antd";
+import { Button, Card, Form, Input, Select, Typography, Upload } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,14 +19,21 @@ const AddCompany = () => {
 
   const onFinish = async (values) => {
     try {
-      const uppercaseValues = Object.keys(values).reduce((acc, key) => {
-        acc[key] =
-          typeof values[key] === "string"
-            ? values[key].toUpperCase()
-            : values[key];
-        return acc;
-      }, {});
-      const resp = await dispatch(addCompany(uppercaseValues, dispatch));
+      const formData = new FormData();
+      Object.keys(values).forEach((key) => {
+        if (key === "payment_qr") {
+          if (values.payment_qr && values.payment_qr.fileList.length > 0) {
+            formData.append("payment_qr", values.payment_qr.fileList[0].originFileObj);
+          }
+        } else {
+          formData.append(
+            key,
+            typeof values[key] === "string" ? values[key].toUpperCase() : values[key]
+          );
+        }
+      });
+
+      const resp = await dispatch(addCompany(formData));
 
       if (resp.payload.message === "success") {
         setLoading(false);
@@ -371,7 +379,21 @@ const AddCompany = () => {
                   },
                 ]}
               >
+
                 <Input />
+              </Form.Item>
+              <Form.Item
+                style={{ marginBottom: "10px" }}
+                label="Payment QR"
+                name="payment_qr"
+              >
+                <Upload
+                  beforeUpload={() => false}
+                  maxCount={1}
+                  listType="picture"
+                >
+                  <Button icon={<UploadOutlined />}>Click to Upload (Max: 1)</Button>
+                </Upload>
               </Form.Item>
             </div>
           </div>

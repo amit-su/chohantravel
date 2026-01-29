@@ -1,4 +1,5 @@
-import { Button, Form, Input, Select, Typography } from "antd";
+import { Button, Form, Input, Select, Typography, Upload } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -31,15 +32,26 @@ function UpdateCompany({ data, id }) {
 
   const onFinish = async (values) => {
     try {
-      const uppercaseValues = Object.keys(values).reduce((acc, key) => {
-        acc[key] =
-          typeof values[key] === "string"
-            ? values[key].toUpperCase()
-            : values[key];
-        return acc;
-      }, {});
+      const formData = new FormData();
+      Object.keys(values).forEach((key) => {
+        if (key === "payment_qr") {
+          if (values.payment_qr && values.payment_qr.fileList && values.payment_qr.fileList.length > 0) {
+            formData.append("payment_qr", values.payment_qr.fileList[0].originFileObj);
+          }
+        } else {
+          // handle null/undefined values to avoid appending "undefined" string
+          const val = values[key];
+          if (val !== null && val !== undefined) {
+            formData.append(
+              key,
+              typeof val === "string" ? val.toUpperCase() : val
+            );
+          }
+        }
+      });
+
       const res = await dispatch(
-        updateCompany({ id, values: uppercaseValues })
+        updateCompany({ id, values: formData })
       );
       if (res) {
         dispatch(loadAllCompany({ status: true, page: 1, count: 1000 }));
@@ -51,7 +63,7 @@ function UpdateCompany({ data, id }) {
     }
   };
 
-  const onFinishFailed = () => {};
+  const onFinishFailed = () => { };
 
   return (
     // <div className="flex justify-center">
@@ -379,6 +391,19 @@ function UpdateCompany({ data, id }) {
                 ]}
               >
                 <Input />
+              </Form.Item>
+              <Form.Item
+                style={{ marginBottom: "10px" }}
+                label="Payment QR"
+                name="payment_qr"
+              >
+                <Upload
+                  beforeUpload={() => false}
+                  maxCount={1}
+                  listType="picture"
+                >
+                  <Button icon={<UploadOutlined />}>Click to Upload (Max: 1)</Button>
+                </Upload>
               </Form.Item>
             </div>
           </div>

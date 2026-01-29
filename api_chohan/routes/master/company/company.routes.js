@@ -9,10 +9,15 @@ const {
 
 const companyRoutes = express.Router();
 
-companyRoutes.post("/",  createCompany);
-companyRoutes.get("/",  getAllCompany);
+const multer = require("multer");
 
-companyRoutes.put("/:id",  updateCompany);
-companyRoutes.delete("/:id",  deleteSingleCompany);
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+companyRoutes.post("/", upload.single("payment_qr"), createCompany);
+companyRoutes.get("/", getAllCompany);
+
+companyRoutes.put("/:id", upload.single("payment_qr"), updateCompany);
+companyRoutes.delete("/:id", deleteSingleCompany);
 
 module.exports = companyRoutes;
