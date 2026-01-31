@@ -33,9 +33,24 @@ const getBase64ImageFromURL = (url) => {
 };
 
 const bufferToBase64 = (buffer) => {
-    if (!buffer || !buffer.data) return null;
+    if (!buffer) return null;
+
+    // If it's already a string, check if it's base64
+    if (typeof buffer === 'string') {
+        if (buffer.startsWith('data:image')) return buffer;
+        // If it looks like base64, prepend header
+        return `data:image/png;base64,${buffer}`;
+    }
+
+    // Handle { type: 'Buffer', data: [...] } or raw array
+    const byteData = buffer.data || buffer;
+
+    if (!byteData || (!Array.isArray(byteData) && !ArrayBuffer.isView(byteData))) {
+        return null;
+    }
+
     try {
-        const bytes = new Uint8Array(buffer.data);
+        const bytes = new Uint8Array(byteData);
         let binary = '';
         const len = bytes.byteLength;
         for (let i = 0; i < len; i++) {
@@ -111,10 +126,7 @@ export const generateProformaInvoicePDF = async (data) => {
         console.error("Could not load company logo image", error);
     }
 
-    console.log("Invoice Data:", invoiceData);
-    console.log("Payment QR Buffer:", invoiceData.payment_qr);
     const paymentQrBase64 = bufferToBase64(invoiceData.payment_qr);
-    console.log("Payment QR Base64:", paymentQrBase64);
 
     const tripDetailsRows = data.map((item, index) => {
         return [
@@ -313,30 +325,37 @@ export const generateProformaInvoicePDF = async (data) => {
                                 table: {
                                     widths: ['*'],
                                     body: [[{
-                                        stack: [
-                                            { text: [{ text: 'PAN NO: ', style: 'compactLabel' }, { text: invoiceData.BranchPanno, style: 'compactText' }] },
-                                            { text: [{ text: 'GST No: ', style: 'compactLabel' }, { text: invoiceData.BranchGSTNo, style: 'compactText' }], margin: [0, 0, 0, 4] },
-                                            { text: 'OUR BANK DETAILS', style: 'compactLabel', decoration: 'underline', margin: [0, 0, 0, 2] },
-                                            { text: invoiceData.BankAcName, style: 'compactBankName' },
-                                            { text: [{ text: 'Bank: ', style: 'compactLabel' }, { text: invoiceData.BankName, style: 'compactText' }] },
-                                            { text: [{ text: 'Branch: ', style: 'compactLabel' }, { text: invoiceData.BranchAddr, style: 'compactText' }] },
-                                            { text: [{ text: 'A/c No: ', style: 'compactLabel' }, { text: invoiceData.BankAcNo, style: 'compactText' }] },
-                                            { text: [{ text: 'IFSC: ', style: 'compactLabel' }, { text: invoiceData.BankIFSCode, style: 'compactText' }] }
+                                        columns: [
+                                            {
+                                                width: '60%',
+                                                stack: [
+                                                    { text: [{ text: 'PAN NO: ', style: 'compactLabel' }, { text: invoiceData.BranchPanno, style: 'compactText' }] },
+                                                    { text: [{ text: 'GST No: ', style: 'compactLabel' }, { text: invoiceData.BranchGSTNo, style: 'compactText' }], margin: [0, 0, 0, 4] },
+                                                    { text: 'OUR BANK DETAILS', style: 'compactLabel', decoration: 'underline', margin: [0, 0, 0, 2] },
+                                                    { text: invoiceData.BankAcName, style: 'compactBankName' },
+                                                    { text: [{ text: 'Bank: ', style: 'compactLabel' }, { text: invoiceData.BankName, style: 'compactText' }] },
+                                                    { text: [{ text: 'Branch: ', style: 'compactLabel' }, { text: invoiceData.BranchAddr, style: 'compactText' }] },
+                                                    { text: [{ text: 'A/c No: ', style: 'compactLabel' }, { text: invoiceData.BankAcNo, style: 'compactText' }] },
+                                                    { text: [{ text: 'IFSC: ', style: 'compactLabel' }, { text: invoiceData.BankIFSCode, style: 'compactText' }] }
+                                                ]
+                                            },
+                                            {
+                                                width: '40%',
+                                                stack: [
+                                                    ...(paymentQrBase64 ? [
+                                                        { text: 'Scan to Pay', fontSize: 8, bold: true, color: '#64748b', alignment: 'center', margin: [0, 0, 0, 5] },
+                                                        { image: paymentQrBase64, width: 120, height: 80, alignment: 'center' }
+                                                    ] : [])
+                                                ],
+                                                alignment: 'center',
+                                                margin: [0, 0, 0, 0]
+                                            }
                                         ],
                                         border: [true, true, true, true],
                                         borderColor: ['#e5e7eb', '#e5e7eb', '#e5e7eb', '#e5e7eb'],
                                         fillColor: '#f9fafb',
                                         padding: [8, 5, 8, 5]
-                                    }]],
-                                    // Add Payment QR row if available
-                                    ...(paymentQrBase64 ? [[{
-                                        image: paymentQrBase64,
-                                        width: 100,
-                                        alignment: 'center',
-                                        margin: [0, 5, 0, 0],
-                                        border: [true, true, true, true],
-                                        borderColor: ['#e5e7eb', '#e5e7eb', '#e5e7eb', '#e5e7eb'],
-                                    }]] : [])
+                                    }]]
                                 },
                                 layout: 'noBorders'
                             }
