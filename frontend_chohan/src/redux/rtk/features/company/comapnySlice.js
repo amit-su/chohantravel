@@ -16,16 +16,21 @@ export const addCompany = createAsyncThunk(
   "company/addCompany",
   async (values) => {
     try {
+      const isFormData = values instanceof FormData;
       const { data } = await axios({
         method: "post",
         headers: {
           Accept: "application/json",
-          "Content-Type": "application/json;charset=UTF-8",
+          "Content-Type": isFormData
+            ? "multipart/form-data"
+            : "application/json;charset=UTF-8",
         },
         url: `company/`,
-        data: {
-          ...values,
-        },
+        data: isFormData
+          ? values
+          : {
+            ...values,
+          },
       });
 
       return successHandler(data, "Company added successfully");
@@ -84,15 +89,15 @@ export const loadAllCompany = createAsyncThunk(
   async (arg) => {
     try {
       const query = queryGenerator(arg);
-    //  const { data } = await axios.get(`party?${query}`);
-      const { data }= await axios({
+      //  const { data } = await axios.get(`party?${query}`);
+      const { data } = await axios({
         method: "get",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json;charset=UTF-8",
         },
         url: `company?${query}`,
-        
+
       });
       return successHandler(data);
     } catch (error) {
@@ -106,16 +111,21 @@ export const updateCompany = createAsyncThunk(
   "company/updateCompany",
   async ({ id, values }, { dispatch }) => {
     try {
+      const isFormData = values instanceof FormData;
       const { data } = await axios({
         method: "put",
         headers: {
           Accept: "application/json",
-          "Content-Type": "application/json;charset=UTF-8",
+          "Content-Type": isFormData
+            ? "multipart/form-data"
+            : "application/json;charset=UTF-8",
         },
         url: `/company/${id}`,
-        data: {
-          ...values,
-        },
+        data: isFormData
+          ? values
+          : {
+            ...values,
+          },
       });
       dispatch(loadAllCompany());
       return successHandler(data, data.message);
