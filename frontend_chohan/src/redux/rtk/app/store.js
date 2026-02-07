@@ -46,6 +46,7 @@ import staffslice from "../features/staff/staffslice";
 import staffattendenceslice from "../features/staffatendence/staffattendenceslice";
 import invoiceEntryReducer from "../features/invoiceEntry/invoiceEntrySlice";
 import vendorReducer from "../features/vendor/vendorSlice";
+import monthlyInvoiceReducer from "../features/monthlyInvoice/monthlyInvoiceSlice";
 const store = configureStore({
   reducer: {
     suppliers: supplierReducer,
@@ -95,6 +96,7 @@ const store = configureStore({
     staff: staffslice,
     staffatten: staffattendenceslice,
     invoiceEntries: invoiceEntryReducer,
+    monthlyInvoices: monthlyInvoiceReducer,
 
   },
   middleware: (getDefaultMiddleware) =>
