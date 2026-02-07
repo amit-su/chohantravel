@@ -37,7 +37,7 @@ const AddMonthlyInvoiceDrawer = ({ onClose, drawerClose }) => {
             const newEntry = {
                 ...values,
                 busCategory: busCategoryName,
-                routeNo: values.routeNo ? values.routeNo.format("YYYY-MM-DD") : null,
+                routeNo: values.routeNo || null,
                 billMonth: values.billMonth ? values.billMonth.format("YYYY-MM-DD") : null,
                 SLNO: Date.now(), // Unique ID for React state
                 isNew: true
@@ -108,11 +108,11 @@ const AddMonthlyInvoiceDrawer = ({ onClose, drawerClose }) => {
                 </Form.Item>
 
                 <Form.Item
-                    label="Route / Date"
+                    label="Route / Description"
                     name="routeNo"
-                    help="Select the date for the route"
+                    help="Enter the route description"
                 >
-                    <DatePicker className="w-full" format="DD-MM-YYYY" />
+                    <Input className="w-full" placeholder="Enter route" />
                 </Form.Item>
 
                 <Form.Item

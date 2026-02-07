@@ -74,10 +74,10 @@ const CreateMonthlyInvoiceList = ({
             width: 200,
         },
         {
-            title: "Route Date",
+            title: "Route / Description",
             dataIndex: "routeNo",
             key: "routeNo",
-            render: (text) => <Text className="text-slate-600">{text ? dayjs(text).format("DD-MM-YYYY") : "-"}</Text>
+            render: (text) => <Text className="text-slate-600">{text || "-"}</Text>
         },
         {
             title: "Bill Month",
