@@ -105,6 +105,8 @@ import SalaryRegisterReport from "./components/Salaryprocess/SalaryRegisterRepor
 import DriverLicenseExpirePrint from "./components/reports/driverLisanceExpirePrint";
 import GetAllSalary from "./components/Salaryprocess/getAllSalary";
 import GetAllVendor from "./components/vendor/GetAllVendor";
+import GetAllMonthlyInvoice from "./components/monthlyInvoice/GetAllMonthlyInvoice";
+import AddMonthlyInvoice from "./components/monthlyInvoice/AddMonthlyInvoice";
 
 function App() {
   const dispatch = useDispatch();
@@ -164,6 +166,20 @@ function App() {
               path="/admin/proforma-invoice"
               exact
               element={<GetAllProformaInvoice />}
+            />
+            {/* Monthly Invoice */}
+            <Route
+              path="/admin/monthly-invoice"
+              exact
+              element={<GetAllMonthlyInvoice />}
+            />
+            <Route
+              path="/admin/add-monthlyInvoice/:id"
+              element={<AddMonthlyInvoice />}
+            />
+            <Route
+              path="/admin/update-monthlyInvoice/:id"
+              element={<AddMonthlyInvoice />}
             />
             <Route path="/admin/partsmaster" exact element={<Partsmaster />} />
             <Route path="/admin/partsentry" exact element={<AddParts />} />

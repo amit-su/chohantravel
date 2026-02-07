@@ -18,7 +18,7 @@ const TableNoPagination = ({
   useEffect(() => {
     setColumnsToShow(columns);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [columns]);
   const columnsToShowHandler = (val) => {
     setColumnsToShow(val);
   };
@@ -56,7 +56,7 @@ const TableNoPagination = ({
           loading={loading}
           columns={columnsToShow}
           dataSource={
-            !!list?.length && list.map((item) => ({ ...item, key: item.id }))
+            Array.isArray(list) && list.map((item, index) => ({ ...item, key: item.key || item.id || item.SLNO || index }))
           }
           pagination={false}
           scroll={{ x: scrollX || 1000, y: window.innerHeight - 319 }}
