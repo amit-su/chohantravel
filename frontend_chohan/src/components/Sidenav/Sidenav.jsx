@@ -71,6 +71,15 @@ const Sidenav = () => {
           key: "proformaInvoice",
           icon: <FaTicket style={{ fontSize: "18px" }} />,
         },
+        {
+          label: (
+            <NavLink to="/admin/monthly-invoice">
+              <span>Monthly Invoice</span>
+            </NavLink>
+          ),
+          key: "monthlyInvoice",
+          icon: <FaFileInvoice style={{ fontSize: "18px" }} />,
+        },
 
         {
           label: (
