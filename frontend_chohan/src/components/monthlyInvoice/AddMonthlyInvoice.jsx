@@ -75,7 +75,6 @@ const AddMonthlyInvoice = () => {
             // Only load initial values if the monthlyInvoice ID matches the URL ID
             // and we haven't already loaded THIS specific invoice into state
             if (String(monthlyInvoice.ID) === String(id) && lastLoadedId !== id) {
-                console.log("Loading monthlyInvoice for edit:", monthlyInvoice);
                 const values = {
                     ...monthlyInvoice,
                     date: monthlyInvoice.invoiceDate ? dayjs(monthlyInvoice.invoiceDate) : dayjs(),
@@ -264,7 +263,6 @@ const AddMonthlyInvoice = () => {
                 localProformaList: JSON.stringify(formattedBookingArray),
             };
 
-            console.log("payload", payload, formattedBookingArray, bookingArray);
 
             let resp;
             if (id === "new") {
@@ -273,7 +271,7 @@ const AddMonthlyInvoice = () => {
                 resp = await dispatch(updateMonthlyInvoice(payload));
             }
 
-            if (resp.payload && (resp.payload.status === 1 || resp.payload.status === 200 || resp.payload.success || resp.payload.message === "Success")) {
+            if (resp.payload && (resp.payload.status === 1 || resp.payload.status === 200 || resp.payload.success || resp.payload.message === "Success" || resp.payload.message === "success")) {
                 navigate("/admin/monthly-invoice");
             }
 
@@ -398,18 +396,29 @@ const AddMonthlyInvoice = () => {
                         <Col xs={24} lg={8}>
                             {/* Summary */}
                             <Card title="Payment Details" className="rounded-xl">
-                                <div className="text-right mb-4">
-                                    <Text strong className="text-2xl">₹{netAmount.toLocaleString()}</Text>
+                                <div className="space-y-4">
+                                    <div className="flex justify-between items-center text-slate-600">
+                                        <Text>Subtotal</Text>
+                                        <Text strong>₹{total.toLocaleString(undefined, { minimumFractionDigits: 2 })}</Text>
+                                    </div>
+
+                                    <Divider className="my-2" />
+
+                                    <Form.Item label="Extra Desc" name="extra" className="mb-2">
+                                        <Input />
+                                    </Form.Item>
+
+                                    <Form.Item label="Toll & Parking" name="tollParking" className="mb-4">
+                                        <InputNumber className="w-full" onChange={handleTollParkingChange} />
+                                    </Form.Item>
+
+                                    <div className="flex justify-between items-center bg-slate-50 p-3 rounded-lg border border-slate-100">
+                                        <Text strong className="text-slate-700">Gross Amount</Text>
+                                        <Text strong className="text-slate-900 text-lg">₹{afterTollParking.toLocaleString(undefined, { minimumFractionDigits: 2 })}</Text>
+                                    </div>
+
+                                    <Divider className="my-4" />
                                 </div>
-
-                                <Form.Item label="Toll & Parking" name="tollParking">
-                                    <InputNumber className="w-full" onChange={handleTollParkingChange} />
-                                </Form.Item>
-                                <Form.Item label="Extra Desc" name="extra">
-                                    <Input />
-                                </Form.Item>
-
-                                <Divider />
 
                                 {GstType === "CGST" ? (
                                     <>
@@ -428,6 +437,15 @@ const AddMonthlyInvoice = () => {
                                         <Col span={14}><Form.Item label="Amt" name="IGSTamt"><InputNumber disabled className="w-full" /></Form.Item></Col>
                                     </Row>
                                 )}
+                                <Divider className="my-3" />
+
+                                <div className="bg-gradient-to-br from-cyan-500 to-teal-600 p-4 rounded-xl shadow-md shadow-cyan-100 mb-4 transform hover:scale-[1.01] transition-transform">
+                                    <div className="flex justify-between items-center mb-1">
+                                        <Text className="text-white/90 font-medium text-base">Net Payable Amount</Text>
+                                        <Text className="text-white text-2xl font-black">₹{netAmount.toLocaleString()}</Text>
+                                    </div>
+                                    <Text className="text-white/70 text-xs italic">Inclusive of all taxes and charges</Text>
+                                </div>
 
                                 <Form.Item label="Advance" name="advAmount">
                                     <InputNumber className="w-full" />

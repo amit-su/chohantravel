@@ -37,8 +37,14 @@ const GetAllMonthlyInvoice = () => {
     const onDelete = async (id) => {
         if (window.confirm("Are you sure you want to delete this invoice?")) {
             const res = await dispatch(deleteMonthlyInvoice(id));
-            if (res?.payload?.status) {
-                dispatch(loadAllMonthlyInvoice({ page: 1, count: 10 }));
+            if (res?.payload?.message === "success") {
+                dispatch(loadAllMonthlyInvoice({
+                    page: 1,
+                    count: 10,
+                    companyId: selectedCompany,
+                    invoiceDate: dateFilter ? dayjs(dateFilter).format("YYYY-MM-DD") : null,
+                    searchText: searchText || null,
+                }));
             }
         }
     };
@@ -62,8 +68,8 @@ const GetAllMonthlyInvoice = () => {
     const columns = [
         {
             title: "Invoice No.",
-            dataIndex: "invoiceNo",
-            key: "invoiceNo",
+            dataIndex: "RefInvoiceNo",
+            key: "RefInvoiceNo",
             width: 120,
             render: (text) => <Text strong style={{ color: '#0891b2' }}>{text}</Text>,
         },

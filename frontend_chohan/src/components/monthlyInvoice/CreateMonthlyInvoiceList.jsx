@@ -49,7 +49,6 @@ const CreateMonthlyInvoiceList = ({
                 ...values,
                 key: originalItem.key || originalItem.SLNO,
             };
-            console.log("Updated item at index:", index, newArray[index]);
             onBookingClose(newArray);
             toast.success("Bus entry updated");
         }
