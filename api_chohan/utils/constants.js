@@ -11,6 +11,7 @@ const INSERT_OR_UPDATE_STATE_PROCEDURE = "[dbo].[sp_insert_or_update_state]";
 const GET_VENDORS_PROCEDURE = "[dbo].[sp_get_vendors]";
 const INSERT_OR_UPDATE_VENDOR_PROCEDURE = "[dbo].[sp_insert_or_update_vendor]";
 const INSERT_OR_UPDATE_BUS_PROCEDURE = "[dbo].[sp_insert_or_update_bus]";
+const GET_VENDOR_DROPDOWN_PROCEDURE = "[dbo].[sp_get_vendor_dropdown]";
 const GET_BUS_PROCEDURE = "[dbo].[sp_get_bus_data]";
 const GET_BRANCH_PROCEDURE = "[dbo].[sp_get_branch_data]";
 const INSERT_OR_UPDATE_BRANCH_PROCEDURE = "[dbo].[sp_insert_or_update_branch]";
@@ -109,6 +110,10 @@ const sp_insert_drv_helper_site_attend_json =
   "[dbo].[sp_insert_drv_helper_site_attend_json]";
 const sp_save_salary_details = "[dbo].[sp_save_salary_details]";
 const sp_get_salary = "[dbo].[spGet_Salarydetails]";
+const INSERT_OR_UPDATE_MONTHLY_INV_ENTRY_PROCEDURE =
+  "[dbo].[sp_insert_or_update_MonthlyInv_Entry]";
+const GET_PROFORMA_MONTHLY_INVOICE_DATA =
+  "[dbo].[sp_get_proforma_Monthlyinvoice_data]";
 const RPT_PROFORMA_INVOICE = "[dbo].[spRpt_ProformaInvoice]";
 const RPT_SALARY_SLIP = "[dbo].[spRpt_SalarySlip]";
 const RPT_SALARY_REGISTER = "[dbo].[spRpt_SalaryReg]";
@@ -147,6 +152,7 @@ module.exports = {
   GET_STATE_PROCEDURE,
   INSERT_OR_UPDATE_STATE_PROCEDURE,
   GET_VENDORS_PROCEDURE,
+  GET_VENDOR_DROPDOWN_PROCEDURE,
   INSERT_OR_UPDATE_VENDOR_PROCEDURE,
   INSERT_OR_UPDATE_BUS_PROCEDURE,
   GET_BUS_PROCEDURE,
@@ -220,4 +226,6 @@ module.exports = {
   MANAGE_ROLE,
   DELETE_BOOKING_TRAN,
   DELETE_PROFORMAINVOICE_TRAN,
+  INSERT_OR_UPDATE_MONTHLY_INV_ENTRY_PROCEDURE,
+  GET_PROFORMA_MONTHLY_INVOICE_DATA,
 };
