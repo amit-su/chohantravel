@@ -35,7 +35,7 @@ export const deleteMonthlyInvoice = createAsyncThunk(
     async (id) => {
         try {
             const { data } = await axios.delete(`monthlyInvoice/${id}`);
-            return successHandler(data, "Monthly invoice deleted successfully", "warning");
+            return successHandler(data, "Monthly invoice deleted successfully", "success");
         } catch (error) {
             return errorHandler(error, true);
         }

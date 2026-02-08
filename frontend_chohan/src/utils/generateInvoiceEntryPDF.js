@@ -238,7 +238,23 @@ export const generateInvoiceEntryPDF = async (data) => {
                                 table: {
                                     widths: ['*', 'auto'],
                                     body: [
-                                        [{ text: 'Invoice No:', style: 'compactLabel', alignment: 'left', border: [false, false, false, false] }, { text: invoiceData.RefInvoiceNo || '', style: 'compactInvoiceNo', alignment: 'right', border: [false, false, false, false] }],
+                                        [
+                                            {
+                                                text: 'Invoice No:',
+                                                bold: true,
+                                                color: '#000000',
+                                                alignment: 'left',
+                                                border: [false, false, false, false]
+                                            },
+                                            {
+                                                text: invoiceData.RefInvoiceNo || '',
+                                                bold: true,
+                                                color: '#000000',
+                                                fontSize: 10,
+                                                alignment: 'right',
+                                                border: [false, false, false, false]
+                                            }
+                                        ],
                                         [{ text: 'Date:', style: 'compactLabel', alignment: 'left', border: [false, false, false, false] }, { text: formatDate(invoiceData.InvDate), style: 'compactText', alignment: 'right', border: [false, false, false, false] }],
                                         [{ text: 'SAC Code:', style: 'compactLabel', alignment: 'left', border: [false, false, false, false] }, { text: invoiceData.BranchSACCode || '', style: 'compactText', alignment: 'right', border: [false, false, false, false] }]
                                     ]
@@ -310,8 +326,25 @@ export const generateInvoiceEntryPDF = async (data) => {
                     {
                         width: '*',
                         stack: [
-                            { text: 'PAYMENT INFORMATION', style: 'sectionLabel', alignment: 'left', margin: [0, 0, 0, 5] },
                             {
+                                columns: [
+                                    {
+                                        text: "PAYMENT INFORMATION",
+                                        style: "sectionLabel",
+                                        width: "57%",   // ✅ reduce width
+                                        alignment: "left"
+                                    },
+                                    {
+                                        text: "Scan to Pay",
+                                        fontSize: 9,
+                                        bold: true,
+                                        color: "#64748b",
+                                        width: "30%",   // ✅ closer now
+                                        alignment: "right"
+                                    }
+                                ],
+                                margin: [0, 0, 0, 0]
+                            }, {
                                 table: {
                                     widths: ['*'],
                                     body: [[{
@@ -330,15 +363,18 @@ export const generateInvoiceEntryPDF = async (data) => {
                                                 ]
                                             },
                                             {
-                                                width: '40%',
+                                                width: "40%",
                                                 stack: [
                                                     ...(paymentQrBase64 ? [
-                                                        { text: 'Scan to Pay', fontSize: 8, bold: true, color: '#64748b', alignment: 'center', margin: [0, 0, 0, 5] },
-                                                        { image: paymentQrBase64, width: 120, height: 80, alignment: 'center' }
+                                                        {
+                                                            image: paymentQrBase64,
+                                                            width: 100,
+                                                            height: 75,
+                                                            alignment: "center"
+                                                        }
                                                     ] : [])
                                                 ],
-                                                alignment: 'center',
-                                                margin: [0, 0, 0, 0]
+                                                alignment: "center"
                                             }
                                         ],
                                         border: [true, true, true, true],

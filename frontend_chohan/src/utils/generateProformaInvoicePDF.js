@@ -245,8 +245,23 @@ export const generateProformaInvoicePDF = async (data) => {
                                 table: {
                                     widths: ['*', 'auto'],
                                     body: [
-                                        [{ text: 'Proforma invoice No:', style: 'compactLabel', alignment: 'left', border: [false, false, false, false] }, { text: invoiceData.RefInvoiceNo, style: 'compactInvoiceNo', alignment: 'right', border: [false, false, false, false] }],
-                                        [{ text: 'Date:', style: 'compactLabel', alignment: 'left', border: [false, false, false, false] }, { text: formatDate(invoiceData.ProformaInvDate), style: 'compactText', alignment: 'right', border: [false, false, false, false] }],
+                                        [
+                                            {
+                                                text: 'Proforma Invoice No:',
+                                                bold: true,
+                                                color: '#000000',
+                                                alignment: 'left',
+                                                border: [false, false, false, false]
+                                            },
+                                            {
+                                                text: invoiceData.RefInvoiceNo || '',
+                                                bold: true,
+                                                color: '#000000',
+                                                fontSize: 10,
+                                                alignment: 'right',
+                                                border: [false, false, false, false]
+                                            }
+                                        ], [{ text: 'Date:', style: 'compactLabel', alignment: 'left', border: [false, false, false, false] }, { text: formatDate(invoiceData.ProformaInvDate), style: 'compactText', alignment: 'right', border: [false, false, false, false] }],
                                         [{ text: 'SAC Code:', style: 'compactLabel', alignment: 'left', border: [false, false, false, false] }, { text: invoiceData.BranchSACCode, style: 'compactText', alignment: 'right', border: [false, false, false, false] }]
                                     ]
                                 },
@@ -320,47 +335,81 @@ export const generateProformaInvoicePDF = async (data) => {
                     {
                         width: '*',
                         stack: [
-                            { text: 'PAYMENT INFORMATION', style: 'sectionLabel', alignment: 'left', margin: [0, 0, 0, 5] },
+
+                            // ✅ Header Row: Left + Right
+                            {
+                                columns: [
+                                    {
+                                        text: "PAYMENT INFORMATION",
+                                        style: "sectionLabel",
+                                        width: "57%",   // ✅ reduce width
+                                        alignment: "left"
+                                    },
+                                    {
+                                        text: "Scan to Pay",
+                                        fontSize: 9,
+                                        bold: true,
+                                        color: "#64748b",
+                                        width: "30%",   // ✅ closer now
+                                        alignment: "right"
+                                    }
+                                ],
+                                margin: [0, 0, 0, 0]
+                            },
+
+
+                            // ✅ Payment Table Section
                             {
                                 table: {
-                                    widths: ['*'],
+                                    widths: ["*"],
                                     body: [[{
                                         columns: [
+
+                                            // LEFT SIDE DETAILS
                                             {
-                                                width: '60%',
+                                                width: "60%",
                                                 stack: [
-                                                    { text: [{ text: 'PAN NO: ', style: 'compactLabel' }, { text: invoiceData.BranchPanno, style: 'compactText' }] },
-                                                    { text: [{ text: 'GST No: ', style: 'compactLabel' }, { text: invoiceData.BranchGSTNo, style: 'compactText' }], margin: [0, 0, 0, 4] },
-                                                    { text: 'OUR BANK DETAILS', style: 'compactLabel', decoration: 'underline', margin: [0, 0, 0, 2] },
-                                                    { text: invoiceData.BankAcName, style: 'compactBankName' },
-                                                    { text: [{ text: 'Bank: ', style: 'compactLabel' }, { text: invoiceData.BankName, style: 'compactText' }] },
-                                                    { text: [{ text: 'Branch: ', style: 'compactLabel' }, { text: invoiceData.BranchAddr, style: 'compactText' }] },
-                                                    { text: [{ text: 'A/c No: ', style: 'compactLabel' }, { text: invoiceData.BankAcNo, style: 'compactText' }] },
-                                                    { text: [{ text: 'IFSC: ', style: 'compactLabel' }, { text: invoiceData.BankIFSCode, style: 'compactText' }] }
+                                                    { text: [{ text: "PAN NO: ", style: "compactLabel" }, { text: invoiceData.BranchPanno, style: "compactText" }] },
+                                                    { text: [{ text: "GST No: ", style: "compactLabel" }, { text: invoiceData.BranchGSTNo, style: "compactText" }], margin: [0, 0, 0, 4] },
+
+                                                    { text: "OUR BANK DETAILS", style: "compactLabel", decoration: "underline", margin: [0, 0, 0, 2] },
+                                                    { text: invoiceData.BankAcName, style: "compactBankName" },
+
+                                                    { text: [{ text: "Bank: ", style: "compactLabel" }, { text: invoiceData.BankName, style: "compactText" }] },
+                                                    { text: [{ text: "Branch: ", style: "compactLabel" }, { text: invoiceData.BranchAddr, style: "compactText" }] },
+                                                    { text: [{ text: "A/c No: ", style: "compactLabel" }, { text: invoiceData.BankAcNo, style: "compactText" }] },
+                                                    { text: [{ text: "IFSC: ", style: "compactLabel" }, { text: invoiceData.BankIFSCode, style: "compactText" }] }
                                                 ]
                                             },
+
+                                            // RIGHT SIDE QR CODE ONLY
                                             {
-                                                width: '40%',
+                                                width: "40%",
                                                 stack: [
                                                     ...(paymentQrBase64 ? [
-                                                        { text: 'Scan to Pay', fontSize: 8, bold: true, color: '#64748b', alignment: 'center', margin: [0, 0, 0, 5] },
-                                                        { image: paymentQrBase64, width: 120, height: 80, alignment: 'center' }
+                                                        {
+                                                            image: paymentQrBase64,
+                                                            width: 100,
+                                                            height: 75,
+                                                            alignment: "center"
+                                                        }
                                                     ] : [])
                                                 ],
-                                                alignment: 'center',
-                                                margin: [0, 0, 0, 0]
+                                                alignment: "center"
                                             }
+
                                         ],
+                                        fillColor: "#f9fafb",
                                         border: [true, true, true, true],
-                                        borderColor: ['#e5e7eb', '#e5e7eb', '#e5e7eb', '#e5e7eb'],
-                                        fillColor: '#f9fafb',
-                                        padding: [8, 5, 8, 5]
+                                        borderColor: ["#e5e7eb", "#e5e7eb", "#e5e7eb", "#e5e7eb"],
+                                        margin: [0, 0, 0, 0]
                                     }]]
                                 },
-                                layout: 'noBorders'
+                                layout: "noBorders"
                             }
+
                         ],
-                        margin: [0, 0, 10, 0] // Add right margin to separate from totals
+                        margin: [0, 0, 10, 0],
                     },
                     // RIGHT: Amount Calculation (Totals)
                     {
