@@ -2,7 +2,10 @@ const {
     GET_PROFORMA_MONTHLY_INVOICE_DATA,
     INSERT_OR_UPDATE_MONTHLY_INV_ENTRY_PROCEDURE,
     DELETE_PROCEDURE,
+    RPT_MONTHLY_INVOICE,
 } = require("../../utils/constants");
+
+
 const databaseService = require("../../utils/dbClientService");
 
 const createMonthlyInvoice = async (req, res) => {
@@ -135,14 +138,12 @@ const getMonthlyInvoiceReport = async (req, res) => {
     try {
         const { invoiceNo } = req.body;
         const params = {
-            PageNumber: 1,
-            PageSize: 10,
-            MonthlyInvNo: invoiceNo,
+            InvoiceNo: invoiceNo,
         };
 
-        const resultdata = await databaseService.callStoredProcedure(
+        const resultdata = await databaseService.callStoredProcedureReporting(
             req,
-            GET_PROFORMA_MONTHLY_INVOICE_DATA,
+            RPT_MONTHLY_INVOICE,
             params
         );
 
@@ -152,6 +153,8 @@ const getMonthlyInvoiceReport = async (req, res) => {
         console.log(error.message);
     }
 };
+
+
 
 module.exports = {
     createMonthlyInvoice,
