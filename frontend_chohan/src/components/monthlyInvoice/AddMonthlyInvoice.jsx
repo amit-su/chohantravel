@@ -26,7 +26,7 @@ import dayjs from "dayjs";
 
 const { Title, Text } = Typography;
 
-const AddMonthlyInvoice = () => {
+const AddMonthlyInvoice = ({ repeat = false }) => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [bookingArray, setBookingArray] = useState([]);
@@ -77,7 +77,7 @@ const AddMonthlyInvoice = () => {
             if (String(monthlyInvoice.ID) === String(id) && lastLoadedId !== id) {
                 const values = {
                     ...monthlyInvoice,
-                    date: monthlyInvoice.invoiceDate ? dayjs(monthlyInvoice.invoiceDate) : dayjs(),
+                    date: repeat ? null : (monthlyInvoice.invoiceDate ? dayjs(monthlyInvoice.invoiceDate) : dayjs()),
                     company_id: monthlyInvoice.companyname,
                     PartyID: Number(monthlyInvoice.partyName),
                     CGST: monthlyInvoice.CGSTPer,
@@ -87,15 +87,17 @@ const AddMonthlyInvoice = () => {
                     advancePayment: monthlyInvoice.advAmount,
                     GstType: monthlyInvoice.GstType || "CGST",
                     tollParking: monthlyInvoice.tollParkingAmt,
-                    RefInvoiceNo: monthlyInvoice.RefInvoiceNo,
+                    RefInvoiceNo: repeat ? "" : monthlyInvoice.RefInvoiceNo,
                     ContactPersonName: monthlyInvoice.contactPersonName,
                     ContactPersonNo: monthlyInvoice.contactPersonNo,
                     address: monthlyInvoice.partyAddr,
                     GSTNO: monthlyInvoice.GSTNo,
-                    extra: monthlyInvoice.extradesc
+                    extra: monthlyInvoice.extradesc,
+                    invoiceNo: repeat ? "" : monthlyInvoice.invoiceNo
                 }
                 setInitValues(values);
                 form.setFieldsValue(values);
+
 
                 let parsedList = [];
                 if (monthlyInvoice.LocalProformaList) {
@@ -112,7 +114,7 @@ const AddMonthlyInvoice = () => {
                             sittingCapacity: item.SittingCapacity || item.sittingCapacity || "",
                             tripDescription: item.TripDesc || item.tripDescription || "",
                             routeNo: item.RouteNo || item.routeNo || null,
-                            billMonth: item.BillMonth || item.billMonth || item.Billmonth || null,
+                            billMonth: repeat ? null : (item.BillMonth || item.billMonth || item.Billmonth || null),
                             busQty: item.BusQty || item.busQty || 0,
                             rate: item.Rate || item.rate || 0,
                             amount: item.Amt || item.amount || 0,
@@ -235,7 +237,7 @@ const AddMonthlyInvoice = () => {
 
             const payload = {
                 ...values,
-                ID: id === "new" ? 0 : id,
+                ID: (id === "new" || repeat) ? 0 : id,
                 invoiceDate: values.date.format("YYYY-MM-DD"),
                 invoiceNo: values.RefInvoiceNo,
 
@@ -265,11 +267,13 @@ const AddMonthlyInvoice = () => {
 
 
             let resp;
-            if (id === "new") {
+            if (id === "new" || repeat) {
+                payload.ID = 0;
                 resp = await dispatch(addMonthlyInvoice(payload));
             } else {
                 resp = await dispatch(updateMonthlyInvoice(payload));
             }
+
 
             if (resp.payload && (resp.payload.status === 1 || resp.payload.status === 200 || resp.payload.success || resp.payload.message === "Success" || resp.payload.message === "success")) {
                 navigate("/admin/monthly-invoice");
@@ -313,7 +317,7 @@ const AddMonthlyInvoice = () => {
                                 <FileTextOutlined className="text-white text-2xl" />
                             </div>
                             <div>
-                                <Title level={4} style={{ margin: 0, color: '#0f172a', fontWeight: 700 }}>{id === "new" ? "Create" : "Update"} Monthly Invoice</Title>
+                                <Title level={4} style={{ margin: 0, color: '#0f172a', fontWeight: 700 }}>{(id === "new" || repeat) ? "Create" : "Update"} Monthly Invoice</Title>
                             </div>
                         </div>
                         <div className="flex gap-3">
@@ -321,7 +325,7 @@ const AddMonthlyInvoice = () => {
                                 Cancel
                             </Button>
                             <Button type="primary" htmlType="submit" loading={loader}>
-                                {id === "new" ? "Create" : "Update"}
+                                {(id === "new" || repeat) ? "Create" : "Update"}
                             </Button>
                         </div>
                     </div>

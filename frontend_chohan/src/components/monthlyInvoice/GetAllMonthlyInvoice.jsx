@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { DeleteOutlined, EditOutlined, SearchOutlined, PlusOutlined, PrinterOutlined, FilterOutlined, CalendarOutlined, BankOutlined, MoreOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, SearchOutlined, PlusOutlined, PrinterOutlined, FilterOutlined, CalendarOutlined, BankOutlined, MoreOutlined, CopyOutlined } from "@ant-design/icons";
 import { Card, Button, Select, DatePicker, Input, Row, Col, Space, Typography, Tag, Dropdown } from "antd";
 import moment from "moment";
 import { useEffect, useState, useCallback } from "react";
@@ -153,6 +153,12 @@ const GetAllMonthlyInvoice = () => {
                         icon: <EditOutlined style={{ color: '#0891b2' }} />,
                         label: 'Edit',
                         onClick: () => handleLinkClick(record.ID),
+                    },
+                    {
+                        key: 'repeat',
+                        icon: <CopyOutlined style={{ color: '#0891b2' }} />,
+                        label: 'Repeat',
+                        onClick: () => navigate(`/admin/repeat-monthlyInvoice/${record.ID}`),
                     },
                     {
                         key: 'print',

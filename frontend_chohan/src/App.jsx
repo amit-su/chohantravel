@@ -181,6 +181,10 @@ function App() {
               path="/admin/update-monthlyInvoice/:id"
               element={<AddMonthlyInvoice />}
             />
+            <Route
+              path="/admin/repeat-monthlyInvoice/:id"
+              element={<AddMonthlyInvoice repeat={true} />}
+            />
             <Route path="/admin/partsmaster" exact element={<Partsmaster />} />
             <Route path="/admin/partsentry" exact element={<AddParts />} />
             <Route path="/admin/staff" element={<Staff />} />
