@@ -73,16 +73,6 @@ const Sidenav = () => {
         },
         {
           label: (
-            <NavLink to="/admin/monthly-invoice">
-              <span>Monthly Invoice</span>
-            </NavLink>
-          ),
-          key: "monthlyInvoice",
-          icon: <FaFileInvoice style={{ fontSize: "18px" }} />,
-        },
-
-        {
-          label: (
             <NavLink to="/admin/booking-entry">
               <span>Booking Entry</span>
             </NavLink>
@@ -107,6 +97,15 @@ const Sidenav = () => {
           ),
           key: "Invoice",
           icon: <FaAddressCard />,
+        },
+        {
+          label: (
+            <NavLink to="/admin/monthly-invoice">
+              <span>Monthly Invoice</span>
+            </NavLink>
+          ),
+          key: "monthlyInvoice",
+          icon: <FaFileInvoice style={{ fontSize: "18px" }} />,
         },
 
         // {
