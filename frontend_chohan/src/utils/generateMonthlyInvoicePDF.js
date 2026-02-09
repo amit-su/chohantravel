@@ -119,7 +119,7 @@ export const generateMonthlyInvoicePDF = async (data) => {
     const paymentQrBase64 = bufferToBase64(invoiceData.payment_qr);
 
     const tripDetailsRows = data.map((item, index) => {
-        const routeDate = item.RouteNo ? formatDate(item.RouteNo) : '';
+        const routeNo = item.RouteNo || '';
         const billMonth = item.BillMonth ? new Date(item.BillMonth).toLocaleString('default', { month: 'long', year: 'numeric' }) : '';
 
         return [
@@ -127,8 +127,9 @@ export const generateMonthlyInvoicePDF = async (data) => {
             {
                 stack: [
                     { text: item.TripDesc || '', bold: true },
-                    { text: `${item.BusCategoryName || ''} - ${item.SittingCapacity || ''} Seater`, fontSize: 6, color: '#64748b' },
-                    { text: `Date: ${routeDate} | Month: ${billMonth}`, fontSize: 6, color: '#64748b' }
+                    { text: `${item.buscategory || ''} - ${item.SittingCapacity || ''} Seater`, fontSize: 6, color: '#64748b' },
+                    { text: `Route: ${routeNo} | Month: ${billMonth}`, fontSize: 6, color: '#64748b' }
+
                 ],
                 style: 'tableCell'
             },
@@ -231,9 +232,10 @@ export const generateMonthlyInvoicePDF = async (data) => {
                                 table: {
                                     widths: ['*', 'auto'],
                                     body: [
-                                        [{ text: 'Invoice No:', style: 'compactLabel', alignment: 'left', border: [false, false, false, false] }, { text: invoiceData.RefInvoiceNo, style: 'compactInvoiceNo', alignment: 'right', border: [false, false, false, false] }],
+                                        [{ text: 'Invoice No:', style: 'compactLabel', color: 'black', alignment: 'left', border: [false, false, false, false] }, { text: invoiceData.RefInvoiceNo, style: 'compactInvoiceNo', alignment: 'right', border: [false, false, false, false] }],
                                         [{ text: 'Date:', style: 'compactLabel', alignment: 'left', border: [false, false, false, false] }, { text: formatDate(invoiceData.MonthlyInvDate), style: 'compactText', alignment: 'right', border: [false, false, false, false] }],
-                                        [{ text: 'SAC Code:', style: 'compactLabel', alignment: 'left', border: [false, false, false, false] }, { text: invoiceData.BranchSACCode, style: 'compactText', alignment: 'right', border: [false, false, false, false] }]
+                                        [{ text: 'SAC Code:', style: 'compactLabel', alignment: 'left', border: [false, false, false, false] }, { text: invoiceData.BranchSACCode || '9966', style: 'compactText', alignment: 'right', border: [false, false, false, false] }]
+
                                     ]
                                 },
                                 layout: {
@@ -294,8 +296,25 @@ export const generateMonthlyInvoicePDF = async (data) => {
                     {
                         width: '*',
                         stack: [
-                            { text: 'PAYMENT INFORMATION', style: 'sectionLabel', alignment: 'left', margin: [0, 0, 0, 5] },
                             {
+                                columns: [
+                                    {
+                                        text: "PAYMENT INFORMATION",
+                                        style: "sectionLabel",
+                                        width: "57%",   // ✅ reduce width
+                                        alignment: "left"
+                                    },
+                                    {
+                                        text: "Scan to Pay",
+                                        fontSize: 9,
+                                        bold: true,
+                                        color: "#64748b",
+                                        width: "30%",   // ✅ closer now
+                                        alignment: "right"
+                                    }
+                                ],
+                                margin: [0, 0, 0, 0]
+                            }, {
                                 table: {
                                     widths: ['*'],
                                     body: [[{
@@ -316,8 +335,11 @@ export const generateMonthlyInvoicePDF = async (data) => {
                                                 width: '40%',
                                                 stack: [
                                                     ...(paymentQrBase64 ? [
-                                                        { text: 'Scan to Pay', fontSize: 8, bold: true, color: '#64748b', alignment: 'center', margin: [0, 0, 0, 5] },
-                                                        { image: paymentQrBase64, width: 120, height: 80, alignment: 'center' }
+                                                        {
+                                                            image: paymentQrBase64, width: 100,
+                                                            height: 70,
+                                                            alignment: "center"
+                                                        }
                                                     ] : [])
                                                 ],
                                                 alignment: 'center'
@@ -395,8 +417,16 @@ export const generateMonthlyInvoicePDF = async (data) => {
                     {
                         width: '40%',
                         stack: [
-                            { text: 'FOR ' + (invoiceData.CompanyName || 'CHOHAN TOURS & TRAVELS'), style: 'compactLabel', alignment: 'right', margin: [0, 0, 0, 30] },
-                            { text: 'Authorized Signatory', style: 'compactLabel', alignment: 'right' }
+                            { text: 'FOR ' + (invoiceData.CompanyName || 'CHOHAN TOURS & TRAVELS'), style: 'compactLabel', alignment: 'right', margin: [0, 0, 0, 5] },
+                            ...(stempImageBase64 ? [{
+                                image: stempImageBase64,
+                                width: 70,
+                                alignment: 'right',
+                                margin: [0, 0, 5, -15]
+                            }] : []),
+                            { text: 'Authorized Signatory', style: 'compactLabel', alignment: 'right', margin: [0, 20, 10, 0] },
+                            { text: 'E. & O. E.', style: 'compactLabel', italics: true, alignment: 'right', margin: [0, 2, 25, 0] }
+
                         ]
                     }
                 ]
@@ -411,7 +441,7 @@ export const generateMonthlyInvoicePDF = async (data) => {
             compactPartyName: { fontSize: 9, bold: true, color: '#1e293b' },
             compactLabel: { fontSize: 7, bold: true, color: '#64748b' },
             compactText: { fontSize: 7, color: '#334155' },
-            compactInvoiceNo: { fontSize: 9, bold: true, color: '#0891b2' },
+            compactInvoiceNo: { fontSize: 9, bold: true, color: 'black' },
             compactTableHeader: { fontSize: 8, bold: true, color: 'white' },
             tableCell: { fontSize: 7, color: '#334155' },
             summaryLabel: { fontSize: 7, color: '#64748b' },

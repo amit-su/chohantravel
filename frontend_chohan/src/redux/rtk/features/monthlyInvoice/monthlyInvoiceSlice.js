@@ -83,6 +83,19 @@ export const updateMonthlyInvoice = createAsyncThunk(
     }
 );
 
+export const loadMonthlyInvoiceReport = createAsyncThunk(
+    "monthlyInvoice/loadMonthlyInvoiceReport",
+    async ({ invoiceNo }) => {
+        try {
+            const { data } = await axios.post(`monthlyInvoice/report`, { invoiceNo });
+            return successHandler(data);
+        } catch (error) {
+            return errorHandler(error);
+        }
+    }
+);
+
+
 const monthlyInvoiceSlice = createSlice({
     name: "monthlyInvoice",
     initialState,

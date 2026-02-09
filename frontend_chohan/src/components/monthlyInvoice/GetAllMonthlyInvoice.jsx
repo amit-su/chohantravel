@@ -11,6 +11,7 @@ import UserPrivateComponent from "../PrivacyComponent/UserPrivateComponent";
 import {
     deleteMonthlyInvoice,
     loadAllMonthlyInvoice,
+    loadMonthlyInvoiceReport,
 } from "../../redux/rtk/features/monthlyInvoice/monthlyInvoiceSlice";
 import { loadAllCompany } from "../../redux/rtk/features/company/comapnySlice";
 import dayjs from "dayjs";
@@ -50,20 +51,35 @@ const GetAllMonthlyInvoice = () => {
     };
 
     const handlePrintPDF = async (invoiceNo) => {
+        const loadingToast = toast.loading("Generating PDF... Please wait.");
         try {
-            const apiUrl = import.meta.env.VITE_APP_API;
-            const response = await axios.post(`${apiUrl}/monthlyInvoice/report`, { invoiceNo });
-            if (response.data?.data?.length > 0) {
-                await generateMonthlyInvoicePDF(response.data.data);
-                toast.success("PDF generated successfully!");
+            const res = await dispatch(loadMonthlyInvoiceReport({ invoiceNo }));
+            if (res.payload?.data?.data?.length > 0) {
+                await generateMonthlyInvoicePDF(res.payload.data.data);
+                toast.update(loadingToast, {
+                    render: "PDF generated successfully!",
+                    type: "success",
+                    isLoading: false,
+                    autoClose: 3000
+                });
             } else {
-                toast.error("No data found for this invoice");
+                toast.update(loadingToast, {
+                    render: "No data found for this invoice",
+                    type: "error",
+                    isLoading: false,
+                    autoClose: 3000
+                });
             }
         } catch (error) {
-            console.error("Error generating PDF:", error);
-            toast.error("Failed to generate PDF");
+            toast.update(loadingToast, {
+                render: "Failed to generate PDF",
+                type: "error",
+                isLoading: false,
+                autoClose: 3000
+            });
         }
     };
+
 
     const columns = [
         {
