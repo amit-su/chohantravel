@@ -217,6 +217,17 @@ const AddMonthlyInvoice = ({ repeat = false }) => {
         }
     };
 
+    const handleUniversalMonthChange = (date) => {
+        if (date && bookingArray.length > 0) {
+            setBookingArray(prev => prev.map(item => ({
+                ...item,
+                billMonth: dayjs(date)
+            })));
+            toast.info("Bill Month updated for all trip items");
+        }
+    };
+
+
     const onFormSubmit = async (values) => {
         setLoader(true);
         try {
@@ -361,6 +372,7 @@ const AddMonthlyInvoice = ({ repeat = false }) => {
                                         </Form.Item>
                                     </Col>
                                 </Row>
+
                                 <Row gutter={16}>
                                     <Col span={12}>
                                         <Form.Item label="Contact Person" name="ContactPersonName">
@@ -373,6 +385,15 @@ const AddMonthlyInvoice = ({ repeat = false }) => {
                                         </Form.Item>
                                     </Col>
                                 </Row>
+
+                                <Row gutter={16}>
+                                    <Col span={12}>
+                                        <Form.Item label="Bill Month" name="universalBillMonth" tooltip="Changing this will update the Bill Month for all trip items below">
+                                            <DatePicker picker="month" className="w-full" format="MMMM YYYY" onChange={handleUniversalMonthChange} />
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+
                                 <Form.Item label="Address" name="address">
                                     <TextArea rows={2} />
                                 </Form.Item>
