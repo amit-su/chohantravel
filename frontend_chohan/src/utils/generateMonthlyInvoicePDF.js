@@ -124,12 +124,10 @@ export const generateMonthlyInvoicePDF = async (data) => {
 
         return [
             { text: index + 1, alignment: 'center', style: 'tableCell' },
+            { text: routeNo || '-', alignment: 'center', style: 'tableCell' },
             {
                 stack: [
                     { text: item.TripDesc || '', bold: true },
-                    { text: `${item.buscategory || ''} - ${item.SittingCapacity || ''} Seater`, fontSize: 6, color: '#64748b' },
-                    { text: `Route: ${routeNo} | Month: ${billMonth}`, fontSize: 6, color: '#64748b' }
-
                 ],
                 style: 'tableCell'
             },
@@ -137,6 +135,7 @@ export const generateMonthlyInvoicePDF = async (data) => {
             { text: formatCurrency(item.Rate), alignment: 'right', style: 'tableCell' },
             { text: formatCurrency(item.Amt), alignment: 'right', style: 'tableCell' }
         ];
+
     });
 
     const docDefinition = {
@@ -263,15 +262,17 @@ export const generateMonthlyInvoicePDF = async (data) => {
             {
                 table: {
                     headerRows: 1,
-                    widths: [25, '*', 30, 70, 70],
+                    widths: [20, 60, '*', 25, 65, 65],
                     body: [
                         [
                             { text: 'S.No', style: 'compactTableHeader', alignment: 'center' },
+                            { text: 'Route', style: 'compactTableHeader', alignment: 'center' },
                             { text: 'Description', style: 'compactTableHeader' },
                             { text: 'Qty', style: 'compactTableHeader', alignment: 'center' },
                             { text: 'Rate', style: 'compactTableHeader', alignment: 'right' },
                             { text: 'Amount', style: 'compactTableHeader', alignment: 'right' }
                         ],
+
                         ...tripDetailsRows
                     ]
                 },
