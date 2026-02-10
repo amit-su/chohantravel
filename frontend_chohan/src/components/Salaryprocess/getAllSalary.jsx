@@ -301,6 +301,21 @@ const GetAllSalary = () => {
         align: "right",
       },
       {
+        id: 17,
+        title: "Bank A/C No",
+        dataIndex: "bankAcNo",
+        key: "bankAcNo",
+        width: 150,
+        render: (text) => text || "N/A",
+      },
+      {
+        id: 18,
+        title: "Payment Mode",
+        key: "paymentMode",
+        width: 120,
+        render: (_, record) => (record.bankAcNo ? "Bank Transfer" : "Cash"),
+      },
+      {
         id: 3,
         title: "Action",
         dataIndex: "",

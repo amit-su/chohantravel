@@ -204,7 +204,7 @@ const createSalarySlipContent = (data) => {
                                 ],
                                 [
                                     { text: 'No of Days absent:', style: 'label' }, { text: (parseFloat(salaryData.DaysInMonth) - parseFloat(salaryData.DaysWorked)) || 0, style: 'value' },
-                                    { text: '', style: 'label' }, { text: '', style: 'value' }
+                                    { text: 'Payment Mode:', style: 'label' }, { text: salaryData.bankAcNo ? 'Bank Transfer' : 'Cash', style: 'value' }
                                 ],
                                 [
                                     { text: 'Bus no -:', style: 'label' }, { text: busAssignmentText, style: 'value', colSpan: 3 },
