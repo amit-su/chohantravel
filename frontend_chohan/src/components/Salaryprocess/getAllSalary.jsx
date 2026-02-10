@@ -32,6 +32,7 @@ const GetAllSalary = () => {
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [searchQuery, setSearchQuery] = useState(""); // 💡 State for search query
+  const [selectedPaymentMode, setSelectedPaymentMode] = useState("ALL"); // 💡 State for payment mode filter
   const [isBulkPrinting, setIsBulkPrinting] = useState(false);
 
   const apiUrl = import.meta.env.VITE_APP_API;
@@ -168,16 +169,30 @@ const GetAllSalary = () => {
 
   // 💡 NEW: Filtered data logic
   const filteredData = useMemo(() => {
-    if (!searchQuery) {
-      return data;
-    }
-    const lowerCaseQuery = searchQuery.toLowerCase();
+    let filtered = data;
 
-    // Filter by EmployeeName (assuming the saved data uses 'name' or 'EmployeeName')
-    return data.filter(
-      (item) => item.name && item.name.toLowerCase().includes(lowerCaseQuery) // 💡 Used 'name' as per your column definition, check if API uses 'EmployeeName' instead
-    );
-  }, [data, searchQuery]);
+    // Filter by Search Query
+    if (searchQuery) {
+      const lowerCaseQuery = searchQuery.toLowerCase();
+      filtered = filtered.filter(
+        (item) => item.name && item.name.toLowerCase().includes(lowerCaseQuery)
+      );
+    }
+
+    // Filter by Payment Mode
+    if (selectedPaymentMode !== "ALL") {
+      filtered = filtered.filter((item) => {
+        if (selectedPaymentMode === "BANK") {
+          return !!item.bankAcNo;
+        } else if (selectedPaymentMode === "CASH") {
+          return !item.bankAcNo;
+        }
+        return true;
+      });
+    }
+
+    return filtered;
+  }, [data, searchQuery, selectedPaymentMode]);
 
   // Use useMemo for columns to prevent unnecessary re-renders
   const columns = useMemo(
@@ -412,6 +427,17 @@ const GetAllSalary = () => {
                       {company.Name}
                     </Select.Option>
                   ))}
+                </Select>
+              </Form.Item>
+              <Form.Item label="Payment Mode">
+                <Select
+                  onChange={(value) => setSelectedPaymentMode(value)}
+                  defaultValue="ALL"
+                  style={{ width: 160 }}
+                >
+                  <Select.Option value="ALL">All Payments</Select.Option>
+                  <Select.Option value="BANK">Bank Transfer</Select.Option>
+                  <Select.Option value="CASH">Cash</Select.Option>
                 </Select>
               </Form.Item>
             </div>
