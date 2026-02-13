@@ -1014,7 +1014,7 @@ const GetSalaryDetails = () => {
             Close
           </Button>,
         ]}
-        width={700}
+        width={1100}
       >
         <Table
           dataSource={advanceReportData}
@@ -1022,29 +1022,55 @@ const GetSalaryDetails = () => {
           pagination={false}
           size="small"
           bordered
-          scroll={{ y: 300 }}
+          scroll={{ y: 400 }}
+          className="advance-report-table"
           columns={[
             {
-              title: "Date",
+              title: <span className="whitespace-nowrap">Date</span>,
               dataIndex: "created_at",
               key: "created_at",
               render: (text) => dayjs(text).format("DD-MM-YYYY"),
+              width: 110,
             },
             {
-              title: "Remark",
+              title: <span className="whitespace-nowrap">Advance Number</span>,
+              dataIndex: "AdvanceNo",
+              key: "AdvanceNo",
+              width: 150,
+            },
+            {
+              title: <span className="whitespace-nowrap">Advance Given</span>,
+              dataIndex: "AdvGiven",
+              key: "AdvGiven",
+              width: 120,
+              align: "right",
+              render: (text) => Math.round(text || 0),
+            },
+            {
+              title: <span className="whitespace-nowrap">Advance Adjusted</span>,
+              dataIndex: "AdvAdjusted",
+              key: "AdvAdjusted",
+              width: 130,
+              align: "right",
+              render: (text) => Math.round(text || 0),
+            },
+            {
+              title: <span className="whitespace-nowrap">Remark</span>,
               dataIndex: "remark",
               key: "remark",
+              width: 150,
             },
             {
-              title: "Advance Amount",
+              title: <span className="whitespace-nowrap">Due Advance Amount</span>,
               dataIndex: "advanceAmount",
               key: "advanceAmount",
               align: "right",
+              width: 140,
               render: (text, record, index) => (
-                <div className="flex items-center justify-end gap-2">
+                <div className="flex items-center justify-end gap-2 text-blue-600 font-medium">
                   <span>{Math.round(text)}</span>
                   <SwapRightOutlined
-                    className="cursor-pointer text-blue-500 hover:text-blue-700 hover:scale-125 transition-all text-lg"
+                    className="cursor-pointer text-blue-500 hover:text-blue-700 hover:scale-125 transition-all text-xl"
                     title="Transfer to Adjusted"
                     onClick={() => {
                       const newAdjustments = { ...advanceAdjustments, [index]: record.advanceAmount };
@@ -1056,9 +1082,10 @@ const GetSalaryDetails = () => {
               ),
             },
             {
-              title: "Adjusted",
+              title: <span className="whitespace-nowrap">Adjusted Amount</span>,
               key: "adjusted",
-              width: 120,
+              width: 130,
+              align: "right",
               render: (_, __, index) => (
                 <InputNumber
                   value={advanceAdjustments[index] || 0}
@@ -1069,28 +1096,43 @@ const GetSalaryDetails = () => {
                   }}
                   style={{ width: "100%" }}
                   size="small"
+                  className="bg-blue-50"
                   placeholder="0"
                 />
               ),
             },
           ]}
           summary={(pageData) => {
+            let totalAdvGiven = 0;
+            let totalAdvAdjustedOld = 0;
             let totalDue = 0;
             let totalAdjusted = 0;
+
             pageData.forEach((record, index) => {
-              totalDue += record.advanceAmount;
+              totalAdvGiven += (record.AdvGiven || 0);
+              totalAdvAdjustedOld += (record.AdvAdjusted || 0);
+              totalDue += (record.advanceAmount || 0);
               totalAdjusted += (advanceAdjustments[index] || 0);
             });
 
             return (
-              <Table.Summary.Row className="bg-gray-50 font-bold">
-                <Table.Summary.Cell index={0} colSpan={2}>
-                  Totals
+              <Table.Summary.Row className="bg-blue-50 font-bold" style={{ backgroundColor: '#e6f7ff' }}>
+                <Table.Summary.Cell index={0} colSpan={2} className="text-center font-bold">
+                  TOTALS
                 </Table.Summary.Cell>
                 <Table.Summary.Cell index={1} align="right">
+                  {Math.round(totalAdvGiven)}
+                </Table.Summary.Cell>
+                <Table.Summary.Cell index={2} align="right">
+                  {Math.round(totalAdvAdjustedOld)}
+                </Table.Summary.Cell>
+                <Table.Summary.Cell index={3}>
+                  {/* Remark column */}
+                </Table.Summary.Cell>
+                <Table.Summary.Cell index={4} align="right" className="text-blue-700">
                   {Math.round(totalDue)}
                 </Table.Summary.Cell>
-                <Table.Summary.Cell index={2}>
+                <Table.Summary.Cell index={5} align="right" className="text-green-700">
                   {Math.round(totalAdjusted)}
                 </Table.Summary.Cell>
               </Table.Summary.Row>
