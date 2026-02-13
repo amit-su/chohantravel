@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Button, DatePicker, Spin, Alert } from "antd";
+import React, { useState, useMemo, useEffect } from "react";
+import { Button, DatePicker, Spin, Alert, Select } from "antd";
 import { FilePdfOutlined, FileExcelOutlined } from "@ant-design/icons";
 import axios from "axios";
 import dayjs from "dayjs";
@@ -10,8 +10,38 @@ function SalaryRegisterReport() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [selectedDate, setSelectedDate] = useState(dayjs());
+    const [paymentMode, setPaymentMode] = useState("ALL");
     const [salaryData, setSalaryData] = useState(null);
     const [pdfBlobUrl, setPdfBlobUrl] = useState(null);
+
+    const filteredSalaryData = useMemo(() => {
+        if (!salaryData) return null;
+        if (paymentMode === "ALL") return salaryData;
+        return salaryData.filter((item) => {
+            const mode = item.bankAcNo ? "BANK" : "CASH";
+            return mode === paymentMode;
+        });
+    }, [salaryData, paymentMode]);
+
+    // Update PDF when filtered data changes
+    useEffect(() => {
+        const updatePDF = async () => {
+            if (filteredSalaryData && filteredSalaryData.length > 0) {
+                try {
+                    const blobUrl = await generateSalaryRegisterPDF(
+                        filteredSalaryData,
+                        selectedDate.format('MMMM YYYY')
+                    );
+                    setPdfBlobUrl(blobUrl);
+                } catch (err) {
+                    console.error('PDF generation error:', err);
+                }
+            } else {
+                setPdfBlobUrl(null);
+            }
+        };
+        updatePDF();
+    }, [filteredSalaryData, selectedDate]);
 
     const apiUrl = import.meta.env.VITE_APP_API;
 
@@ -29,14 +59,7 @@ function SalaryRegisterReport() {
 
             setSalaryData(response.data.data);
 
-            // Generate PDF and get blob URL
-            if (response.data.data && response.data.data.length > 0) {
-                const blobUrl = await generateSalaryRegisterPDF(
-                    response.data.data,
-                    selectedDate.format('MMMM YYYY')
-                );
-                setPdfBlobUrl(blobUrl);
-            } else {
+            if (!response.data.data || response.data.data.length === 0) {
                 setError('No salary data found for the selected month');
             }
         } catch (err) {
@@ -48,10 +71,10 @@ function SalaryRegisterReport() {
     };
 
     const handleGeneratePDF = async () => {
-        if (salaryData && salaryData.length > 0) {
+        if (filteredSalaryData && filteredSalaryData.length > 0) {
             try {
                 const blobUrl = await generateSalaryRegisterPDF(
-                    salaryData,
+                    filteredSalaryData,
                     selectedDate.format('MMMM YYYY')
                 );
                 setPdfBlobUrl(blobUrl);
@@ -69,9 +92,9 @@ function SalaryRegisterReport() {
     };
 
     const handleGenerateExcel = () => {
-        if (salaryData && salaryData.length > 0) {
+        if (filteredSalaryData && filteredSalaryData.length > 0) {
             generateSalaryRegisterExcel(
-                salaryData,
+                filteredSalaryData,
                 selectedDate.format('MMMM YYYY')
             );
         }
@@ -86,7 +109,7 @@ function SalaryRegisterReport() {
                         Salary Register Report
                     </h1>
 
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-4 flex-wrap">
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Select Month & Year
@@ -100,41 +123,59 @@ function SalaryRegisterReport() {
                             />
                         </div>
 
-                        <Button
-                            type="primary"
-                            icon={<FilePdfOutlined />}
-                            onClick={fetchSalaryRegister}
-                            loading={loading}
-                            size="large"
-                            className="bg-green-600 hover:bg-green-700 mt-6"
-                        >
-                            Generate PDF
-                        </Button>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Payment Mode
+                            </label>
+                            <Select
+                                value={paymentMode}
+                                onChange={(value) => setPaymentMode(value)}
+                                className="w-48"
+                                placeholder="Select Payment Mode"
+                            >
+                                <Select.Option value="ALL">All Modes</Select.Option>
+                                <Select.Option value="CASH">Cash</Select.Option>
+                                <Select.Option value="BANK">Bank Transfer</Select.Option>
+                            </Select>
+                        </div>
 
-                        {salaryData && salaryData.length > 0 && (
-                            <>
-                                {pdfBlobUrl && (
+                        <div className="flex items-center gap-2 mt-6">
+                            <Button
+                                type="primary"
+                                icon={<FilePdfOutlined />}
+                                onClick={fetchSalaryRegister}
+                                loading={loading}
+                                size="large"
+                                className="bg-green-600 hover:bg-green-700"
+                            >
+                                Generate PDF
+                            </Button>
+
+                            {filteredSalaryData && filteredSalaryData.length > 0 && (
+                                <>
+                                    {pdfBlobUrl && (
+                                        <Button
+                                            type="primary"
+                                            icon={<FilePdfOutlined />}
+                                            onClick={handleOpenPDF}
+                                            size="large"
+                                            className="bg-blue-600 hover:bg-blue-700"
+                                        >
+                                            Open PDF
+                                        </Button>
+                                    )}
                                     <Button
-                                        type="primary"
-                                        icon={<FilePdfOutlined />}
-                                        onClick={handleOpenPDF}
+                                        type="default"
+                                        icon={<FileExcelOutlined />}
+                                        onClick={handleGenerateExcel}
                                         size="large"
-                                        className="bg-blue-600 hover:bg-blue-700 mt-6"
+                                        className="bg-green-600 hover:bg-green-700 text-white"
                                     >
-                                        Open PDF
+                                        Export to Excel
                                     </Button>
-                                )}
-                                <Button
-                                    type="default"
-                                    icon={<FileExcelOutlined />}
-                                    onClick={handleGenerateExcel}
-                                    size="large"
-                                    className="bg-green-600 hover:bg-green-700 text-white mt-6"
-                                >
-                                    Export to Excel
-                                </Button>
-                            </>
-                        )}
+                                </>
+                            )}
+                        </div>
                     </div>
                 </div>
 
@@ -159,70 +200,80 @@ function SalaryRegisterReport() {
                 )}
 
                 {/* Success State */}
-                {!loading && !error && salaryData && salaryData.length > 0 && (
+                {!loading && !error && filteredSalaryData && (
                     <div className="bg-white rounded-lg shadow-md p-8">
-                        <div className="text-center mb-6">
-                            <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
-                                <FilePdfOutlined className="text-3xl text-green-600" />
-                            </div>
-                            <h2 className="text-xl font-semibold text-gray-800 mb-2">
-                                Salary Register Ready
-                            </h2>
-                            <p className="text-gray-600">
-                                {salaryData.length} employees for {selectedDate.format('MMMM YYYY')}
-                            </p>
-                        </div>
-
-                        {/* Summary Cards */}
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                            <div className="bg-blue-50 rounded-lg p-4 text-center">
-                                <p className="text-sm text-gray-600 mb-1">Total Employees</p>
-                                <p className="text-2xl font-bold text-blue-600">
-                                    {salaryData.length}
-                                </p>
-                            </div>
-                            <div className="bg-green-50 rounded-lg p-4 text-center">
-                                <p className="text-sm text-gray-600 mb-1">Total Gross Salary</p>
-                                <p className="text-2xl font-bold text-green-600">
-                                    ₹ {salaryData.reduce((sum, item) => sum + (parseFloat(item.GrossSalary) || 0), 0).toLocaleString('en-IN')}
-                                </p>
-                            </div>
-                            <div className="bg-red-50 rounded-lg p-4 text-center">
-                                <p className="text-sm text-gray-600 mb-1">Total Deductions</p>
-                                <p className="text-2xl font-bold text-red-600">
-                                    ₹ {salaryData.reduce((sum, item) =>
-                                        sum + (parseFloat(item.ESIC) || 0) +
-                                        (parseFloat(item.PF) || 0) +
-                                        (parseFloat(item.PTAX) || 0) +
-                                        (parseFloat(item.AdvanceAdjusted) || 0) +
-                                        (parseFloat(item.Totaldecution) || 0), 0
-                                    ).toLocaleString('en-IN')}
-                                </p>
-                            </div>
-                            <div className="bg-purple-50 rounded-lg p-4 text-center">
-                                <p className="text-sm text-gray-600 mb-1">Total Net Salary</p>
-                                <p className="text-2xl font-bold text-purple-600">
-                                    ₹ {salaryData.reduce((sum, item) => sum + (parseFloat(item.NetSalary) || 0), 0).toLocaleString('en-IN')}
-                                </p>
-                            </div>
-                        </div>
-
-                        {/* Employee List Preview */}
-                        <div className="border-t border-gray-200 pt-6">
-                            <h3 className="text-lg font-semibold mb-4">Employees Included:</h3>
-                            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                                {salaryData.slice(0, 12).map((emp, index) => (
-                                    <div key={index} className="text-sm text-gray-600">
-                                        • {emp.name} ({emp.empType})
+                        {filteredSalaryData.length > 0 ? (
+                            <>
+                                <div className="text-center mb-6">
+                                    <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
+                                        <FilePdfOutlined className="text-3xl text-green-600" />
                                     </div>
-                                ))}
-                                {salaryData.length > 12 && (
-                                    <div className="text-sm text-gray-500 italic">
-                                        ... and {salaryData.length - 12} more
+                                    <h2 className="text-xl font-semibold text-gray-800 mb-2">
+                                        Salary Register Ready
+                                    </h2>
+                                    <p className="text-gray-600">
+                                        {filteredSalaryData.length} employees found
+                                        {paymentMode !== 'ALL' && ` (${paymentMode === 'BANK' ? 'Bank Transfer' : 'Cash'})`}
+                                        for {selectedDate.format('MMMM YYYY')}
+                                    </p>
+                                </div>
+
+                                {/* Summary Cards */}
+                                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                                    <div className="bg-blue-50 rounded-lg p-4 text-center">
+                                        <p className="text-sm text-gray-600 mb-1">Total Employees</p>
+                                        <p className="text-2xl font-bold text-blue-600">
+                                            {filteredSalaryData.length}
+                                        </p>
                                     </div>
-                                )}
+                                    <div className="bg-green-50 rounded-lg p-4 text-center">
+                                        <p className="text-sm text-gray-600 mb-1">Total Gross Salary</p>
+                                        <p className="text-2xl font-bold text-green-600">
+                                            ₹ {filteredSalaryData.reduce((sum, item) => sum + (parseFloat(item.GrossSalary) || 0), 0).toLocaleString('en-IN')}
+                                        </p>
+                                    </div>
+                                    <div className="bg-red-50 rounded-lg p-4 text-center">
+                                        <p className="text-sm text-gray-600 mb-1">Total Deductions</p>
+                                        <p className="text-2xl font-bold text-red-600">
+                                            ₹ {filteredSalaryData.reduce((sum, item) =>
+                                                sum + (parseFloat(item.ESIC) || 0) +
+                                                (parseFloat(item.PF) || 0) +
+                                                (parseFloat(item.PTAX) || 0) +
+                                                (parseFloat(item.AdvanceAdjusted) || 0) +
+                                                (parseFloat(item.Totaldecution) || 0), 0
+                                            ).toLocaleString('en-IN')}
+                                        </p>
+                                    </div>
+                                    <div className="bg-purple-50 rounded-lg p-4 text-center">
+                                        <p className="text-sm text-gray-600 mb-1">Total Net Salary</p>
+                                        <p className="text-2xl font-bold text-purple-600">
+                                            ₹ {filteredSalaryData.reduce((sum, item) => sum + (parseFloat(item.NetSalary) || 0), 0).toLocaleString('en-IN')}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Employee List Preview */}
+                                <div className="border-t border-gray-200 pt-6">
+                                    <h3 className="text-lg font-semibold mb-4">Employees Included:</h3>
+                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                                        {filteredSalaryData.slice(0, 12).map((emp, index) => (
+                                            <div key={index} className="text-sm text-gray-600">
+                                                • {emp.name} ({emp.empType})
+                                            </div>
+                                        ))}
+                                        {filteredSalaryData.length > 12 && (
+                                            <div className="text-sm text-gray-500 italic">
+                                                ... and {filteredSalaryData.length - 12} more
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </>
+                        ) : (
+                            <div className="text-center p-12">
+                                <p className="text-gray-500">No employees found for the selected criteria.</p>
                             </div>
-                        </div>
+                        )}
                     </div>
                 )}
             </div>
