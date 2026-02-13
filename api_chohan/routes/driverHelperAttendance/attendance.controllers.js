@@ -9,6 +9,41 @@ const moment = require("moment");
 
 const databaseService = require("../../utils/dbClientService");
 
+const validateAttendanceDate = (attendanceList, userId) => {
+  // Skip validation for Admin (userId === 1)
+  if (userId === 1) return { valid: true };
+
+  const now = moment();
+  for (const record of attendanceList) {
+    if (record.DutyDate) {
+      const dutyDate = moment(record.DutyDate, "YYYY-MM-DD");
+
+      // 1. If DutyDate is in the past month (strictly before current month)
+      if (dutyDate.isBefore(now, "month")) {
+        const lastMonth = moment().subtract(1, "month");
+
+        // 2. Check if it's the immediate previous month
+        if (dutyDate.isSame(lastMonth, "month")) {
+          // Allow ONLY if today is <= 2nd
+          if (now.date() > 2) {
+            return {
+              valid: false,
+              message: "Attendance for the previous month can only be modified within the first 2 days of the new month.",
+            };
+          }
+        } else {
+          // 3. Older than previous month -> Block
+          return {
+            valid: false,
+            message: "Attendance for past months cannot be modified.",
+          };
+        }
+      }
+    }
+  }
+  return { valid: true };
+};
+
 const getAllAttendance = async (req, res) => {
   try {
     console.log("req.query", req.query);
@@ -64,7 +99,16 @@ const getSingleAttendance = async (req, res) => {
 const updateAttendance = async (req, res) => {
   try {
     const userId = databaseService.getUserIdFromToken(req);
-    const attendanceWithMeta = req.body.attendance.map((att) => ({
+
+    // --- BACKEND VALIDATION ---
+    const validation = validateAttendanceDate(req.body.attendance || [], userId);
+    if (!validation.valid) {
+      return res.status(403).json(validation.message);
+    }
+    // ---------------------------
+
+    const attendanceList = req.body.attendance || [];
+    const attendanceWithMeta = attendanceList.map((att) => ({
       ...att,
       attendanceBy: userId,
       attendanceAt: new Date(),
@@ -91,9 +135,7 @@ const getSingleAttendancebymonth = async (req, res) => {
   try {
     const { id, date, TYPE } = req.params;
 
-    console.log("req.body", req.params);
     const id2 = parseInt(id, 10);
-    console.log(id2, "78");
 
     // get all product_category
 
@@ -122,42 +164,14 @@ const createAttendance = async (req, res) => {
     const userId = databaseService.getUserIdFromToken(req);
 
     // --- BACKEND VALIDATION ---
-    // Skip validation for Admin (userId === 1)
-    if (userId !== 1) {
-      const attendanceList = req.body.attendance || [];
-      const now = moment();
-
-      for (const record of attendanceList) {
-        if (record.DutyDate) {
-          const dutyDate = moment(record.DutyDate, "YYYY-MM-DD");
-
-          // 1. If DutyDate is in the past month (strictly before current month)
-          if (dutyDate.isBefore(now, "month")) {
-            const lastMonth = moment().subtract(1, "month");
-
-            // 2. Check if it's the immediate previous month
-            if (dutyDate.isSame(lastMonth, "month")) {
-              // Allow ONLY if today is <= 2nd
-              if (now.date() > 2) {
-                return res
-                  .status(403)
-                  .json(
-                    "Attendance for the previous month can only be modified within the first 2 days of the new month."
-                  );
-              }
-            } else {
-              // 3. Older than previous month -> Block
-              return res
-                .status(403)
-                .json("Attendance for past months cannot be modified.");
-            }
-          }
-        }
-      }
+    const validation = validateAttendanceDate(req.body.attendance || [], userId);
+    if (!validation.valid) {
+      return res.status(403).json(validation.message);
     }
     // ---------------------------
 
-    const attendanceWithMeta = req.body.attendance.map((att) => ({
+    const attendanceList = req.body.attendance || [];
+    const attendanceWithMeta = attendanceList.map((att) => ({
       ...att,
     }));
     const result = await databaseService.callStored(

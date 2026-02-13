@@ -7,23 +7,13 @@ const {
   createAttendance,
 } = require("./attendance.controllers");
 
+const authorize = require("../../utils/authorize");
+
 const attendanceRoutes = express.Router();
 
-attendanceRoutes.get("/", getAllAttendance);
-// attendanceRoutes.get(
-//   "/:id",
-//   authorize("readSingle-proformaInvoice"),
-//   getSingleProformaInvoice
-// );
-attendanceRoutes.get("/:id/:date/:TYPE", getSingleAttendancebymonth);
-
-attendanceRoutes.put("/:id", updateAttendance);
-
-attendanceRoutes.post("/create", createAttendance);
-// attendanceRoutes.delete(
-//   "/:id",
-//   authorize("delete-proformaInvoice"),
-//   deleteSingleProformaInvoice
-// );
+attendanceRoutes.get("/", authorize(""), getAllAttendance);
+attendanceRoutes.get("/:id/:date/:TYPE", authorize(""), getSingleAttendancebymonth);
+attendanceRoutes.put("/:id", authorize(""), updateAttendance);
+attendanceRoutes.post("/create", authorize(""), createAttendance);
 
 module.exports = attendanceRoutes;

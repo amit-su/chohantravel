@@ -13,9 +13,17 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 
 axios.defaults.baseURL = import.meta.env.VITE_APP_API;
 
-const accessToken = localStorage.getItem("access-token");
+// APP VERSION CHECK
+const appVersion = import.meta.env.VITE_APP_VERSION;
 
-axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+axios.interceptors.request.use((config) => {
+  const accessToken = localStorage.getItem("access-token");
+  if (accessToken) {
+    config.headers["Authorization"] = `Bearer ${accessToken}`;
+  }
+  config.headers["X-App-Version"] = appVersion;
+  return config;
+});
 
 root.render(
   <Provider store={store}>

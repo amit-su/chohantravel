@@ -5,6 +5,7 @@ const express = require("express");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const cors = require("cors");
+const checkAppVersion = require("./utils/versionCheck");
 const rolePermissionRoutes = require("./routes/hr/rolePermission/rolePermission.routes");
 const permissionRoutes = require("./routes/hr/permission/permission.routes");
 const userRoutes = require("./routes/user/user.routes");
@@ -92,6 +93,8 @@ app.set("trust proxy", 1);
 
 // parse requests of content-type - application/json
 app.use(express.json({ extended: true }));
+// Version check middleware
+app.use(checkAppVersion);
 
 /* Authentication and Authorization Routes */
 
