@@ -3,14 +3,20 @@ import { Button, DatePicker, Spin, Alert, Select } from "antd";
 import { FilePdfOutlined, FileExcelOutlined } from "@ant-design/icons";
 import axios from "axios";
 import dayjs from "dayjs";
+import { useDispatch, useSelector } from "react-redux";
+import { loadAllCompany } from "../../redux/rtk/features/company/comapnySlice";
 import { generateSalaryRegisterPDF } from "../../utils/generateSalaryRegisterPDF";
 import { generateSalaryRegisterExcel } from "../../utils/generateSalaryRegisterExcel";
 
 function SalaryRegisterReport() {
+    const dispatch = useDispatch();
+    const { list: companyList } = useSelector((state) => state.companies);
+
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [selectedDate, setSelectedDate] = useState(dayjs());
     const [paymentMode, setPaymentMode] = useState("ALL");
+    const [selectedCompany, setSelectedCompany] = useState(null);
     const [salaryData, setSalaryData] = useState(null);
     const [pdfBlobUrl, setPdfBlobUrl] = useState(null);
 
@@ -45,6 +51,10 @@ function SalaryRegisterReport() {
 
     const apiUrl = import.meta.env.VITE_APP_API;
 
+    useEffect(() => {
+        dispatch(loadAllCompany({ page: 1, count: 1000, status: true }));
+    }, [dispatch]);
+
     const fetchSalaryRegister = async () => {
         setLoading(true);
         setError(null);
@@ -53,7 +63,8 @@ function SalaryRegisterReport() {
             const response = await axios.post(
                 `${apiUrl}/salarydetails/register-report`,
                 {
-                    sDate: selectedDate.format('YYYY-MM-DD')
+                    sDate: selectedDate.format('YYYY-MM-DD'),
+                    CompanyID: selectedCompany
                 }
             );
 
@@ -102,7 +113,7 @@ function SalaryRegisterReport() {
 
     return (
         <div className="min-h-screen bg-gray-50 p-6">
-            <div className="max-w-6xl mx-auto">
+            <div className="max-w-8xl mx-auto">
                 {/* Header */}
                 <div className="bg-white rounded-lg shadow-md p-6 mb-6">
                     <h1 className="text-2xl font-bold text-gray-800 mb-4">
@@ -121,6 +132,25 @@ function SalaryRegisterReport() {
                                 format="MMMM YYYY"
                                 className="w-64"
                             />
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Select Company
+                            </label>
+                            <Select
+                                placeholder="All Companies"
+                                allowClear
+                                showSearch
+                                optionFilterProp="children"
+                                value={selectedCompany}
+                                onChange={(val) => setSelectedCompany(val)}
+                                className="w-80"
+                            >
+                                {companyList?.map((comp) => (
+                                    <Select.Option key={comp.Id} value={comp.Id}>{comp.Name}</Select.Option>
+                                ))}
+                            </Select>
                         </div>
 
                         <div>

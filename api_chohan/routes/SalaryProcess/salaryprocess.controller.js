@@ -284,7 +284,7 @@ const getSalarySlipReport = async (req, res) => {
 
 const getSalaryRegisterReport = async (req, res) => {
   try {
-    const { sDate } = req.body;
+    const { sDate, CompanyID } = req.body;
 
     // Get database connection directly
     const pool = await databaseService.dbClientService();
@@ -292,6 +292,7 @@ const getSalaryRegisterReport = async (req, res) => {
 
     // Add the sDate parameter
     request.input('SDate', sDate);
+    request.input('CompanyID', CompanyID || 0);
 
     // Execute the stored procedure
     const result = await request.execute(RPT_SALARY_REGISTER);
