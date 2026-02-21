@@ -333,6 +333,7 @@ const UpdateAdvanceToStaffEntryDrawer = () => {
               format="DD-MM-YYYY"
               className="w-full"
               onChange={(date) => setSelectedDate(date || dayjs())}
+              disabledDate={(current) => current && current > dayjs().endOf('day')}
             />
           </Form.Item>
         </div>

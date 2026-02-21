@@ -105,10 +105,10 @@ const AddAdvanceToStaffEntryDrawer = () => {
           const foundItem = editedRows.find((obj) => obj?.id === item?.id);
           return foundItem
             ? {
-                id: item.id,
-                advAmount: foundItem.AdvAmt,
-                remark: foundItem.Remark,
-              }
+              id: item.id,
+              advAmount: foundItem.AdvAmt,
+              remark: foundItem.Remark,
+            }
             : null;
         })
         .filter((item) => item !== null);
@@ -339,8 +339,9 @@ const AddAdvanceToStaffEntryDrawer = () => {
                   picker="date"
                   defaultValue={dayjs()}
                   format="DD-MM-YYYY"
-                  value={dayjs()}
+                  value={selectedDate}
                   onChange={handleDateChange}
+                  disabledDate={(current) => current && current > dayjs().endOf('day')}
                   className="custom-date-picker"
                 />
               </Form.Item>

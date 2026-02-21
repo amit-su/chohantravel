@@ -52,8 +52,8 @@ const AdvanceToStaffEntry = (props) => {
       );
 
       if (response.data.status === 1 && response.data.data.length > 0) {
-        generateSalaryAdvancePDF(response.data.data);
         toast.success("PDF generated successfully");
+        generateSalaryAdvancePDF(response.data.data);
       } else {
         toast.error("No data found for this report");
       }

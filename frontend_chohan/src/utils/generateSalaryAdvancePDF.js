@@ -146,7 +146,7 @@ export const generateSalaryAdvancePDF = async (data) => {
                                 { text: 'Sl No', style: 'tableHeader', alignment: 'center' },
                                 { text: 'Employee Name', style: 'tableHeader' },
                                 { text: 'Emp Type', style: 'tableHeader' },
-                                { text: 'Sort Name', style: 'tableHeader' },
+                                { text: 'Site Name', style: 'tableHeader' },
                                 { text: 'Amount', style: 'tableHeader', alignment: 'right' },
                                 { text: 'Remark', style: 'tableHeader' },
                                 { text: 'Payment Method', style: 'tableHeader', alignment: 'center' } // Replaced Signature
