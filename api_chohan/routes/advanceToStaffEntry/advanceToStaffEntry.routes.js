@@ -16,7 +16,7 @@ const advanceToStaffEntryRoutes = express.Router();
 advanceToStaffEntryRoutes.post("/", createAdvanceToStaffEntry);
 advanceToStaffEntryRoutes.get("/:id/:date", getAllAdvanceToStaffEntry);
 advanceToStaffEntryRoutes.get("/:advanceNo", getAdvanceToStaffEntry);
-advanceToStaffEntryRoutes.get("/", getAllAdvanceEntry);
+advanceToStaffEntryRoutes.post("/all", getAllAdvanceEntry);
 advanceToStaffEntryRoutes.patch("/:id", updateAdvanceToStaffEntry);
 advanceToStaffEntryRoutes.delete("/:id", deleteSingleAdvanceToStaffEntry);
 advanceToStaffEntryRoutes.get("/staff/:type/:id", getAdvanceToStaffEntryByType);

@@ -14,19 +14,15 @@ const initialState = {
 
 export const loadAdvanceToStaffEntryPaginated = createAsyncThunk(
   "advanceToStaffEntry/loadAdvanceToStaffEntryPaginated",
-  // async (arg) => {
-  //   try {
-  //     const query = queryGenerator(arg);
-  //     const { data } = await axios.get(`advanceToStaffEntry?${query}`);
-  //     return successHandler(data);
-  //   } catch (error) {
-  //     return errorHandler(error);
-  //   }
-  // }
-  async (dateString) => {
-    // Change the argument name to dateString
+  async (arg) => {
     try {
-      const { data } = await axios.get(`advanceToStaffEntry/${dateString}`);
+      const { data } = await axios.post(`advanceToStaffEntry/all`, {
+        PageNo: arg.page,
+        PageSize: arg.count,
+        CompanyID: arg.CompanyID || 0,
+        FromDate: arg.FromDate || null,
+        ToDate: arg.ToDate || null
+      });
       return successHandler(data);
     } catch (error) {
       return errorHandler(error);

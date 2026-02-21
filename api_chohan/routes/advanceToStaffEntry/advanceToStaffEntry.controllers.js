@@ -84,16 +84,21 @@ const getAdvanceToStaffEntry = async (req, res) => {
 
 const getAllAdvanceEntry = async (req, res) => {
   try {
-    console.log(req.params);
-    const { id, date } = req.params;
-    const decodedId = id;
-    console.log("Date", date)
+    const {
+      PageNo = 1,
+      PageSize = 10000,
+      CompanyID = 0,
+      FromDate = null,
+      ToDate = null
+    } = req.body;
+
     const params = {
-
-      PageNo: 1,
-      PageSize: 10000,
+      PageNo,
+      PageSize,
+      CompanyID,
+      FromDate,
+      ToDate
     };
-
 
     const resultdata = await databaseService.callStoredProcedure(req,
       GET_ALL_ADVANCE_PROCEDURE,

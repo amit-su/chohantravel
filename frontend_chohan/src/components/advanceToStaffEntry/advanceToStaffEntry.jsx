@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Card } from "antd";
+import { Card, DatePicker } from "antd";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import SimpleButton from "../Buttons/SimpleButton";
 import axios from "axios";
@@ -63,28 +63,27 @@ const AdvanceToStaffEntry = (props) => {
     }
   };
 
+  const [query, setQuery] = useState({ page: 1, count: 10, status: true });
+
+  const { list: reduxList, total, loading } = useSelector(
+    (state) => state.advanceToStaffEntry
+  );
+
   useEffect(() => {
-    const fetchData = async () => {
-      setList([]);
+    dispatch(loadAdvanceToStaffEntryPaginated(query));
+  }, [dispatch, query]);
 
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_APP_API}/advanceToStaffEntry`
-        );
-        const updatedData = response.data.data.map((item) => ({
-          ...item,
-          transactions: item.transactions ? JSON.parse(item.transactions) : [],
-        }));
+  useEffect(() => {
+    if (reduxList) {
+      const updatedData = reduxList.map((item) => ({
+        ...item,
+        transactions: item.transactions ? JSON.parse(item.transactions) : [],
+      }));
+      setList(updatedData);
+      setLoading2(false);
+    }
+  }, [reduxList]);
 
-        setList(updatedData);
-      } catch (error) {
-      } finally {
-        setLoading2(false);
-      }
-    };
-
-    fetchData();
-  }, [dispatch]);
   //Total amount calculation//
   const totalAdvanceAmount = data.reduce((total, item) => {
     if (item.transactions && item.transactions.length > 0) {
@@ -217,9 +216,28 @@ const AdvanceToStaffEntry = (props) => {
               <div className="flex xxs:w-1/2 md:w-full xxs:flex-col md:flex-row xxs:gap-1 md:gap-5">
                 <UserPrivateComponent permission={"create-proformaInvoice"}>
                   <Link to={`/admin/advanceToStaffRegister/`}>
-                    <SimpleButton title={"Add New Advance "} />
+                    <SimpleButton title={"New Advance "} />
                   </Link>
                 </UserPrivateComponent>
+                <div className="flex gap-2 w-full max-w-lg">
+                  <DatePicker.RangePicker
+                    format={"DD-MM-YYYY"}
+                    onChange={(date) => {
+                      if (date && date.length === 2) {
+                        const fromDate = date[0].format("YYYY-MM-DD");
+                        const toDate = date[1].format("YYYY-MM-DD");
+                        setQuery((prev) => ({
+                          ...prev,
+                          page: 1,
+                          FromDate: fromDate,
+                          ToDate: toDate,
+                        }));
+                      } else {
+                        setQuery({ page: 1, count: 10, status: true });
+                      }
+                    }}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -228,6 +246,9 @@ const AdvanceToStaffEntry = (props) => {
             <TableComponent
               list={data}
               columns={columns}
+              total={total}
+              loading={loading}
+              query={query}
               paginatedThunk={loadAdvanceToStaffEntryPaginated}
               csvFileName={"Booking List"}
             />
