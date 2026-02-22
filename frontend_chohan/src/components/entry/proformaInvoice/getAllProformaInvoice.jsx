@@ -53,7 +53,6 @@ const GetAllProformaInvoice = () => {
           dispatch(loadAllproformaInvoice({ status: true, page: 1, count: 10 }));
         })
         .catch((error) => {
-          console.error("Transfer failed:", error);
           toast.error("Transfer failed!");
         });
     } else if (restData.status === "transfered") {
@@ -65,13 +64,13 @@ const GetAllProformaInvoice = () => {
     try {
       const response = await axios.post(`${apiUrl}/proformaInvoice/report`, { invoiceNo });
       if (response.data?.data?.length > 0) {
-        await generateProformaInvoicePDF(response.data.data);
+        const matchCompany = companyList?.find(c => c.Id === selectedCompany) || companyList?.[0];
+        await generateProformaInvoicePDF(response.data.data, matchCompany);
         toast.success("PDF generated successfully!");
       } else {
         toast.error("No data found for this invoice");
       }
     } catch (error) {
-      console.error("Error generating PDF:", error);
       toast.error("Failed to generate PDF");
     }
   };
