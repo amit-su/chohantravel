@@ -116,7 +116,12 @@ const Invoiceentry = () => {
         InvoiceId: invoiceNo,
       });
       if (response.data && response.data.status === 1) {
-        await generateInvoiceEntryPDF(response.data.data);
+        const invoiceData = response.data.data[0];
+        const matchCompany = selectedCompany
+          ? companyList?.find(c => c.Id === selectedCompany)
+          : companyList?.find(c => String(c.Id) === String(invoiceData?.CompanyID || invoiceData?.companyId || invoiceData?.company_id)) || companyList?.[0];
+
+        await generateInvoiceEntryPDF(response.data.data, matchCompany);
       } else {
         toast.error("Failed to fetch invoice data for printing");
       }

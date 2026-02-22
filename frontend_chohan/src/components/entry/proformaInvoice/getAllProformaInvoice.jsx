@@ -64,7 +64,11 @@ const GetAllProformaInvoice = () => {
     try {
       const response = await axios.post(`${apiUrl}/proformaInvoice/report`, { invoiceNo });
       if (response.data?.data?.length > 0) {
-        const matchCompany = companyList?.find(c => c.Id === selectedCompany) || companyList?.[0];
+        const invoiceData = response.data.data[0];
+        const matchCompany = selectedCompany
+          ? companyList?.find(c => c.Id === selectedCompany)
+          : companyList?.find(c => String(c.Id) === String(invoiceData?.CompanyID || invoiceData?.companyId || invoiceData?.company_id)) || companyList?.[0];
+
         await generateProformaInvoicePDF(response.data.data, matchCompany);
         toast.success("PDF generated successfully!");
       } else {

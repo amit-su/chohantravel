@@ -63,7 +63,7 @@ const bufferToBase64 = (buffer) => {
     }
 };
 
-export const generateInvoiceEntryPDF = async (data) => {
+export const generateInvoiceEntryPDF = async (data, companyDetails = null) => {
     if (!data || data.length === 0) {
         console.error('No data provided for PDF generation');
         return;
@@ -157,21 +157,25 @@ export const generateInvoiceEntryPDF = async (data) => {
                 absolutePosition: { x: 10, y: 35 }
             }] : []),
             {
-                text: invoiceData.CompanyName || 'CHOHAN TOURS & TRAVELS',
+                text: 'CHOHAN TOURS AND TRAVELS',
                 style: 'compactCompanyName',
                 alignment: 'center',
                 color: 'white',
                 margin: [0, -45, 0, 2]
             },
             {
-                text: `${invoiceData.BranchAddr || ''}, ${invoiceData.BranchCity || ''}, ${invoiceData.BranchPinCode || ''}, ${invoiceData.BranchState || ''}`,
+                text: companyDetails
+                    ? `${companyDetails.Address || ''}, ${companyDetails.City || ''}`
+                    : `${invoiceData.BranchAddr || ''}, ${invoiceData.BranchCity || ''}, ${invoiceData.BranchPinCode || ''}, ${invoiceData.BranchState || ''}`,
                 style: 'compactAddress',
                 alignment: 'center',
                 color: 'white',
                 margin: [0, 0, 0, 2]
             },
             {
-                text: `GST: ${invoiceData.BranchGSTNo || ''} | PAN: ${invoiceData.BranchPanno || ''}`,
+                text: companyDetails
+                    ? `GST: ${companyDetails.GSTNo || ''} | PAN: ${companyDetails.PANNo || ''}`
+                    : `GST: ${invoiceData.BranchGSTNo || ''} | PAN: ${invoiceData.BranchPanno || ''}`,
                 style: 'compactDetails',
                 alignment: 'center',
                 color: 'white',
@@ -352,14 +356,14 @@ export const generateInvoiceEntryPDF = async (data) => {
                                             {
                                                 width: '60%',
                                                 stack: [
-                                                    { text: [{ text: 'PAN NO: ', style: 'compactLabel' }, { text: invoiceData.BranchPanno || '', style: 'compactText' }] },
-                                                    { text: [{ text: 'GST No: ', style: 'compactLabel' }, { text: invoiceData.BranchGSTNo || '', style: 'compactText' }], margin: [0, 0, 0, 4] },
+                                                    { text: [{ text: 'PAN NO: ', style: 'compactLabel' }, { text: companyDetails ? companyDetails.PANNo : invoiceData.BranchPanno || '', style: 'compactText' }] },
+                                                    { text: [{ text: 'GST No: ', style: 'compactLabel' }, { text: companyDetails ? companyDetails.GSTNo : invoiceData.BranchGSTNo || '', style: 'compactText' }], margin: [0, 0, 0, 4] },
                                                     { text: 'OUR BANK DETAILS', style: 'compactLabel', decoration: 'underline', margin: [0, 0, 0, 2] },
-                                                    { text: invoiceData.BankAcName || '', style: 'compactBankName' },
-                                                    { text: [{ text: 'Bank: ', style: 'compactLabel' }, { text: invoiceData.BankName || '', style: 'compactText' }] },
-                                                    { text: [{ text: 'Branch: ', style: 'compactLabel' }, { text: invoiceData.BankBranchAddr || '', style: 'compactText' }] },
-                                                    { text: [{ text: 'A/c No: ', style: 'compactLabel' }, { text: invoiceData.BankAcNo || '', style: 'compactText' }] },
-                                                    { text: [{ text: 'IFSC: ', style: 'compactLabel' }, { text: invoiceData.BankIFSCode || '', style: 'compactText' }] }
+                                                    { text: companyDetails ? companyDetails.BankAcName : invoiceData.BankAcName || '', style: 'compactBankName' },
+                                                    { text: [{ text: 'Bank: ', style: 'compactLabel' }, { text: companyDetails ? companyDetails.BankName : invoiceData.BankName || '', style: 'compactText' }] },
+                                                    { text: [{ text: 'Branch: ', style: 'compactLabel' }, { text: companyDetails ? companyDetails.BankBranchAddr : invoiceData.BankBranchAddr || '', style: 'compactText' }] },
+                                                    { text: [{ text: 'A/c No: ', style: 'compactLabel' }, { text: companyDetails ? companyDetails.BankAcNo : invoiceData.BankAcNo || '', style: 'compactText' }] },
+                                                    { text: [{ text: 'IFSC: ', style: 'compactLabel' }, { text: companyDetails ? companyDetails.BankIFSCode : invoiceData.BankIFSCode || '', style: 'compactText' }] }
                                                 ]
                                             },
                                             {
@@ -515,7 +519,7 @@ export const generateInvoiceEntryPDF = async (data) => {
                         width: '40%',
                         stack: [
                             {
-                                text: 'FOR ' + (invoiceData.CompanyName || 'CHOHAN TOURS & TRAVELS'),
+                                text: 'FOR CHOHAN TOURS AND TRAVELS',
                                 style: 'compactLabel',
                                 alignment: 'right',
                                 margin: [0, 0, 10, 5]
