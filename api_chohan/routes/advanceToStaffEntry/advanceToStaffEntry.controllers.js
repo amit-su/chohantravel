@@ -10,7 +10,6 @@ const {
 
 const createAdvanceToStaffEntry = async (req, res) => {
   try {
-    console.log(req.body);
     const result = await databaseService.callStoredProcedure(req,
       INSERT_OR_UPDATE_ADVANCE_TO_STAFF_PROCEDURE,
       {
@@ -20,11 +19,9 @@ const createAdvanceToStaffEntry = async (req, res) => {
         transactions: req.body.transactions,
       }
     );
-    console.log(result);
     res.json(result);
   } catch (error) {
     res.status(400).json({ error: error.message });
-    console.error("Error occurred:", error);
   }
 };
 
@@ -32,10 +29,8 @@ const createAdvanceToStaffEntry = async (req, res) => {
 
 const getAllAdvanceToStaffEntry = async (req, res) => {
   try {
-    console.log(req.params);
     const { id, date } = req.params;
     const decodedId = id;
-    console.log("Date", date)
     const params = {
       type: decodedId,
       Date: date,
@@ -52,13 +47,11 @@ const getAllAdvanceToStaffEntry = async (req, res) => {
     res.json(resultdata);
   } catch (error) {
     res.status(400).json(error.message);
-    console.log(error.message);
   }
 };
 
 const getAdvanceToStaffEntry = async (req, res) => {
   try {
-    console.log(req.params);
     const { advanceNo } = req.params;
 
     const params = {
@@ -77,7 +70,6 @@ const getAdvanceToStaffEntry = async (req, res) => {
     res.json(resultdata);
   } catch (error) {
     res.status(400).json(error.message);
-    console.log(error.message);
   }
 };
 
@@ -108,14 +100,12 @@ const getAllAdvanceEntry = async (req, res) => {
     res.json(resultdata);
   } catch (error) {
     res.status(400).json(error.message);
-    console.log(error.message);
   }
 };
 
 
 const updateAdvanceToStaffEntry = async (req, res) => {
   try {
-    console.log(req.body);
     const params = {
       ID: req.params.key,
       EmpIDs: req.body.key.toString(),
@@ -128,11 +118,9 @@ const updateAdvanceToStaffEntry = async (req, res) => {
         INSERT_OR_UPDATE_ADVANCE_TO_STAFF_PROCEDURE,
         params
       );
-    console.log(updatedAdvanceToStaffEntry, "fyrt");
     res.json(updatedAdvanceToStaffEntry);
   } catch (error) {
     res.status(400).json(error.message);
-    console.log(error.message);
   }
 };
 
@@ -151,13 +139,11 @@ const deleteSingleAdvanceToStaffEntry = async (req, res) => {
     res.json(deletedAdvanceToStaffEntry);
   } catch (error) {
     res.status(400).json(error.message);
-    console.log(error.message);
   }
 };
 
 const getAdvanceToStaffEntryByType = async (req, res) => {
   try {
-    console.log(req.params);
     const { id, type } = req.params;
 
     const params = {
@@ -177,13 +163,12 @@ const getAdvanceToStaffEntryByType = async (req, res) => {
     res.json(resultdata);
   } catch (error) {
     res.status(400).json(error.message);
-    console.log(error.message);
   }
 };
 
 const getAdvanceToStaffEntryReportByAdvanceNo = async (req, res) => {
   try {
-    const { AdvanceNo } = req.body;
+    const { AdvanceNo, CompanyID } = req.body;
 
     const sql = require('mssql');
     const config = {
@@ -199,6 +184,7 @@ const getAdvanceToStaffEntryReportByAdvanceNo = async (req, res) => {
     const pool = await sql.connect(config);
     const request = pool.request();
     request.input('AdvanceNo', sql.NVarChar(50), AdvanceNo);
+    request.input('CompanyID', sql.Int, CompanyID || 0);
 
     const result = await request.execute('[dbo].[spRpt_AdvanceToStaff]');
 

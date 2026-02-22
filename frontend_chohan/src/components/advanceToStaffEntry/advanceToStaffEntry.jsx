@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, DatePicker } from "antd";
+import { Card, DatePicker, Modal, Select, Button } from "antd";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,7 +8,6 @@ import SimpleButton from "../Buttons/SimpleButton";
 import axios from "axios";
 import CreateDrawer from "../CommonUi/CreateDrawer";
 import UpdateAdvanceToStaffEntryDrawer from "./updateAdvanceToStaffEntryDrawer";
-import { Button } from "antd";
 import { DeleteOutlined, EditOutlined, PrinterOutlined } from "@ant-design/icons";
 import Advancetostaffdrawer from "./advancetostaffprintdrawer";
 
@@ -16,6 +15,7 @@ import TableComponent from "../CommonUi/TableComponent";
 import UserPrivateComponent from "../PrivacyComponent/UserPrivateComponent";
 import { loadAdvanceToStaffEntryPaginated } from "../../redux/rtk/features/advanceToStaffEntry/advanceToStaffEntrySlice";
 import { generateSalaryAdvancePDF } from "../../utils/generateSalaryAdvancePDF";
+import { loadAllCompany } from "../../redux/rtk/features/company/comapnySlice";
 
 const AdvanceToStaffEntry = (props) => {
   const dispatch = useDispatch();
@@ -32,10 +32,8 @@ const AdvanceToStaffEntry = (props) => {
           window.location.reload();
         }
       } catch (error) {
-        console.error("There was an error deleting the Advancetosatff:", error);
+        toast.error("There was an error deleting the advance to staff!");
       }
-    } else {
-      console.log("Delete action canceled by user.");
     }
   };
   const companyId = 3; // Assuming this is a static or derived value in your case
@@ -44,22 +42,66 @@ const AdvanceToStaffEntry = (props) => {
     navigate(`/admin/advancetostaffprint/${companyId}/${AdvanceNo}`);
   };
 
-  const handleGenerateReport = async (AdvanceNo) => {
+  const [printModalVisible, setPrintModalVisible] = useState(false);
+  const [printAdvanceNo, setPrintAdvanceNo] = useState(null);
+  const [selectedPrintCompany, setSelectedPrintCompany] = useState(null);
+  const [selectedPrintPaymentMode, setSelectedPrintPaymentMode] = useState("ALL");
+  const [isPrinting, setIsPrinting] = useState(false);
+
+  const { list: companyList } = useSelector((state) => state.companies);
+
+  useEffect(() => {
+    dispatch(loadAllCompany({ page: 1, count: 100, status: true }));
+  }, [dispatch]);
+
+  const handleGenerateReportClick = (AdvanceNo) => {
+    setPrintAdvanceNo(AdvanceNo);
+    setPrintModalVisible(true);
+    setSelectedPrintCompany(null);
+    setSelectedPrintPaymentMode("ALL");
+  };
+
+  const handleGenerateReportModal = async () => {
+    if (!selectedPrintCompany) {
+      toast.warning("Please select a company first");
+      return;
+    }
+    const matchCompany = companyList?.find(c => c.Id === selectedPrintCompany);
+
+    setIsPrinting(true);
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_APP_API}/advanceToStaffEntry/report`,
-        { AdvanceNo }
+        { AdvanceNo: printAdvanceNo, CompanyID: selectedPrintCompany }
       );
 
       if (response.data.status === 1 && response.data.data.length > 0) {
+        let printData = response.data.data;
+
+        // Filter by payment mode
+        if (selectedPrintPaymentMode !== "ALL") {
+          const wantBank = selectedPrintPaymentMode === "BANK";
+          printData = printData.filter(item => {
+            const hasBank = !!item.bankAcNo;
+            return wantBank ? hasBank : !hasBank;
+          });
+        }
+
+        if (printData.length === 0) {
+          toast.warning("No data matches the selected payment mode.");
+          setIsPrinting(false);
+          return;
+        }
+
         toast.success("PDF generated successfully");
-        generateSalaryAdvancePDF(response.data.data);
+        generateSalaryAdvancePDF(printData, matchCompany);
       } else {
         toast.error("No data found for this report");
       }
     } catch (error) {
-      console.error("Error generating report:", error);
       toast.error("Failed to generate report");
+    } finally {
+      setIsPrinting(false);
     }
   };
 
@@ -187,7 +229,7 @@ const AdvanceToStaffEntry = (props) => {
           <Button
             type="primary"
             icon={<PrinterOutlined />}
-            onClick={() => handleGenerateReport(AdvanceNo)}
+            onClick={() => handleGenerateReportClick(AdvanceNo)}
             style={{ marginRight: "10px", backgroundColor: "#4b5563", borderColor: "#4b5563" }}
           >
             Print
@@ -260,6 +302,47 @@ const AdvanceToStaffEntry = (props) => {
           </strong>
         </div>
       </div>
+
+      <Modal
+        title="Generate Advance to Staff Report"
+        visible={printModalVisible}
+        onOk={handleGenerateReportModal}
+        onCancel={() => setPrintModalVisible(false)}
+        okText="Generate PDF"
+        confirmLoading={isPrinting}
+      >
+        <div className="flex flex-col gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Select Company</label>
+            <Select
+              showSearch
+              placeholder="Select a company"
+              optionFilterProp="children"
+              value={selectedPrintCompany}
+              onChange={(val) => setSelectedPrintCompany(val)}
+              className="w-full"
+            >
+              {companyList?.map((company) => (
+                <Select.Option key={company.Id} value={company.Id}>
+                  {company.Name}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Select Payment Mode</label>
+            <Select
+              className="w-full"
+              value={selectedPrintPaymentMode}
+              onChange={(val) => setSelectedPrintPaymentMode(val)}
+            >
+              <Select.Option value="ALL">All Payments</Select.Option>
+              <Select.Option value="BANK">Bank Transfer</Select.Option>
+              <Select.Option value="CASH">Cash</Select.Option>
+            </Select>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

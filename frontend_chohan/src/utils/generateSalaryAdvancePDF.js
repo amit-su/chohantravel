@@ -31,7 +31,7 @@ const getBase64ImageFromURL = (url) => {
     });
 };
 
-export const generateSalaryAdvancePDF = async (data) => {
+export const generateSalaryAdvancePDF = async (data, companyDetails = null) => {
     if (!data || data.length === 0) {
         console.error('No data provided for PDF generation');
         return;
@@ -96,20 +96,24 @@ export const generateSalaryAdvancePDF = async (data) => {
                     absolutePosition: { x: 10, y: 35 }
                 }] : []),
                 {
-                    text: firstRecord.CompanyName || 'CHOHAN TOURS & TRAVELS',
+                    text: 'CHOHAN TOURS AND TRAVELS',
                     style: 'headerTitle',
                     alignment: 'center',
                     color: 'white',
                     margin: [0, -45, 0, 2]
                 },
                 {
-                    text: 'FLAT 3A, 2, GREEN ACRES, NAZAR ALI LANE, KOLKATA, 700019, WEST BENGAL',
+                    text: companyDetails
+                        ? `${companyDetails.Address || ''}, ${companyDetails.City || ''}`
+                        : 'FLAT 3A, 2, GREEN ACRES, NAZAR ALI LANE, KOLKATA, 700019, WEST BENGAL',
                     style: 'headerSubtitle',
                     alignment: 'center',
                     color: 'white'
                 },
                 {
-                    text: 'GST: 19AKTPC8877A1ZP | PAN: AKTPC8877A',
+                    text: companyDetails
+                        ? `GST: ${companyDetails.GSTNo || ''} | PAN: ${companyDetails.PANNo || ''}`
+                        : 'GST: 19AKTPC8877A1ZP | PAN: AKTPC8877A',
                     style: 'headerDetails',
                     alignment: 'center',
                     color: 'white',
