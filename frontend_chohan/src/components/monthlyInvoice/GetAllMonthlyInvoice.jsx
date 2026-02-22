@@ -55,7 +55,11 @@ const GetAllMonthlyInvoice = () => {
         try {
             const res = await dispatch(loadMonthlyInvoiceReport({ invoiceNo }));
             if (res.payload?.data?.data?.length > 0) {
-                await generateMonthlyInvoicePDF(res.payload.data.data);
+                const invoiceData = res.payload.data.data[0];
+                const matchCompany = selectedCompany
+                    ? companyList?.find(c => c.Id === selectedCompany)
+                    : companyList?.find(c => String(c.Id) === String(invoiceData?.CompanyID || invoiceData?.companyId || invoiceData?.company_id)) || companyList?.[0];
+                await generateMonthlyInvoicePDF(res.payload.data.data, matchCompany);
                 toast.update(loadingToast, {
                     render: "PDF generated successfully!",
                     type: "success",
