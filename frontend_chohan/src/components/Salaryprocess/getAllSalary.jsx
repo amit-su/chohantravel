@@ -133,8 +133,12 @@ const GetAllSalary = () => {
         .filter((item) => item);
 
       if (allSalaryData.length > 0) {
+        const sampleMatchCompany = selectedCompany
+          ? companyList?.find(c => c.Id === selectedCompany)
+          : companyList?.find(c => String(c.Id) === String(allSalaryData[0]?.salarySlipData[0]?.CompanyID)) || companyList?.[0];
+
         // Use the new bulk generation function
-        await generateBulkSalarySlipPDF(allSalaryData);
+        await generateBulkSalarySlipPDF(allSalaryData, sampleMatchCompany);
         toast.success("Bulk PDF downloaded successfully!");
       } else {
         toast.error("No valid data found for selected records.");
@@ -154,7 +158,12 @@ const GetAllSalary = () => {
         { id: parseInt(id) }
       );
       if (response.data) {
-        await generateSalarySlipPDF(response.data);
+        const salaryDataRaw = response.data?.salarySlipData?.[0] || {};
+        const matchCompany = selectedCompany
+          ? companyList?.find(c => c.Id === selectedCompany)
+          : companyList?.find(c => String(c.Id) === String(salaryDataRaw.CompanyID)) || companyList?.[0];
+
+        await generateSalarySlipPDF(response.data, matchCompany);
       }
     } catch (err) {
       toast.error("Failed to generate PDF");

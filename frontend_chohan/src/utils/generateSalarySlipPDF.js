@@ -75,7 +75,7 @@ const defaultStyle = {
     font: 'Roboto'
 };
 
-const createSalarySlipContent = (data) => {
+const createSalarySlipContent = (data, companyDetails = null) => {
     if (!data || !data.salarySlipData || data.salarySlipData.length === 0) {
         console.error('No salary slip data provided for PDF generation');
         return null;
@@ -165,8 +165,14 @@ const createSalarySlipContent = (data) => {
                             body: [
                                 [{
                                     stack: [
-                                        { text: 'CHOHAN TOURS & TRAVELS', style: 'companyName', alignment: 'center' },
-                                        { text: '70/1 Hazra Road, Kolkata - 700019', style: 'companyAddress', alignment: 'center' },
+                                        { text: 'CHOHAN TOURS AND TRAVELS', style: 'companyName', alignment: 'center' },
+                                        {
+                                            text: companyDetails
+                                                ? `${companyDetails.Address || ''}, ${companyDetails.City || ''}`
+                                                : '70/1 Hazra Road, Kolkata - 700019',
+                                            style: 'companyAddress',
+                                            alignment: 'center'
+                                        },
                                         { text: `Pay Slip for the Month of ${salaryData.MonthName || ''}' ${salaryData.SalaryYear || ''}`, style: 'companyDetails', alignment: 'center' }
                                     ],
                                     fillColor: '#047857',
@@ -484,8 +490,8 @@ const createSalarySlipContent = (data) => {
     };
 };
 
-export const generateSalarySlipPDF = async (data) => {
-    const content = createSalarySlipContent(data);
+export const generateSalarySlipPDF = async (data, companyDetails = null) => {
+    const content = createSalarySlipContent(data, companyDetails);
     if (!content) return;
 
     const salaryData = data.salarySlipData[0];
@@ -501,7 +507,7 @@ export const generateSalarySlipPDF = async (data) => {
     pdfMake.createPdf(docDefinition).download(`CHOHAN_SALARY_SLIP_${salaryData.name}_${salaryData.MonthName}_${salaryData.SalaryYear}.pdf`);
 };
 
-export const generateBulkSalarySlipPDF = async (dataArray) => {
+export const generateBulkSalarySlipPDF = async (dataArray, companyDetails = null) => {
     if (!dataArray || dataArray.length === 0) {
         console.error('No data provided for bulk PDF generation');
         return;
@@ -509,7 +515,7 @@ export const generateBulkSalarySlipPDF = async (dataArray) => {
 
     const content = [];
     dataArray.forEach((data, index) => {
-        const slipContent = createSalarySlipContent(data);
+        const slipContent = createSalarySlipContent(data, companyDetails);
         if (slipContent) {
             content.push(slipContent);
             // Add page break after each slip, except the last one
