@@ -8,7 +8,7 @@ if (pdfFonts.pdfMake && pdfFonts.pdfMake.vfs) {
     pdfMake.vfs = pdfFonts.default.pdfMake.vfs;
 }
 
-export const generateSalaryRegisterPDF = (data, monthYear) => {
+export const generateSalaryRegisterPDF = (data, monthYear, companyDetails = null) => {
     if (!data || data.length === 0) {
         console.error('No salary register data provided for PDF generation');
         return;
@@ -97,6 +97,17 @@ export const generateSalaryRegisterPDF = (data, monthYear) => {
         { text: formatCurrency(totals.net), alignment: 'right', style: 'totalLabel', fillColor: '#047857', color: 'white', bold: true }
     ]);
 
+    // Basic fallbacks if no dynamic company provided
+    const compName = 'CHOHAN TOURS AND TRAVELS';
+    let compAddress = companyDetails?.Address || 'FLAT 3A, 2, GREEN ACRES, NAZAR ALI LANE';
+    if (companyDetails?.City) compAddress += `, ${companyDetails.City}`;
+    if (companyDetails?.Country) compAddress += `, ${companyDetails.Country}`;
+
+    let compReg = '';
+    if (companyDetails?.GSTNo) compReg += `GST: ${companyDetails.GSTNo}`;
+    if (companyDetails?.PANNo) compReg += (compReg ? ' | ' : '') + `PAN: ${companyDetails.PANNo}`;
+    if (!compReg) compReg = 'GST: 19AKTPC8877A1ZP | PAN: AKTPC8877A';
+
     const docDefinition = {
         pageSize: 'A4',
         pageOrientation: 'landscape',
@@ -115,21 +126,21 @@ export const generateSalaryRegisterPDF = (data, monthYear) => {
                 }]
             },
             {
-                text: 'CHOHAN TOURS & TRAVELS',
+                text: compName,
                 style: 'companyName',
                 alignment: 'center',
                 color: 'white',
                 margin: [0, -45, 0, 2]
             },
             {
-                text: 'FLAT 3A, 2, GREEN ACRES, NAZAR ALI LANE, KOLKATA, 700019, WEST BENGAL',
+                text: compAddress.toUpperCase(),
                 style: 'companyAddress',
                 alignment: 'center',
                 color: 'white',
                 margin: [0, 0, 0, 2]
             },
             {
-                text: 'GST: 19AKTPC8877A1ZP | PAN: AKTPC8877A',
+                text: compReg,
                 style: 'companyDetails',
                 alignment: 'center',
                 color: 'white',

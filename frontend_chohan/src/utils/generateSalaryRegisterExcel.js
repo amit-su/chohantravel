@@ -4,8 +4,9 @@ import * as XLSX from 'xlsx';
  * Generate Excel file for Salary Register
  * @param {Array} data - Array of salary data objects
  * @param {string} monthYear - Month and year string (e.g., "December 2024")
+ * @param {object} companyDetails - Dynamic company data object
  */
-export const generateSalaryRegisterExcel = (data, monthYear) => {
+export const generateSalaryRegisterExcel = (data, monthYear, companyDetails = null) => {
     if (!data || data.length === 0) {
         console.error('No data provided for Excel generation');
         return;
@@ -80,11 +81,45 @@ export const generateSalaryRegisterExcel = (data, monthYear) => {
     // Add totals row
     excelData.push(totals);
 
+    const compName = 'CHOHAN TOURS AND TRAVELS';
+    let compAddress = companyDetails?.Address || 'FLAT 3A, 2, GREEN ACRES, NAZAR ALI LANE';
+    if (companyDetails?.City) compAddress += `, ${companyDetails.City}`;
+    if (companyDetails?.Country) compAddress += `, ${companyDetails.Country}`;
+
+    let compReg = '';
+    if (companyDetails?.GSTNo) compReg += `GST: ${companyDetails.GSTNo}`;
+    if (companyDetails?.PANNo) compReg += (compReg ? ' | ' : '') + `PAN: ${companyDetails.PANNo}`;
+    if (!compReg) compReg = 'GST: 19AKTPC8877A1ZP | PAN: AKTPC8877A';
+
+    // Insert dynamic company headers at the beginning
+    const headerRows = [
+        { 'Sr. No.': compName },
+        { 'Sr. No.': compAddress.toUpperCase() },
+        { 'Sr. No.': compReg },
+        { 'Sr. No.': `SALARY REGISTER - ${monthYear || 'REPORT'}` },
+        {} // empty spacer
+    ];
+
+    const finalExcelData = [...headerRows, ...excelData];
+
     // Create a new workbook
     const wb = XLSX.utils.book_new();
 
     // Convert data to worksheet
-    const ws = XLSX.utils.json_to_sheet(excelData);
+    const ws = XLSX.utils.json_to_sheet(finalExcelData, { skipHeader: true });
+
+    // Ensure our JSON keys stay as headers starting on row 6
+    const mergeHeaders = Object.keys(excelData[0]);
+    XLSX.utils.sheet_add_json(ws, excelData, { skipHeader: false, origin: "A6" });
+
+    // Merge Company Headers across all columns
+    const totalCols = mergeHeaders.length;
+    ws['!merges'] = [
+        { s: { r: 0, c: 0 }, e: { r: 0, c: totalCols - 1 } },
+        { s: { r: 1, c: 0 }, e: { r: 1, c: totalCols - 1 } },
+        { s: { r: 2, c: 0 }, e: { r: 2, c: totalCols - 1 } },
+        { s: { r: 3, c: 0 }, e: { r: 3, c: totalCols - 1 } }
+    ];
 
     // Set column widths
     const columnWidths = [

@@ -34,20 +34,22 @@ function SalaryRegisterReport() {
         const updatePDF = async () => {
             if (filteredSalaryData && filteredSalaryData.length > 0) {
                 try {
+                    const matchCompany = companyList?.find(c => c.Id === selectedCompany) || companyList?.[0];
                     const blobUrl = await generateSalaryRegisterPDF(
                         filteredSalaryData,
-                        selectedDate.format('MMMM YYYY')
+                        selectedDate.format('MMMM YYYY'),
+                        matchCompany
                     );
                     setPdfBlobUrl(blobUrl);
                 } catch (err) {
-                    console.error('PDF generation error:', err);
+                    setError('Failed to generate PDF');
                 }
             } else {
                 setPdfBlobUrl(null);
             }
         };
         updatePDF();
-    }, [filteredSalaryData, selectedDate]);
+    }, [filteredSalaryData, selectedDate, selectedCompany, companyList]);
 
     const apiUrl = import.meta.env.VITE_APP_API;
 
@@ -75,7 +77,6 @@ function SalaryRegisterReport() {
             }
         } catch (err) {
             setError(err.response?.data?.error || err.message || "Failed to fetch salary register");
-            console.error("Error fetching salary register:", err);
         } finally {
             setLoading(false);
         }
@@ -84,14 +85,15 @@ function SalaryRegisterReport() {
     const handleGeneratePDF = async () => {
         if (filteredSalaryData && filteredSalaryData.length > 0) {
             try {
+                const matchCompany = companyList?.find(c => c.Id === selectedCompany) || companyList?.[0];
                 const blobUrl = await generateSalaryRegisterPDF(
                     filteredSalaryData,
-                    selectedDate.format('MMMM YYYY')
+                    selectedDate.format('MMMM YYYY'),
+                    matchCompany
                 );
                 setPdfBlobUrl(blobUrl);
             } catch (err) {
                 setError('Failed to generate PDF');
-                console.error('PDF generation error:', err);
             }
         }
     };
@@ -104,9 +106,11 @@ function SalaryRegisterReport() {
 
     const handleGenerateExcel = () => {
         if (filteredSalaryData && filteredSalaryData.length > 0) {
+            const matchCompany = companyList?.find(c => c.Id === selectedCompany) || companyList?.[0];
             generateSalaryRegisterExcel(
                 filteredSalaryData,
-                selectedDate.format('MMMM YYYY')
+                selectedDate.format('MMMM YYYY'),
+                matchCompany
             );
         }
     };
