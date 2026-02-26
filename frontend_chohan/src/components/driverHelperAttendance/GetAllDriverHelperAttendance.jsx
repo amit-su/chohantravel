@@ -487,6 +487,7 @@ const GetAllDriverHelperAttendance = () => {
                 : siteDetails.HelperKhurakiAmt
               : 0;
             recordsToSync.push({
+              id: siteRecord.dbId && typeof siteRecord.dbId === "number" ? siteRecord.dbId : 0, // Pass the database ID if it exists
               DutyDate: fullDate,
               DriverID: DriverOrHelper === "Driver" ? record.id : null,
               HelperID: DriverOrHelper === "Helper" ? record.id : null,
@@ -498,6 +499,7 @@ const GetAllDriverHelperAttendance = () => {
           // Case B: currentValue is EMPTY (i.e., user cleared all sites for this day).
           // PUSH A PLACEHOLDER RECORD to trigger the DELETE operation in the SP.
           recordsToSync.push({
+            id: 0,
             DutyDate: fullDate,
             DriverID: DriverOrHelper === "Driver" ? record.id : null,
             HelperID: DriverOrHelper === "Helper" ? record.id : null,
@@ -603,6 +605,7 @@ const GetAllDriverHelperAttendance = () => {
                     : siteDetails.HelperKhurakiAmt
                   : 0;
                 recordsToSync.push({
+                  id: siteRecord.dbId && typeof siteRecord.dbId === "number" ? siteRecord.dbId : 0,
                   DutyDate: fullDate,
                   DriverID: DriverOrHelper === "Driver" ? record.id : null,
                   HelperID: DriverOrHelper === "Helper" ? record.id : null,
@@ -613,6 +616,7 @@ const GetAllDriverHelperAttendance = () => {
             } else {
               // Case B: currentValue is EMPTY - PUSH A PLACEHOLDER RECORD
               recordsToSync.push({
+                id: 0,
                 DutyDate: fullDate,
                 DriverID: DriverOrHelper === "Driver" ? record.id : null,
                 HelperID: DriverOrHelper === "Helper" ? record.id : null,
