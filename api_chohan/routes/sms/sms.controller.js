@@ -91,8 +91,22 @@ const sendBookingConfirmationSms = async (req, res) => {
             });
         }
 
-        const text = `Dear ${customerName}, your booking has been confirmed. Trip Details: ${pickup}. Date & Time ${dateTime}. Driver details will be shared one day prior to journey day. Office number: ${CompanyPhone}. Thanks & Regards Chohan Tours and Travels`;
+        const cleanedPickup = pickup
+            .replace(/\n+/g, " ")
+            .replace(/[.,]/g, "")
+            .replace(/\s+/g, " ")
+            .trim();
+        let fromLocation = "";
+        let toLocation = "";
 
+        const match = cleanedPickup.match(/From (.*?) To (.*)/i);
+
+        if (match) {
+            fromLocation = match[1].trim();
+            toLocation = match[2].trim();
+        }
+
+        const text = `Dear ${customerName}, your booking has been confirmed. Trip Details: ${fromLocation} ${toLocation}. Date:&Time ${dateTime} Driver details will be shared one day prior to journey day. Office number: ${CompanyPhone} Thanks&Regards Chohan Tours and travels`;
         const payload = {
             senderId: "CH0HAN",
             dcs: 0,
@@ -106,7 +120,6 @@ const sendBookingConfirmationSms = async (req, res) => {
             messageId: "",
             numbers: numbers
         };
-
         const result = await sendSMS(payload);
         let pool = await dbClientService();
         const request = pool.request();
