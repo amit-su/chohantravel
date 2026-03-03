@@ -5,7 +5,6 @@ const { dbClientService } = require('./dbClientService');
 
 const LOG_FILE = path.join(__dirname, 'khuraki-cron.log');
 
-// Simple logger function
 const writeLog = (message) => {
     const logMessage = `[${new Date().toISOString()}] ${message}\n`;
     console.log(logMessage.trim());
@@ -14,11 +13,28 @@ const writeLog = (message) => {
 
 const updateKhurakiAmount = async () => {
     let pool;
-    const month = 2;
-    const year = 2026;
+
+    // ✅ Get month & year from ENV or fallback to current
+    const now = new Date();
+    const month = process.env.KHURAKI_MONTH
+        ? parseInt(process.env.KHURAKI_MONTH)
+        : now.getMonth() + 1;
+
+    const year = process.env.KHURAKI_YEAR
+        ? parseInt(process.env.KHURAKI_YEAR)
+        : now.getFullYear();
+
+    // ✅ Build date range (INDEX FRIENDLY)
+    const startDate = `${year}-${String(month).padStart(2, '0')}-01`;
+
+    const nextMonth = month === 12 ? 1 : month + 1;
+    const nextYear = month === 12 ? year + 1 : year;
+
+    const endDate = `${nextYear}-${String(nextMonth).padStart(2, '0')}-01`;
 
     try {
-        writeLog(`🚀 Starting Khuraki update for Month: ${month}, Year: ${year}`);
+        writeLog(`🚀 Starting Khuraki update for ${month}/${year}`);
+        writeLog(`Date Range: ${startDate} to ${endDate}`);
 
         pool = await dbClientService();
         const transaction = pool.transaction();
@@ -33,15 +49,14 @@ const updateKhurakiAmount = async () => {
             UPDATE DH
             SET 
                 DH.KhurakiAmt = S.DriverKhurakiAmt,
-                DH.LastModifidOn = GETDATE(),
-                DH.LastModifiedBy = 0
+                DH.LastModifidOn = GETDATE()
             FROM dbo.DrvHelperSiteAttend DH
             JOIN dbo.PartySiteMast S ON DH.SiteID = S.ID
             WHERE 
                 ISNULL(DH.KhurakiAmt,0) = 0
                 AND ISNULL(DH.DriverID,0) <> 0
-                AND MONTH(DH.DutyDate) = ${month}
-                AND YEAR(DH.DutyDate) = ${year};
+                AND DH.DutyDate >= '${startDate}'
+                AND DH.DutyDate < '${endDate}';
         `;
 
         const driverResult = await request.query(driverQuery);
@@ -56,15 +71,14 @@ const updateKhurakiAmount = async () => {
             UPDATE DH
             SET 
                 DH.KhurakiAmt = S.HelperKhurakiAmt,
-                DH.LastModifidOn = GETDATE(),
-                DH.LastModifiedBy = 0
+                DH.LastModifidOn = GETDATE()
             FROM dbo.DrvHelperSiteAttend DH
             JOIN dbo.PartySiteMast S ON DH.SiteID = S.ID
             WHERE 
                 ISNULL(DH.KhurakiAmt,0) = 0
                 AND ISNULL(DH.HelperID,0) <> 0
-                AND MONTH(DH.DutyDate) = ${month}
-                AND YEAR(DH.DutyDate) = ${year};
+                AND DH.DutyDate >= '${startDate}'
+                AND DH.DutyDate < '${endDate}';
         `;
 
         const helperResult = await request.query(helperQuery);
@@ -79,20 +93,11 @@ const updateKhurakiAmount = async () => {
     } catch (error) {
         writeLog(`❌ ERROR: ${error.message}`);
         writeLog(`❌ STACK: ${error.stack}`);
-
-        if (pool) {
-            try {
-                await pool.request().query('ROLLBACK');
-            } catch (rollbackError) {
-                writeLog(`⚠ Rollback failed: ${rollbackError.message}`);
-            }
-        }
     }
 };
 
-// Schedule: Sunday 12:00 AM
+// Cron Schedule
 const schedule = process.env.KHURAKI_CRON_SCHEDULE || '0 0 * * 0';
-
 cron.schedule(schedule, updateKhurakiAmount);
 
 writeLog(`📅 Cron initialized. Pattern: ${schedule}`);
