@@ -33,8 +33,62 @@ const sendBookingConfirmationSms = async (req, res) => {
     try {
         const { numbers, customerName, pickup, dateTime, goingTo, CompanyPhone, bookingTranId } = req.body;
 
-        if (!numbers || !numbers.length || !customerName || !pickup || !dateTime || !goingTo || !CompanyPhone || !bookingTranId) {
-            return res.status(400).json({ message: "Missing required fields for booking confirmation SMS." });
+        const errors = [];
+
+        /* ---------- Helper Function ---------- */
+        const isValidString = (value) => {
+            return typeof value === "string" && value.trim().length > 0;
+        };
+
+        const isValidPhone = (phone) => {
+            return /^[0-9]{10}$/.test(phone);
+        };
+
+        /* ---------- Numbers Validation ---------- */
+        if (!Array.isArray(numbers) || numbers.length === 0) {
+            errors.push("At least one mobile number is required.");
+        } else {
+            const invalidNumbers = numbers.filter(num => !isValidPhone(String(num).trim()));
+            if (invalidNumbers.length > 0) {
+                errors.push(`Invalid mobile numbers: ${invalidNumbers.join(", ")}. Each number must be 10 digits.`);
+            }
+        }
+
+        /* ---------- String Validations ---------- */
+        if (!isValidString(customerName)) {
+            errors.push("Customer name is required.");
+        }
+
+        if (!isValidString(pickup)) {
+            errors.push("Pickup location is required.");
+        }
+
+        if (!isValidString(dateTime)) {
+            errors.push("Date & Time is required.");
+        }
+
+        if (!isValidString(goingTo)) {
+            errors.push("Destination (goingTo) is required.");
+        }
+
+        if (!isValidString(CompanyPhone)) {
+            errors.push("Company phone is required.");
+        } else if (!isValidPhone(CompanyPhone.trim())) {
+            errors.push("Company phone must be a valid 10-digit number.");
+        }
+
+        /* ---------- BookingTranId Validation ---------- */
+        if (!bookingTranId || isNaN(bookingTranId) || Number(bookingTranId) <= 0) {
+            errors.push("Valid BookingTranId is required.");
+        }
+
+        /* ---------- Final Check ---------- */
+        if (errors.length > 0) {
+            return res.status(400).json({
+                status: false,
+                message: "Validation failed",
+                errors
+            });
         }
 
         const text = `Dear ${customerName}, your booking has been confirmed. Trip Details: ${pickup}. Date & Time ${dateTime}. Driver details will be shared one day prior to journey day. Office number: ${CompanyPhone}. Thanks & Regards Chohan Tours and Travels`;
