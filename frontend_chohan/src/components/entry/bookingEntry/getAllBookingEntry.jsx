@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Select, Button, DatePicker, Modal, Card, Table, Tooltip, Input, Space, Tag, Dropdown, Menu } from "antd";
+import { Select, Button, DatePicker, Modal, Card, Table, Tooltip, Input, Space, Tag, Dropdown, Menu, message, Form, Progress } from "antd";
 import {
   DeleteOutlined,
   FormOutlined,
@@ -9,7 +9,8 @@ import {
   TeamOutlined,
   CalendarOutlined,
   RocketOutlined,
-  MoreOutlined
+  MoreOutlined,
+  MessageOutlined
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,6 +31,10 @@ const GetAllBookingEntry = () => {
   // Modal State
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
+
+  // SMS Progress State
+  const [isProgressModalVisible, setIsProgressModalVisible] = useState(false);
+  const [smsProgress, setSmsProgress] = useState({ current: 0, total: 0 });
 
   // Filter State
   const [partyFilter, setPartyFilter] = useState(null);
@@ -80,6 +85,70 @@ const GetAllBookingEntry = () => {
   const handleModalClose = () => {
     setIsModalVisible(false);
     setSelectedBooking(null);
+  };
+
+  const showSmsModal = async (record) => {
+    try {
+      // First fetch the detailed booking entry to ensure we have the full data including LocalBookingList
+      const response = await axios.get(`${apiUrl}/bookingEntry/${record.BookingNo}`);
+
+      if (!response.data || !response.data.data || response.data.data.length === 0) {
+        message.error("Could not fetch detailed booking data.");
+        return;
+      }
+
+      const detailedBooking = response.data.data[0];
+      let localBookings = [];
+
+      if (detailedBooking.LocalBookingList) {
+        try {
+          localBookings = typeof detailedBooking.LocalBookingList === 'string'
+            ? JSON.parse(detailedBooking.LocalBookingList)
+            : detailedBooking.LocalBookingList;
+        } catch (e) {
+          message.error("Failed to parse LocalBookingList");
+        }
+      }
+
+      if (localBookings && localBookings.length > 0) {
+        setSmsProgress({ current: 0, total: localBookings.length });
+        setIsProgressModalVisible(true);
+
+        try {
+          const numbers = detailedBooking.ContactPersonNo ? detailedBooking.ContactPersonNo.toString().split(',')[0] : '';
+          const customerName = detailedBooking.ContactPersonName || detailedBooking.PartyName || '';
+          const CompanyPhone = detailedBooking.CompanyPhone ? detailedBooking.CompanyPhone.toString().split(',')[0] : '';
+
+          let successCount = 0;
+          for (let i = 0; i < localBookings.length; i++) {
+            const trip = localBookings[i];
+            const payload = {
+              numbers: [numbers],
+              customerName: customerName,
+              pickup: trip.tripDescription || '',
+              dateTime: trip.ReportDate ? `${trip.ReportDate} ${trip.reportTime || ''}`.trim() : (trip.reportTime || ''),
+              goingTo: 'Local',
+              CompanyPhone: CompanyPhone,
+              bookingTranId: trip.ID
+            };
+            const res = await axios.post(`${apiUrl}/sms/booking-confirmation`, payload);
+            if (res.status === 200) successCount++;
+
+            setSmsProgress({ current: i + 1, total: localBookings.length });
+          }
+          message.success(`Sent ${successCount} out of ${localBookings.length} SMS successfully!`);
+        } catch (error) {
+          message.error("Failed to send some SMS.");
+        } finally {
+          setTimeout(() => setIsProgressModalVisible(false), 1500);
+        }
+        return;
+      } else {
+        message.warning('No local bookings found for this item to send SMS.');
+      }
+    } catch (error) {
+      message.error("Failed to retrieve booking details for SMS.");
+    }
   };
 
   const onDelete = async (id) => {
@@ -168,6 +237,22 @@ const GetAllBookingEntry = () => {
       render: (status) => <Tag color={status === 1 ? "green" : "red"}>{status === 1 ? "YES" : "NO"}</Tag>
     },
     {
+      title: "Total SMS",
+      dataIndex: "TotalSMSCount",
+      key: "TotalSMSCount",
+      width: 100,
+      render: (count) => (
+        <div className="flex items-center gap-2">
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center ${count > 0 ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-400'}`}>
+            <MessageOutlined style={{ fontSize: '14px' }} />
+          </div>
+          <span className={`font-bold ${count > 0 ? 'text-blue-600' : 'text-gray-400'}`}>
+            {count || 0}
+          </span>
+        </div>
+      )
+    },
+    {
       title: "Action",
       key: "action",
       fixed: "right",
@@ -201,6 +286,18 @@ const GetAllBookingEntry = () => {
               </div>
             ),
             disabled: !!record.UsedInInvoice,
+          },
+          {
+            key: "sendSms",
+            label: (
+              <div
+                onClick={() => showSmsModal(record)}
+                style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+              >
+                <MessageOutlined />
+                <span>Send SMS</span>
+              </div>
+            )
           },
           {
             type: 'divider',
@@ -364,6 +461,30 @@ const GetAllBookingEntry = () => {
               }}
             />
           )}
+        </Modal>
+
+
+        <Modal
+          title={<span className="text-lg font-semibold text-gray-800">Sending SMS Progress</span>}
+          visible={isProgressModalVisible}
+          footer={null}
+          closable={false}
+          maskClosable={false}
+          width={400}
+          centered
+        >
+          <div className="flex flex-col items-center justify-center p-4">
+            <Progress
+              type="circle"
+              percent={Math.round((smsProgress.current / (smsProgress.total || 1)) * 100)}
+              status={smsProgress.current === smsProgress.total ? "success" : "active"}
+            />
+            <p className="mt-4 text-gray-600 font-medium text-center">
+              {smsProgress.current === smsProgress.total
+                ? "All messages sent successfully!"
+                : `Sending message ${smsProgress.current} of ${smsProgress.total}...`}
+            </p>
+          </div>
         </Modal>
       </div >
     </div >

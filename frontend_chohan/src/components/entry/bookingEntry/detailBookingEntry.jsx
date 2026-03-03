@@ -1,4 +1,5 @@
-import { Card, Drawer, Form } from "antd";
+import { Card, Drawer, Form, Tag } from "antd";
+import { MessageOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -165,10 +166,16 @@ const DetailBookingEntry = ({ bookingNo }) => {
       key: "extraHourRate",
     },
     {
-      id: 10,
-      title: "Extra KM Rate",
-      dataIndex: "extraKMRate",
-      key: "extraKMRate",
+      id: 11,
+      title: "SMS Count",
+      dataIndex: "sms_count",
+      key: "sms_count",
+      width: 100,
+      render: (count) => (
+        <Tag color={count > 0 ? "blue" : "default"} className="rounded-full px-3">
+          <MessageOutlined className="mr-1" /> {count || 0}
+        </Tag>
+      ),
     },
   ];
 
