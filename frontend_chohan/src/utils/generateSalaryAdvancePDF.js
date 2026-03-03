@@ -69,7 +69,7 @@ export const generateSalaryAdvancePDF = async (data, companyDetails = null) => {
             { text: item.SiteShortName || '', style: 'tableCell' },
             { text: formatCurrency(item.advanceAmount), alignment: 'right', style: 'tableCell' },
             { text: item.Remark || '', style: 'tableCell' },
-            { text: paymentMode, style: 'tableCell', alignment: 'center' } // Payment Method column instead of Signature
+            { text: '', style: 'tableCell', alignment: 'center' } // Payment Method column instead of Signature
         ]);
 
         // Calculate Grand Total for the report
@@ -153,7 +153,7 @@ export const generateSalaryAdvancePDF = async (data, companyDetails = null) => {
                                 { text: 'Site Name', style: 'tableHeader' },
                                 { text: 'Amount', style: 'tableHeader', alignment: 'right' },
                                 { text: 'Remark', style: 'tableHeader' },
-                                { text: 'Payment Method', style: 'tableHeader', alignment: 'center' } // Replaced Signature
+                                { text: 'Signature', style: 'tableHeader', alignment: 'center' } // Replaced Signature
                             ],
                             ...tableRows,
                             // --- TOTAL ROW ---

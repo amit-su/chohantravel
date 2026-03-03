@@ -45,7 +45,7 @@ const AdvanceToStaffEntry = (props) => {
   const [printModalVisible, setPrintModalVisible] = useState(false);
   const [printAdvanceNo, setPrintAdvanceNo] = useState(null);
   const [selectedPrintCompany, setSelectedPrintCompany] = useState(null);
-  const [selectedPrintPaymentMode, setSelectedPrintPaymentMode] = useState("ALL");
+  const [selectedPrintPaymentMode, setSelectedPrintPaymentMode] = useState("");
   const [isPrinting, setIsPrinting] = useState(false);
 
   const { list: companyList } = useSelector((state) => state.companies);
@@ -58,7 +58,7 @@ const AdvanceToStaffEntry = (props) => {
     setPrintAdvanceNo(AdvanceNo);
     setPrintModalVisible(true);
     setSelectedPrintCompany(null);
-    setSelectedPrintPaymentMode("ALL");
+    setSelectedPrintPaymentMode("");
   };
 
   const handleGenerateReportModal = async () => {
@@ -336,7 +336,6 @@ const AdvanceToStaffEntry = (props) => {
               value={selectedPrintPaymentMode}
               onChange={(val) => setSelectedPrintPaymentMode(val)}
             >
-              <Select.Option value="ALL">All Payments</Select.Option>
               <Select.Option value="BANK">Bank Transfer</Select.Option>
               <Select.Option value="CASH">Cash</Select.Option>
             </Select>
