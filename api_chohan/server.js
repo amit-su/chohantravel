@@ -2,6 +2,8 @@ const fs = require("fs");
 const https = require("https");
 const app = require("./app");
 require('dotenv').config();
+require('./utils/cronTasks'); // Initialize scheduled tasks
+
 
 const PORT = process.env.PORT || 5000;
 
