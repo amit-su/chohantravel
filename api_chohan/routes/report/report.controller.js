@@ -3,7 +3,9 @@ const {
     GET_SITEWISE_MONTH_DUTY_SUM,
     RPT_BUS_BOOKING,
     PROFORMA_INV_REG,
-    INVOICE_REG
+    INVOICE_REG,
+    RPT_ADVANCE_DUE_SUMM,
+    RPT_ADVANCE_DUE_DETAIL_LIST,
 } = require("../../utils/constants");
 const databaseService = require("../../utils/dbClientService");
 
@@ -160,10 +162,51 @@ const getInvoiceRegisterReport = async (req, res) => {
     }
 };
 
+const getAdvanceDueSummReport = async (req, res) => {
+    try {
+        const result = await databaseService.callStoredProcedureReporting(req,
+            RPT_ADVANCE_DUE_SUMM,
+            {}
+        );
+        res.json({
+            status: 1,
+            message: 'Success',
+            data: result
+        });
+    } catch (error) {
+        console.error("Error in getAdvanceDueSummReport:", error);
+        res.status(400).json({
+            status: 0,
+            message: error.message
+        });
+    }
+};
+
+const getAdvanceDueDetailListReport = async (req, res) => {
+    try {
+        const result = await databaseService.callStoredProcedureReporting(req,
+            RPT_ADVANCE_DUE_DETAIL_LIST,
+            {}
+        );
+        res.json({
+            status: 1,
+            message: 'Success',
+            data: result
+        });
+    } catch (error) {
+        console.error("Error in getAdvanceDueDetailListReport:", error);
+        res.status(400).json({
+            status: 0,
+            message: error.message
+        });
+    }
+};
 
 module.exports = {
     getSitewiseMonthDutySum,
     getBusBookingReport,
     getProformaInvoiceRegisterReport,
-    getInvoiceRegisterReport
+    getInvoiceRegisterReport,
+    getAdvanceDueSummReport,
+    getAdvanceDueDetailListReport
 };

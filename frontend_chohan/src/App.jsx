@@ -96,6 +96,7 @@ import FuelSummeryPrint from "./components/reports/fuelSummery";
 import FuelReportPrint from "./components/reports/fuelReport";
 import SitewiseDutyReport from "./components/reports/SitewiseDutyReport";
 import BusBookingReport from "./components/reports/BusBookingReport";
+import AdvanceDueReport from "./components/reports/AdvanceDueReport";
 
 import InvoicePrintdrawer from "./components/Invoiceentry/invoiceprintdrawer";
 import User from "./components/Useradd/users";
@@ -244,6 +245,10 @@ function App() {
             <Route
               path="/admin/bus-booking-report"
               element={<BusBookingReport />}
+            />
+            <Route
+              path="/admin/advance-due-report"
+              element={<AdvanceDueReport />}
             />
             <Route
               path="/admin/salaryRegister"

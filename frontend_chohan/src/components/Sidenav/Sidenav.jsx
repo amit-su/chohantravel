@@ -375,6 +375,15 @@ const Sidenav = () => {
           key: "SalaryReg",
           icon: <TbReportMoney style={{ fontSize: "20px" }} />,
         },
+        {
+          label: (
+            <NavLink to="/admin/advance-due-report">
+              <span>Advance Due Report</span>
+            </NavLink>
+          ),
+          key: "advanceDueReport",
+          icon: <TbReportMoney style={{ fontSize: "20px" }} />,
+        },
         // {
         //   label: (
         //     <NavLink

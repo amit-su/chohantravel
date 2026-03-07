@@ -125,6 +125,8 @@ const INVOICE_REG = "[dbo].[spRpt_InvoiceReg]";
 const RPT_SALARY_SLIP_KHORAKI = "[dbo].[spRpt_SalarySlip_Khoraki_New]";
 const RPT_SALARY_SLIP_ADVANCE = "[dbo].[spRpt_SalarySlip_Advance_New]";
 const RPT_MONTHLY_INVOICE = "[dbo].[spRpt_MonthlyInvoice]";
+const RPT_ADVANCE_DUE_SUMM = "[dbo].[spRpt_AdvanceDueSumm]";
+const RPT_ADVANCE_DUE_DETAIL_LIST = "[dbo].[spRpt_AdvanceDueDetailList]";
 
 module.exports = {
   RPT_SALARY_SLIP_KHORAKI,
@@ -231,5 +233,7 @@ module.exports = {
   INSERT_OR_UPDATE_MONTHLY_INV_ENTRY_PROCEDURE,
   GET_PROFORMA_MONTHLY_INVOICE_DATA,
   RPT_MONTHLY_INVOICE,
+  RPT_ADVANCE_DUE_SUMM,
+  RPT_ADVANCE_DUE_DETAIL_LIST,
 };
 

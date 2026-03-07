@@ -3,7 +3,9 @@ const {
     getSitewiseMonthDutySum,
     getBusBookingReport,
     getProformaInvoiceRegisterReport,
-    getInvoiceRegisterReport
+    getInvoiceRegisterReport,
+    getAdvanceDueSummReport,
+    getAdvanceDueDetailListReport
 } = require("./report.controller");
 
 const ReportRoutes = express.Router();
@@ -26,6 +28,16 @@ ReportRoutes.post(
 ReportRoutes.post(
     "/invoice-register",
     getInvoiceRegisterReport
+)
+
+ReportRoutes.post(
+    "/advance-due-summary",
+    getAdvanceDueSummReport
+)
+
+ReportRoutes.post(
+    "/advance-due-detail",
+    getAdvanceDueDetailListReport
 )
 
 module.exports = ReportRoutes;
