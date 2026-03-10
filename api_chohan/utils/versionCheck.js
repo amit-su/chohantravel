@@ -4,12 +4,17 @@ const checkAppVersion = (req, res, next) => {
     const requestVersion = req.headers['x-app-version'] || req.body.appVersion;
 
     if (envVersion) {
-        // Check if version is missing or doesn't match
-        // We also check for the string "undefined" which often happens with uninitialized env vars in Vite/React
-        if (!requestVersion ||
-            String(requestVersion).trim() === "undefined" ||
-            String(requestVersion).trim() !== envVersion) {
+        // Allow GET requests without a version header to support direct browser navigation (like file viewing)
+        // while still enforcing it for mutations (POST, PUT, DELETE) and for any request that DOES provide a version.
+        const isGetRequest = req.method === 'GET';
+        const hasVersion = !!requestVersion && String(requestVersion).trim() !== "undefined";
 
+        if (isGetRequest && !hasVersion) {
+            return next();
+        }
+
+        // Check if version is missing or doesn't match
+        if (!hasVersion || String(requestVersion).trim() !== envVersion) {
             console.warn(`[Version Mismatch] Method: ${req.method}, Path: ${req.path}, Env: ${envVersion}, Request: ${requestVersion}`);
 
             return res.status(403).json({
