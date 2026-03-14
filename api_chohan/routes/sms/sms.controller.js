@@ -139,7 +139,102 @@ const sendBookingConfirmationSms = async (req, res) => {
     }
 };
 
+const sendAllotmentSms = async (req, res) => {
+    try {
+        const { numbers, customerName, bookingNo, driverDetails, vehicleDetails, reportingOn, reportingAddress, destinationAddress, remarks, allotmentId } = req.body;
+
+        const errors = [];
+
+        /* ---------- Helper Function ---------- */
+        const isValidString = (value) => {
+            return typeof value === "string" && value.trim().length > 0;
+        };
+
+        const isValidPhone = (phone) => {
+            return /^[0-9]{10}$/.test(phone);
+        };
+
+        /* ---------- Numbers Validation ---------- */
+        if (!Array.isArray(numbers) || numbers.length === 0) {
+            errors.push("At least one mobile number is required.");
+        } else {
+            const invalidNumbers = numbers.filter(num => !isValidPhone(String(num).trim()));
+            if (invalidNumbers.length > 0) {
+                errors.push(`Invalid mobile numbers: ${invalidNumbers.join(", ")}. Each number must be 10 digits.`);
+            }
+        }
+
+        /* ---------- String Validations ---------- */
+        // if (!isValidString(customerName)) errors.push("Customer name is required.");
+        if (!isValidString(vehicleDetails)) errors.push("Vehicle details are required.");
+
+        /* ---------- Final Check ---------- */
+        if (errors.length > 0) {
+            return res.status(400).json({
+                status: false,
+                message: "Validation failed",
+                errors
+            });
+        }
+
+        const cleanStr = (str) => (str || "").replace(/\n+/g, " ").replace(/\s+/g, " ").trim();
+
+        const safeBookingNo = cleanStr(bookingNo);
+        const safeDriver = cleanStr(driverDetails);
+        const safeVehicle = cleanStr(vehicleDetails);
+        const safeReportingOn = cleanStr(reportingOn);
+        const splitText = (str, maxLength) => {
+            if (str.length <= maxLength) return [str, ""];
+            let splitIndex = str.lastIndexOf(" ", maxLength);
+            if (splitIndex === -1) splitIndex = maxLength;
+            return [str.substring(0, splitIndex).trim(), str.substring(splitIndex).trim()];
+        };
+
+        const safeDestAddr = cleanStr(destinationAddress);
+        const safeRemarks = cleanStr(remarks);
+
+        const [safeDestAddr1, safeDestAddr2] = splitText(safeDestAddr, 30);
+
+        const text = `Dear Customer, GREETINGS OF THE DAY! Vehicle and driver details for Booking No ${safeBookingNo} Driver: ${safeDriver} Vehicle: ${safeVehicle} Reporting on: ${safeReportingOn} Trip Details: ${safeDestAddr1} ${safeDestAddr2} Remarks: ${safeRemarks} Regards CHOHAN TOURS AND TRAVELS Contact 8820388881 WISHING YOU A HAPPY JOURNEY`;
+
+        const payload = {
+            senderId: "CH0HAN",
+            dcs: 0,
+            flashSms: 0,
+            schedTime: "",
+            groupId: "",
+            peId: "1701176908708959690",
+            text: text,
+            dltTemplateId: "1707177306072254927",
+            chainValue: "",
+            messageId: "",
+            numbers: numbers
+        };
+
+        const result = await sendSMS(payload);
+
+        let pool = await dbClientService();
+        const request = pool.request();
+        if (allotmentId && !isNaN(allotmentId) && Number(allotmentId) > 0) {
+            request.input('allotmentId', allotmentId);
+            await request.query('UPDATE BookingBusAllotment SET sms_count = ISNULL(sms_count, 0) + 1 WHERE ID = @allotmentId');
+        }
+
+        return res.status(200).json({
+            message: "Allotment SMS sent successfully",
+            providerResponse: result
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: "Failed to send Allotment SMS",
+            error: error.message
+        });
+    }
+};
+
 module.exports = {
     sendSmsController,
-    sendBookingConfirmationSms
+    sendBookingConfirmationSms,
+    sendAllotmentSms
 };
