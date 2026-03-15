@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import CreateDrawer from "../CommonUi/CreateDrawer";
 
-import { Card, Input, Select, Tooltip } from "antd";
+import { Card, Input, Select, Tooltip, Dropdown, Menu, Button, Drawer } from "antd";
 import UserPrivateComponent from "../PrivacyComponent/UserPrivateComponent";
 import TableComponent from "../CommonUi/TableComponent";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, MoreOutlined, EditOutlined } from "@ant-design/icons";
 import {
   deleteVendor,
   loadVendorPaginated,
@@ -22,6 +22,13 @@ const GetAllVendor = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCompany, setSelectedCompany] = useState(0);
   const [filteredList, setFilteredList] = useState([]);
+  const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
+  const [editingRecord, setEditingRecord] = useState(null);
+
+  const handleEdit = (record) => {
+    setEditingRecord(record);
+    setIsEditDrawerOpen(true);
+  };
 
   const onDelete = async (id) => {
     const res = await dispatch(deleteVendor(id));
@@ -173,28 +180,53 @@ const GetAllVendor = () => {
       dataIndex: "",
       key: "action",
       fixed: "right",
-      render: ({ id, ...restData }) => (
-        <div className="flex items-center gap-2">
-          <UserPrivateComponent permission="update-vendor">
-            <CreateDrawer
-              update={1}
-              permission={"update-vendor"}
-              title={"Edit Vendor Details"}
-              minimalEdit
-              width={60}
-            >
-              <UpdateVendor data={restData} id={id} />
-            </CreateDrawer>
-          </UserPrivateComponent>
+      width: 80,
+      render: (record) => {
+        const items = [
+          {
+            key: "edit",
+            label: (
+              <UserPrivateComponent permission="update-vendor">
+                <div
+                  onClick={() => handleEdit(record)}
+                  style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+                >
+                  <EditOutlined />
+                  <span>Edit Vendor</span>
+                </div>
+              </UserPrivateComponent>
+            ),
+          },
+          {
+            type: 'divider',
+          },
+          {
+            key: "delete",
+            label: (
+              <UserPrivateComponent permission={"delete-vendor"}>
+                <div
+                  onClick={() => onDelete(record.id)}
+                  style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+                >
+                  <DeleteOutlined />
+                  <span>Delete Vendor</span>
+                </div>
+              </UserPrivateComponent>
+            ),
+            danger: true,
+          },
+        ];
 
-          <UserPrivateComponent permission={"delete-vendor"}>
-            <DeleteOutlined
-              onClick={() => onDelete(id)}
-              className="p-2 text-white bg-red-600 rounded-md"
+        return (
+          <Dropdown menu={{ items }} trigger={["click"]} placement="bottomRight">
+            <Button
+              type="text"
+              icon={<MoreOutlined style={{ fontSize: '20px' }} />}
+              className="flex items-center justify-center hover:bg-gray-100 rounded-full w-10 h-10"
             />
-          </UserPrivateComponent>
-        </div>
-      ),
+          </Dropdown>
+        );
+      },
     },
   ];
 
@@ -273,6 +305,21 @@ const GetAllVendor = () => {
           query={searchTerm}
         />
       </UserPrivateComponent>
+      <Drawer
+        title="Edit Vendor Details"
+        width={window.innerWidth <= 768 ? "100%" : "60%"}
+        onClose={() => setIsEditDrawerOpen(false)}
+        open={isEditDrawerOpen}
+        destroyOnClose={true}
+      >
+        <div className="px-5 pt-5">
+          <UpdateVendor
+            data={editingRecord}
+            id={editingRecord?.id}
+            drawerClose={() => setIsEditDrawerOpen(false)}
+          />
+        </div>
+      </Drawer>
     </Card>
   );
 };

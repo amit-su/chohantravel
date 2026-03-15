@@ -46,6 +46,48 @@ const GetAllBookingEntry = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalItems, setTotalItems] = useState(0);
 
+  // SMS Preview State
+  const [isSmsPreviewModalOpen, setIsSmsPreviewModalOpen] = useState(false);
+  const [smsPreviewForm] = Form.useForm();
+  const [smsPreviews, setSmsPreviews] = useState([]);
+  const [pendingLocalBookings, setPendingLocalBookings] = useState([]);
+  const [currentBookingInfo, setCurrentBookingInfo] = useState(null);
+
+  const generateSinglePreview = (values, trip) => {
+    const { customerName, CompanyPhone } = values;
+    const cleanedPickup = (trip.tripDescription || "")
+      .replace(/\n+/g, " ")
+      .replace(/[.,]/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    let fromLoc = cleanedPickup;
+    let toLoc = "Local";
+    const match = cleanedPickup.match(/From (.*?) To (.*)/i);
+    if (match) {
+      fromLoc = match[1].trim();
+      toLoc = match[2].trim();
+    }
+    const tripDateTime = trip.ReportDate ? `${trip.ReportDate} ${trip.reportTime || ''}`.trim() : (trip.reportTime || '');
+
+    return `Dear ${customerName || ""}, your booking has been confirmed. Trip Details: ${fromLoc} ${toLoc}. Date:&Time ${tripDateTime} Driver details will be shared one day prior to journey day. Office number: ${CompanyPhone || ""} Thanks&Regards Chohan Tours and travels`;
+  };
+
+  const updateAllPreviews = (values, bookings) => {
+    const newPreviews = bookings.map(trip => generateSinglePreview(values, trip));
+    setSmsPreviews(newPreviews);
+  };
+
+  // Payment Reminder State
+  const [isPaymentReminderModalOpen, setIsPaymentReminderModalOpen] = useState(false);
+  const [paymentReminderForm] = Form.useForm();
+  const [paymentReminderPreview, setPaymentReminderPreview] = useState("");
+
+  const generatePaymentReminderPreview = (values) => {
+    const { customerName, journeyDate } = values;
+    return `Dear ${customerName || ""}, your journey with Chohan Tours & Travels is scheduled on ${journeyDate || ""}. We request you to kindly clear the pending payment. Thank you!`;
+  };
+
   const { list: partyList } = useSelector((state) => state.party);
 
   const fetchData = async (page = 1, limit = 10) => {
@@ -89,7 +131,6 @@ const GetAllBookingEntry = () => {
 
   const showSmsModal = async (record) => {
     try {
-      // First fetch the detailed booking entry to ensure we have the full data including LocalBookingList
       const response = await axios.get(`${apiUrl}/bookingEntry/${record.BookingNo}`);
 
       if (!response.data || !response.data.data || response.data.data.length === 0) {
@@ -111,43 +152,148 @@ const GetAllBookingEntry = () => {
       }
 
       if (localBookings && localBookings.length > 0) {
-        setSmsProgress({ current: 0, total: localBookings.length });
-        setIsProgressModalVisible(true);
+        setPendingLocalBookings(localBookings);
+        setCurrentBookingInfo(detailedBooking);
 
-        try {
-          const numbers = detailedBooking.ContactPersonNo ? detailedBooking.ContactPersonNo.toString().split(',')[0] : '';
-          const customerName = detailedBooking.ContactPersonName || detailedBooking.PartyName || '';
-          const CompanyPhone = detailedBooking.CompanyPhone ? detailedBooking.CompanyPhone.toString().split(',')[0] : '';
+        const initialValues = {
+          numbers: detailedBooking.ContactPersonNo ? detailedBooking.ContactPersonNo.toString().split(',')[0] : '',
+          customerName: detailedBooking.ContactPersonName || detailedBooking.PartyName || '',
+          CompanyPhone: detailedBooking.CompanyPhone ? detailedBooking.CompanyPhone.toString().split(',')[0] : '',
+        };
 
-          let successCount = 0;
-          for (let i = 0; i < localBookings.length; i++) {
-            const trip = localBookings[i];
-            const payload = {
-              numbers: [numbers],
-              customerName: customerName,
-              pickup: trip.tripDescription || '',
-              dateTime: trip.ReportDate ? `${trip.ReportDate} ${trip.reportTime || ''}`.trim() : (trip.reportTime || ''),
-              goingTo: 'Local',
-              CompanyPhone: CompanyPhone,
-              bookingTranId: trip.ID
-            };
-            const res = await axios.post(`${apiUrl}/sms/booking-confirmation`, payload);
-            if (res.status === 200) successCount++;
-
-            setSmsProgress({ current: i + 1, total: localBookings.length });
-          }
-          message.success(`Sent ${successCount} out of ${localBookings.length} SMS successfully!`);
-        } catch (error) {
-          message.error("Failed to send some SMS.");
-        } finally {
-          setTimeout(() => setIsProgressModalVisible(false), 1500);
-        }
-        return;
+        smsPreviewForm.setFieldsValue(initialValues);
+        updateAllPreviews(initialValues, localBookings);
+        setIsSmsPreviewModalOpen(true);
       } else {
         message.warning('No local bookings found for this item to send SMS.');
       }
     } catch (error) {
+      console.error("Fetch detailed data error:", error);
       message.error("Failed to retrieve booking details for SMS.");
+    }
+  };
+
+  const handleStartSmsSending = async () => {
+    try {
+      const values = await smsPreviewForm.validateFields();
+      setIsSmsPreviewModalOpen(false);
+      setSmsProgress({ current: 0, total: pendingLocalBookings.length });
+      setIsProgressModalVisible(true);
+
+      let successCount = 0;
+      for (let i = 0; i < pendingLocalBookings.length; i++) {
+        const trip = pendingLocalBookings[i];
+
+        const cleanedPickup = (trip.tripDescription || "")
+          .replace(/\n+/g, " ")
+          .replace(/[.,]/g, "")
+          .replace(/\s+/g, " ")
+          .trim();
+
+        let fromLoc = cleanedPickup;
+        let toLoc = "Local";
+        const match = cleanedPickup.match(/From (.*?) To (.*)/i);
+        if (match) {
+          fromLoc = match[1].trim();
+          toLoc = match[2].trim();
+        }
+
+        const payload = {
+          numbers: [values.numbers],
+          customerName: values.customerName,
+          pickup: `From ${fromLoc} To ${toLoc}`,
+          dateTime: trip.ReportDate ? `${trip.ReportDate} ${trip.reportTime || ''}`.trim() : "",
+          goingTo: toLoc,
+          CompanyPhone: values.CompanyPhone,
+          bookingTranId: trip.ID
+        };
+
+        const res = await axios.post(`${apiUrl}/sms/booking-confirmation`, payload);
+        if (res.status === 200) successCount++;
+
+        setSmsProgress({ current: i + 1, total: pendingLocalBookings.length });
+      }
+      message.success(`Sent ${successCount} out of ${pendingLocalBookings.length} SMS successfully!`);
+      fetchData(currentPage, itemsPerPage);
+    } catch (error) {
+      console.error("SMS batch error:", error);
+      message.error("Failed to send some SMS.");
+    } finally {
+      setTimeout(() => setIsProgressModalVisible(false), 1500);
+    }
+  };
+
+  const showPaymentReminderModal = async (record) => {
+    try {
+      const response = await axios.get(`${apiUrl}/bookingEntry/${record.BookingNo}`);
+      if (!response.data || !response.data.data || response.data.data.length === 0) {
+        message.error("Could not fetch detailed booking data.");
+        return;
+      }
+
+      const detailedBooking = response.data.data[0];
+      let localBookings = [];
+      if (detailedBooking.LocalBookingList) {
+        try {
+          localBookings = typeof detailedBooking.LocalBookingList === 'string'
+            ? JSON.parse(detailedBooking.LocalBookingList)
+            : detailedBooking.LocalBookingList;
+        } catch (e) {
+          message.error("Failed to parse LocalBookingList");
+        }
+      }
+
+      if (localBookings && localBookings.length > 0) {
+        setPendingLocalBookings(localBookings);
+        setCurrentBookingInfo(detailedBooking);
+        const firstTrip = localBookings[0];
+        let journeyDate = "";
+        if (firstTrip.ReportDate) {
+          if (typeof firstTrip.ReportDate === 'string' && /^\d{2}[-/]\d{2}[-/]\d{4}$/.test(firstTrip.ReportDate)) {
+            journeyDate = firstTrip.ReportDate;
+          } else {
+            const dt = dayjs(firstTrip.ReportDate);
+            journeyDate = dt.isValid() ? dt.format("DD-MM-YYYY") : firstTrip.ReportDate;
+          }
+        }
+
+        const initialValues = {
+          numbers: detailedBooking.ContactPersonNo ? detailedBooking.ContactPersonNo.toString().split(',')[0] : '',
+          customerName: detailedBooking.ContactPersonName || detailedBooking.PartyName || '',
+          journeyDate: journeyDate,
+        };
+        paymentReminderForm.setFieldsValue(initialValues);
+        setPaymentReminderPreview(generatePaymentReminderPreview(initialValues));
+        setIsPaymentReminderModalOpen(true);
+      } else {
+        message.warning('No local bookings found to send SMS.');
+      }
+    } catch (error) {
+      message.error("Failed to retrieve booking details.");
+    }
+  };
+
+  const handleSendPaymentReminder = async () => {
+    try {
+      const values = await paymentReminderForm.validateFields();
+      setIsPaymentReminderModalOpen(false);
+
+      const payload = {
+        numbers: [values.numbers],
+        customerName: values.customerName,
+        journeyDate: values.journeyDate,
+        bookingNo: currentBookingInfo?.BookingNo
+      };
+
+      const res = await axios.post(`${apiUrl}/sms/payment-reminder`, payload);
+      if (res.status === 200) {
+        message.success("Payment reminder SMS sent successfully!");
+        fetchData(currentPage, itemsPerPage);
+      } else {
+        message.error("Failed to send SMS.");
+      }
+    } catch (error) {
+      message.error("Failed to send Payment reminder SMS.");
     }
   };
 
@@ -253,6 +399,22 @@ const GetAllBookingEntry = () => {
       )
     },
     {
+      title: "Payment SMS",
+      dataIndex: "payment_sms_count",
+      key: "payment_sms_count",
+      width: 110,
+      render: (count) => (
+        <div className="flex items-center gap-2">
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center ${count > 0 ? 'bg-orange-100 text-orange-600' : 'bg-gray-100 text-gray-400'}`}>
+            <MessageOutlined style={{ fontSize: '14px' }} />
+          </div>
+          <span className={`font-bold ${count > 0 ? 'text-orange-600' : 'text-gray-400'}`}>
+            {count || 0}
+          </span>
+        </div>
+      )
+    },
+    {
       title: "Action",
       key: "action",
       fixed: "right",
@@ -296,6 +458,18 @@ const GetAllBookingEntry = () => {
               >
                 <MessageOutlined />
                 <span>Send SMS</span>
+              </div>
+            )
+          },
+          {
+            key: "paymentReminder",
+            label: (
+              <div
+                onClick={() => showPaymentReminderModal(record)}
+                style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+              >
+                <MessageOutlined style={{ color: '#fa8c16' }} />
+                <span>Payment Reminder</span>
               </div>
             )
           },
@@ -483,6 +657,102 @@ const GetAllBookingEntry = () => {
               {smsProgress.current === smsProgress.total
                 ? "All messages sent successfully!"
                 : `Sending message ${smsProgress.current} of ${smsProgress.total}...`}
+            </p>
+          </div>
+        </Modal>
+
+        <Modal
+          title={<span className="text-lg font-semibold text-gray-800">Booking Confirmation SMS Preview</span>}
+          open={isSmsPreviewModalOpen}
+          onOk={handleStartSmsSending}
+          onCancel={() => setIsSmsPreviewModalOpen(false)}
+          width={800}
+          okText={`Send SMS to ${pendingLocalBookings.length} Trip(s)`}
+          destroyOnClose
+        >
+          <Form
+            form={smsPreviewForm}
+            layout="vertical"
+            onValuesChange={() => {
+              updateAllPreviews(smsPreviewForm.getFieldsValue(), pendingLocalBookings);
+            }}
+          >
+            <div className="grid grid-cols-2 gap-4">
+              <Form.Item
+                name="numbers"
+                label="Phone Number"
+                rules={[{ required: true, message: "Please enter phone number" }]}
+              >
+                <Input placeholder="Enter Phone Number" />
+              </Form.Item>
+              <Form.Item name="customerName" label="Customer Name" rules={[{ required: true }]}>
+                <Input placeholder="Customer Name" />
+              </Form.Item>
+              <Form.Item name="CompanyPhone" label="Office Phone" rules={[{ required: true }]}>
+                <Input placeholder="Office Phone" />
+              </Form.Item>
+            </div>
+          </Form>
+          <div className="mt-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+            <h4 className="font-bold mb-3 text-blue-800 flex items-center gap-2 sticky top-0 bg-white py-2 z-10 border-b border-blue-50">
+              <MessageOutlined /> Message Previews ({smsPreviews.length}):
+            </h4>
+            <div className="space-y-4 pb-2">
+              {smsPreviews.map((preview, index) => (
+                <div key={index} className="p-4 bg-blue-50/50 rounded-xl border border-blue-100 shadow-sm relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-1 h-full bg-blue-400"></div>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-[10px] font-bold text-blue-400 uppercase tracking-wider">SMS #{index + 1}</span>
+                    <span className="text-[10px] text-gray-400 font-medium">Trip ID: {pendingLocalBookings[index]?.ID}</span>
+                  </div>
+                  <p className="text-gray-700 whitespace-pre-wrap font-medium leading-relaxed text-sm">
+                    {preview}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Modal>
+
+        <Modal
+          title={<span className="text-lg font-semibold text-gray-800">Payment Reminder SMS Preview</span>}
+          open={isPaymentReminderModalOpen}
+          onOk={handleSendPaymentReminder}
+          onCancel={() => setIsPaymentReminderModalOpen(false)}
+          width={800}
+          okText="Send SMS"
+          destroyOnClose
+        >
+          <Form
+            form={paymentReminderForm}
+            layout="vertical"
+            onValuesChange={() => {
+              setPaymentReminderPreview(generatePaymentReminderPreview(paymentReminderForm.getFieldsValue()));
+            }}
+          >
+            <div className="grid grid-cols-2 gap-4">
+              <Form.Item
+                name="numbers"
+                label="Phone Number"
+                rules={[{ required: true, message: "Please enter phone number" }]}
+              >
+                <Input placeholder="Enter Phone Number" />
+              </Form.Item>
+              <Form.Item name="customerName" label="Customer Name" rules={[{ required: true }]}>
+                <Input placeholder="Customer Name" />
+              </Form.Item>
+              <Form.Item name="journeyDate" label="Journey Date" rules={[{ required: true }]}>
+                <Input placeholder="Journey Date" />
+              </Form.Item>
+            </div>
+          </Form>
+          <div className="mt-4 p-4 bg-orange-50 rounded-xl border border-orange-100 shadow-sm relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-1 h-full bg-orange-400"></div>
+            <h4 className="font-bold mb-3 text-orange-600 flex items-center gap-2">
+              <MessageOutlined /> Message Preview:
+            </h4>
+            <p className="text-gray-700 whitespace-pre-wrap font-medium leading-relaxed text-sm">
+              {paymentReminderPreview}
             </p>
           </div>
         </Modal>

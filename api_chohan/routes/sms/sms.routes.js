@@ -1,5 +1,5 @@
 const express = require("express");
-const { sendSmsController, sendBookingConfirmationSms, sendAllotmentSms } = require("./sms.controller");
+const { sendSmsController, sendBookingConfirmationSms, sendAllotmentSms, sendPaymentReminderSms } = require("./sms.controller");
 
 const smsRoutes = express.Router();
 
@@ -11,5 +11,8 @@ smsRoutes.post("/booking-confirmation", sendBookingConfirmationSms);
 
 // POST /v1/sms/allotment
 smsRoutes.post("/allotment", sendAllotmentSms);
+
+// POST /v1/sms/payment-reminder
+smsRoutes.post("/payment-reminder", sendPaymentReminderSms);
 
 module.exports = smsRoutes;

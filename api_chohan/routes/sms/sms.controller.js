@@ -233,8 +233,85 @@ const sendAllotmentSms = async (req, res) => {
     }
 };
 
+const sendPaymentReminderSms = async (req, res) => {
+    try {
+        const { numbers, customerName, journeyDate, bookingNo } = req.body;
+
+        const errors = [];
+
+        /* ---------- Helper Function ---------- */
+        const isValidString = (value) => {
+            return typeof value === "string" && value.trim().length > 0;
+        };
+
+        const isValidPhone = (phone) => {
+            return /^[0-9]{10}$/.test(phone);
+        };
+
+        /* ---------- Numbers Validation ---------- */
+        if (!Array.isArray(numbers) || numbers.length === 0) {
+            errors.push("At least one mobile number is required.");
+        } else {
+            const invalidNumbers = numbers.filter(num => !isValidPhone(String(num).trim()));
+            if (invalidNumbers.length > 0) {
+                errors.push(`Invalid mobile numbers: ${invalidNumbers.join(", ")}. Each number must be 10 digits.`);
+            }
+        }
+
+        /* ---------- String Validations ---------- */
+        if (!isValidString(customerName)) errors.push("Customer name is required.");
+        if (!isValidString(journeyDate)) errors.push("Journey date is required.");
+
+        /* ---------- Final Check ---------- */
+        if (errors.length > 0) {
+            return res.status(400).json({
+                status: false,
+                message: "Validation failed",
+                errors
+            });
+        }
+
+        const text = `Dear ${customerName}, your journey with Chohan Tours & Travels is scheduled on ${journeyDate}. We request you to kindly clear the pending payment. Thank you!`;
+
+        const payload = {
+            senderId: "CH0HAN",
+            dcs: 0,
+            flashSms: 0,
+            schedTime: "",
+            groupId: "",
+            peId: "1701176908708959690",
+            text: text,
+            dltTemplateId: "1707177001747699662",
+            chainValue: "",
+            messageId: "",
+            numbers: numbers
+        };
+
+        const result = await sendSMS(payload);
+
+        let pool = await dbClientService();
+        const request = pool.request();
+        if (bookingNo) {
+            request.input('bookingNo', bookingNo);
+            await request.query('UPDATE BookingHead SET payment_sms_count = ISNULL(payment_sms_count, 0) + 1 WHERE BookingNo = @bookingNo');
+        }
+
+        return res.status(200).json({
+            message: "Payment reminder SMS sent successfully",
+            providerResponse: result
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: "Failed to send Payment reminder SMS",
+            error: error.message
+        });
+    }
+};
+
 module.exports = {
     sendSmsController,
     sendBookingConfirmationSms,
-    sendAllotmentSms
+    sendAllotmentSms,
+    sendPaymentReminderSms
 };
