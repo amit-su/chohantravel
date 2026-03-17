@@ -1,0 +1,72 @@
+:host {
+    display: block;
+
+    .main-container {
+        min-height: 100vh;
+        background-color: var(--surface-ground);
+        padding-bottom: env(safe-area-inset-bottom, 2rem);
+        
+        .search-section {
+            background: var(--surface-card);
+            padding: 2rem 1rem;
+            border-bottom-left-radius: 2rem;
+            border-bottom-right-radius: 2rem;
+            border-bottom: 1px solid var(--surface-border);
+        }
+
+        .documents-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .empty-state {
+            .empty-icon-container {
+                width: 100px;
+                height: 100px;
+                background: var(--surface-100);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto;
+            }
+        }
+    }
+
+    @media screen and (min-width: 768px) {
+        .documents-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    ::ng-deep {
+        .document-card {
+            .p-card-body {
+                padding: 1.25rem;
+            }
+
+            .p-divider {
+                margin: 0.75rem 0;
+                
+                &:before {
+                    border-top: 1px dashed var(--surface-border);
+                }
+            }
+        }
+
+        .p-autocomplete {
+            .p-inputtext {
+                padding: 0.75rem 1rem;
+                font-size: 1rem;
+                border: 1px solid var(--surface-border);
+                transition: all 0.2s;
+
+                &:focus {
+                    border-color: var(--primary-color);
+                    box-shadow: 0 0 0 2px var(--primary-100);
+                }
+            }
+        }
+    }
+}

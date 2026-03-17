@@ -1,0 +1,9 @@
+// ::ng-deep .dropdown-up .p-dropdown-panel {
+//     transform-origin: bottom center !important;
+//     top: auto !important;
+//     bottom: 100% !important;
+//     margin-bottom: 4px;
+// }
+.custom-site-dropdown .p-dropdown-panel {
+  min-width: 100% !important;
+}

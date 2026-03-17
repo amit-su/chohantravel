@@ -1,0 +1,144 @@
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { firstValueFrom, tap } from 'rxjs';
+import { PagesService } from '../../../../services/pages.service';
+import { AlertService } from '../../../../services/alert.service';
+import { GlobalStorageService } from '../../../../services/global-storage.service';
+import { jwtDecode } from 'jwt-decode';
+import { CardModule } from 'primeng/card';
+
+@Component({
+    selector: 'app-menu',
+    imports: [CommonModule, CardModule],
+    templateUrl: './menu.component.html',
+    styleUrl: './menu.component.scss'
+})
+export class MenuComponent {
+    constructor(
+        private router: Router,
+        private pageService: PagesService,
+        private alertService: AlertService,
+        private globalstore: GlobalStorageService
+    ) {}
+    selectedCard: string = ''; // Initially, no card is selected
+    allowedPageIds: any[] = [];
+    bookingPage: boolean = false;
+    bookingStatusPages: boolean = false;
+    masterPage: boolean = false;
+    manifest: boolean = false;
+    decodedToken: any;
+
+    async ngOnInit(): Promise<void> {
+        this.globalstore.set('PAGE_TITLE', 'MENU');
+        // this.getAccess();
+        const token: any = this.globalstore.get('token');
+        this.decodedToken = this.decodeJwt(token);
+        // await this.getBranchById(this.decodedToken.branch_id);
+        // await this.gateMtInfo();
+    }
+
+    decodeJwt(token: string): any {
+        try {
+            return jwtDecode(token);
+        } catch (error) {
+            this.alertService.error('Invalid token:');
+            return null;
+        }
+    }
+
+    // async getBranchById(branchId: any) {
+    //     if (branchId !== null) {
+    //         if (this.globalstore.get('branchInfo')) {
+    //             return;
+    //         }
+    //         const payload = {
+    //             fields: [],
+    //             branch_id: branchId
+    //         };
+    //         await firstValueFrom(
+    //             this.branchService.getBranchById(payload).pipe(
+    //                 tap(
+    //                     (response) => {
+    //                         if (response.body) {
+    //                             this.globalstore.set('branchInfo', response.body, true);
+    //                         }
+    //                     },
+    //                     (error) => {
+    //                         this.alertService.error(error.error.message);
+    //                     }
+    //                 )
+    //             )
+    //         );
+    //     }
+    // }
+
+    // async gateMtInfo() {
+    //     if (this.globalstore.get('userInfo')) {
+    //         return;
+    //     }
+
+    //     await firstValueFrom(
+    //         this.userService.gateMyInfo().pipe(
+    //             tap(
+    //                 (response) => {
+    //                     this.globalstore.set('userInfo', response.body, true);
+    //                 },
+    //                 (error) => {
+    //                     this.alertService.error(error.error.message);
+    //                 }
+    //             )
+    //         )
+    //     );
+    // }
+
+    async getAccess() {
+        try {
+            const res: any = await firstValueFrom(this.pageService.getMyAccess());
+            this.allowedPageIds = res.body || [];
+            this.globalstore.set('allowedPageIds', this.allowedPageIds);
+        } catch (error: any) {
+            this.alertService.error(error.error.message);
+        }
+    }
+
+    hasPageAccess(pageId: number): boolean {
+        const page = this.allowedPageIds.find((page) => page.page_id === pageId);
+
+        if (!page || !page.permission_code || page.permission_code.length !== 5) {
+            return false; // Invalid or missing permission_code
+        }
+
+        const [read, write, update, del, admin] = page.permission_code.split('').map(Number);
+
+        // If read is 0, the user cannot see the UI for this page
+        if (read === 0) {
+            return false;
+        }
+
+        // If all permissions are 0 (00000), access is completely denied
+        return write === 1 || update === 1 || del === 1 || admin === 1;
+    }
+
+    selectCard(card: string) {
+        this.selectedCard = card;
+
+        const routes: { [key: string]: string } = {
+            booking: '/pages/booking',
+            'booking-status': '/pages/booking-status',
+            master: '/pages/master',
+            manifest: '/pages/manifest',
+            'booking-Received': '/pages/booking-Received',
+            delivery: '/pages/delivery',
+            'pod-upload': '/pages/pod-upload',
+            tracking: '/pages/tracking',
+            attendence: '/pages/DriverHelperAttendencee',
+            documents: '/pages/bus-document'
+        };
+
+        const route = routes[card];
+        if (route) {
+            this.router.navigate([route]);
+        }
+    }
+}

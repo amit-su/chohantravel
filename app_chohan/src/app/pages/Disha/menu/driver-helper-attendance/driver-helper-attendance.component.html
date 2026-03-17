@@ -1,0 +1,128 @@
+<!-- Loading Overlay -->
+<div *ngIf="loading"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-60 backdrop-blur-sm">
+    <p-progressSpinner strokeWidth="8" animationDuration=".5s" styleClass="w-12 h-12"
+        [style]="{ width: '50px', height: '50px' }" />
+</div>
+<p-progressBar *ngIf="savingAll" mode="indeterminate" styleClass="mb-3"></p-progressBar>
+
+<!-- Attendance Form -->
+<div class="p-2 text-sm bg-sky-100">
+    <form [formGroup]="attendanceForm" class="grid gap-2 mb-2 text-sm sm:grid-cols-2">
+        <!-- Row 1: Date + Driver/Helper -->
+        <div class="flex gap-2">
+            <!-- <p-calendar formControlName="selectedDate" dateFormat="dd/mm/yy" [touchUI]="true" showIcon="true"
+                iconDisplay="input" (onSelect)="handleDateChange($event)" placeholder="Select Date" class="w-1/2"
+                [appendTo]="'body'" inputStyleClass="!text-sm"> </p-calendar> -->
+            <p-calendar formControlName="selectedDate" dateFormat="dd/mm/yy" [touchUI]="isMobile" [appendTo]="'body'"
+                showIcon="true" iconDisplay="input" [maxDate]="today" placeholder="Select Date"
+                inputStyleClass="!text-sm w-full" (onSelect)="handleDateChange($event)">
+            </p-calendar>
+
+            <p-dropdown formControlName="driverHelper" [options]="driverHelperOptions" placeholder="Type"
+                (onChange)="handleDriverHelperChange($event.value)" class="w-1/2" styleClass="h-9 text-sm"
+                [appendTo]="'body'">
+            </p-dropdown>
+        </div>
+
+        <!-- Row 2: Site -->
+        <p-dropdown [showClear]="true" formControlName="site" [options]="siteNameByUser" optionLabel="siteName"
+            optionValue="siteID" placeholder="Site" (onChange)="handleSiteChange($event.value)" [filter]="true"
+            class="w-full" styleClass="h-9 text-sm" [appendTo]="'body'">
+        </p-dropdown>
+
+        <!-- Row 3: Search + Save All -->
+        <div class="flex justify-between gap-2 sm:col-span-2">
+            <input pInputText formControlName="search" placeholder="Search" class="flex-grow !py-1 text-sm" />
+            <button pButton type="button" label="Save All" (click)="saveAll()" [disabled]="savingAll"
+                class="!px-3 !py-1 text-sm bg-green-500 border-green-600 hover:bg-green-600 hover:border-green-700"></button>
+        </div>
+
+    </form>
+    <div class="max-h-[calc(109vh-300px)] overflow-auto rounded-lg shadow-sm" *ngIf="filteredTableData?.length != 0">
+        <table class="min-w-full text-sm border-collapse">
+            <thead class="sticky top-0 z-10">
+                <tr class="text-left text-white bg-gradient-to-r from-blue-700 to-teal-600">
+                    <th class="px-4 py-3 font-medium first:rounded-tl-lg">Sl</th>
+                    <th class="px-4 py-3 font-medium">Name</th>
+                    <th class="px-4 py-3 font-medium last:rounded-tr-lg flex items-center justify-between">
+                        <span>{{ selectedDateColumn }}</span>
+
+                        <!-- Toggle Button -->
+                        <div *ngIf="userId !=1" class="ml-3">
+                            <button (click)="toggleSites()"
+                                [ngClass]="isAllSites
+        ? 'ml-3 px-3 py-1 text-xs font-semibold text-white rounded-lg bg-pink-600 hover:bg-pink-700 shadow-md transition'
+        : 'ml-3 px-3 py-1 text-xs font-semibold text-white rounded-lg bg-red-600 hover:bg-red-700 shadow-md transition'">
+                                {{ isAllSites ? 'My Sites' : 'All Sites' }}
+                            </button>
+                        </div>
+                    </th>
+                </tr>
+
+
+            </thead>
+            <tbody class="divide-y divide-sky-200">
+                <tr *ngFor="let row of filteredTableData; let i = index; trackBy: trackById"
+                    class="transition-colors hover:bg-gray-50">
+                    <td class="px-2 py-2 text-center">{{ i + 1 }}</td>
+                    <td class="px-4 py-3 font-bold text-slate-900 bold">{{ row.name }}</td>
+                    <td class="px-4 py-3">
+                        <div class="flex flex-col w-full gap-2">
+                            <div class="flex flex-col w-full gap-2">
+                                <!-- <p-dropdown [options]="shortSiteOptions" [appendTo]="'body'"
+                                    [(ngModel)]="selectedValues[row.id]" placeholder="Select Site" [filter]="false"
+                                    styleClass="w-full max-w-xs text-sm border-gray-300 rounded-md p-0 m-0 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 custom-site-dropdown"
+                                    panelStyleClass="w-full min-w-[200px] max-w-full">
+
+                                    <ng-template let-option pTemplate="item">
+                                        <div class="cursor-pointer w-full hover:bg-gray-100 rounded"
+                                            (click)="addToAttendance(row.id, selectedDateColumn, option.value)">
+                                            {{ option.label }}
+                                        </div>
+                                    </ng-template>
+                                </p-dropdown> -->
+                                <p-dropdown [options]="shortSiteOptions" [appendTo]="'body'"
+                                    [(ngModel)]="selectedValues[row.id]" placeholder="Select Site" [filter]="false"
+                                    styleClass="w-full max-w-xs text-sm border-gray-300 rounded-md p-0 m-0 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 custom-site-dropdown"
+                                    [panelStyle]="{ 'min-width': '100%' }">
+                                    <ng-template let-option pTemplate="item">
+                                        <div class="cursor-pointer w-full hover:bg-gray-100 rounded"
+                                            (click)="addToAttendance(row.id, selectedDateColumn, option.value)">
+                                            {{ option.label }}
+                                        </div>
+                                    </ng-template>
+                                </p-dropdown>
+
+                            </div>
+                            <!-- Selected values list -->
+                            <!-- <div class="flex flex-wrap gap-2 mt-1">
+                                <span *ngFor="let val of row['attendance_' + selectedDateColumn]; let i = index"
+                                    class="inline-flex items-center px-3 py-1 text-xs font-bold text-indigo-800 bg-indigo-100 rounded-full">
+                                    <div *ngIf="val != 0">
+                                        {{ getSiteLabel(val) }}
+                                        <button type="button" (click)="removeAttendance(row.id, selectedDateColumn, i)"
+                                            class="ml-1.5 text-indigo-400 hover:text-indigo-600 focus:outline-none font-bold">×</button>
+                                    </div>
+                                </span>
+                            </div> -->
+                            <div class="flex flex-wrap gap-2 mt-1">
+                                <ng-container
+                                    *ngFor="let val of row['attendance_' + selectedDateColumn]; let i = index">
+                                    <span *ngIf="val != 0"
+                                        class="inline-flex items-center px-3 py-1 text-xs font-bold text-indigo-800 bg-indigo-100 rounded-full">
+                                        {{ getSiteLabel(val) }}
+                                        <button type="button" (click)="removeAttendance(row.id, selectedDateColumn, i)"
+                                            class="ml-1.5 text-indigo-400 hover:text-indigo-600 focus:outline-none font-bold">
+                                            ×
+                                        </button>
+                                    </span>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
