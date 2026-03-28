@@ -5,18 +5,21 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { useDispatch, useSelector } from "react-redux";
 import { loadAllCompany } from "../../redux/rtk/features/company/comapnySlice";
+import { loadAllSite } from "../../redux/rtk/features/site/siteSlice";
 import { generateSalaryRegisterPDF } from "../../utils/generateSalaryRegisterPDF";
 import { generateSalaryRegisterExcel } from "../../utils/generateSalaryRegisterExcel";
 
 function SalaryRegisterReport() {
     const dispatch = useDispatch();
     const { list: companyList } = useSelector((state) => state.companies);
+    const { list: siteList } = useSelector((state) => state.sites);
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [selectedDate, setSelectedDate] = useState(dayjs());
     const [paymentMode, setPaymentMode] = useState("ALL");
     const [selectedCompany, setSelectedCompany] = useState(null);
+    const [selectedSite, setSelectedSite] = useState(null);
     const [salaryData, setSalaryData] = useState(null);
     const [pdfBlobUrl, setPdfBlobUrl] = useState(null);
 
@@ -55,6 +58,7 @@ function SalaryRegisterReport() {
 
     useEffect(() => {
         dispatch(loadAllCompany({ page: 1, count: 1000, status: true }));
+        dispatch(loadAllSite({ page: 1, count: 1000, status: true }));
     }, [dispatch]);
 
     const fetchSalaryRegister = async () => {
@@ -66,7 +70,8 @@ function SalaryRegisterReport() {
                 `${apiUrl}/salarydetails/register-report`,
                 {
                     sDate: selectedDate.format('YYYY-MM-DD'),
-                    CompanyID: selectedCompany
+                    CompanyID: selectedCompany,
+                    SiteID: selectedSite || 0
                 }
             );
 
@@ -153,6 +158,25 @@ function SalaryRegisterReport() {
                             >
                                 {companyList?.map((comp) => (
                                     <Select.Option key={comp.Id} value={comp.Id}>{comp.Name}</Select.Option>
+                                ))}
+                            </Select>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Select Site
+                            </label>
+                            <Select
+                                placeholder="All Sites"
+                                allowClear
+                                showSearch
+                                optionFilterProp="children"
+                                value={selectedSite}
+                                onChange={(val) => setSelectedSite(val)}
+                                className="w-48"
+                            >
+                                {siteList?.map((site) => (
+                                    <Select.Option key={site.siteID} value={site.siteID}>{site.siteName}</Select.Option>
                                 ))}
                             </Select>
                         </div>
