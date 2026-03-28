@@ -40,6 +40,7 @@ const GetAllBookingEntry = () => {
   const [partyFilter, setPartyFilter] = useState(null);
   const [dateFilter, setDateFilter] = useState(null);
   const [searchFilter, setSearchFilter] = useState("");
+  const [allotmentFilter, setAllotmentFilter] = useState(null);
 
   // Pagination State
   const [currentPage, setCurrentPage] = useState(1);
@@ -99,6 +100,7 @@ const GetAllBookingEntry = () => {
         ...(partyFilter && { partyId: partyFilter }),
         ...(dateFilter && { bookingDate: dayjs(dateFilter).format("YYYY-MM-DD") }),
         ...(searchFilter && { search: searchFilter }),
+        ...(allotmentFilter && { allotmentStatus: allotmentFilter }),
       });
 
       const response = await axios.get(`${apiUrl}/bookingHead?${queryParams.toString()}`);
@@ -117,7 +119,7 @@ const GetAllBookingEntry = () => {
 
   useEffect(() => {
     fetchData(currentPage, itemsPerPage);
-  }, [currentPage, itemsPerPage, dateFilter, searchFilter, partyFilter]);
+  }, [currentPage, itemsPerPage, dateFilter, searchFilter, partyFilter, allotmentFilter]);
 
   const showModal = (record) => {
     setSelectedBooking(record);
@@ -574,6 +576,20 @@ const GetAllBookingEntry = () => {
                 size="large"
                 className="rounded-lg"
                 suffixIcon={<CalendarOutlined className="text-blue-500" />}
+              />
+
+              <Select
+                allowClear
+                placeholder="Allotment Status"
+                style={{ width: '180px' }}
+                size="large"
+                onChange={setAllotmentFilter}
+                className="rounded-lg"
+                options={[
+                  { value: 'Alloted', label: 'FULL ALLOTTED' },
+                  { value: 'Pending', label: 'NOT ALLOTTED' },
+                  { value: 'Partial', label: 'PARTIAL ALLOTTED' }
+                ]}
               />
             </div>
           </div>

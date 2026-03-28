@@ -35,6 +35,7 @@ const getAllBookingHead = async (req, res) => {
       PartyID: req.query.partyId || null,
       BookingDate: req.query.bookingDate || null,
       SearchValue: req.query.search || null,
+      AllotmentStatus: req.query.allotmentStatus || null,
     };
 
     const resultdata = await databaseService.callStoredProcedure(req,
