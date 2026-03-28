@@ -217,12 +217,11 @@ const GetSalaryDetails = () => {
   const syncAdvanceTotal = (adjustments, recordId, advanceData) => {
     const totalAdjusted = Object.values(adjustments).reduce((acc, val) => acc + (val || 0), 0);
 
-    // Map adjustments to the required detailed format
     const detailedAdjustments = advanceData.map((adv, idx) => ({
       advanceId: adv.ID,
       advanceAmount: adv.advanceAmount,
       AdjusAmt: adjustments[idx] || 0
-    })).filter(adj => adj.AdjusAmt > 0);
+    }));
 
     const newData = data.map((item) =>
       item.id === recordId
@@ -625,7 +624,7 @@ const GetSalaryDetails = () => {
       },
       {
         id: 14,
-        title: "Advance Due",
+        title: "Total Advance",
         dataIndex: "TotalAdvanceDue",
         key: "TotalAdvanceDue",
         width: 120,
@@ -671,6 +670,17 @@ const GetSalaryDetails = () => {
       },
       {
         id: 16,
+        title: "Advance Due",
+        key: "RemainingAdvanceDue",
+        width: 120,
+        align: "right",
+        render: (text, record) => {
+          const remaining = (record.TotalAdvanceDue || 0) - (record.AdvanceAdjusted || 0);
+          return <span>{Math.round(remaining)}</span>;
+        },
+      },
+      {
+        id: 17,
         title: "Net Salary",
         key: "NetSalary",
         width: 120,
