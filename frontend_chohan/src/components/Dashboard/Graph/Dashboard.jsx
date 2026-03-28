@@ -111,6 +111,11 @@ const Dashboard = () => {
   const [expiredDocs, setExpiredDocs] = useState([]);
   const [showExpiredDetails, setShowExpiredDetails] = useState(false);
   const [expiredDocsLoading, setExpiredDocsLoading] = useState(false);
+  
+  // Expiry Document Filters
+  const [expiredSearchBusNo, setExpiredSearchBusNo] = useState("");
+  const [expiredSearchDocType, setExpiredSearchDocType] = useState(null);
+  const [expiredSearchMonth, setExpiredSearchMonth] = useState(null);
 
   // --- Effects ---
   useEffect(() => {
@@ -205,6 +210,41 @@ const Dashboard = () => {
         item.AvailabilityStatus?.toLowerCase().includes(searchLower)
     );
   }, [searchText, result]);
+
+  // --- Derived Data for Expired Docs ---
+  const uniqueDocTypes = useMemo(() => {
+    const types = new Set(expiredDocs.map(doc => doc.DocumentType));
+    return Array.from(types).filter(Boolean).sort();
+  }, [expiredDocs]);
+
+  const filteredExpiredDocs = useMemo(() => {
+    let filtered = expiredDocs;
+
+    if (expiredSearchBusNo) {
+      filtered = filtered.filter((doc) =>
+        doc.BusNumber?.toLowerCase().includes(expiredSearchBusNo.toLowerCase())
+      );
+    }
+
+    if (expiredSearchDocType) {
+      filtered = filtered.filter((doc) =>
+        doc.DocumentType === expiredSearchDocType
+      );
+    }
+
+    if (expiredSearchMonth) {
+      const targetMonth = dayjs(expiredSearchMonth).month(); // 0-11
+      const targetYear = dayjs(expiredSearchMonth).year();
+      filtered = filtered.filter((doc) => {
+        if (!doc.ExpiryDate) return false;
+        const docMonth = dayjs(doc.ExpiryDate).month();
+        const docYear = dayjs(doc.ExpiryDate).year();
+        return docMonth === targetMonth && docYear === targetYear;
+      });
+    }
+
+    return filtered;
+  }, [expiredDocs, expiredSearchBusNo, expiredSearchDocType, expiredSearchMonth]);
 
   // --- Columns ---
   const busAvailabilityColumns = [
@@ -371,35 +411,37 @@ const Dashboard = () => {
 
             {/* Pending Allotment */}
             <motion.div variants={itemVariants} whileHover={{ scale: 1.02 }} className="h-full">
-              <Card
-                bordered={false}
-                className="h-full overflow-hidden relative border-0 shadow-lg shadow-orange-500/10"
-                style={{
-                  background: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
-                }}
-              >
-                <div className="absolute right-0 top-0 p-4 opacity-10">
-                  <ClockCircleOutlined style={{ fontSize: '120px', color: '#fff' }} />
-                </div>
-                <div className="relative z-10 flex flex-col justify-between h-full text-white">
-                  <div className="mb-4 bg-white/20 w-12 h-12 rounded-lg flex items-center justify-center backdrop-blur-sm">
-                    <ClockCircleOutlined style={{ fontSize: '24px' }} />
+              <Link to="/admin/booking-busAllotment">
+                <Card
+                  bordered={false}
+                  className="h-full overflow-hidden relative border-0 shadow-lg shadow-orange-500/10 cursor-pointer group"
+                  style={{
+                    background: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
+                  }}
+                >
+                  <div className="absolute right-0 top-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-500">
+                    <ClockCircleOutlined style={{ fontSize: '120px', color: '#fff' }} />
                   </div>
-                  <div>
-                    <Text className="text-orange-100 text-sm font-medium uppercase tracking-wider block mb-1">Pending Allotment</Text>
-                    <div className="flex items-baseline gap-2">
-                      <Title level={1} style={{ color: "white", margin: 0, fontWeight: 700 }}>
-                        {summary[0]?.PendingBusQty || 0}
-                      </Title>
-                      {summary[0]?.PartBooking && (
-                        <span className="bg-white/20 px-2 py-1 rounded text-xs font-medium backdrop-blur-sm">
-                          {summary[0]?.PartBooking} Part
-                        </span>
-                      )}
+                  <div className="relative z-10 flex flex-col justify-between h-full text-white">
+                    <div className="mb-4 bg-white/20 w-12 h-12 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                      <ClockCircleOutlined style={{ fontSize: '24px' }} />
+                    </div>
+                    <div>
+                      <Text className="text-orange-100 text-sm font-medium uppercase tracking-wider block mb-1">Pending Allotment</Text>
+                      <div className="flex items-baseline gap-2">
+                        <Title level={1} style={{ color: "white", margin: 0, fontWeight: 700 }}>
+                          {summary[0]?.PendingBusQty || 0}
+                        </Title>
+                        {summary[0]?.PartBooking && (
+                          <span className="bg-white/20 px-2 py-1 rounded text-xs font-medium backdrop-blur-sm">
+                            {summary[0]?.PartBooking} Part
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Card>
+                </Card>
+              </Link>
             </motion.div>
 
             {/* Pending Invoices */}
@@ -474,9 +516,47 @@ const Dashboard = () => {
               }
               className="shadow-md border-t-4 border-red-500 rounded-xl"
             >
+              <Row gutter={[16, 16]} className="mb-4">
+                <Col xs={24} sm={8} md={6}>
+                  <Text strong className="mb-1 block text-slate-600">Bus Number</Text>
+                  <Input 
+                    placeholder="Search Bus No." 
+                    value={expiredSearchBusNo}
+                    onChange={e => setExpiredSearchBusNo(e.target.value)}
+                    prefix={<SearchOutlined className="text-slate-400" />}
+                    allowClear
+                  />
+                </Col>
+                <Col xs={24} sm={8} md={6}>
+                  <Text strong className="mb-1 block text-slate-600">Document Type</Text>
+                  <Select
+                    placeholder="Select Document Type"
+                    style={{ width: '100%' }}
+                    value={expiredSearchDocType}
+                    onChange={setExpiredSearchDocType}
+                    allowClear
+                    showSearch
+                  >
+                    {uniqueDocTypes.map(type => (
+                      <Option key={type} value={type}>{type}</Option>
+                    ))}
+                  </Select>
+                </Col>
+                <Col xs={24} sm={8} md={6}>
+                  <Text strong className="mb-1 block text-slate-600">Expiry Month</Text>
+                  <DatePicker 
+                    picker="month" 
+                    placeholder="Select Expiry Month"
+                    style={{ width: '100%' }}
+                    value={expiredSearchMonth}
+                    onChange={setExpiredSearchMonth}
+                    allowClear
+                  />
+                </Col>
+              </Row>
               <Table
                 columns={expiredDocsColumns}
-                dataSource={expiredDocs}
+                dataSource={filteredExpiredDocs}
                 rowKey={(record) => `${record.BusNumber}-${record.DocumentType}`}
                 loading={expiredDocsLoading}
                 pagination={{ pageSize: 5 }}
