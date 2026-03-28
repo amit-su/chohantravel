@@ -65,7 +65,9 @@ const UpdateBookingEntry = () => {
     address: "",
     email: "",
     paymentTerms: "",
-    PermitReq: "No"
+    PermitReq: "No",
+    includeParking: "No",
+    includeTollTax: "No"
   });
 
   const handleConfirm = () => {
@@ -109,6 +111,8 @@ const UpdateBookingEntry = () => {
         email: entry.Email,
         paymentTerms: entry.PaymentTerms,
         PermitReq: entry.PermitReq,
+        includeParking: entry.ParkingInclude === 1 || entry.ParkingInclude === "Yes" ? "Yes" : "No",
+        includeTollTax: entry.TollTaxInclude === 1 || entry.TollTaxInclude === "Yes" ? "Yes" : "No",
       };
 
       setInitValues(initialData);
@@ -322,6 +326,23 @@ const UpdateBookingEntry = () => {
                     </Col>
                     <Col span={12}>
                       <Form.Item label="Permit Required" name="PermitReq">
+                        <Select placeholder="Select Option">
+                          <Select.Option value="Yes">Yes</Select.Option>
+                          <Select.Option value="No">No</Select.Option>
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    
+                    <Col span={12}>
+                      <Form.Item label="Include Parking" name="includeParking">
+                        <Select placeholder="Select Option">
+                          <Select.Option value="Yes">Yes</Select.Option>
+                          <Select.Option value="No">No</Select.Option>
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                      <Form.Item label="Include Toll/Permit/Tax" name="includeTollTax">
                         <Select placeholder="Select Option">
                           <Select.Option value="Yes">Yes</Select.Option>
                           <Select.Option value="No">No</Select.Option>

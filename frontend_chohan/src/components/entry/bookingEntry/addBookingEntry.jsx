@@ -44,6 +44,8 @@ const AddBookingEntry = () => {
   const [initValues, setInitValues] = useState({
     bookingDate: dayjs(),
     BookingNo: "New",
+    includeParking: "No",
+    includeTollTax: "No",
   });
 
   // Redux Selectors
@@ -283,6 +285,23 @@ const AddBookingEntry = () => {
                   </Col>
                   <Col span={12}>
                     <Form.Item label="Permit Required" name="PermitReq">
+                      <Select placeholder="Select Option">
+                        <Select.Option value="Yes">Yes</Select.Option>
+                        <Select.Option value="No">No</Select.Option>
+                      </Select>
+                    </Form.Item>
+                  </Col>
+
+                  <Col span={12}>
+                    <Form.Item label="Include Parking" name="includeParking">
+                      <Select placeholder="Select Option">
+                        <Select.Option value="Yes">Yes</Select.Option>
+                        <Select.Option value="No">No</Select.Option>
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item label="Include Toll/Permit/Tax" name="includeTollTax">
                       <Select placeholder="Select Option">
                         <Select.Option value="Yes">Yes</Select.Option>
                         <Select.Option value="No">No</Select.Option>

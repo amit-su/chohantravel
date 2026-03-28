@@ -9,7 +9,6 @@ const {
 const databaseService = require("../../utils/dbClientService");
 
 const createbookingEntry = async (req, res) => {
-  console.log(req.body.localBookingList);
 
   try {
     const result = await databaseService.callStoredProcedure(
@@ -26,6 +25,8 @@ const createbookingEntry = async (req, res) => {
         ContactPersonNo: req.body.ContactPersonNo,
         PaymentTerms: req.body.paymentTerms,
         PermitReq: req.body.PermitReq,
+        // ParkingInclude: req.body.includeParking,
+        // TollTaxInclude: req.body.includeTollTax,
         localBookingList: req.body.localBookingList,
       }
     );
@@ -123,6 +124,8 @@ const updateBookingEntry = async (req, res) => {
         GSTInclude: req.body.includeGST,
         PaymentTerms: req.body.paymentTerms,
         PermitReq: req.body.PermitReq,
+        // ParkingInclude: req.body.includeParking,
+        // TollTaxInclude: req.body.includeTollTax,
 
         localBookingList: req.body.localBookingList,
       }
