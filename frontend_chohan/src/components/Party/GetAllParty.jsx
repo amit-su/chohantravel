@@ -223,12 +223,12 @@ const GetAllParty = () => {
             </CreateDrawer>
           </UserPrivateComponent>
 
-          <UserPrivateComponent permission={"delete-party"}>
+          {/* <UserPrivateComponent permission={"delete-party"}>
             <DeleteOutlined
               onClick={() => onDelete(id)}
               className="p-2 text-white bg-red-600 rounded-md"
             />
-          </UserPrivateComponent>
+          </UserPrivateComponent> */}
         </div>
       ),
     },

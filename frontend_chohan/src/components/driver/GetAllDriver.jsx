@@ -303,12 +303,12 @@ const GetAllDriver = () => {
                 />
               </Tooltip>
             </UserPrivateComponent>
-            <UserPrivateComponent permission={"delete-driver"}>
+            {/* <UserPrivateComponent permission={"delete-driver"}>
               <DeleteOutlined
                 onClick={() => onDelete(id)}
                 className="p-2 text-white bg-red-600 rounded-md"
               />
-            </UserPrivateComponent>
+            </UserPrivateComponent> */}
           </div>
         ),
       },

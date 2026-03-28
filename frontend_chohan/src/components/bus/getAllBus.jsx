@@ -184,12 +184,12 @@ const GetAllBus = (props) => {
               <UpdateBus data={restData} id={id} />
             </CreateDrawer>
           </UserPrivateComponent>
-          <UserPrivateComponent permission={"delete-bus"}>
+          {/* <UserPrivateComponent permission={"delete-bus"}>
             <DeleteOutlined
               onClick={() => showDeleteConfirm(id)}
               className="p-2 text-white bg-red-600 rounded-md"
             />
-          </UserPrivateComponent>
+          </UserPrivateComponent> */}
         </div>
       ),
     },

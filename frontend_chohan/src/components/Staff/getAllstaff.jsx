@@ -265,12 +265,12 @@ const GetAllStaff = () => {
               <UpdateStaff data={restData} id={id} />
             </CreateDrawer>
           </UserPrivateComponent>
-          <UserPrivateComponent permission={"delete-helper"}>
+          {/* <UserPrivateComponent permission={"delete-helper"}>
             <DeleteOutlined
               onClick={() => onDelete(id)}
               className="p-2 text-white bg-red-600 rounded-md"
             />
-          </UserPrivateComponent>
+          </UserPrivateComponent> */}
         </div>
       ),
     },
