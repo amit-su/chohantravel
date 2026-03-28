@@ -411,7 +411,7 @@ const Dashboard = () => {
 
             {/* Pending Allotment */}
             <motion.div variants={itemVariants} whileHover={{ scale: 1.02 }} className="h-full">
-              <Link to="/admin/booking-busAllotment">
+              <Link to="/admin/booking-entry?allotmentStatus=Pending">
                 <Card
                   bordered={false}
                   className="h-full overflow-hidden relative border-0 shadow-lg shadow-orange-500/10 cursor-pointer group"

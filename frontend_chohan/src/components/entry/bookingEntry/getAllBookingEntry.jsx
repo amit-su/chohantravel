@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Select, Button, DatePicker, Modal, Card, Table, Tooltip, Input, Space, Tag, Dropdown, Menu, message, Form, Progress } from "antd";
 import {
   DeleteOutlined,
@@ -37,10 +37,14 @@ const GetAllBookingEntry = () => {
   const [smsProgress, setSmsProgress] = useState({ current: 0, total: 0 });
 
   // Filter State
+  const location = useLocation();
+  const queryParamsInit = new URLSearchParams(location.search);
+  const initialAllotmentStatus = queryParamsInit.get("allotmentStatus");
+
   const [partyFilter, setPartyFilter] = useState(null);
   const [dateFilter, setDateFilter] = useState(null);
   const [searchFilter, setSearchFilter] = useState("");
-  const [allotmentFilter, setAllotmentFilter] = useState(null);
+  const [allotmentFilter, setAllotmentFilter] = useState(initialAllotmentStatus || null);
 
   // Pagination State
   const [currentPage, setCurrentPage] = useState(1);
@@ -585,6 +589,7 @@ const GetAllBookingEntry = () => {
                 size="large"
                 onChange={setAllotmentFilter}
                 className="rounded-lg"
+                defaultValue={initialAllotmentStatus || undefined}
                 options={[
                   { value: 'Alloted', label: 'FULL ALLOTTED' },
                   { value: 'Pending', label: 'NOT ALLOTTED' },
