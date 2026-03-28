@@ -428,7 +428,7 @@ const GetAllSalary = () => {
                   filterOption={(input, option) =>
                     (option?.children ?? "").toLowerCase().includes(input.toLowerCase())
                   }
-                  style={{ width: 200 }}
+                  style={{ width: 400 }}
                   allowClear
                 >
                   {companyList?.map((company) => (
