@@ -32,6 +32,17 @@ function SalaryRegisterReport() {
         });
     }, [salaryData, paymentMode]);
 
+    const reportTitleLabel = useMemo(() => {
+        const monthYear = selectedDate.format('MMMM YYYY');
+        if (selectedSite) {
+            const site = siteList?.find(s => s.siteID === selectedSite);
+            if (site) {
+                return `${monthYear} for ${site.siteName}`;
+            }
+        }
+        return monthYear;
+    }, [selectedDate, selectedSite, siteList]);
+
     // Update PDF when filtered data changes
     useEffect(() => {
         const updatePDF = async () => {
@@ -40,7 +51,7 @@ function SalaryRegisterReport() {
                     const matchCompany = companyList?.find(c => c.Id === selectedCompany) || companyList?.[0];
                     const blobUrl = await generateSalaryRegisterPDF(
                         filteredSalaryData,
-                        selectedDate.format('MMMM YYYY'),
+                        reportTitleLabel,
                         matchCompany
                     );
                     setPdfBlobUrl(blobUrl);
@@ -93,7 +104,7 @@ function SalaryRegisterReport() {
                 const matchCompany = companyList?.find(c => c.Id === selectedCompany) || companyList?.[0];
                 const blobUrl = await generateSalaryRegisterPDF(
                     filteredSalaryData,
-                    selectedDate.format('MMMM YYYY'),
+                    reportTitleLabel,
                     matchCompany
                 );
                 setPdfBlobUrl(blobUrl);
@@ -114,7 +125,7 @@ function SalaryRegisterReport() {
             const matchCompany = companyList?.find(c => c.Id === selectedCompany) || companyList?.[0];
             generateSalaryRegisterExcel(
                 filteredSalaryData,
-                selectedDate.format('MMMM YYYY'),
+                reportTitleLabel,
                 matchCompany
             );
         }
@@ -272,7 +283,7 @@ function SalaryRegisterReport() {
                                     <p className="text-gray-600">
                                         {filteredSalaryData.length} employees found
                                         {paymentMode !== 'ALL' && ` (${paymentMode === 'BANK' ? 'Bank Transfer' : 'Cash'})`}
-                                        for {selectedDate.format('MMMM YYYY')}
+                                        for {reportTitleLabel}
                                     </p>
                                 </div>
 
