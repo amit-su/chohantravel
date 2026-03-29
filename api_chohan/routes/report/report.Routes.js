@@ -5,7 +5,8 @@ const {
     getProformaInvoiceRegisterReport,
     getInvoiceRegisterReport,
     getAdvanceDueSummReport,
-    getAdvanceDueDetailListReport
+    getAdvanceDueDetailListReport,
+    getDriverHelperAttendanceReport
 } = require("./report.controller");
 
 const ReportRoutes = express.Router();
@@ -39,5 +40,10 @@ ReportRoutes.post(
     "/advance-due-detail",
     getAdvanceDueDetailListReport
 )
+
+ReportRoutes.post(
+    "/driver-helper-attendance",
+    getDriverHelperAttendanceReport
+);
 
 module.exports = ReportRoutes;

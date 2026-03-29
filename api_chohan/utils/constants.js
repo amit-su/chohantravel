@@ -127,6 +127,7 @@ const RPT_SALARY_SLIP_ADVANCE = "[dbo].[spRpt_SalarySlip_Advance_New]";
 const RPT_MONTHLY_INVOICE = "[dbo].[spRpt_MonthlyInvoice]";
 const RPT_ADVANCE_DUE_SUMM = "[dbo].[spRpt_AdvanceDueSumm]";
 const RPT_ADVANCE_DUE_DETAIL_LIST = "[dbo].[spRpt_AdvanceDueDetailList]";
+const RPT_DRIVER_HELPER_ATTENDANCE = "[dbo].[spRpt_driver_helper_attendance]";
 
 module.exports = {
   RPT_SALARY_SLIP_KHORAKI,
@@ -235,5 +236,6 @@ module.exports = {
   RPT_MONTHLY_INVOICE,
   RPT_ADVANCE_DUE_SUMM,
   RPT_ADVANCE_DUE_DETAIL_LIST,
+  RPT_DRIVER_HELPER_ATTENDANCE,
 };
 

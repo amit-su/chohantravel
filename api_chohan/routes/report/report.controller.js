@@ -6,6 +6,7 @@ const {
     INVOICE_REG,
     RPT_ADVANCE_DUE_SUMM,
     RPT_ADVANCE_DUE_DETAIL_LIST,
+    RPT_DRIVER_HELPER_ATTENDANCE,
 } = require("../../utils/constants");
 const databaseService = require("../../utils/dbClientService");
 
@@ -28,7 +29,6 @@ const getSitewiseMonthDutySum = async (req, res) => {
             EmpName: EmpName || '' // Default to empty string if not provided
         };
 
-        console.log("getSitewiseMonthDutySum params:", params);
 
         const result = await databaseService.callStoredProcedureReporting(req,
             GET_SITEWISE_MONTH_DUTY_SUM,
@@ -41,7 +41,6 @@ const getSitewiseMonthDutySum = async (req, res) => {
             data: result
         });
     } catch (error) {
-        console.error("Error in getSitewiseMonthDutySum:", error);
         res.status(400).json({
             status: 0,
             message: error.message
@@ -67,7 +66,6 @@ const getBusBookingReport = async (req, res) => {
             EndDate: EndDate
         };
 
-        console.log("getBusBookingReport params:", params);
 
         const result = await databaseService.callStoredProcedureReporting(req,
             RPT_BUS_BOOKING,
@@ -80,7 +78,6 @@ const getBusBookingReport = async (req, res) => {
             data: result
         });
     } catch (error) {
-        console.error("Error in getBusBookingReport:", error);
         res.status(400).json({
             status: 0,
             message: error.message
@@ -118,7 +115,6 @@ const getProformaInvoiceRegisterReport = async (req, res) => {
             data: result
         });
     } catch (error) {
-        console.error("Error in getReport:", error);
         res.status(400).json({
             status: 0,
             message: error.message
@@ -154,7 +150,6 @@ const getInvoiceRegisterReport = async (req, res) => {
             data: result
         });
     } catch (error) {
-        console.error("Error in getReport:", error);
         res.status(400).json({
             status: 0,
             message: error.message
@@ -174,7 +169,6 @@ const getAdvanceDueSummReport = async (req, res) => {
             data: result
         });
     } catch (error) {
-        console.error("Error in getAdvanceDueSummReport:", error);
         res.status(400).json({
             status: 0,
             message: error.message
@@ -194,7 +188,47 @@ const getAdvanceDueDetailListReport = async (req, res) => {
             data: result
         });
     } catch (error) {
-        console.error("Error in getAdvanceDueDetailListReport:", error);
+        res.status(400).json({
+            status: 0,
+            message: error.message
+        });
+    }
+};
+
+const getDriverHelperAttendanceReport = async (req, res) => {
+    try {
+        const { month, year, empType, companyId, siteId } = req.body;
+
+        if (!month || !year || !empType) {
+            return res.status(400).json({
+                status: 0,
+                message: "Missing required parameters: month, year, or empType"
+            });
+        }
+
+        // Format parameters as expected by spRpt_driver_helper_attendance
+        const params = {
+            PageNo: 1,
+            PageSize: 10000,
+            Month: `${month}/${year}`, // Expected format: 'MM/yyyy'
+            Status: empType.charAt(0).toUpperCase() + empType.slice(1).toLowerCase(), // Expected: 'Driver' or 'Helper'
+            SiteId: siteId || 0,
+            CompanyID: companyId || 0
+        };
+
+
+        // Note: callStoredProcedure handles StatusID, StatusMessage, and TotalCount as OUTPUT parameters
+        const result = await databaseService.callStoredProcedure(req,
+            RPT_DRIVER_HELPER_ATTENDANCE,
+            params
+        );
+
+        res.json({
+            status: 1,
+            message: 'Success',
+            data: result // result will have { status, message, count, data: recordset }
+        });
+    } catch (error) {
         res.status(400).json({
             status: 0,
             message: error.message
@@ -208,5 +242,6 @@ module.exports = {
     getProformaInvoiceRegisterReport,
     getInvoiceRegisterReport,
     getAdvanceDueSummReport,
-    getAdvanceDueDetailListReport
+    getAdvanceDueDetailListReport,
+    getDriverHelperAttendanceReport
 };
