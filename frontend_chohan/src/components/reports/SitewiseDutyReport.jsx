@@ -541,7 +541,7 @@ const SitewiseDutyReport = () => {
                                     ))}
                                 </Select>
                             </div> */}
-                            {/* <div>
+                            <div>
                                 <label className="block mb-1 text-xs font-medium">Site</label>
                                 <Select
                                     value={detailFilters.siteId}
@@ -557,7 +557,7 @@ const SitewiseDutyReport = () => {
                                         <Option key={s.siteID || s.ID} value={s.siteID || s.ID}>{s.siteShortName}</Option>
                                     ))}
                                 </Select>
-                            </div> */}
+                            </div>
                             <Button type="primary" onClick={fetchDetailData} loading={loadingDetails}>
                                 Search Details
                             </Button>
