@@ -111,8 +111,8 @@ const UpdateBookingEntry = () => {
         email: entry.Email,
         paymentTerms: entry.PaymentTerms,
         PermitReq: entry.PermitReq,
-        includeParking: entry.ParkingInclude === 1 || entry.ParkingInclude === "Yes" ? "Yes" : "No",
-        includeTollTax: entry.TollTaxInclude === 1 || entry.TollTaxInclude === "Yes" ? "Yes" : "No",
+        includeParking: entry.ParkingExtra === "Y" || entry.ParkingInclude === "Yes" || entry.ParkingInclude === 1 ? "Yes" : "No",
+        includeTollTax: entry.TollTaxExtra === "Y" || entry.TollTaxInclude === "Yes" || entry.TollTaxInclude === 1 ? "Yes" : "No",
       };
 
       setInitValues(initialData);
