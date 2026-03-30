@@ -1,5 +1,6 @@
 const {
   GET_VENDORS_PROCEDURE,
+  GET_VENDOR_DROPDOWN_PROCEDURE,
   INSERT_OR_UPDATE_VENDOR_PROCEDURE,
   DELETE_PROCEDURE
 } = require("../../../utils/constants");
@@ -204,9 +205,26 @@ const deleteVendor = async (req, res) => {
   }
 };
 
+const getVendorDropdown = async (req, res) => {
+  try {
+    const params = {
+      CompanyID: parseInt(req.body.companyID) || 0
+    };
+    const result = await databaseService.callStoredProcedure(
+      req,
+      GET_VENDOR_DROPDOWN_PROCEDURE,
+      params
+    );
+    res.json(result);
+  } catch (error) {
+    res.status(400).json(error.message);
+  }
+};
+
 module.exports = {
   getAllVendor,
   addVendor,
   updateVendor,
   deleteVendor,
+  getVendorDropdown,
 };

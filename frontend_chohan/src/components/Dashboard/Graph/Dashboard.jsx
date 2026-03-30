@@ -16,7 +16,7 @@ import {
   ConfigProvider,
 } from "antd";
 import enUS from "antd/locale/en_US";
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -101,6 +101,12 @@ const Dashboard = () => {
     dayjs().startOf("month").set("hour", 0).set("minute", 0),
     dayjs().endOf("month").set("hour", 23).set("minute", 59),
   ]);
+  const dateRangeRef = useRef(dateRange);
+
+  useEffect(() => {
+    dateRangeRef.current = dateRange;
+  }, [dateRange]);
+
   const [busType, setBusType] = useState(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState([]);
@@ -157,8 +163,8 @@ const Dashboard = () => {
       message.warning("Please select Bus Category");
       return;
     }
-    if (!dateRange || dateRange.length !== 2) {
-      message.warning("Please select a date range");
+    if (!dateRange || dateRange.length !== 2 || !dateRange[0] || !dateRange[1]) {
+      message.warning("Please select a complete date range");
       return;
     }
 
@@ -612,6 +618,17 @@ const Dashboard = () => {
                       className="w-full"
                       value={dateRange}
                       onChange={(dates) => setDateRange(dates)}
+                      onCalendarChange={(dates) => setDateRange(dates)}
+                      onOpenChange={(open) => {
+                        if (!open) {
+                          const current = dateRangeRef.current;
+                          if (current && current[0] && !current[1]) {
+                            // If only start date selected and closed, set end date to end of start day
+                            const fixedRange = [current[0], current[0].endOf('day')];
+                            setDateRange(fixedRange);
+                          }
+                        }
+                      }}
                       allowClear={false}
                     />
                   </Col>
