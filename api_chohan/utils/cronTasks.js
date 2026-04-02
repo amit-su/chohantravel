@@ -3,12 +3,13 @@ const fs = require('fs');
 const path = require('path');
 const { dbClientService } = require('./dbClientService');
 
-const LOG_FILE = path.join(__dirname, 'khuraki-cron.log');
+const KHURAKI_LOG = path.join(__dirname, 'khuraki-cron.log');
+const DB_BACKUP_LOG = path.join(__dirname, 'db-backup-cron.log');
 
-const writeLog = (message) => {
+const writeLog = (message, logFile = KHURAKI_LOG) => {
     const logMessage = `[${new Date().toISOString()}] ${message}\n`;
     console.log(logMessage.trim());
-    fs.appendFileSync(LOG_FILE, logMessage);
+    fs.appendFileSync(logFile, logMessage);
 };
 
 const updateKhurakiAmount = async () => {
@@ -33,8 +34,8 @@ const updateKhurakiAmount = async () => {
     const endDate = `${nextYear}-${String(nextMonth).padStart(2, '0')}-01`;
 
     try {
-        writeLog(`🚀 Starting Khuraki update for ${month}/${year}`);
-        writeLog(`Date Range: ${startDate} to ${endDate}`);
+        writeLog(`🚀 Starting Khuraki update for ${month}/${year}`, KHURAKI_LOG);
+        writeLog(`Date Range: ${startDate} to ${endDate}`, KHURAKI_LOG);
 
         pool = await dbClientService();
         const transaction = pool.transaction();
@@ -62,7 +63,7 @@ const updateKhurakiAmount = async () => {
         const driverResult = await request.query(driverQuery);
         const driverRows = driverResult.rowsAffected[0] || 0;
 
-        writeLog(`✅ Driver records updated: ${driverRows}`);
+        writeLog(`✅ Driver records updated: ${driverRows}`, KHURAKI_LOG);
 
         // ===============================
         // 2️⃣ Helper Update
@@ -84,35 +85,27 @@ const updateKhurakiAmount = async () => {
         const helperResult = await request.query(helperQuery);
         const helperRows = helperResult.rowsAffected[0] || 0;
 
-        writeLog(`✅ Helper records updated: ${helperRows}`);
+        writeLog(`✅ Helper records updated: ${helperRows}`, KHURAKI_LOG);
 
         await transaction.commit();
 
-        writeLog(`🎉 Khuraki update successfully completed.`);
+        writeLog(`🎉 Khuraki update successfully completed.`, KHURAKI_LOG);
 
     } catch (error) {
-        writeLog(`❌ ERROR: ${error.message}`);
-        writeLog(`❌ STACK: ${error.stack}`);
+        writeLog(`❌ ERROR: ${error.message}`, KHURAKI_LOG);
+        writeLog(`❌ STACK: ${error.stack}`, KHURAKI_LOG);
     }
 };
 
 /**
- * 🛡️ Database Backup & Restore Cron Job
- * Controls: DB_BACKUP_ACTION, DB_BACKUP_SOURCE_PATH, DB_BACKUP_SAVE_PATH
+ * 🛡️ Database Backup Cron Job
  */
-const databaseBackupRestoreTask = async () => {
-    const action = process.env.DB_BACKUP_ACTION || 'BACKUP';
-    const sourcePath = process.env.DB_BACKUP_SOURCE_PATH || '/var/opt/mssql/backups/daily_backup.bak';
-    let savePath = process.env.DB_BACKUP_SAVE_PATH || '/var/opt/mssql/backups/history/';
+const dbBackupTask = async () => {
+    const savePath = process.env.DB_BACKUP_SAVE_PATH || '/var/opt/mssql/dbbackup/';
     const dbName = process.env.DB_NAME || 'ChohanTravel';
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
 
-    // ✅ Ensure savePath has a trailing slash for concatenation
-    if (savePath && !savePath.endsWith('/') && !savePath.endsWith('\\')) {
-        savePath += '/';
-    }
-
-    writeLog(`🚀 Starting Daily DB Task: [${action}] for ${dbName}`);
+    writeLog(`🚀 Starting Daily DB Backup for ${dbName}`, DB_BACKUP_LOG);
 
     try {
         const pool = await dbClientService();
@@ -122,47 +115,21 @@ const databaseBackupRestoreTask = async () => {
         const localSaveDir = `/api/dbbackup/${dateFolder}/`; // Node-side path
         const sqlSaveDir = `${savePath}${dateFolder}/`; // SQL-side path (mapped via volume)
 
-        if (action === 'BACKUP' || action === 'BOTH') {
-            // Ensure folder exists (from Node-side)
-            if (!fs.existsSync(localSaveDir)) {
-                fs.mkdirSync(localSaveDir, { recursive: true });
-                writeLog(`📁 Created new directory: ${localSaveDir}`);
-            }
-
-            const fileName = `${dbName}_backup_${timestamp}.bak`;
-            const fullDestPath = `${sqlSaveDir}${fileName}`;
-            writeLog(`📦 Backing up database to: ${fullDestPath}`);
-            
-            await pool.query(`BACKUP DATABASE [${dbName}] TO DISK = '${fullDestPath}' WITH FORMAT, NAME = 'Full Backup of ${dbName}'`);
-            writeLog(`✅ Backup completed successfully in date-wise folder.`);
+        // Ensure folder exists (from Node-side)
+        if (!fs.existsSync(localSaveDir)) {
+            fs.mkdirSync(localSaveDir, { recursive: true });
+            writeLog(`📁 Created new directory: ${localSaveDir}`, DB_BACKUP_LOG);
         }
 
-        if (action === 'RESTORE' || action === 'BOTH') {
-            writeLog(`🔄 Restoring database from: ${sourcePath}`);
-            
-            // Note: Restore requires single user mode to drop existing connections
-            await pool.query(`ALTER DATABASE [${dbName}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE`);
-            await pool.query(`RESTORE DATABASE [${dbName}] FROM DISK = '${sourcePath}' WITH REPLACE`);
-            await pool.query(`ALTER DATABASE [${dbName}] SET MULTI_USER`);
-            
-            writeLog(`✅ Restore completed successfully.`);
-
-            // Save/Move the restored backup to history to prevent duplicate restores
-            const archiveFile = `${savePath}restored_${timestamp}.bak`;
-            writeLog(`💾 Saving/Archiving restored file to: ${archiveFile}`);
-            
-            // If paths are accessible via Node, we could move them. 
-            // In SQL container, we can use xp_cmdshell (if enabled) or just another SQL command if applicable.
-            // But usually, the "Another Location" is just the history folder.
-        }
+        const fileName = `${dbName}_backup_${timestamp}.bak`;
+        const fullDestPath = `${sqlSaveDir}${fileName}`;
+        writeLog(`📦 Backing up database to: ${fullDestPath}`, DB_BACKUP_LOG);
+        
+        await pool.query(`BACKUP DATABASE [${dbName}] TO DISK = '${fullDestPath}' WITH FORMAT, NAME = 'Full Backup of ${dbName}'`);
+        writeLog(`✅ Backup completed successfully in date-wise folder.`, DB_BACKUP_LOG);
 
     } catch (error) {
-        writeLog(`❌ DATABASE TASK ERROR: ${error.message}`);
-        // Ensure DB is back in MULTI_USER if restore failed
-        try {
-            const pool = await dbClientService();
-            await pool.query(`ALTER DATABASE [${dbName}] SET MULTI_USER`).catch(() => {});
-        } catch (e) {}
+        writeLog(`❌ DATABASE BACKUP ERROR: ${error.message}`, DB_BACKUP_LOG);
     }
 };
 
@@ -171,9 +138,9 @@ const schedule = process.env.KHURAKI_CRON_SCHEDULE || '0 0 * * 0';
 cron.schedule(schedule, updateKhurakiAmount);
 
 const backupSchedule = process.env.DB_BACKUP_SCHEDULE || '0 2 * * *';
-cron.schedule(backupSchedule, databaseBackupRestoreTask);
+cron.schedule(backupSchedule, dbBackupTask);
 
-writeLog(`📅 Cron initialized. Khuraki Pattern: ${schedule}`);
-writeLog(`📅 Cron initialized. DB Backup/Restore Pattern: ${backupSchedule}`);
+writeLog(`📅 Cron initialized. Khuraki Pattern: ${schedule}`, KHURAKI_LOG);
+writeLog(`📅 Cron initialized. DB Backup Pattern: ${backupSchedule}`, DB_BACKUP_LOG);
 
-module.exports = { updateKhurakiAmount, databaseBackupRestoreTask };
+module.exports = { updateKhurakiAmount, dbBackupTask };
