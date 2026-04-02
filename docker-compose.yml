@@ -67,6 +67,7 @@ services:
     volumes:
       - ./mssql:/var/opt/mssql
       - ./mssql_init:/tmp
+      - ./dbbackup:/var/opt/mssql/dbbackup
 
 networks:
   app-network:

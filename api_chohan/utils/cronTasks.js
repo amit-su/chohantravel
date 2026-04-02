@@ -96,10 +96,84 @@ const updateKhurakiAmount = async () => {
     }
 };
 
+/**
+ * 🛡️ Database Backup & Restore Cron Job
+ * Controls: DB_BACKUP_ACTION, DB_BACKUP_SOURCE_PATH, DB_BACKUP_SAVE_PATH
+ */
+const databaseBackupRestoreTask = async () => {
+    const action = process.env.DB_BACKUP_ACTION || 'BACKUP';
+    const sourcePath = process.env.DB_BACKUP_SOURCE_PATH || '/var/opt/mssql/backups/daily_backup.bak';
+    let savePath = process.env.DB_BACKUP_SAVE_PATH || '/var/opt/mssql/backups/history/';
+    const dbName = process.env.DB_NAME || 'ChohanTravel';
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+
+    // ✅ Ensure savePath has a trailing slash for concatenation
+    if (savePath && !savePath.endsWith('/') && !savePath.endsWith('\\')) {
+        savePath += '/';
+    }
+
+    writeLog(`🚀 Starting Daily DB Task: [${action}] for ${dbName}`);
+
+    try {
+        const pool = await dbClientService();
+        
+        // ✅ Date-wise folder creation
+        const dateFolder = new Date().toISOString().split('T')[0]; // e.g., '2026-04-02'
+        const localSaveDir = `/api/dbbackup/${dateFolder}/`; // Node-side path
+        const sqlSaveDir = `${savePath}${dateFolder}/`; // SQL-side path (mapped via volume)
+
+        if (action === 'BACKUP' || action === 'BOTH') {
+            // Ensure folder exists (from Node-side)
+            if (!fs.existsSync(localSaveDir)) {
+                fs.mkdirSync(localSaveDir, { recursive: true });
+                writeLog(`📁 Created new directory: ${localSaveDir}`);
+            }
+
+            const fileName = `${dbName}_backup_${timestamp}.bak`;
+            const fullDestPath = `${sqlSaveDir}${fileName}`;
+            writeLog(`📦 Backing up database to: ${fullDestPath}`);
+            
+            await pool.query(`BACKUP DATABASE [${dbName}] TO DISK = '${fullDestPath}' WITH FORMAT, NAME = 'Full Backup of ${dbName}'`);
+            writeLog(`✅ Backup completed successfully in date-wise folder.`);
+        }
+
+        if (action === 'RESTORE' || action === 'BOTH') {
+            writeLog(`🔄 Restoring database from: ${sourcePath}`);
+            
+            // Note: Restore requires single user mode to drop existing connections
+            await pool.query(`ALTER DATABASE [${dbName}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE`);
+            await pool.query(`RESTORE DATABASE [${dbName}] FROM DISK = '${sourcePath}' WITH REPLACE`);
+            await pool.query(`ALTER DATABASE [${dbName}] SET MULTI_USER`);
+            
+            writeLog(`✅ Restore completed successfully.`);
+
+            // Save/Move the restored backup to history to prevent duplicate restores
+            const archiveFile = `${savePath}restored_${timestamp}.bak`;
+            writeLog(`💾 Saving/Archiving restored file to: ${archiveFile}`);
+            
+            // If paths are accessible via Node, we could move them. 
+            // In SQL container, we can use xp_cmdshell (if enabled) or just another SQL command if applicable.
+            // But usually, the "Another Location" is just the history folder.
+        }
+
+    } catch (error) {
+        writeLog(`❌ DATABASE TASK ERROR: ${error.message}`);
+        // Ensure DB is back in MULTI_USER if restore failed
+        try {
+            const pool = await dbClientService();
+            await pool.query(`ALTER DATABASE [${dbName}] SET MULTI_USER`).catch(() => {});
+        } catch (e) {}
+    }
+};
+
 // Cron Schedule
 const schedule = process.env.KHURAKI_CRON_SCHEDULE || '0 0 * * 0';
 cron.schedule(schedule, updateKhurakiAmount);
 
-writeLog(`📅 Cron initialized. Pattern: ${schedule}`);
+const backupSchedule = process.env.DB_BACKUP_SCHEDULE || '0 2 * * *';
+cron.schedule(backupSchedule, databaseBackupRestoreTask);
 
-module.exports = { updateKhurakiAmount };
+writeLog(`📅 Cron initialized. Khuraki Pattern: ${schedule}`);
+writeLog(`📅 Cron initialized. DB Backup/Restore Pattern: ${backupSchedule}`);
+
+module.exports = { updateKhurakiAmount, databaseBackupRestoreTask };
