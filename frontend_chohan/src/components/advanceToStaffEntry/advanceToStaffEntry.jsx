@@ -15,6 +15,7 @@ import TableComponent from "../CommonUi/TableComponent";
 import UserPrivateComponent from "../PrivacyComponent/UserPrivateComponent";
 import { loadAdvanceToStaffEntryPaginated } from "../../redux/rtk/features/advanceToStaffEntry/advanceToStaffEntrySlice";
 import { generateSalaryAdvancePDF } from "../../utils/generateSalaryAdvancePDF";
+import { generateBankTransferExcel } from "../../utils/generateBankTransferExcel";
 import { loadAllCompany } from "../../redux/rtk/features/company/comapnySlice";
 
 const AdvanceToStaffEntry = (props) => {
@@ -60,8 +61,10 @@ const AdvanceToStaffEntry = (props) => {
     setSelectedPrintCompany(null);
     setSelectedPrintPaymentMode("");
   };
+  
+  const [reportType, setReportType] = useState('PDF');
 
-  const handleGenerateReportModal = async () => {
+  const handleGenerateReportModal = async (type = 'PDF') => {
     if (!selectedPrintCompany) {
       toast.warning("Please select a company first");
       return;
@@ -93,8 +96,22 @@ const AdvanceToStaffEntry = (props) => {
           return;
         }
 
-        toast.success("PDF generated successfully");
-        generateSalaryAdvancePDF(printData, matchCompany);
+        if (type === 'PDF') {
+          toast.success("PDF generated successfully");
+          generateSalaryAdvancePDF(printData, matchCompany);
+        } else {
+          // Map advance data to match bank transfer format
+          const bankData = printData.map(item => ({
+            ...item,
+            NetSalary: item.advanceAmount, // Amount field for advances
+            name: item.EmpName,            // Name field
+            bankAcNo: item.bankAcNo,
+            bankIFSC: item.bankIFSC
+          }));
+          
+          toast.success("Excel generated successfully");
+          generateBankTransferExcel(bankData, matchCompany, `Advance_${printAdvanceNo}`, 'Advance');
+        }
       } else {
         toast.error("No data found for this report");
       }
@@ -306,10 +323,28 @@ const AdvanceToStaffEntry = (props) => {
       <Modal
         title="Generate Advance to Staff Report"
         visible={printModalVisible}
-        onOk={handleGenerateReportModal}
         onCancel={() => setPrintModalVisible(false)}
-        okText="Generate PDF"
-        confirmLoading={isPrinting}
+        footer={[
+          <Button key="back" onClick={() => setPrintModalVisible(false)}>
+            Cancel
+          </Button>,
+          <Button
+            key="excel"
+            className="bg-green-600 hover:bg-green-700 text-white border-green-600"
+            loading={isPrinting}
+            onClick={() => handleGenerateReportModal('EXCEL')}
+          >
+            Bank NEFT (Excel)
+          </Button>,
+          <Button
+            key="submit"
+            type="primary"
+            loading={isPrinting}
+            onClick={() => handleGenerateReportModal('PDF')}
+          >
+            Generate PDF
+          </Button>,
+        ]}
       >
         <div className="flex flex-col gap-4">
           <div>

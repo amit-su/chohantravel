@@ -1,6 +1,13 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { Button, DatePicker, Spin, Alert, Select } from "antd";
-import { FilePdfOutlined, FileExcelOutlined } from "@ant-design/icons";
+import { Button, DatePicker, Spin, Alert, Select, Space, Tooltip, Divider } from "antd";
+import { 
+    FilePdfOutlined, 
+    FileExcelOutlined, 
+    SearchOutlined, 
+    PrinterOutlined,
+    DownloadOutlined,
+    ClearOutlined
+} from "@ant-design/icons";
 import axios from "axios";
 import dayjs from "dayjs";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +15,8 @@ import { loadAllCompany } from "../../redux/rtk/features/company/comapnySlice";
 import { loadAllSite } from "../../redux/rtk/features/site/siteSlice";
 import { generateSalaryRegisterPDF } from "../../utils/generateSalaryRegisterPDF";
 import { generateSalaryRegisterExcel } from "../../utils/generateSalaryRegisterExcel";
+import { generateBankTransferExcel } from "../../utils/generateBankTransferExcel";
+import { message } from "antd"; // Ensure message is imported correctly
 
 function SalaryRegisterReport() {
     const dispatch = useDispatch();
@@ -98,6 +107,15 @@ function SalaryRegisterReport() {
         }
     };
 
+    const handleClear = () => {
+        setSalaryData(null);
+        setError(null);
+        setPdfBlobUrl(null);
+        setSelectedCompany(null);
+        setSelectedSite(null);
+        setPaymentMode("ALL");
+    };
+
     const handleGeneratePDF = async () => {
         if (filteredSalaryData && filteredSalaryData.length > 0) {
             try {
@@ -127,6 +145,23 @@ function SalaryRegisterReport() {
                 filteredSalaryData,
                 reportTitleLabel,
                 matchCompany
+            );
+        }
+    };
+
+    const handleExportToBank = () => {
+        if (filteredSalaryData && filteredSalaryData.length > 0) {
+            // Only export employees with bank account numbers
+            const bankData = filteredSalaryData.filter(item => item.bankAcNo);
+            if (bankData.length === 0) {
+                message.warning("No employees with bank account numbers found for this selection");
+                return;
+            }
+            const matchCompany = companyList?.find(c => c.Id === selectedCompany) || companyList?.[0];
+            generateBankTransferExcel(
+                bankData,
+                matchCompany,
+                reportTitleLabel
             );
         }
     };
@@ -208,41 +243,71 @@ function SalaryRegisterReport() {
                             </Select>
                         </div>
 
-                        <div className="flex items-center gap-2 mt-6">
-                            <Button
-                                type="primary"
-                                icon={<FilePdfOutlined />}
-                                onClick={fetchSalaryRegister}
-                                loading={loading}
-                                size="large"
-                                className="bg-green-600 hover:bg-green-700"
-                            >
-                                Generate PDF
-                            </Button>
+                        <div className="flex items-center gap-3 mt-6 w-full justify-between">
+                            <Space size="middle">
+                                <Button
+                                    type="primary"
+                                    icon={<SearchOutlined />}
+                                    onClick={fetchSalaryRegister}
+                                    loading={loading}
+                                    size="large"
+                                    className="bg-blue-600 hover:bg-blue-700 min-w-[150px]"
+                                >
+                                    Fetch Data
+                                </Button>
+                                
+                                <Button
+                                    icon={<ClearOutlined />}
+                                    onClick={handleClear}
+                                    size="large"
+                                    disabled={loading}
+                                >
+                                    Clear
+                                </Button>
+                            </Space>
 
                             {filteredSalaryData && filteredSalaryData.length > 0 && (
-                                <>
+                                <Space size="middle" className="bg-gray-50 px-4 py-2 rounded-lg border border-gray-100">
+                                    <span className="text-gray-500 font-medium mr-2">Export Options:</span>
+                                    
                                     {pdfBlobUrl && (
-                                        <Button
-                                            type="primary"
-                                            icon={<FilePdfOutlined />}
-                                            onClick={handleOpenPDF}
-                                            size="large"
-                                            className="bg-blue-600 hover:bg-blue-700"
-                                        >
-                                            Open PDF
-                                        </Button>
+                                        <Tooltip title="Print/View as PDF">
+                                            <Button
+                                                type="primary"
+                                                icon={<PrinterOutlined />}
+                                                onClick={handleOpenPDF}
+                                                size="large"
+                                                className="bg-indigo-600 hover:bg-indigo-700"
+                                            >
+                                                Print PDF
+                                            </Button>
+                                        </Tooltip>
                                     )}
-                                    <Button
-                                        type="default"
-                                        icon={<FileExcelOutlined />}
-                                        onClick={handleGenerateExcel}
-                                        size="large"
-                                        className="bg-green-600 hover:bg-green-700 text-white"
-                                    >
-                                        Export to Excel
-                                    </Button>
-                                </>
+
+                                    <Tooltip title="Download Salary Register (Excel)">
+                                        <Button
+                                            type="default"
+                                            icon={<FileExcelOutlined />}
+                                            onClick={handleGenerateExcel}
+                                            size="large"
+                                            className="bg-green-600 hover:bg-green-700 text-white border-green-600"
+                                        >
+                                            Excel List
+                                        </Button>
+                                    </Tooltip>
+
+                                    <Tooltip title="Export for Bank Transfer (NEFT)">
+                                        <Button
+                                            type="default"
+                                            icon={<DownloadOutlined />}
+                                            onClick={handleExportToBank}
+                                            size="large"
+                                            className="bg-emerald-700 hover:bg-emerald-800 text-white border-emerald-700"
+                                        >
+                                            Bank NEFT
+                                        </Button>
+                                    </Tooltip>
+                                </Space>
                             )}
                         </div>
                     </div>
