@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import UserPrivateComponent from "../PrivacyComponent/UserPrivateComponent";
 import TableComponent from "../CommonUi/TableComponent";
-import { Card, Drawer, Button, message, Modal, Form, Input, Badge } from "antd";
-import { MessageOutlined, SendOutlined } from "@ant-design/icons";
+import { Card, Drawer, Button, message, Modal, Form, Input, Badge, Dropdown, Space } from "antd";
+import { MessageOutlined, SendOutlined, DownOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { deleteLocalBooking } from "../../redux/rtk/features/localBusBooking/localBusBookingSlice";
 import CreateDrawer from "../CommonUi/CreateDrawer";
@@ -34,8 +34,11 @@ const AllotBus = ({ ID, onSuccess }) => {
   );
 
   const [isSmsModalOpen, setIsSmsModalOpen] = useState(false);
+  const [isCaptainSmsModalOpen, setIsCaptainSmsModalOpen] = useState(false);
   const [smsForm] = Form.useForm();
+  const [captainSmsForm] = Form.useForm();
   const [smsPreview, setSmsPreview] = useState("");
+  const [captainSmsPreview, setCaptainSmsPreview] = useState("");
   const [currentRecordId, setCurrentRecordId] = useState(null);
 
   const generatePreview = (values) => {
@@ -51,6 +54,29 @@ const AllotBus = ({ ID, onSuccess }) => {
     const clean = (val) => (val || "").replace(/\n+/g, " ").replace(/\s+/g, " ").trim();
 
     return `Dear Customer, GREETINGS OF THE DAY! Vehicle and driver details for Booking No ${clean(bookingNo)} Driver: ${clean(driverDetails)} Vehicle: ${clean(vehicleDetails)} Reporting on: ${clean(reportingOn)} Trip Details: ${clean(destinationAddress)} Remarks: ${clean(remarks)} Regards CHOHAN TOURS AND TRAVELS Contact 8820388881 WISHING YOU A HAPPY JOURNEY`;
+  };
+
+  const generateCaptainPreview = (values) => {
+    const {
+      reportingOn,
+      customerName,
+      customerMobile,
+      tripDetails,
+      vehicleDetails,
+      remarks,
+    } = values;
+
+    const clean = (val) => (val || "").replace(/\n+/g, " ").replace(/\s+/g, " ").trim();
+    const splitText = (str, maxLength) => {
+      if (str.length <= maxLength) return [str, ""];
+      let splitIndex = str.lastIndexOf(" ", maxLength);
+      if (splitIndex === -1) splitIndex = maxLength;
+      return [str.substring(0, splitIndex).trim(), str.substring(splitIndex).trim()];
+    };
+
+    const [name1, name2] = splitText(clean(customerName), 30);
+
+    return `Dear Captain, Reporting data and time - ${clean(reportingOn)} Party name - ${name1} ${name2} Party no. - ${clean(customerMobile)} Reporting Details - ${clean(tripDetails)} ${clean(vehicleDetails)} Remarks - ${clean(remarks)} CHOHAN TOURS AND TRAVELS`;
   };
   const onClose = () => {
     setOpen(false);
@@ -77,6 +103,26 @@ const AllotBus = ({ ID, onSuccess }) => {
     smsForm.setFieldsValue(initialValues);
     setSmsPreview(generatePreview(initialValues));
     setIsSmsModalOpen(true);
+  };
+
+  const openCaptainSmsModal = (recordID, restData) => {
+    const bookingInfo = ID || (list && list.length > 0 ? list[0] : {});
+    const driverNo = restData?.DriverContactNo || "";
+
+    const initialValues = {
+      numbers: driverNo,
+      reportingOn: `${restData?.reportTime ? moment.utc(restData.reportTime).format("LT") : ""} ${restData?.TripStartDate ? moment(restData.TripStartDate).format("DD-MM-YYYY") : ""}`.trim(),
+      customerName: bookingInfo?.ContactPersonName || bookingInfo?.PartyName || "Customer",
+      customerMobile: bookingInfo?.ContactPersonNo || bookingInfo?.ContactNo || "",
+      tripDetails: restData?.TripDesc || bookingInfo?.Destination || "Local",
+      vehicleDetails: `${restData?.BusNo || ""} ${restData?.BusTypeName || ""}`.trim(),
+      remarks: restData?.Remarks || "",
+    };
+
+    setCurrentRecordId(recordID);
+    captainSmsForm.setFieldsValue(initialValues);
+    setCaptainSmsPreview(generateCaptainPreview(initialValues));
+    setIsCaptainSmsModalOpen(true);
   };
 
   const handleSendSms = async () => {
@@ -107,6 +153,37 @@ const AllotBus = ({ ID, onSuccess }) => {
       }
     } catch (error) {
       message.error("Failed to send Allotment SMS.");
+    }
+  };
+
+  const handleSendCaptainSms = async () => {
+    try {
+      const values = await captainSmsForm.validateFields();
+      const payload = {
+        ...values,
+        numbers: [values.numbers],
+        allotmentId: currentRecordId,
+      };
+
+      const apiUrl = import.meta.env.VITE_APP_API;
+      const res = await axios.post(`${apiUrl}/sms/captain-allotment`, payload);
+
+      if (res.status === 200) {
+        message.success("Captain SMS sent successfully!");
+        setIsCaptainSmsModalOpen(false);
+        dispatch(
+          loadSingleBookingBusAllotment({
+            id: formattedBookingID,
+            decodedBookingID,
+            page: 1,
+            count: 10000,
+            status: true,
+            allotmentStatus: 0,
+          })
+        );
+      }
+    } catch (error) {
+      message.error("Failed to send Captain SMS.");
     }
   };
 
@@ -215,18 +292,47 @@ const AllotBus = ({ ID, onSuccess }) => {
                     fontWeight: "bold"
                   }}
                 >
-                  <Button
-                    type="primary"
-                    onClick={() => openSmsModal(recordID, restData)}
-                    className="flex items-center justify-center gap-2 h-full px-4 border-none shadow-sm transition-all duration-300"
-                    style={{
-                      background: 'linear-gradient(135deg, #0088cc 0%, #00a2ed 100%)',
-                      borderRadius: '6px'
+                  <Dropdown
+                    menu={{
+                      items: [
+                        {
+                          key: '1',
+                          label: (
+                            <div className="flex justify-between items-center gap-4">
+                              <span>Customer SMS</span>
+                              <Badge count={restData?.sms_count || restData?.SMS_Count || 0} size="small" />
+                            </div>
+                          ),
+                          icon: <SendOutlined />,
+                          onClick: () => openSmsModal(recordID, restData),
+                        },
+                        {
+                          key: '2',
+                          label: (
+                            <div className="flex justify-between items-center gap-4">
+                              <span>Captain SMS</span>
+                              <Badge count={restData?.cap_sms_count || restData?.Cap_SMS_Count || 0} size="small" />
+                            </div>
+                          ),
+                          icon: <SendOutlined />,
+                          onClick: () => openCaptainSmsModal(recordID, restData),
+                        },
+                      ],
                     }}
+                    placement="bottomRight"
                   >
-                    <SendOutlined style={{ transform: 'rotate(-45deg)', marginTop: '-2px' }} />
-                    <span className="font-semibold text-sm">Send SMS</span>
-                  </Button>
+                    <Button
+                      type="primary"
+                      className="flex items-center justify-center gap-2 h-full px-4 border-none shadow-sm transition-all duration-300"
+                      style={{
+                        background: 'linear-gradient(135deg, #0088cc 0%, #00a2ed 100%)',
+                        borderRadius: '6px'
+                      }}
+                    >
+                      <span className="font-semibold text-sm">Send SMS</span>
+                      <DownOutlined className="text-xs" />
+                    </Button>
+                  </Dropdown>
                 </Badge>
               </div>
             )}
@@ -321,6 +427,55 @@ const AllotBus = ({ ID, onSuccess }) => {
         <div className="mt-4 p-4 bg-gray-100 rounded border border-gray-300">
           <h4 className="font-bold mb-2">Message Preview:</h4>
           <p className="text-gray-700 whitespace-pre-wrap">{smsPreview}</p>
+        </div>
+      </Modal>
+
+      <Modal
+        title="Send Captain SMS"
+        open={isCaptainSmsModalOpen}
+        onOk={handleSendCaptainSms}
+        onCancel={() => setIsCaptainSmsModalOpen(false)}
+        width={800}
+        okText="Send Captain SMS"
+      >
+        <Form
+          form={captainSmsForm}
+          layout="vertical"
+          onValuesChange={() => {
+            setCaptainSmsPreview(generateCaptainPreview(captainSmsForm.getFieldsValue()));
+          }}
+        >
+          <div className="grid grid-cols-2 gap-4">
+            <Form.Item
+              name="numbers"
+              label="Captain Phone Number"
+              rules={[{ required: true, message: "Please enter phone number" }]}
+            >
+              <Input placeholder="Enter Captain Phone Number" />
+            </Form.Item>
+            <Form.Item name="reportingOn" label="Reporting Date & Time">
+              <Input placeholder="Reporting Date & Time" />
+            </Form.Item>
+            <Form.Item name="customerName" label="Party Name">
+              <Input placeholder="Party Name" />
+            </Form.Item>
+            <Form.Item name="customerMobile" label="Party No.">
+              <Input placeholder="Party No." />
+            </Form.Item>
+            <Form.Item name="tripDetails" label="Trip Details">
+              <Input.TextArea rows={2} placeholder="Trip Details" />
+            </Form.Item>
+            <Form.Item name="vehicleDetails" label="Vehicle Details">
+              <Input placeholder="Vehicle Details" />
+            </Form.Item>
+            <Form.Item name="remarks" label="Remarks">
+              <Input.TextArea rows={2} placeholder="Remarks" />
+            </Form.Item>
+          </div>
+        </Form>
+        <div className="mt-4 p-4 bg-orange-50 rounded border border-orange-200">
+          <h4 className="font-bold mb-2">Captain Message Preview:</h4>
+          <p className="text-gray-700 whitespace-pre-wrap">{captainSmsPreview}</p>
         </div>
       </Modal>
     </Card>

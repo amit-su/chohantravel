@@ -62,10 +62,8 @@ const getAllBookingBusAllotment = async (req, res) => {
 };
 const getSingleBookingBusAllotment = async (req, res) => {
   try {
-    console.log(req.params);
     const { id, allotmentStatus } = req.params;
     const decodedId = id.replace(/-/g, "/");
-    console.log(decodedId);
     // get all product_category
 
     const params = {

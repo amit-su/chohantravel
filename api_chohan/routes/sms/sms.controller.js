@@ -309,9 +309,102 @@ const sendPaymentReminderSms = async (req, res) => {
     }
 };
 
+const sendCaptainAllotmentSms = async (req, res) => {
+    try {
+        const { numbers, reportingOn, customerName, customerMobile, tripDetails, vehicleDetails, remarks, allotmentId } = req.body;
+
+        const errors = [];
+
+        /* ---------- Helper Function ---------- */
+        const isValidString = (value) => {
+            return typeof value === "string" && value.trim().length > 0;
+        };
+
+        const isValidPhone = (phone) => {
+            return /^[0-9]{10}$/.test(phone);
+        };
+
+        /* ---------- Numbers Validation ---------- */
+        if (!Array.isArray(numbers) || numbers.length === 0) {
+            errors.push("At least one mobile number is required.");
+        } else {
+            const invalidNumbers = numbers.filter(num => !isValidPhone(String(num).trim()));
+            if (invalidNumbers.length > 0) {
+                errors.push(`Invalid mobile numbers: ${invalidNumbers.join(", ")}. Each number must be 10 digits.`);
+            }
+        }
+
+        /* ---------- String Validations ---------- */
+        if (!isValidString(reportingOn)) errors.push("Reporting date & time is required.");
+        if (!isValidString(customerName)) errors.push("Customer name is required.");
+        if (!isValidString(customerMobile)) errors.push("Customer mobile is required.");
+
+        /* ---------- Final Check ---------- */
+        if (errors.length > 0) {
+            return res.status(400).json({
+                status: false,
+                message: "Validation failed",
+                errors
+            });
+        }
+
+        const cleanStr = (str) => (str || "").replace(/\n+/g, " ").replace(/\s+/g, " ").trim();
+        const splitText = (str, maxLength) => {
+            if (str.length <= maxLength) return [str, ""];
+            let splitIndex = str.lastIndexOf(" ", maxLength);
+            if (splitIndex === -1) splitIndex = maxLength;
+            return [str.substring(0, splitIndex).trim(), str.substring(splitIndex).trim()];
+        };
+
+        const safeReportingOn = cleanStr(reportingOn);
+        const [safeCustomerName1, safeCustomerName2] = splitText(cleanStr(customerName), 30);
+        const safeCustomerMobile = cleanStr(customerMobile);
+        const [safeTripDetails, safeVehicleDetails] = [cleanStr(tripDetails), cleanStr(vehicleDetails)];
+        const safeRemarks = cleanStr(remarks);
+
+        // Template: Dear Captain, Reporting data and time - {#var#} Party name - {#var#}{#var#} Party no. - {#var#} Reporting Details - {#var#}{#var#} Remarks - {#var#} CHOHAN TOURS AND TRAVELS
+        const text = `Dear Captain, Reporting data and time - ${safeReportingOn} Party name - ${safeCustomerName1} ${safeCustomerName2} Party no. - ${safeCustomerMobile} Reporting Details - ${safeTripDetails} ${safeVehicleDetails} Remarks - ${safeRemarks} CHOHAN TOURS AND TRAVELS`;
+
+        const payload = {
+            senderId: "CH0HAN",
+            dcs: 0,
+            flashSms: 0,
+            schedTime: "",
+            groupId: "",
+            peId: "1701176908708959690",
+            text: text,
+            dltTemplateId: "1707177486181218376",
+            chainValue: "",
+            messageId: "",
+            numbers: numbers
+        };
+
+        const result = await sendSMS(payload);
+
+        let pool = await dbClientService();
+        const request = pool.request();
+        if (allotmentId && !isNaN(allotmentId) && Number(allotmentId) > 0) {
+            request.input('allotmentId', allotmentId);
+            await request.query('UPDATE BookingBusAllotment SET cap_sms_count = ISNULL(cap_sms_count, 0) + 1 WHERE ID = @allotmentId');
+        }
+
+        return res.status(200).json({
+            message: "Captain SMS sent successfully",
+            providerResponse: result
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: "Failed to send Captain SMS",
+            error: error.message
+        });
+    }
+};
+
 module.exports = {
     sendSmsController,
     sendBookingConfirmationSms,
     sendAllotmentSms,
-    sendPaymentReminderSms
+    sendPaymentReminderSms,
+    sendCaptainAllotmentSms
 };

@@ -25,8 +25,8 @@ const createbookingEntry = async (req, res) => {
         ContactPersonNo: req.body.ContactPersonNo,
         PaymentTerms: req.body.paymentTerms,
         PermitReq: req.body.PermitReq,
-        ParkingExtra: req.body.includeParking === "Yes" || req.body.includeParking === "YES" ? "Y" : "N",
-        TollTaxExtra: req.body.includeTollTax === "Yes" || req.body.includeTollTax === "YES" ? "Y" : "N",
+        // ParkingExtra: req.body.includeParking === "Yes" || req.body.includeParking === "YES" ? "Y" : "N",
+        // TollTaxExtra: req.body.includeTollTax === "Yes" || req.body.includeTollTax === "YES" ? "Y" : "N",
         localBookingList: req.body.localBookingList,
       }
     );
@@ -124,8 +124,8 @@ const updateBookingEntry = async (req, res) => {
         GSTInclude: req.body.includeGST,
         PaymentTerms: req.body.paymentTerms,
         PermitReq: req.body.PermitReq,
-        ParkingExtra: req.body.includeParking === "Yes" || req.body.includeParking === "YES" ? "Y" : "N",
-        TollTaxExtra: req.body.includeTollTax === "Yes" || req.body.includeTollTax === "YES" ? "Y" : "N",
+        // ParkingExtra: req.body.includeParking === "Yes" || req.body.includeParking === "YES" ? "Y" : "N",
+        // TollTaxExtra: req.body.includeTollTax === "Yes" || req.body.includeTollTax === "YES" ? "Y" : "N",
 
         localBookingList: req.body.localBookingList,
       }
