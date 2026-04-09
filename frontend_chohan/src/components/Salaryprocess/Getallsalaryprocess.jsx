@@ -295,10 +295,11 @@ const GetSalaryDetails = () => {
         const rawWashing = item.PerDayWashingAllowance * item.PaidDays;
         const rawTA = item.PerDayTA * item.PaidDays;
         const rawKhuraki = item.KhurakiAmt || 0;
+        const rawFixedAmt = item.FixedAmt || 0;
 
         // 2. Gross Salary Calculation (Raw)
         const rawGrossSalary =
-          rawBasic + rawHRA + rawMedical + rawWashing + rawTA + rawKhuraki;
+          rawBasic + rawHRA + rawMedical + rawWashing + rawTA + rawKhuraki + rawFixedAmt;
 
         // Rounded components for Payload
         const BASIC = Math.round(rawBasic);
@@ -307,6 +308,7 @@ const GetSalaryDetails = () => {
         const WashingAllowance = Math.round(rawWashing);
         const TA = Math.round(rawTA);
         const TotalKhurakiAmt = Math.round(rawKhuraki);
+        const FixedAmt = Math.round(rawFixedAmt);
         const GrossSalary = Math.round(rawGrossSalary);
 
         // --- 3. Deductions ---
@@ -396,6 +398,7 @@ const GetSalaryDetails = () => {
           KhurakiTotalAmt: TotalKhurakiAmt,
           GrossSalary,
           NetSalary, // 💡 Matches Table Logic
+          FixedAmt,
           amountadjust: Math.round(rawAdvance),
           iddel,
           totaldeduction,
@@ -512,6 +515,25 @@ const GetSalaryDetails = () => {
           Math.round(record.PerDayWashingAllowance * record.PaidDays),
       },
       {
+        id: 20,
+        title: "Fixed Amount",
+        dataIndex: "FixedAmt",
+        key: "FixedAmt",
+        width: 110,
+        align: "right",
+        render: (text, record) => (
+          <InputNumber
+            value={text || 0}
+            onChange={(value) => {
+              const newData = data.map((item) =>
+                item.id === record.id ? { ...item, FixedAmt: value } : item
+              );
+              setData(newData);
+            }}
+          />
+        ),
+      },
+      {
         id: 12,
         title: "Khuraki Total Amount",
         dataIndex: "KhurakiAmt",
@@ -541,7 +563,8 @@ const GetSalaryDetails = () => {
           const medical = record.PerDayMedicalAllowance * record.PaidDays;
           const washing = record.PerDayWashingAllowance * record.PaidDays;
           const khuraki = record.KhurakiAmt || 0;
-          return Math.round(basic + hra + ta + medical + washing + khuraki);
+          const fixedAmt = record.FixedAmt || 0;
+          return Math.round(basic + hra + ta + medical + washing + khuraki + fixedAmt);
         },
       },
       {
@@ -693,7 +716,8 @@ const GetSalaryDetails = () => {
           const medical = record.PerDayMedicalAllowance * record.PaidDays;
           const washing = record.PerDayWashingAllowance * record.PaidDays;
           const khuraki = record.KhurakiAmt || 0;
-          const gross = basic + hra + ta + medical + washing + khuraki;
+          const fixedAmt = record.FixedAmt || 0;
+          const gross = basic + hra + ta + medical + washing + khuraki + fixedAmt;
 
           // --- Deductions ---
 

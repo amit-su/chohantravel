@@ -269,6 +269,14 @@ const GetAllSalary = () => {
         align: "right",
       },
       {
+        id: 20,
+        title: "Fixed Amount",
+        dataIndex: "FixedAmt",
+        key: "FixedAmt",
+        width: 110,
+        align: "right",
+      },
+      {
         id: 12,
         title: "Khuraki Total Amount",
         dataIndex: "KhurakiTotalAmt",

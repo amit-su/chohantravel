@@ -53,6 +53,7 @@ const updateSalarysetup = async (req, res) => {
       pf: req.body.pf,
       ptax: req.body.ptax,
       Year: req.body.Year,
+      FixedAmt: req.body.FixedAmt,
 
       Operation: 1,
     };

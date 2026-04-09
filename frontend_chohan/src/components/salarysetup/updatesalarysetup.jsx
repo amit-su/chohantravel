@@ -53,7 +53,8 @@ const Updatesalarysetup = () => {
       pf: selectedsalary?.PF,
       ptax: selectedsalary?.PTAX,
       absent: selectedsalary?.absent,
-      Year:selectedsalary?.Year
+      Year:selectedsalary?.Year,
+      fixedAmt: selectedsalary?.FixedAmt
     });
     useEffect(() => {
       const newValues = {
@@ -70,7 +71,8 @@ const Updatesalarysetup = () => {
         pf: selectedsalary?.PF,
         ptax: selectedsalary?.PTAX,
         absent: selectedsalary?.absent,
-        Year:selectedsalary?.Year
+        Year:selectedsalary?.Year,
+        fixedAmt: selectedsalary?.FixedAmt
   
       };
       setInitValues1(newValues);
@@ -97,6 +99,7 @@ const Updatesalarysetup = () => {
       const pf=value.pf;
       const ptax=value.ptax;
       const Year=value.Year;
+      const FixedAmt=value.fixedAmt;
   
   
   
@@ -105,7 +108,7 @@ const Updatesalarysetup = () => {
           Deduction, date,empType,id2,basic,
           medicalAllowance,hra,
           ta,washingAllowance,esic,advance,
-          pf,ptax,Year
+          pf,ptax,Year,FixedAmt
          },dispatch })
       ); 
       // Handle form submission here
@@ -120,6 +123,7 @@ const Updatesalarysetup = () => {
   
     const [input4, setInput4] = useState(initValues1.ta||0);
     const [input7, setInput7] = useState(initValues1.ptax||0);
+    const [inputFixedAmt, setInputFixedAmt] = useState(initValues1.fixedAmt||0);
   
   
   
@@ -153,10 +157,14 @@ const Updatesalarysetup = () => {
     const handleInput8Change = (e) => {
       setInput8(e.target.value);
     };
+    const handleInputFixedAmtChange = (e) => {
+      setInputFixedAmt(e.target.value);
+    };
     const calculateSum = () => {
       const sum = parseFloat(input1||initValues1.basic) + parseFloat(input2||initValues1.hra)+parseFloat(input4||initValues1.ta)+
       +parseFloat(input3||initValues1.washingAllowance)+
-      parseFloat(input5||initValues1.medicalAllowance);
+      parseFloat(input5||initValues1.medicalAllowance)+
+      parseFloat(inputFixedAmt||initValues1.fixedAmt||0);
       
       console.log(sum,"sum")
       return isNaN(sum) ? 0 : sum;
@@ -262,17 +270,15 @@ const Updatesalarysetup = () => {
             label="Medical Allowance"
             className="w-80"
             name="medicalAllowance"
-            rules={[
-              {
-                required: false,
-                message: "Please input Date!",
-              },
-            ]}
           >
-                        <Input placeholder="   "                     onChange={handleInput5Change}
- />
-
-          
+            <Input placeholder="   " onChange={handleInput5Change} />
+          </Form.Item>
+          <Form.Item
+            label="Fixed Amount"
+            className="w-80"
+            name="fixedAmt"
+          >
+            <Input placeholder="   " onChange={handleInputFixedAmtChange} />
           </Form.Item>
          
          

@@ -278,6 +278,7 @@ const GetAllSalarySet = () => {
     const advance = value.advance;
     const pf = value.pf;
     const ptax = value.ptax;
+    const FixedAmt = value.fixedAmt;
     const Year = year;
 
     const resp = await dispatch(
@@ -297,6 +298,7 @@ const GetAllSalarySet = () => {
           advance,
           pf,
           ptax,
+          FixedAmt: FixedAmt,
           Year,
         },
         dispatch,
@@ -399,6 +401,7 @@ const GetAllSalarySet = () => {
 
   const [input4, setInput4] = useState(initValues1.ta || 0);
   const [input7, setInput7] = useState(initValues1.ptax || 0);
+  const [inputFixedAmt, setInputFixedAmt] = useState(initValues1.fixedAmt || 0);
 
   console.log(input1, "0");
   const handleInput1Change = (e) => {
@@ -426,13 +429,17 @@ const GetAllSalarySet = () => {
   const handleInput8Change = (e) => {
     setInput8(e.target.value);
   };
+  const handleInputFixedAmtChange = (e) => {
+    setInputFixedAmt(e.target.value);
+  };
   const calculateSum = () => {
     const sum =
-      parseFloat(input1 || initValues1.basic) +
-      parseFloat(input2 || initValues1.hra) +
-      parseFloat(input4 || initValues1.ta) +
-      +parseFloat(input3 || initValues1.washingAllowance) +
-      parseFloat(input5 || initValues1.medicalAllowance);
+      parseFloat(input1 || initValues1.basic || 0) +
+      parseFloat(input2 || initValues1.hra || 0) +
+      parseFloat(input4 || initValues1.ta || 0) +
+      parseFloat(input3 || initValues1.washingAllowance || 0) +
+      parseFloat(input5 || initValues1.medicalAllowance || 0) +
+      parseFloat(inputFixedAmt || initValues1.fixedAmt || 0);
 
     console.log(sum, "sum");
     return isNaN(sum) ? 0 : sum;
@@ -945,14 +952,15 @@ const GetAllSalarySet = () => {
                 label="Medical Allowance"
                 className="w-80"
                 name="medicalAllowance"
-                rules={[
-                  {
-                    required: false,
-                    message: "Please input Date!",
-                  },
-                ]}
               >
                 <Input placeholder="   " onChange={handleInput5Change} />
+              </Form.Item>
+              <Form.Item
+                label="Fixed Amount"
+                className="w-80"
+                name="fixedAmt"
+              >
+                <Input placeholder="   " onChange={handleInputFixedAmtChange} />
               </Form.Item>
             </div>
             <div className="float-right w-2/2">

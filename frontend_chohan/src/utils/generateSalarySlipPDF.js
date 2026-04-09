@@ -109,21 +109,29 @@ const createSalarySlipContent = (data, companyDetails = null) => {
     const medical = parseFloat(salaryData.MedicalAllowance) || 0;
     const washing = parseFloat(salaryData.WashingAllowance) || 0;
     const ta = parseFloat(salaryData.TA) || 0;
+    const fixedAmt = parseFloat(salaryData.FixedAmt) || 0;
 
     // For Helper, Khoraki is moved to 'Others' on the salary side
-    const others = isHelper ? (parseFloat(salaryData.KhurakiTotalAmt) || 0) : 0;
+    // Salary Gross (Excluding Khoraki usually, but includes it for Helper via 'others')
+    // 💡 For Helpers, Fixed Amount is added to 'Others' as per request
+    const others = isHelper ? (parseFloat(salaryData.KhurakiTotalAmt) || 0) + fixedAmt : 0;
 
     // Salary Gross (Excluding Khoraki usually, but includes it for Helper via 'others')
+    // 💡 Fixed Amount moved to Khoraki section for PDF display
     const salaryGross = basic + hra + medical + washing + ta + others;
 
     // 2. Khoraki Components
-    const khorakiGross = parseFloat(salaryData.KhurakiTotalAmt) || 0;
+    // 💡 Fixed Amount added to Khoraki Gross as per request
+    const khorakiGross = (parseFloat(salaryData.KhurakiTotalAmt) || 0) + fixedAmt;
     const advanceAdjustedTotal = parseFloat(salaryData.AdvanceAdjusted) || 0;
 
     // Split Advance Adjustment logic:
     // For Helper, everything is deducted from Salary. For others, split between Khoraki and Salary.
     const khorakiAdjustment = isHelper ? 0 : Math.min(advanceAdjustedTotal, khorakiGross);
     const salaryAdjustment = isHelper ? advanceAdjustedTotal : Math.max(0, advanceAdjustedTotal - khorakiAdjustment);
+
+    // 💡 For Helpers, 'netKhorakiPayable' is 0 because all Khoraki (including FixedAmt) is in 'others' (salaryGross)
+    const netKhorakiPayable = isHelper ? 0 : khorakiGross - khorakiAdjustment;
 
     // 3. Salary Deductions (Standard + Advance Split)
     const pf = parseFloat(salaryData.PF) || 0;
@@ -134,8 +142,7 @@ const createSalarySlipContent = (data, companyDetails = null) => {
 
     // 4. Net Amounts
     const netSalaryOnly = salaryGross - salaryDeductionsTotal;
-    // For helper, netKhoraki is 0 because it's already added to salary gross via 'others'
-    const netKhorakiPayable = isHelper ? 0 : khorakiGross - khorakiAdjustment;
+
 
     // 5. Final Payable
     const totalPayable = netSalaryOnly + netKhorakiPayable;
@@ -362,6 +369,12 @@ const createSalarySlipContent = (data, companyDetails = null) => {
                                     { text: (item.Rate || 0).toFixed(0), style: 'tableCell', alignment: 'center' },
                                     { text: (item.TotalKhurakiAmount || 0).toFixed(0), style: 'tableCell', alignment: 'right' }
                                 ]),
+                                ...(fixedAmt > 0 ? [[
+                                    { text: 'Fixed Amount', style: 'tableCell' },
+                                    { text: '', style: 'tableCell', alignment: 'center' },
+                                    { text: '', style: 'tableCell', alignment: 'center' },
+                                    { text: fixedAmt.toFixed(0), style: 'tableCell', alignment: 'right' }
+                                ]] : []),
                                 [
                                     { text: 'TOTAL', style: 'totalLabel', colSpan: 3 },
                                     {}, {},

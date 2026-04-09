@@ -205,6 +205,13 @@ const Salarysetuptable = () => {
       key: "PTAX",
       width: 120,
     },
+    {
+      id: 12,
+      title: "Fixed Amount",
+      dataIndex: "FixedAmt",
+      key: "FixedAmt",
+      width: 120,
+    },
 
     //Update Supplier Name here
 
