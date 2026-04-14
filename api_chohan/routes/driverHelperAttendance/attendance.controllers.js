@@ -4,6 +4,7 @@ const {
   GET_ATTENDANCE_PROCEDURE,
   GET_ATTENDANCE_PROCEDURE_BY_MONTH,
   sp_insert_drv_helper_site_attend_json,
+  sp_insert_drv_helper_site_attend_json_for_booking,
 } = require("../../utils/constants");
 const moment = require("moment");
 
@@ -65,15 +66,12 @@ const getAllAttendance = async (req, res) => {
     res.json(resultdata);
   } catch (error) {
     res.status(400).json(error.message);
-    console.log(error.message);
   }
 };
 
 const getSingleAttendance = async (req, res) => {
   try {
     const { id } = req.params;
-
-    console.log("req.body", req.body);
 
     // get all product_category
 
@@ -92,7 +90,6 @@ const getSingleAttendance = async (req, res) => {
     res.json(resultdata);
   } catch (error) {
     res.status(400).json(error.message);
-    console.log(error.message);
   }
 };
 
@@ -128,7 +125,6 @@ const updateAttendance = async (req, res) => {
     res.json(result);
   } catch (error) {
     res.status(400).json(error.message);
-    console.log(error.message);
   }
 };
 const getSingleAttendancebymonth = async (req, res) => {
@@ -174,18 +170,29 @@ const createAttendance = async (req, res) => {
     const attendanceWithMeta = attendanceList.map((att) => ({
       ...att,
     }));
-    const result = await databaseService.callStored(
-      req,
-      sp_insert_drv_helper_site_attend_json,
-      {
-        AttendanceJson: JSON.stringify(attendanceWithMeta),
-        CreatedBy: userId,
-      }
-    );
-    res.json(result);
+    if (req.body.attendance[0].type === "Booking") {
+      const result = await databaseService.callStored(
+        req,
+        sp_insert_drv_helper_site_attend_json_for_booking,
+        {
+          AttendanceJson: JSON.stringify(attendanceWithMeta),
+          CreatedBy: userId,
+        }
+      );
+      res.json(result);
+    } else {
+      const result = await databaseService.callStored(
+        req,
+        sp_insert_drv_helper_site_attend_json,
+        {
+          AttendanceJson: JSON.stringify(attendanceWithMeta),
+          CreatedBy: userId,
+        }
+      );
+      res.json(result);
+    }
   } catch (error) {
     res.status(400).json(error.message);
-    console.log(error.message);
   }
 };
 

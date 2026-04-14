@@ -166,6 +166,7 @@ const AllotBusDrawer = ({
               SiteID: siteId,
               KhurakiAmt: khurakiAmt,
               BookingID: updatedValues.BookingID,
+              type: "Booking"
             });
           });
 

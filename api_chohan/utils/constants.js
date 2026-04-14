@@ -108,6 +108,8 @@ const GET_ALL_BOOKING_SAMARY = "[dbo].[sp_get_booking_summary]";
 const GET_ALL_EXPIRED_DOCUMENTS = "[dbo].[sp_GetExpiringBusDocuments]";
 const sp_insert_drv_helper_site_attend_json =
   "[dbo].[sp_insert_drv_helper_site_attend_json]";
+const sp_insert_drv_helper_site_attend_json_for_booking =
+  "[dbo].[sp_insert_drv_helper_site_attend_json_for_booking]";
 const sp_save_salary_details = "[dbo].[sp_save_salary_details]";
 const sp_get_salary = "[dbo].[spGet_Salarydetails]";
 const INSERT_OR_UPDATE_MONTHLY_INV_ENTRY_PROCEDURE =
@@ -144,6 +146,7 @@ module.exports = {
   sp_get_salary,
   sp_save_salary_details,
   sp_insert_drv_helper_site_attend_json,
+  sp_insert_drv_helper_site_attend_json_for_booking,
   GET_ALL_EXPIRED_DOCUMENTS,
   GET_ALL_BOOKING_SAMARY,
   GET_BUS_STOCK,
