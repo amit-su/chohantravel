@@ -115,7 +115,10 @@ export const addUser = createAsyncThunk("user/addUser", async (values) => {
     });
 
     localStorage.setItem("access-token", data.token);
-    localStorage.setItem("role", data.role);
+    // Be very robust in capturing the role, fallback to "admin" if username is ADMIN
+    const detectedRole = data.role || data.RoleName || data.role_name || data.Role || "";
+    const finalRole = (detectedRole === "" && data.username === "ADMIN") ? "admin" : detectedRole;
+    localStorage.setItem("role", finalRole);
     localStorage.setItem("user", data.username);
     localStorage.setItem("id", data.id);
     localStorage.setItem("isLogged", true);

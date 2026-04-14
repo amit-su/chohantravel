@@ -47,6 +47,7 @@ const Dashboard = require("./routes/dashboard/dashboard.routes");
 const ReportRoutes = require("./routes/report/report.Routes");
 const supplierRoutes = require("./routes/purchase/supplier/supplier.routes");
 const smsRoutes = require("./routes/sms/sms.routes");
+const whatsappRoutes = require("./routes/whatsapp/whatsapp.routes");
 const monthlyInvoiceRoutes = require("./routes/monthlyInvoice/monthlyInvoice.Routes");
 
 /* variables */
@@ -144,6 +145,7 @@ app.use("/v1/salaryadjust", salaryadjustRoutes);
 app.use("/v1/users", UsersRoutes);
 app.use("/v1/report", ReportRoutes);
 app.use("/v1/sms", smsRoutes);
+app.use("/v1/whatsapp", whatsappRoutes);
 app.use("/v1/monthlyInvoice", monthlyInvoiceRoutes);
 
 module.exports = app;

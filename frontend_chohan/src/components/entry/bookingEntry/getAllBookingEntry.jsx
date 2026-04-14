@@ -10,7 +10,8 @@ import {
   CalendarOutlined,
   RocketOutlined,
   MoreOutlined,
-  MessageOutlined
+  MessageOutlined,
+  WhatsAppOutlined
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -226,6 +227,61 @@ const GetAllBookingEntry = () => {
       message.error("Failed to send some SMS.");
     } finally {
       setTimeout(() => setIsProgressModalVisible(false), 1500);
+    }
+  };
+
+  const handleStartWhatsAppSending = async () => {
+    try {
+      const values = await smsPreviewForm.validateFields();
+      setIsSmsPreviewModalOpen(false);
+      setSmsProgress({ current: 0, total: pendingLocalBookings.length });
+      setIsProgressModalVisible(true);
+
+      let successCount = 0;
+      for (let i = 0; i < pendingLocalBookings.length; i++) {
+        const payload = {
+          number: values.numbers,
+          message: smsPreviews[i]
+        };
+
+        try {
+          const res = await axios.post(`${apiUrl}/whatsapp/send`, payload);
+          if (res.data.status) successCount++;
+        } catch (err) {
+          console.error(`WhatsApp Error for trip ${i}:`, err);
+        }
+
+        setSmsProgress({ current: i + 1, total: pendingLocalBookings.length });
+      }
+      message.success(`Sent ${successCount} out of ${pendingLocalBookings.length} WhatsApp messages successfully!`);
+      fetchData(currentPage, itemsPerPage);
+    } catch (error) {
+      console.error("WhatsApp batch error:", error);
+      message.error("Failed to send some WhatsApp messages.");
+    } finally {
+      setTimeout(() => setIsProgressModalVisible(false), 1500);
+    }
+  };
+
+  const handleSendPaymentReminderWhatsApp = async () => {
+    try {
+      const values = await paymentReminderForm.validateFields();
+      setIsPaymentReminderModalOpen(false);
+
+      const payload = {
+        number: values.numbers,
+        message: paymentReminderPreview
+      };
+
+      const res = await axios.post(`${apiUrl}/whatsapp/send`, payload);
+      if (res.data.status) {
+        message.success("Payment reminder WhatsApp sent successfully!");
+        fetchData(currentPage, itemsPerPage);
+      } else {
+        message.error("Failed to send WhatsApp message.");
+      }
+    } catch (error) {
+      message.error("Failed to send Payment reminder WhatsApp.");
     }
   };
 
@@ -462,7 +518,7 @@ const GetAllBookingEntry = () => {
                 onClick={() => showSmsModal(record)}
                 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
               >
-                <MessageOutlined />
+                <MessageOutlined style={{ color: '#25D366' }} />
                 <span>Send SMS</span>
               </div>
             )
@@ -686,10 +742,30 @@ const GetAllBookingEntry = () => {
           title={<span className="text-lg font-semibold text-gray-800">Booking Confirmation SMS Preview</span>}
           open={isSmsPreviewModalOpen}
           onOk={handleStartSmsSending}
-          onCancel={() => setIsSmsPreviewModalOpen(false)}
           width={800}
-          okText={`Send SMS to ${pendingLocalBookings.length} Trip(s)`}
           destroyOnClose
+          footer={[
+            <Button key="cancel" onClick={() => setIsSmsPreviewModalOpen(false)}>
+              Cancel
+            </Button>,
+            <Button
+              key="whatsapp"
+              type="primary"
+              icon={<WhatsAppOutlined />}
+              style={{ backgroundColor: '#25D366', borderColor: '#25D366' }}
+              onClick={handleStartWhatsAppSending}
+            >
+              Send via WhatsApp
+            </Button>,
+            <Button
+              key="sms"
+              type="primary"
+              style={{ backgroundColor: '#25D366', borderColor: '#25D366' }}
+              onClick={handleStartSmsSending}
+            >
+              Send SMS to {pendingLocalBookings.length} Trip(s)
+            </Button>,
+          ]}
         >
           <Form
             form={smsPreviewForm}
@@ -739,10 +815,30 @@ const GetAllBookingEntry = () => {
           title={<span className="text-lg font-semibold text-gray-800">Payment Reminder SMS Preview</span>}
           open={isPaymentReminderModalOpen}
           onOk={handleSendPaymentReminder}
-          onCancel={() => setIsPaymentReminderModalOpen(false)}
           width={800}
-          okText="Send SMS"
           destroyOnClose
+          footer={[
+            <Button key="cancel" onClick={() => setIsPaymentReminderModalOpen(false)}>
+              Cancel
+            </Button>,
+            <Button
+              key="whatsapp"
+              type="primary"
+              icon={<WhatsAppOutlined />}
+              style={{ backgroundColor: '#25D366', borderColor: '#25D366' }}
+              onClick={handleSendPaymentReminderWhatsApp}
+            >
+              Send via WhatsApp
+            </Button>,
+            <Button
+              key="sms"
+              type="primary"
+              style={{ backgroundColor: '#25D366', borderColor: '#25D366' }}
+              onClick={handleSendPaymentReminder}
+            >
+              Send SMS
+            </Button>,
+          ]}
         >
           <Form
             form={paymentReminderForm}

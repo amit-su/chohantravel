@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 import { Button, Dropdown } from "antd";
 
-import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
+import { LogoutOutlined, UserOutlined, WhatsAppOutlined } from "@ant-design/icons";
 import { RiFullscreenExitLine, RiFullscreenLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
@@ -28,32 +28,46 @@ function Header({ onPress, collapsed, handleCollapsed }) {
   const user = localStorage.getItem("user");
 
   const items = [
-    {
-      key: "1",
-      label: (
-        <p
-          style={{ margin: 0, padding: "0.2rem 0.5rem" }}
-          className="flex items-center p-0.5"
-        >
-          <UserOutlined style={{ fontSize: "16px" }} />{" "}
-          <span className="logout-text font-weight-bold me-2 ms-1">{user}</span>
-        </p>
-      ),
-    },
-    {
-      key: "2",
-      label: (
-        <p
-          style={{ margin: 0, padding: "0.2rem 0.5rem" }}
-          className="flex items-center"
-        >
-          <Link to="/admin/auth/logout" className="flex items-center gap-[6px]">
-            <LogoutOutlined className=" text-red-500" />
-            <span className="logout-text font-weight-bold">Log Out</span>
-          </Link>
-        </p>
-      ),
-    },
+      {
+        key: "1",
+        label: (
+          <p
+            style={{ margin: 0, padding: "0.2rem 0.5rem" }}
+            className="flex items-center p-0.5"
+          >
+            <UserOutlined style={{ fontSize: "16px" }} />{" "}
+            <span className="logout-text font-weight-bold me-2 ms-1">{user}</span>
+          </p>
+        ),
+      },
+      ...(localStorage.getItem("role")?.toLowerCase() === "admin" ? [{
+        key: "whatsapp",
+        label: (
+          <p
+            style={{ margin: 0, padding: "0.2rem 0.5rem" }}
+            className="flex items-center"
+          >
+            <Link to="/admin/whatsapp-config" className="flex items-center gap-[6px]">
+              <WhatsAppOutlined style={{ color: '#25D366' }} />
+              <span className="logout-text font-weight-bold">WhatsApp Login</span>
+            </Link>
+          </p>
+        ),
+      }] : []),
+      {
+        key: "2",
+        label: (
+          <p
+            style={{ margin: 0, padding: "0.2rem 0.5rem" }}
+            className="flex items-center"
+          >
+            <Link to="/admin/auth/logout" className="flex items-center gap-[6px]">
+              <LogoutOutlined className=" text-red-500" />
+              <span className="logout-text font-weight-bold">Log Out</span>
+            </Link>
+          </p>
+        ),
+      },
   ];
   const [fullScreen, setFullScreen] = useState(false);
   const [isDarkMode, setDarkMode] = useState(false);

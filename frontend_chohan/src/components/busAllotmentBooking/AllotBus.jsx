@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import UserPrivateComponent from "../PrivacyComponent/UserPrivateComponent";
 import TableComponent from "../CommonUi/TableComponent";
 import { Card, Drawer, Button, message, Modal, Form, Input, Badge, Dropdown, Space } from "antd";
-import { MessageOutlined, SendOutlined, DownOutlined } from "@ant-design/icons";
+import { MessageOutlined, SendOutlined, DownOutlined, WhatsAppOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { deleteLocalBooking } from "../../redux/rtk/features/localBusBooking/localBusBookingSlice";
 import CreateDrawer from "../CommonUi/CreateDrawer";
@@ -187,6 +187,50 @@ const AllotBus = ({ ID, onSuccess }) => {
     }
   };
 
+  const handleSendWhatsApp = async () => {
+    try {
+      const values = await smsForm.validateFields();
+      const payload = {
+        number: values.numbers,
+        message: smsPreview,
+      };
+
+      const apiUrl = import.meta.env.VITE_APP_API;
+      const res = await axios.post(`${apiUrl}/whatsapp/send`, payload);
+
+      if (res.data.status) {
+        message.success("Allotment WhatsApp sent successfully!");
+        setIsSmsModalOpen(false);
+      } else {
+        message.error("Failed to send WhatsApp message.");
+      }
+    } catch (error) {
+      message.error("Failed to send Allotment WhatsApp.");
+    }
+  };
+
+  const handleSendCaptainWhatsApp = async () => {
+    try {
+      const values = await captainSmsForm.validateFields();
+      const payload = {
+        number: values.numbers,
+        message: captainSmsPreview,
+      };
+
+      const apiUrl = import.meta.env.VITE_APP_API;
+      const res = await axios.post(`${apiUrl}/whatsapp/send`, payload);
+
+      if (res.data.status) {
+        message.success("Captain WhatsApp sent successfully!");
+        setIsCaptainSmsModalOpen(false);
+      } else {
+        message.error("Failed to send WhatsApp message.");
+      }
+    } catch (error) {
+      message.error("Failed to send Captain WhatsApp.");
+    }
+  };
+
   const columns = [
     {
       id: 2,
@@ -325,7 +369,7 @@ const AllotBus = ({ ID, onSuccess }) => {
                       type="primary"
                       className="flex items-center justify-center gap-2 h-full px-4 border-none shadow-sm transition-all duration-300"
                       style={{
-                        background: 'linear-gradient(135deg, #0088cc 0%, #00a2ed 100%)',
+                        background: 'linear-gradient(135deg, #25D366 0%, #128C7E 100%)',
                         borderRadius: '6px'
                       }}
                     >
@@ -384,7 +428,28 @@ const AllotBus = ({ ID, onSuccess }) => {
         onOk={handleSendSms}
         onCancel={() => setIsSmsModalOpen(false)}
         width={800}
-        okText="Send SMS"
+        footer={[
+          <Button key="cancel" onClick={() => setIsSmsModalOpen(false)}>
+            Cancel
+          </Button>,
+          <Button
+            key="whatsapp"
+            type="primary"
+            icon={<WhatsAppOutlined />}
+            style={{ backgroundColor: '#25D366', borderColor: '#25D366' }}
+            onClick={handleSendWhatsApp}
+          >
+            Send via WhatsApp
+          </Button>,
+          <Button
+            key="sms"
+            type="primary"
+            style={{ backgroundColor: '#25D366', borderColor: '#25D366' }}
+            onClick={handleSendSms}
+          >
+            Send SMS
+          </Button>,
+        ]}
       >
         <Form
           form={smsForm}
@@ -436,7 +501,28 @@ const AllotBus = ({ ID, onSuccess }) => {
         onOk={handleSendCaptainSms}
         onCancel={() => setIsCaptainSmsModalOpen(false)}
         width={800}
-        okText="Send Captain SMS"
+        footer={[
+          <Button key="cancel" onClick={() => setIsCaptainSmsModalOpen(false)}>
+            Cancel
+          </Button>,
+          <Button
+            key="whatsapp"
+            type="primary"
+            icon={<WhatsAppOutlined />}
+            style={{ backgroundColor: '#25D366', borderColor: '#25D366' }}
+            onClick={handleSendCaptainWhatsApp}
+          >
+            Send via WhatsApp
+          </Button>,
+          <Button
+            key="sms"
+            type="primary"
+            style={{ backgroundColor: '#25D366', borderColor: '#25D366' }}
+            onClick={handleSendCaptainSms}
+          >
+            Send Captain SMS
+          </Button>,
+        ]}
       >
         <Form
           form={captainSmsForm}

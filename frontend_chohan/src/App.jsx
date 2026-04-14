@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "./App.css";
 import DetailsSup from "./components/suppliers/detailsSup";
@@ -108,6 +108,7 @@ import GetAllSalary from "./components/Salaryprocess/getAllSalary";
 import GetAllVendor from "./components/vendor/GetAllVendor";
 import GetAllMonthlyInvoice from "./components/monthlyInvoice/GetAllMonthlyInvoice";
 import AddMonthlyInvoice from "./components/monthlyInvoice/AddMonthlyInvoice";
+import WhatsAppConfig from "./components/whatsapp/WhatsAppConfig";
 
 function App() {
   const dispatch = useDispatch();
@@ -688,6 +689,10 @@ function App() {
                        Account Permeation add here
                ================================================*/}
             <Route path="/admin/site" element={<GetAllSite />} />
+            <Route
+              path="/admin/whatsapp-config"
+              element={localStorage.getItem("role")?.toLowerCase() === "admin" ? <WhatsAppConfig /> : <Navigate to="/admin" />} 
+            />
             {/* <Route path="/admin/site/:id" element={<DetailCoupon />} /> */}
           </Routes>
         </Main>
