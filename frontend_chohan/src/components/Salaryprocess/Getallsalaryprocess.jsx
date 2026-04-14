@@ -322,15 +322,16 @@ const GetSalaryDetails = () => {
         let ESIC = 0;
         if (item.ESIC_Deduction > 0) {
           const empType = (item.employType || selectedEmpType || "").toUpperCase();
-          let esicBaseAmount = rawGrossSalary;
+          // Deduction bases (excluding FixedAmt)
+          const earningsWithoutFixed = rawBasic + rawHRA + rawMedical + rawWashing + rawTA + rawKhuraki;
+          let esicBaseAmount = earningsWithoutFixed;
 
           if (empType === "DRIVER") {
             // 💡 For DRIVER, exclude Khoraki from ESI calculation
-            esicBaseAmount = rawGrossSalary - rawKhuraki;
+            esicBaseAmount = earningsWithoutFixed - rawKhuraki;
           } else if (empType === "HELPER") {
-            // 💡 For HELPER, include Khoraki in ESI calculation (or as per requirement)
-            // Based on the ESIC column logic: if (selectedEmpType === "HELPER") { esicBaseAmount = basic + hra + ta + medical + washing + khuraki; }
-            esicBaseAmount = rawGrossSalary;
+            // 💡 For HELPER, include Khoraki in ESI calculation
+            esicBaseAmount = earningsWithoutFixed;
           }
 
           rawESIC = esicBaseAmount * 0.0075;
@@ -340,8 +341,8 @@ const GetSalaryDetails = () => {
         // PTAX
         let PTAX = 0;
         if (item.PTAX_Deduction > 0) {
-          // 💡 P Tax is calculated on (Gross Salary - Khoraki) for ALL employees
-          const ptaxBaseAmount = rawGrossSalary - rawKhuraki;
+          // 💡 P Tax is calculated on (Gross Salary - Khoraki - FixedAmt) for ALL employees
+          const ptaxBaseAmount = (rawBasic + rawHRA + rawMedical + rawWashing + rawTA + rawKhuraki) - rawKhuraki;
 
           if (ptaxBaseAmount > 40000) {
             PTAX = 200;
@@ -727,18 +728,19 @@ const GetSalaryDetails = () => {
               ? record.PerDayPF * record.PaidDays
               : 0;
 
-          // 2. ESIC: Needs to be calculated based on Gross Salary * 0.0075
+          // Deduction bases (excluding FixedAmt)
+          const earningsWithoutFixed = basic + hra + ta + medical + washing + khuraki;
           let esic = 0;
           if (record.ESIC_Deduction > 0) {
             const empType = (selectedEmpType || "").toUpperCase();
-            let esicBaseAmount = gross;
+            let esicBaseAmount = earningsWithoutFixed;
 
             // 💡 For DRIVER, exclude Khoraki from ESI calculation
             // 💡 For HELPER, include Khoraki in ESI calculation
             if (empType === "DRIVER") {
-              esicBaseAmount = gross - (record.KhurakiAmt || 0);
+              esicBaseAmount = earningsWithoutFixed - khuraki;
             } else if (empType === "HELPER") {
-              esicBaseAmount = gross;
+              esicBaseAmount = earningsWithoutFixed;
             }
 
             esic = Math.round(esicBaseAmount * 0.0075);
@@ -747,8 +749,8 @@ const GetSalaryDetails = () => {
           // 3. P Tax: Needs to be calculated based on the P Tax slab logic
           let ptax = 0;
           if (record.PTAX_Deduction > 0) {
-            // 💡 P Tax is calculated on (Gross Salary - Khoraki) for ALL employees
-            const ptaxBaseAmount = gross - (record.KhurakiAmt || 0);
+            // 💡 P Tax is calculated on (Earnings Total - Khoraki) for ALL employees
+            const ptaxBaseAmount = earningsWithoutFixed - khuraki;
 
             if (ptaxBaseAmount > 40000) {
               ptax = 200;
