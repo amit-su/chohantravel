@@ -32,12 +32,13 @@ const initializeWhatsApp = async (force = false) => {
 
     isInitializing = true;
     console.log('Initializing WhatsApp Client (Puppeteer)...');
-    
+
     client = new Client({
         authStrategy: new LocalAuth({
             clientId: "chohan-travel-session"
         }),
         puppeteer: {
+            executablePath: '/usr/bin/chromium-browser',
             headless: true,
             args: [
                 '--no-sandbox',
@@ -48,6 +49,9 @@ const initializeWhatsApp = async (force = false) => {
                 '--no-zygote',
                 '--disable-gpu',
                 '--disable-software-rasterizer',
+                '--disable-extensions',
+                '--disable-infobars',
+                '--window-size=1280,720',
             ],
         }
     });
@@ -129,7 +133,7 @@ const sendWhatsAppMessage = async (number, message) => {
     if (!client || !isReady) {
         throw new Error('WhatsApp client is not ready. Please scan the QR code in your profile.');
     }
-    
+
     try {
         let cleanNumber = number.replace(/\D/g, '');
         if (cleanNumber.length === 10) {
