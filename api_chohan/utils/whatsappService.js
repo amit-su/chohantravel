@@ -1,5 +1,7 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
+const fs = require('fs');
+const path = require('path');
 
 let client;
 let isReady = false;
@@ -11,6 +13,18 @@ const initializeWhatsApp = async (force = false) => {
     if (isInitializing && !force) {
         console.log('WhatsApp is already initializing...');
         return;
+    }
+
+    // Clear stale SingletonLock if it exists to prevent browser launch failures
+    const { execSync } = require('child_process');
+    try {
+        const sessionDir = path.join(process.cwd(), '.wwebjs_auth', 'session-chohan-travel-session');
+        execSync(`rm -f "${path.join(sessionDir, 'SingletonLock')}"`);
+        execSync(`rm -f "${path.join(sessionDir, 'SingletonCookie')}"`);
+        execSync(`rm -f "${path.join(sessionDir, 'SingletonSocket')}"`);
+        console.log('Force-cleared stale WhatsApp Chromium locks.');
+    } catch (err) {
+        console.log('No stale locks found or error clearing them:', err.message);
     }
 
     if (force && client) {
