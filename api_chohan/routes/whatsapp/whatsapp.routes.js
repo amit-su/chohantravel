@@ -7,4 +7,5 @@ router.get('/status', whatsappController.getWhatsAppStatus);
 router.post('/logout', whatsappController.logoutWhatsAppController);
 router.post('/initialize', whatsappController.forceInitializeWhatsApp);
 
+
 module.exports = router;
