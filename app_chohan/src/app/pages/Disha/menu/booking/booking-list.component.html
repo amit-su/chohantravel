@@ -1,0 +1,788 @@
+<div class="bk-root animate-fade-in">
+    <!-- Moving Blobs (Background) -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="blob blob-4"></div>
+
+    <!-- Compact Header -->
+    <div class="bk-topbar px-3 pt-3 pb-2 flex align-items-center justify-content-between">
+        <div class="flex align-items-center gap-2">
+            <h1 class="text-xl font-black m-0 text-red-600">Bookings</h1>
+            <span class="bk-livebadge bg-red-100 text-red-600">● LIVE</span>
+        </div>
+        <p-button label="New Booking" icon="pi pi-plus" pRipple (click)="createBooking()" severity="danger"
+            class="hidden md:block" styleClass="btn-modern bg-red-600 border-none shadow-glow-red"></p-button>
+    </div>
+
+    <!-- Search & Filter Bar -->
+    <!-- Search bar only -->
+    <div class="mx-3 mb-2">
+        <div class="bk-search-row border-red-100">
+            <div class="bk-search-icon text-red-600">
+                <i class="pi pi-search"></i>
+            </div>
+            <input pInputText placeholder="Search bookings..." (input)="onSearch($event)"
+                class="border-none focus:shadow-none w-full bg-transparent font-medium p-0 text-sm" />
+            <button class="bk-filter-toggle hover:bg-red-50 hover:text-red-600" [class.bk-filter-active]="filterOpen"
+                (click)="filterOpen = true" pRipple>
+                <i class="pi pi-sliders-h"></i>
+            </button>
+            <button *ngIf="hasActiveFilters()" class="bk-reset-btn bg-red-50 text-red-600" (click)="clearFilters()"
+                pRipple>
+                <i class="pi pi-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Booking Cards -->
+    <div class="booking-list">
+
+        <!-- Skeleton (first load) -->
+        <ng-container *ngIf="loading && page === 1">
+            <div *ngFor="let s of [1,2,3,4]" class="booking-card-skeleton mx-3 p-3">
+                <div class="flex align-items-center gap-3 mb-3">
+                    <p-skeleton shape="circle" size="3rem" styleClass="bg-red-50"></p-skeleton>
+                    <div class="flex-1">
+                        <p-skeleton width="60%" height="1rem" styleClass="mb-2 bg-red-50"></p-skeleton>
+                        <p-skeleton width="40%" height="0.75rem" styleClass="bg-red-50"></p-skeleton>
+                    </div>
+                </div>
+                <div class="flex flex-column gap-2">
+                    <p-skeleton width="100%" height="3rem" styleClass="border-round-xl bg-red-50"></p-skeleton>
+                    <div class="flex justify-content-between mt-2">
+                        <p-skeleton width="30%" height="2rem" styleClass="border-round-lg bg-red-50"></p-skeleton>
+                        <p-skeleton width="15%" height="2rem" styleClass="border-round-lg bg-red-50"></p-skeleton>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+
+        <!-- Cards -->
+        <div *ngFor="let booking of bookingList; let i = index" class="booking-card mx-3"
+            [style.animation-delay]="(i % 20) * 30 + 'ms'">
+
+            <!-- Header -->
+            <div class="bk-header">
+                <div class="bk-avatar">{{ (booking.PartyName || 'U').charAt(0) }}</div>
+                <div class="bk-header-info">
+                    <div class="bk-party-name">{{ booking.PartyName }}</div>
+                    <div class="bk-date">📅 {{ booking.BookingDate | date:'dd MMM yyyy' }}</div>
+                </div>
+                <span class="bk-status-pill" [ngClass]="booking.UsedInInvoice ? 'st-done' : 'st-pending'">
+                    {{ booking.UsedInInvoice ? '✓ Done' : '⏳ Pending' }}
+                </span>
+            </div>
+
+            <!-- Divider -->
+            <div class="bk-divider"></div>
+
+            <!-- Info -->
+            <div class="bk-info-grid">
+                <div class="bk-info-row">
+                    <span class="bk-label">Booking #</span>
+                    <span class="bk-value bk-no-grad">{{ booking.BookingNo }}</span>
+                </div>
+                <div class="bk-info-row">
+                    <span class="bk-label">Contact</span>
+                    <span class="bk-value">{{ booking.ContactPersonName }}</span>
+                </div>
+                <div class="bk-info-row">
+                    <span class="bk-label">Phone</span>
+                    <a [href]="'tel:' + booking.ContactPersonNo" class="bk-value bk-phone">
+                        📞 {{ booking.ContactPersonNo }}
+                    </a>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="bk-footer">
+                <button class="bk-btn bk-btn-expand" (click)="booking._expanded = !booking._expanded" pRipple>
+                    <i class="pi" [ngClass]="booking._expanded ? 'pi-chevron-up' : 'pi-chevron-down'"></i>
+                    {{ booking._expanded ? 'Hide Details' : 'View Details' }}
+                </button>
+                <button class="bk-btn bk-btn-menu" (click)="menu.toggle($event)" pRipple>
+                    <i class="pi pi-ellipsis-h"></i>
+                </button>
+                <p-menu #menu [model]="getActionMenuItems(booking)" [popup]="true" appendTo="body"></p-menu>
+            </div>
+
+            <!-- Expanded Detail -->
+            <div *ngIf="booking._expanded" class="bk-detail">
+                <app-booking-detail [bookingNo]="booking.BookingNo"></app-booking-detail>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="!loading && bookingList.length === 0" class="bk-empty">
+            <i class="pi pi-calendar-times"></i>
+            <p>No bookings found</p>
+            <small>Try adjusting your filters</small>
+        </div>
+
+        <!-- Load More Spinner -->
+        <div *ngIf="loading && page > 1" class="bk-load-more">
+            <div class="bk-spinner"></div>
+        </div>
+
+    </div><!-- /booking-list -->
+
+</div><!-- /booking-management-container -->
+
+<!-- ===== Filter Dialog (Bottom Sheet) ===== -->
+<p-dialog [(visible)]="filterOpen" [modal]="true" position="bottom" [draggable]="false" [resizable]="false"
+    [showHeader]="false" styleClass="filter-dialog"
+    [style]="{'width': '100%', 'max-width':'500px', 'margin': '0', 'border-radius': '24px 24px 0 0'}">
+
+    <!-- Handle -->
+    <div class="bs-handle"></div>
+
+    <!-- Header -->
+    <div class="bs-header">
+        <div>
+            <div class="bs-title">Filter Bookings</div>
+            <div class="bs-subtitle">Narrow down your results</div>
+        </div>
+        <button class="bs-close" (click)="filterOpen=false" pRipple>
+            <i class="pi pi-times"></i>
+        </button>
+    </div>
+
+    <!-- Fields -->
+    <div class="bs-body">
+        <div class="bs-field">
+            <label class="bs-label">🏢 Party / Client</label>
+            <p-select [options]="parties" [(ngModel)]="filters.partyId" optionLabel="partyName" optionValue="id"
+                placeholder="All parties" [showClear]="true" [filter]="true" styleClass="w-full"></p-select>
+        </div>
+        <div class="bs-field">
+            <label class="bs-label">📅 Booking Date</label>
+            <p-datepicker [(ngModel)]="filters.bookingDate" placeholder="Any date" dateFormat="dd-mm-yy"
+                [showIcon]="true" [showClear]="true" [inline]="false" styleClass="w-full"></p-datepicker>
+        </div>
+        <div class="bs-field">
+            <label class="bs-label">🔖 Allotment Status</label>
+            <p-select [options]="allotmentOptions" [(ngModel)]="filters.allotmentStatus" placeholder="All statuses"
+                [showClear]="true" styleClass="w-full"></p-select>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="bs-actions">
+        <button class="bs-btn-clear" pRipple (click)="clearFilters()">
+            <i class="pi pi-refresh"></i> Reset
+        </button>
+        <button class="bs-btn-apply bg-red-600 hover:bg-rose-600 text-white" pRipple
+            (click)="loadBookings(true); filterOpen=false">
+            <i class="pi pi-check"></i> Apply Filters
+        </button>
+    </div>
+</p-dialog>
+
+<!-- ===== Speed Dial FAB — outside scroll container so fixed works ===== -->
+<div class="fab-wrap">
+    <button class="fab-main" (click)="createBooking()" pRipple>
+        <i class="pi pi-plus"></i>
+    </button>
+</div>
+
+<style>
+    /* ═══ AURORA BACKGROUND (Sync with Menu) ═══ */
+    .bk-root {
+        position: relative;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #fffcfc 0%, #fff7f7 50%, #fffafa 100%);
+        overflow-x: hidden;
+        overflow-y: auto;
+        padding-bottom: 30px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .blob {
+        position: fixed;
+        width: 60vw;
+        height: 60vw;
+        border-radius: 50%;
+        filter: blur(80px);
+        z-index: 0;
+        opacity: 0.25;
+        animation: move 25s infinite alternate ease-in-out;
+    }
+
+    .blob-1 {
+        background: radial-gradient(circle, #fecaca 0%, transparent 70%);
+        top: -10vw;
+        left: -10vw;
+        animation-delay: 0s;
+    }
+
+    .blob-2 {
+        background: radial-gradient(circle, #ffedd5 0%, transparent 70%);
+        top: 20vh;
+        right: -10vw;
+        animation-delay: -5s;
+    }
+
+    .blob-3 {
+        background: radial-gradient(circle, #fee2e2 0%, transparent 70%);
+        bottom: -10vw;
+        left: 10vw;
+        animation-delay: -10s;
+    }
+
+    .blob-4 {
+        background: radial-gradient(circle, #ffe4e6 0%, transparent 70%);
+        bottom: 20vh;
+        right: 10vw;
+        animation-delay: -15s;
+    }
+
+    @keyframes move {
+        0% {
+            transform: translate(0, 0) scale(1) rotate(0deg);
+        }
+
+        33% {
+            transform: translate(15vw, 10vh) scale(1.1) rotate(120deg);
+        }
+
+        66% {
+            transform: translate(-10vw, 20vh) scale(0.9) rotate(240deg);
+        }
+
+        100% {
+            transform: translate(0, 0) scale(1) rotate(360deg);
+        }
+    }
+
+    /* Keep Z-Index for content */
+    .bk-topbar,
+    .bk-search-container,
+    .bk-stats-row,
+    .bk-list {
+        position: relative;
+        z-index: 10;
+    }
+
+    /* Compact topbar */
+    .bk-topbar {
+        background: #fff;
+        border-bottom: 1px solid rgba(225, 29, 72, 0.05);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    .text-gradient {
+        background: linear-gradient(135deg, #e11d48, #be123c);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .bk-livebadge {
+        font-size: 0.62rem;
+        font-weight: 800;
+        color: #e11d48;
+        background: #fff1f2;
+        padding: 2px 8px;
+        border-radius: 99px;
+        letter-spacing: 0.08em;
+        animation: pulse-badge 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-badge {
+
+        0%,
+        100% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.5;
+        }
+    }
+
+    /* ── Search Row ── */
+    .bk-search-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #fff;
+        border-radius: 16px;
+        padding: 10px 14px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+        border: 1.5px solid #f3f4f6;
+        transition: border-color 0.2s;
+    }
+
+    .bk-search-row:focus-within {
+        border-color: #fb7185;
+        box-shadow: 0 0 0 3px rgba(251, 113, 133, 0.1);
+    }
+
+    .bk-search-icon {
+        color: #e11d48;
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+
+    .bk-filter-toggle {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        border: 1.5px solid #f3f4f6;
+        background: #fff;
+        color: #64748b;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        outline: none;
+        flex-shrink: 0;
+        transition: all 0.2s ease;
+        font-size: 0.9rem;
+    }
+
+    .bk-filter-toggle:hover,
+    .bk-filter-active {
+        background: #fff1f2 !important;
+        border-color: #fb7185 !important;
+        color: #e11d48 !important;
+    }
+
+    /* Reset filter button */
+    .bk-reset-btn {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        border: none;
+        background: #fff1f2;
+        color: #e11d48;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        outline: none;
+        flex-shrink: 0;
+        font-size: 0.8rem;
+        font-weight: 700;
+        transition: all 0.2s ease;
+    }
+
+    .bk-reset-btn:hover {
+        background: #ffe4e6;
+        transform: scale(1.08);
+    }
+
+    /* ── Filter Drawer (Bottom Sheet) ── */
+    .bs-handle {
+        width: 40px;
+        height: 4px;
+        border-radius: 99px;
+        background: #f3f4f6;
+        margin: 12px auto 4px;
+        flex-shrink: 0;
+    }
+
+    .bs-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 12px 20px 8px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .bs-title {
+        font-size: 1rem;
+        font-weight: 800;
+        color: #1e293b;
+    }
+
+    .bs-subtitle {
+        font-size: 0.72rem;
+        color: #94a3b8;
+        font-weight: 600;
+        margin-top: 2px;
+    }
+
+    .bs-close {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: none;
+        background: #f8fafc;
+        color: #64748b;
+        cursor: pointer;
+        outline: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        flex-shrink: 0;
+    }
+
+    .bs-body {
+        padding: 16px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .bs-field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .bs-label {
+        font-size: 0.72rem;
+        font-weight: 800;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+
+    .bs-actions {
+        display: flex;
+        gap: 10px;
+        padding: 4px 20px 16px;
+    }
+
+    .bs-btn-clear {
+        flex: 1;
+        border: 1.5px solid #f3f4f6;
+        background: #fff;
+        color: #64748b;
+        padding: 12px;
+        border-radius: 14px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        cursor: pointer;
+        outline: none;
+        transition: all 0.2s;
+    }
+
+    .bs-btn-apply {
+        flex: 2;
+        border: none;
+        background: linear-gradient(135deg, #e11d48, #fb7185);
+        color: #fff;
+        padding: 12px;
+        border-radius: 14px;
+        font-size: 0.9rem;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        cursor: pointer;
+        outline: none;
+        box-shadow: 0 6px 18px rgba(225, 29, 72, 0.25);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .bs-btn-apply:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 24px rgba(225, 29, 72, 0.35);
+    }
+
+    /* ── Card ── */
+    .booking-list {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        padding: 0 12px;
+    }
+
+    .booking-card {
+        background: #fff;
+        border-radius: 24px;
+        padding: 16px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+        border: 1px solid rgba(0, 0, 0, 0.02);
+        border-left: 4px solid #e11d48;
+        animation: fadeInSlide 0.35s ease-out both;
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .booking-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(225, 29, 72, 0.08);
+    }
+
+    /* Header */
+    .bk-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .bk-avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #e11d48, #fb7185);
+        color: #fff;
+        font-size: 1.1rem;
+        font-weight: 900;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        box-shadow: 0 4px 12px rgba(225, 29, 72, 0.2);
+        text-transform: uppercase;
+    }
+
+    .bk-header-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .bk-party-name {
+        font-size: 0.92rem;
+        font-weight: 800;
+        color: #1e293b;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .bk-date {
+        font-size: 0.72rem;
+        color: #94a3b8;
+        font-weight: 600;
+        margin-top: 2px;
+    }
+
+    .bk-status-pill {
+        padding: 4px 12px;
+        border-radius: 99px;
+        font-size: 0.68rem;
+        font-weight: 800;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .st-pending {
+        background: #fffbeb;
+        color: #d97706;
+    }
+
+    .st-done {
+        background: #ecfdf5;
+        color: #059669;
+    }
+
+    /* Divider */
+    .bk-divider {
+        height: 1px;
+        background: linear-gradient(90deg, #f1f5f9, transparent);
+        margin: 12px 0;
+    }
+
+    /* Info */
+    .bk-info-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .bk-info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .bk-label {
+        font-size: 0.68rem;
+        font-weight: 700;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+
+    .bk-value {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: #334155;
+        text-align: right;
+    }
+
+    .bk-no-grad {
+        background: linear-gradient(135deg, #e11d48, #fb7185);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 900;
+    }
+
+    .bk-phone {
+        color: #e11d48 !important;
+        -webkit-text-fill-color: #e11d48 !important;
+        text-decoration: none;
+    }
+
+    /* Footer */
+    .bk-footer {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 14px;
+        padding-top: 12px;
+        border-top: 1px dashed #f1f5f9;
+    }
+
+    .bk-btn {
+        border: none;
+        cursor: pointer;
+        border-radius: 12px;
+        padding: 10px 14px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s ease;
+        outline: none;
+    }
+
+    .bk-btn-expand {
+        flex: 1;
+        justify-content: center;
+        background: #fff1f2;
+        color: #e11d48;
+    }
+
+    .bk-btn-expand:hover {
+        background: #ffe4e6;
+    }
+
+    .bk-btn-menu {
+        background: #f8fafc;
+        color: #64748b;
+        padding: 10px 12px;
+    }
+
+    /* FAB */
+    .fab-wrap {
+        position: fixed;
+        bottom: 85px;
+        right: 20px;
+        z-index: 1000;
+    }
+
+    .fab-main {
+        width: 58px;
+        height: 58px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #e11d48, #fb7185);
+        border: none;
+        cursor: pointer;
+        color: #fff;
+        font-size: 1.4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 8px 25px rgba(225, 29, 72, 0.4);
+        transition: transform 0.3s;
+        outline: none;
+    }
+
+    .fab-main:active {
+        transform: scale(0.9);
+    }
+
+    /* Animations */
+    /* ── Skeleton Loading ── */
+    .booking-card-skeleton {
+        height: 160px;
+        background: #fff;
+        border-radius: 24px;
+        margin-bottom: 14px;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(0, 0, 0, 0.02);
+    }
+
+    .booking-card-skeleton::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        transform: translateX(-100%);
+        background: linear-gradient(90deg, transparent, rgba(225, 29, 72, 0.05), transparent);
+        animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer {
+        100% {
+            transform: translateX(100%);
+        }
+    }
+
+    @keyframes pulse-badge {
+
+        0%,
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        50% {
+            opacity: 0.7;
+            transform: scale(0.95);
+        }
+    }
+
+    /* ── Skeleton Loading ── */
+    .booking-card-skeleton {
+        height: 160px;
+        background: #fff;
+        border-radius: 24px;
+        margin-bottom: 14px;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(0, 0, 0, 0.02);
+    }
+
+    .booking-card-skeleton::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        transform: translateX(-100%);
+        background: linear-gradient(90deg, transparent, rgba(225, 29, 72, 0.05), transparent);
+        animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer {
+        100% {
+            transform: translateX(100%);
+        }
+    }
+
+    @keyframes fadeInSlide {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-fade-in {
+        animation: fadeInSlide 0.4s ease-out;
+    }
+</style>

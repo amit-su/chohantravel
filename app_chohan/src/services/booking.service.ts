@@ -10,7 +10,23 @@ export class BookingService {
   constructor(private apiService: ApiService) { }
 
   addNewBooking(payload: any): Observable<any> {
-    return this.apiService.post('/booking/new', payload);
+    return this.apiService.post('bookingEntry', payload);
+  }
+
+  isBusAvailable(payload: any): Observable<any> {
+    return this.apiService.patch('bookingEntry', payload);
+  }
+
+  getBookingEntryList(params: any): Observable<any> {
+    return this.apiService.get('bookingHead', params);
+  }
+
+  getBookingEntryById(id: number): Observable<any> {
+    return this.apiService.get(`bookingEntry/${id}`);
+  }
+
+  updateBookingEntry(id: number, payload: any): Observable<any> {
+    return this.apiService.put(`bookingEntry/${id}`, payload);
   }
 
   getBookingList(payload: any): Observable<any> {
@@ -50,6 +66,8 @@ export class BookingService {
   updateBooking(payload: any): Observable<any> {
     return this.apiService.post('/bookings/update', payload);
   }
-  
 
+  deleteTripDetail(id: number): Observable<any> {
+    return this.apiService.delete(`bookingEntry/tran/${id}`);
+  }
 }

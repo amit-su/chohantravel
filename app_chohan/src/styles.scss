@@ -22,12 +22,10 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden; /* Prevent scrolling when content is within bounds */
 }
 
 .layout-wrapper {
-  height: 100vh; /* Ensure it fills the viewport */
-  overflow: hidden; /* Prevent scrolling */
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
@@ -121,3 +119,63 @@ html, body {
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
   }
 
+/* Vibrant Design System Utilities */
+:root {
+    --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    --secondary-gradient: linear-gradient(135deg, #3b82f6 0%, #2dd4bf 100%);
+    --success-gradient: linear-gradient(135deg, #22c55e 0%, #10b981 100%);
+    --warning-gradient: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+    --danger-gradient: linear-gradient(135deg, #ef4444 0%, #f43f5e 100%);
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.3);
+}
+
+.bg-vibrant { background: var(--primary-gradient) !important; color: white !important; }
+.bg-azure { background: var(--secondary-gradient) !important; color: white !important; }
+.bg-emerald { background: var(--success-gradient) !important; color: white !important; }
+.bg-sunset { background: var(--danger-gradient) !important; color: white !important; }
+
+.glass-card {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(12px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(180%) !important;
+    border: 1px solid var(--glass-border) !important;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07) !important;
+}
+
+.shadow-glow { box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3), 0 4px 6px -2px rgba(99, 102, 241, 0.05) !important; }
+.shadow-glow-success { box-shadow: 0 10px 15px -3px rgba(34, 197, 94, 0.3), 0 4px 6px -2px rgba(34, 197, 94, 0.05) !important; }
+
+.text-gradient {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.btn-modern {
+    border-radius: 1rem !important;
+    padding: 0.75rem 1.5rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.btn-modern:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+
+/* Animation Keyframes */
+@keyframes fadeInSlide {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in { animation: fadeInSlide 0.5s ease-out forwards; }
+
+/* Ensure PrimeNG overlays appear above bottom sheets (z-index 1051) */
+.p-select-overlay,
+.p-datepicker-panel,
+.p-overlay,
+.p-component-overlay {
+    z-index: 1100 !important;
+}

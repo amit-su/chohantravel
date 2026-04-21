@@ -45,6 +45,13 @@ export class AppMenu {
                 ]
             },
             {
+                label: 'Booking',
+                items: [
+                    { label: 'Booking List', icon: 'pi pi-fw pi-list', routerLink: ['/pages/bookingList'] },
+                    { label: 'Create Booking', icon: 'pi pi-fw pi-plus', routerLink: ['/pages/bookingEntry'] }
+                ]
+            },
+            {
                 label: 'Pages',
                 icon: 'pi pi-fw pi-briefcase',
                 routerLink: ['/pages'],

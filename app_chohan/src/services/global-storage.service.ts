@@ -14,7 +14,11 @@ export class GlobalStorageService {
       if (key) {
         const value = localStorage.getItem(key);
         if (value) {
-          this.storage.set(key, JSON.parse(value));
+          try {
+            this.storage.set(key, JSON.parse(value));
+          } catch (e) {
+            this.storage.set(key, value);
+          }
         }
       }
     }

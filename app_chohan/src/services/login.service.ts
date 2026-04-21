@@ -22,7 +22,7 @@ export class LoginService {
     // Store the token after successful login
     storeToken(response: any): void {
         if (response && response.body && response.body.token) {
-            this.storage.set('token', response.body.token.true);
+            this.storage.set('token', response.body.token);
         }
     }
 

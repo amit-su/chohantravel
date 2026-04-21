@@ -10,6 +10,10 @@ import apiUrl from '../environments/environments';
 export class ApiService {
     private apiUrl = apiUrl.apiUrl;
 
+    private buildUrl(url: string): string {
+        return `${this.apiUrl}/${url.replace(/^\/+/, '')}`;
+    }
+
     constructor(
         private http: HttpClient,
         private storage: GlobalStorageService
@@ -29,7 +33,7 @@ export class ApiService {
 
     // Generic GET request
     get<T>(url: string, params: any = {}): Observable<T> {
-        return this.http.get<T>(`${this.apiUrl}${url}`, {
+        return this.http.get<T>(this.buildUrl(url), {
             headers: this.getHeaders(),
             params
         });
@@ -37,21 +41,28 @@ export class ApiService {
 
     // Generic POST request
     post<T>(url: string, data: any): Observable<T> {
-        return this.http.post<T>(`${this.apiUrl}${url}`, data, {
+        return this.http.post<T>(this.buildUrl(url), data, {
             headers: this.getHeaders()
         });
     }
 
     // Generic PUT request
     put<T>(url: string, data: any): Observable<T> {
-        return this.http.put<T>(`${this.apiUrl}${url}`, data, {
+        return this.http.put<T>(this.buildUrl(url), data, {
             headers: this.getHeaders()
         });
     }
 
-    // Generic DELETE request (alternative to POST if needed)
+    // Generic PATCH request
+    patch<T>(url: string, data: any): Observable<T> {
+        return this.http.patch<T>(this.buildUrl(url), data, {
+            headers: this.getHeaders()
+        });
+    }
+
+    // Generic DELETE request
     delete<T>(url: string, params: any = {}): Observable<T> {
-        return this.http.delete<T>(`${this.apiUrl}${url}`, {
+        return this.http.delete<T>(this.buildUrl(url), {
             headers: this.getHeaders(),
             params
         });

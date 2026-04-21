@@ -20,7 +20,7 @@ export class MenuComponent {
         private pageService: PagesService,
         private alertService: AlertService,
         private globalstore: GlobalStorageService
-    ) {}
+    ) { }
     selectedCard: string = ''; // Initially, no card is selected
     allowedPageIds: any[] = [];
     bookingPage: boolean = false;
@@ -124,7 +124,8 @@ export class MenuComponent {
         this.selectedCard = card;
 
         const routes: { [key: string]: string } = {
-            booking: '/pages/booking',
+            bookingEntry: '/pages/bookingEntry',
+            bookingList: '/pages/bookingList',
             'booking-status': '/pages/booking-status',
             master: '/pages/master',
             manifest: '/pages/manifest',

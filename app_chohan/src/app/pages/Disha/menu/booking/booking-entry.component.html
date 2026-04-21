@@ -1,0 +1,1173 @@
+<!-- ═══════════════════════════════════════════════════════════
+     BOOKING ENTRY — Modern Mobile-First UI
+═══════════════════════════════════════════════════════════ -->
+<div class="be-root">
+    <!-- Moving Blobs (Background) -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="blob blob-4"></div>
+
+    <!-- ── Sticky Header ── -->
+    <div class="be-header">
+        <button class="be-back-btn" type="button" (click)="goBack()">
+            <i class="pi pi-arrow-left"></i>
+        </button>
+        <div class="be-header-titles">
+            <h1 class="be-title">{{ isUpdateMode ? 'Update Booking' : 'New Booking' }}</h1>
+            <span class="be-subtitle">{{ isUpdateMode ? 'Modify reservation details' : 'Fill all sections below' }}</span>
+        </div>
+        <div class="be-step-pill bg-rose-600 shadow-sm text-white px-3 py-1 rounded-full text-xs font-bold">Step {{ currentStep }} of 3</div>
+    </div>
+
+    <!-- ── Progress Bar ── -->
+    <div class="be-progress">
+        <div class="be-progress-track">
+            <div class="be-progress-fill" [style.width]="initialLoading ? '10%' : '33%'"></div>
+        </div>
+    </div>
+
+    <!-- ── Skeleton Loader ── -->
+    <div *ngIf="initialLoading" class="be-skeleton-container">
+        <div class="be-section" *ngFor="let s of [1,2,3]">
+            <div class="be-section-label">
+                <p-skeleton shape="circle" size="30px" styleClass="mr-2"></p-skeleton>
+                <p-skeleton width="120px" height="1.2rem"></p-skeleton>
+            </div>
+            <div class="be-card">
+                <div class="mb-4">
+                    <p-skeleton width="40%" height="0.7rem" styleClass="mb-2"></p-skeleton>
+                    <p-skeleton width="100%" height="2.5rem" borderRadius="12px"></p-skeleton>
+                </div>
+                <div class="be-row-2 mb-4">
+                    <div>
+                        <p-skeleton width="50%" height="0.7rem" styleClass="mb-2"></p-skeleton>
+                        <p-skeleton width="100%" height="2.5rem" borderRadius="12px"></p-skeleton>
+                    </div>
+                    <div>
+                        <p-skeleton width="50%" height="0.7rem" styleClass="mb-2"></p-skeleton>
+                        <p-skeleton width="100%" height="2.5rem" borderRadius="12px"></p-skeleton>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <p-skeleton width="30%" height="0.7rem" styleClass="mb-2"></p-skeleton>
+                    <p-skeleton width="100%" height="4rem" borderRadius="12px"></p-skeleton>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form *ngIf="!initialLoading" [formGroup]="bookingForm" (ngSubmit)="onSubmit()" autocomplete="off">
+
+        <!-- ═══════════ SECTION 1: Client Profile ═══════════ -->
+        <div class="be-section">
+            <div class="be-section-label">
+                <div class="be-section-icon bg-red-600 text-white flex items-center justify-center rounded-lg w-8 h-8"><i class="pi pi-user"></i></div>
+                <span>Client Profile</span>
+            </div>
+
+            <div class="be-card">
+                <!-- Party -->
+                <div class="be-field">
+                    <label class="be-lbl">Client / Party Name <span class="req">*</span></label>
+                    <p-select [options]="parties" formControlName="PartyID" optionLabel="partyName" optionValue="id"
+                        [filter]="true" filterBy="partyName" [showClear]="true"
+                        placeholder="Search and select client..." (onChange)="onPartySelect($event.value)"
+                        appendTo="body" styleClass="be-select">
+                    </p-select>
+                </div>
+
+                <!-- Booking No + Date -->
+                <div class="be-row-2">
+                    <div class="be-field">
+                        <label class="be-lbl">Booking No.</label>
+                        <input pInputText formControlName="BookingNo" readonly class="be-input be-input-readonly" />
+                    </div>
+                    <div class="be-field">
+                        <label class="be-lbl">Booking Date <span class="req">*</span></label>
+                        <p-datepicker formControlName="bookingDate" dateFormat="dd-mm-yy" [showIcon]="true"
+                            appendTo="body" styleClass="be-datepicker">
+                        </p-datepicker>
+                    </div>
+                </div>
+
+                <!-- Contact Name + Phone -->
+                <div class="be-row-2">
+                    <div class="be-field">
+                        <label class="be-lbl">Contact Person</label>
+                        <div class="be-input-icon-wrap">
+                            <i class="pi pi-id-card be-input-icon"></i>
+                            <input pInputText formControlName="ContactPersonName" placeholder="Full name"
+                                class="be-input be-input-has-icon" />
+                        </div>
+                    </div>
+                    <div class="be-field">
+                        <label class="be-lbl">Phone Number</label>
+                        <div class="be-input-icon-wrap">
+                            <i class="pi pi-phone be-input-icon"></i>
+                            <input pInputText formControlName="ContactPersonNo" placeholder="+91 00000 00000"
+                                class="be-input be-input-has-icon" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Address -->
+                <div class="be-field">
+                    <label class="be-lbl">Party Address</label>
+                    <div class="be-input-icon-wrap">
+                        <i class="pi pi-map-marker be-input-icon" style="top:14px"></i>
+                        <textarea pTextarea formControlName="address" rows="2" [autoResize]="true"
+                            placeholder="Enter Party address" class="be-input be-input-has-icon be-textarea"></textarea>
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="be-field">
+                    <label class="be-lbl">Email (for billing)</label>
+                    <div class="be-input-icon-wrap">
+                        <i class="pi pi-envelope be-input-icon"></i>
+                        <input pInputText formControlName="email" placeholder="billing@company.com"
+                            class="be-input be-input-has-icon" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════ SECTION 2: Trip Itinerary ═══════════ -->
+        <div class="be-section">
+            <div class="be-section-label">
+                <div class="be-section-icon bg-rose-500 text-white flex items-center justify-center rounded-lg w-8 h-8"><i class="pi pi-map"></i></div>
+                <span>Trip Itinerary</span>
+                <button type="button" class="be-add-btn" (click)="addTripDetail()">
+                    <i class="pi pi-plus"></i> Add Trip
+                </button>
+            </div>
+
+            <!-- Empty state -->
+            <div *ngIf="bookingArray.length === 0" class="be-empty-trips">
+                <i class="pi pi-map-marker"></i>
+                <p>No trips added yet</p>
+                <small>Tap "Add Trip" to define journey details</small>
+            </div>
+
+            <!-- Trip Cards -->
+            <div *ngFor="let trip of bookingArray; let i = index" class="be-trip-card">
+                <div class="be-trip-top">
+                    <div class="be-trip-bus-badge">
+                        <i class="pi pi-car"></i>
+                        <span>{{ trip.busCategory || 'Bus' }}</span>
+                    </div>
+                    <span class="be-trip-status">{{trip.rateType === 'FR' ? 'Fixed Rate' : 'KM/HR'}}</span>
+                </div>
+
+                <div class="be-trip-body">
+                    <div class="be-trip-stat be-trip-description-block">
+                        <span class="be-trip-stat-label">Trip Description</span>
+                        <span class="be-trip-stat-value" style="color: #4b5563;">{{ trip.tripDescription }}</span>
+                    </div>
+                    <div class="be-trip-stat">
+                        <span class="be-trip-stat-label">Route Dates</span>
+                        <span class="be-trip-stat-value">{{trip.ReportDate}} → {{trip.tripEndDate}}</span>
+                    </div>
+                    <div class="be-trip-stat">
+                        <span class="be-trip-stat-label">Report Time</span>
+                        <span class="be-trip-stat-value">{{trip.reportTime}}</span>
+                    </div>
+                    <div class="be-trip-stat">
+                        <span class="be-trip-stat-label">Seats / Qty</span>
+                        <span class="be-trip-stat-value">{{ trip.sittingCapacity }} seats × {{ trip.busQty }}</span>
+                    </div>
+                    <div class="be-trip-stat be-trip-amount-row">
+                        <span class="be-trip-stat-label">Total Amount</span>
+                        <span class="be-trip-amount">₹{{ trip.Amt | number: '1.0-0' }}</span>
+                    </div>
+                </div>
+
+                <div class="be-trip-actions">
+                    <button type="button" class="be-trip-btn be-trip-btn-edit"
+                        (click)="editTripDetail(i); $event.stopPropagation(); $event.preventDefault();">
+                        <i class="pi pi-pencil"></i> Edit
+                    </button>
+                    <button type="button" class="be-trip-btn be-trip-btn-del"
+                        (click)="removeTripDetail(i); $event.stopPropagation(); $event.preventDefault();">
+                        <i class="pi pi-trash"></i> Remove
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════ SECTION 3: Billing & Terms ═══════════ -->
+        <div class="be-section">
+            <div class="be-section-label">
+                <div class="be-section-icon bg-red-600 text-white flex items-center justify-center rounded-lg w-8 h-8"><i class="pi pi-credit-card"></i></div>
+                <span>Billing & Terms</span>
+            </div>
+
+            <div class="be-card">
+                <!-- Toggle chips row -->
+                <label class="be-lbl mb-2">Inclusions</label>
+                <div class="be-chips-row">
+                    <div class="be-chip-field">
+                        <label class="be-chip-label">GST</label>
+                        <p-select [options]="yesNoOptions" formControlName="includeGST" appendTo="body"
+                            styleClass="be-chip-select"></p-select>
+                    </div>
+                    <div class="be-chip-field">
+                        <label class="be-chip-label">Permit</label>
+                        <p-select [options]="yesNoOptions" formControlName="PermitReq" appendTo="body"
+                            styleClass="be-chip-select"></p-select>
+                    </div>
+                    <div class="be-chip-field">
+                        <label class="be-chip-label">Parking</label>
+                        <p-select [options]="yesNoOptions" formControlName="includeParking" appendTo="body"
+                            styleClass="be-chip-select"></p-select>
+                    </div>
+                    <div class="be-chip-field">
+                        <label class="be-chip-label">Toll Tax</label>
+                        <p-select [options]="yesNoOptions" formControlName="includeTollTax" appendTo="body"
+                            styleClass="be-chip-select"></p-select>
+                    </div>
+                </div>
+
+                <div class="be-divider"></div>
+
+                <!-- Payment Terms -->
+                <div class="be-field">
+                    <label class="be-lbl">Payment Terms <span class="req">*</span></label>
+                    <textarea pTextarea formControlName="paymentTerms" rows="3"
+                        placeholder="Define payment schedule and terms..." class="be-input be-textarea"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════ SUBMIT BUTTON ═══════════ -->
+        <div class="be-submit-wrap">
+            <button type="submit" class="be-submit-btn" [disabled]="loading">
+                <span *ngIf="!loading">
+                    <i class="pi" [ngClass]="isUpdateMode ? 'pi-sync' : 'pi-check-circle'"></i>
+                    {{ isUpdateMode ? 'Update Reservation' : 'Confirm & Save Booking' }}
+                </span>
+                <span *ngIf="loading"><i class="pi pi-spin pi-spinner"></i> {{ isUpdateMode ? 'Updating...' : 'Saving...' }}</span>
+            </button>
+        </div>
+
+    </form>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     TRIP DIALOG — Bottom Sheet Style
+═══════════════════════════════════════════════════════════ -->
+<p-dialog [(visible)]="displayTripDialog" [modal]="true" position="bottom" [draggable]="false" [resizable]="false"
+    [showHeader]="false" styleClass="be-trip-dialog" [style]="{'width':'100%','max-width':'560px','margin':'0'}">
+
+    <div class="td-root">
+        <!-- Handle -->
+        <div class="td-handle"></div>
+
+        <!-- Header -->
+        <div class="td-header">
+            <div>
+                <div class="td-title">{{ editingTripIndex !== null ? 'Edit Trip' : 'Add Trip' }}</div>
+                <div class="td-sub">Define vehicle and schedule</div>
+            </div>
+            <button class="td-close" type="button" (click)="displayTripDialog=false">
+                <i class="pi pi-times"></i>
+            </button>
+        </div>
+
+        <form [formGroup]="tripForm" class="td-body">
+
+            <!-- Vehicle Row -->
+            <div class="be-row-2" style="position: relative; z-index: 50;">
+                <div class="be-field">
+                    <label class="be-lbl">Vehicle Category <span class="req">*</span></label>
+                    <p-dropdown [options]="busCategories" formControlName="busType" optionLabel="buscategory"
+                        optionValue="id" placeholder="Select type" styleClass="be-select">
+                    </p-dropdown>
+                </div>
+                <div class="be-field">
+                    <label class="be-lbl">Seating Capacity <span class="req">*</span></label>
+                    <p-inputNumber formControlName="sittingCapacity" placeholder="e.g. 50"
+                        styleClass="be-inputnumber"></p-inputNumber>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="be-field" style="position: relative; z-index: 40;">
+                <label class="be-lbl">Trip Description <span class="req">*</span></label>
+                <textarea pTextarea formControlName="tripDescription" rows="2" [autoResize]="true"
+                    placeholder="e.g. Pune → Mumbai — Corporate trip" class="be-input be-textarea"></textarea>
+            </div>
+
+            <!-- Dates -->
+            <div class="be-row-2" style="position: relative; z-index: 30;">
+                <div class="be-field">
+                    <label class="be-lbl">Start Date <span class="req">*</span></label>
+                    <p-datepicker formControlName="ReportDate" dateFormat="dd-mm-yy" [showIcon]="true"
+                        styleClass="be-datepicker"></p-datepicker>
+                </div>
+                <div class="be-field">
+                    <label class="be-lbl">End Date <span class="req">*</span></label>
+                    <p-datepicker formControlName="tripEndDate" dateFormat="dd-mm-yy" [showIcon]="true"
+                        styleClass="be-datepicker"></p-datepicker>
+                </div>
+            </div>
+
+            <!-- Times -->
+            <div class="be-row-2" style="position: relative; z-index: 20;">
+                <div class="be-field">
+                    <label class="be-lbl">Report Time <span class="req">*</span></label>
+                    <p-datepicker formControlName="reportTime" [timeOnly]="true" hourFormat="12"
+                        styleClass="be-datepicker"></p-datepicker>
+                </div>
+                <div class="be-field">
+                    <label class="be-lbl">Return Time</label>
+                    <p-datepicker formControlName="ReturnTime" [timeOnly]="true" hourFormat="12"
+                        styleClass="be-datepicker"></p-datepicker>
+                </div>
+            </div>
+
+            <!-- Rate Type -->
+            <div class="be-field">
+                <label class="be-lbl">Rate Structure</label>
+                <div class="td-rate-tabs">
+                    <button type="button" [class.td-rate-active]="tripForm.get('rateType')?.value === 'FR'"
+                        (click)="tripForm.get('rateType')?.setValue('FR'); onRateTypeChange('FR')" class="td-rate-tab">
+                        <i class="pi pi-tag"></i> Fixed Rate
+                    </button>
+                    <button type="button" [class.td-rate-active]="tripForm.get('rateType')?.value === 'KMPH'"
+                        (click)="tripForm.get('rateType')?.setValue('KMPH'); onRateTypeChange('KMPH')"
+                        class="td-rate-tab">
+                        <i class="pi pi-car"></i> KM / HR
+                    </button>
+                </div>
+            </div>
+
+            <!-- Fixed Rate fields -->
+            <div *ngIf="tripForm.get('rateType')?.value === 'FR'" class="be-row-2">
+                <div class="be-field">
+                    <label class="be-lbl">No. of Vehicles</label>
+                    <p-inputNumber formControlName="busQty" [min]="1" (onInput)="calculateAmount()"
+                        styleClass="be-inputnumber"></p-inputNumber>
+                </div>
+                <div class="be-field">
+                    <label class="be-lbl">Rate per Vehicle</label>
+                    <p-inputNumber formControlName="rate" mode="currency" currency="INR" locale="en-IN"
+                        (onInput)="calculateAmount()" styleClass="be-inputnumber"></p-inputNumber>
+                </div>
+            </div>
+
+            <!-- Amount Display (FR) -->
+            <div *ngIf="tripForm.get('rateType')?.value === 'FR'" class="td-amount-box">
+                <span class="td-amount-label">Total Trip Value</span>
+                <span class="td-amount-value">₹{{ tripAmount | number:'1.0-0' }}</span>
+            </div>
+
+            <!-- KM/HR fields -->
+            <div *ngIf="tripForm.get('rateType')?.value !== 'FR'" class="be-row-2">
+                <div class="be-field">
+                    <label class="be-lbl">Extra Hour Rate (₹/hr)</label>
+                    <p-inputNumber formControlName="extraHourRate" styleClass="be-inputnumber"></p-inputNumber>
+                </div>
+                <div class="be-field">
+                    <label class="be-lbl">Extra KM Rate (₹/km)</label>
+                    <p-inputNumber formControlName="extraKMRate" styleClass="be-inputnumber"></p-inputNumber>
+                </div>
+            </div>
+
+        </form>
+
+        <!-- Footer Buttons -->
+        <div class="td-footer">
+            <button type="button" class="td-btn-cancel" (click)="displayTripDialog=false">Cancel</button>
+            <button type="button" class="td-btn-confirm" (click)="saveTripDetail()">
+                <i class="pi pi-check"></i>
+                {{ editingTripIndex !== null ? 'Update Trip' : 'Add Trip' }}
+            </button>
+        </div>
+    </div>
+</p-dialog>
+
+
+<!-- ─────────────── SCOPED STYLES ─────────────── -->
+<style>
+    /* ═══ AURORA BACKGROUND (Sync with Menu) ═══ */
+    .be-root {
+        position: relative;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #fffcfc 0%, #fff7f7 50%, #fffafa 100%);
+        overflow-x: hidden;
+        overflow-y: auto;
+        padding-bottom: 50px;
+        -webkit-overflow-scrolling: touch;
+        font-family: 'Inter', system-ui, sans-serif;
+    }
+
+    .blob {
+        position: fixed;
+        width: 60vw;
+        height: 60vw;
+        border-radius: 50%;
+        filter: blur(80px);
+        z-index: 0;
+        opacity: 0.25;
+        animation: move 25s infinite alternate ease-in-out;
+    }
+
+    .blob-1 { background: radial-gradient(circle, #fecaca 0%, transparent 70%); top: -10vw; left: -10vw; animation-delay: 0s; }
+    .blob-2 { background: radial-gradient(circle, #ffedd5 0%, transparent 70%); top: 20vh; right: -10vw; animation-delay: -5s; }
+    .blob-3 { background: radial-gradient(circle, #fee2e2 0%, transparent 70%); bottom: -10vw; left: 10vw; animation-delay: -10s; }
+    .blob-4 { background: radial-gradient(circle, #ffe4e6 0%, transparent 70%); bottom: 20vh; right: 10vw; animation-delay: -15s; }
+
+    @keyframes move {
+        0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+        33% { transform: translate(15vw, 10vh) scale(1.1) rotate(120deg); }
+        66% { transform: translate(-10vw, 20vh) scale(0.9) rotate(240deg); }
+        100% { transform: translate(0, 0) scale(1) rotate(360deg); }
+    }
+
+    /* Keep Content Above Blobs */
+    .be-header, .be-progress, .be-section, .be-submit-wrap {
+        position: relative;
+        z-index: 10;
+    }
+
+    /* ═══ SKELETON ═══ */
+    .be-skeleton-container {
+        padding: 0 0 40px;
+        animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    /* ═══ HEADER ═══ */
+    .be-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: #fff;
+        padding: 14px 16px;
+        border-bottom: 1px solid #eef0f5;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+    }
+
+    .be-back-btn {
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+        border: 1.5px solid #e8eaf0;
+        background: #f8f9fc;
+        color: #e11d48;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+        transition: all 0.18s ease;
+    }
+
+    .be-back-btn:hover {
+        background: #fff1f2;
+    }
+
+    .be-header-titles {
+        flex: 1;
+    }
+
+    .be-title {
+        margin: 0;
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: #111827;
+        letter-spacing: -0.3px;
+    }
+
+    .be-subtitle {
+        font-size: 0.7rem;
+        color: #9ca3af;
+        font-weight: 600;
+    }
+
+    .be-step-pill {
+        background: linear-gradient(135deg, #e11d48, #fb7185);
+        color: #fff;
+        font-size: 0.68rem;
+        font-weight: 800;
+        padding: 4px 12px;
+        border-radius: 99px;
+        letter-spacing: 0.05em;
+    }
+
+    /* ═══ PROGRESS ═══ */
+    .be-progress {
+        background: #eef0f5;
+        height: 3px;
+    }
+
+    .be-progress-track {
+        height: 3px;
+        background: #eef0f5;
+    }
+
+    .be-progress-fill {
+        height: 3px;
+        width: 33%;
+        background: linear-gradient(90deg, #e11d48, #fb7185);
+        border-radius: 0 99px 99px 0;
+        transition: width 0.4s ease;
+    }
+
+    /* ═══ SECTIONS ═══ */
+    .be-section {
+        padding: 20px 16px 0;
+    }
+
+    .be-section-label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+
+    .be-section-label span {
+        font-size: 0.88rem;
+        font-weight: 800;
+        color: #374151;
+        letter-spacing: -0.2px;
+        flex: 1;
+    }
+
+    .be-section-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        color: #fff;
+        flex-shrink: 0;
+    }
+
+    .be-icon-blue {
+        background: linear-gradient(135deg, #e11d48, #fb7185);
+    }
+
+    .be-icon-violet {
+        background: linear-gradient(135deg, #fb7185, #fda4af);
+    }
+
+    .be-icon-emerald {
+        background: linear-gradient(135deg, #be123c, #e11d48);
+    }
+
+    /* ═══ CARD ═══ */
+    .be-card {
+        background: #fff;
+        border-radius: 18px;
+        padding: 18px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    /* ═══ FIELDS ═══ */
+    .be-field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .be-lbl {
+        font-size: 0.68rem;
+        font-weight: 800;
+        color: #6b7280;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+    }
+
+    .req {
+        color: #e11d48;
+    }
+
+    .be-row-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .be-card .be-field+.be-field,
+    .be-card .be-row-2 {
+        margin-top: 16px;
+    }
+
+    /* ═══ INPUTS ═══ */
+    .be-input {
+        width: 100%;
+        padding: 11px 14px;
+        border: 1.5px solid #e5e7eb;
+        border-radius: 12px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #111827;
+        background: #fafbfd;
+        outline: none;
+        transition: border-color 0.18s, box-shadow 0.18s;
+        resize: none;
+    }
+
+    .be-input:focus {
+        border-color: #fb7185;
+        box-shadow: 0 0 0 3px rgba(251, 113, 133, 0.12);
+        background: #fff;
+    }
+
+    .be-input-readonly {
+        background: #f3f4f6 !important;
+        color: #9ca3af !important;
+        cursor: default;
+    }
+
+    .be-textarea {
+        resize: none;
+    }
+
+    .be-input-icon-wrap {
+        position: relative;
+    }
+
+    .be-input-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #9ca3af;
+        font-size: 0.8rem;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    .be-input-has-icon {
+        padding-left: 36px !important;
+    }
+
+    /* PrimeNG overrides */
+    /* PrimeNG overrides */
+    ::ng-deep .p-dropdown-panel,
+    ::ng-deep .p-select-panel,
+    ::ng-deep .p-datepicker-panel {
+        max-width: 95vw !important;
+        box-sizing: border-box !important;
+        z-index: 99999 !important;
+    }
+
+    ::ng-deep .p-select-list {
+        max-width: 100% !important;
+    }
+
+    ::ng-deep .p-select-option {
+        white-space: normal !important;
+        word-break: break-word !important;
+    }
+
+    ::ng-deep .be-select .p-select {
+        border: 1.5px solid #e5e7eb !important;
+        border-radius: 12px !important;
+        background: #fafbfd !important;
+        font-size: 0.875rem !important;
+    }
+
+    ::ng-deep .be-select.p-focus .p-select,
+    ::ng-deep .be-select .p-select:focus-within {
+        border-color: #fb7185 !important;
+        box-shadow: 0 0 0 3px rgba(251, 113, 133, 0.12) !important;
+    }
+
+    ::ng-deep .be-datepicker .p-datepicker-input-icon-container {
+        border: 1.5px solid #e5e7eb;
+        border-radius: 12px;
+        background: #fafbfd;
+    }
+
+    ::ng-deep .be-datepicker .p-datepicker-input {
+        font-size: 0.875rem;
+    }
+
+    ::ng-deep .be-inputnumber .p-inputtext {
+        border: 1.5px solid #e5e7eb !important;
+        border-radius: 12px !important;
+        background: #fafbfd !important;
+        padding: 11px 14px !important;
+        font-size: 0.875rem !important;
+    }
+
+    ::ng-deep .be-inputnumber .p-inputtext:focus {
+        border-color: #fb7185 !important;
+        box-shadow: 0 0 0 3px rgba(251, 113, 133, 0.12) !important;
+    }
+
+    /* ═══ ADD TRIP BUTTON ═══ */
+    .be-add-btn {
+        margin-left: auto;
+        background: linear-gradient(135deg, #e11d48, #fb7185);
+        color: #fff;
+        border: none;
+        padding: 7px 14px;
+        border-radius: 99px;
+        font-size: 0.75rem;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        cursor: pointer;
+        box-shadow: 0 4px 14px rgba(225, 29, 72, 0.35);
+        transition: all 0.2s ease;
+    }
+
+    .be-add-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 18px rgba(225, 29, 72, 0.45);
+    }
+
+    /* ═══ EMPTY TRIPS ═══ */
+    .be-empty-trips {
+        background: #fff;
+        border-radius: 18px;
+        padding: 40px 20px;
+        text-align: center;
+        border: 2px dashed #e5e7eb;
+        color: #9ca3af;
+    }
+
+    .be-empty-trips .pi {
+        font-size: 2.2rem;
+        display: block;
+        margin-bottom: 10px;
+        background: linear-gradient(135deg, #e11d48, #fb7185);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .be-empty-trips p {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: #374151;
+        margin: 0 0 4px;
+    }
+
+    .be-empty-trips small {
+        font-size: 0.75rem;
+    }
+
+    /* ═══ TRIP CARD ═══ */
+    .be-trip-card {
+        background: #fff;
+        border-radius: 18px;
+        padding: 16px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+        border-left: 4px solid #e11d48;
+        animation: slideUp 0.25s ease-out both;
+        position: relative;
+        z-index: 20;
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(12px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .be-trip-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+    }
+
+    .be-trip-bus-badge {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: #fff1f2;
+        color: #e11d48;
+        padding: 5px 12px;
+        border-radius: 99px;
+        font-size: 0.78rem;
+        font-weight: 800;
+    }
+
+    .be-trip-status {
+        font-size: 0.68rem;
+        font-weight: 800;
+        color: #10b981;
+        background: #d1fae5;
+        padding: 3px 10px;
+        border-radius: 99px;
+    }
+
+    .be-trip-body {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 14px;
+    }
+
+    .be-trip-stat {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .be-trip-description-block {
+        grid-column: span 2;
+        background: #f8fafc;
+        padding: 8px 12px;
+        border-radius: 10px;
+        border-left: 3px solid #f3f4f6;
+        margin-bottom: 8px;
+    }
+
+    .be-trip-stat-label {
+        font-size: 0.62rem;
+        font-weight: 700;
+        color: #9ca3af;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+
+    .be-trip-stat-value {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #1f2937;
+    }
+
+    .be-trip-amount-row {
+        grid-column: span 2;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .be-trip-amount {
+        font-size: 1.2rem;
+        font-weight: 900;
+        background: linear-gradient(135deg, #e11d48, #fb7185);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .be-trip-actions {
+        display: flex;
+        gap: 8px;
+    }
+
+    .be-trip-btn {
+        flex: 1;
+        padding: 8px;
+        border-radius: 10px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        cursor: pointer;
+        transition: all 0.18s ease;
+    }
+
+    .be-trip-btn-edit {
+        background: #fff1f2;
+        color: #e11d48;
+    }
+
+    .be-trip-btn-edit:hover {
+        background: #ffe4e6;
+    }
+
+    .be-trip-btn-del {
+        background: #f8fafc;
+        color: #64748b;
+    }
+
+    .be-trip-btn-del:hover {
+        background: #f1f5f9;
+    }
+
+    /* ═══ CHIPS ROW (billing toggles) ═══ */
+    .be-chips-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        gap: 8px;
+    }
+
+    .be-chip-field {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .be-chip-label {
+        font-size: 0.62rem;
+        font-weight: 800;
+        color: #6b7280;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+
+    ::ng-deep .be-chip-select .p-select {
+        border: 1.5px solid #e5e7eb !important;
+        border-radius: 10px !important;
+        font-size: 0.8rem !important;
+    }
+
+    .be-divider {
+        height: 1px;
+        background: #f3f4f6;
+        margin: 18px 0;
+    }
+
+    /* ═══ SUBMIT ═══ */
+    .be-submit-wrap {
+        padding: 24px 16px 40px;
+    }
+
+    .be-submit-btn {
+        width: 100%;
+        padding: 16px;
+        background: linear-gradient(135deg, #e11d48, #fb7185);
+        color: #fff;
+        border: none;
+        border-radius: 16px;
+        font-size: 1rem;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        cursor: pointer;
+        box-shadow: 0 8px 24px rgba(225, 29, 72, 0.4);
+        transition: all 0.2s ease;
+        letter-spacing: -0.2px;
+    }
+
+    .be-submit-btn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(225, 29, 72, 0.5);
+    }
+
+    .be-submit-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    /* ═══ TRIP DIALOG ═══ */
+    ::ng-deep .be-trip-dialog .p-dialog {
+        border-radius: 24px 24px 0 0 !important;
+        margin: 0 !important;
+        max-height: none !important;
+    }
+
+    ::ng-deep .be-trip-dialog .p-dialog-content {
+        padding: 0 !important;
+        border-radius: 24px 24px 0 0 !important;
+    }
+
+    .td-root {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .td-handle {
+        width: 42px;
+        height: 4px;
+        background: #e5e7eb;
+        border-radius: 99px;
+        margin: 14px auto 4px;
+        flex-shrink: 0;
+    }
+
+    .td-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 8px 20px 14px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .td-title {
+        font-size: 1.05rem;
+        font-weight: 900;
+        color: #111827;
+    }
+
+    .td-sub {
+        font-size: 0.72rem;
+        color: #9ca3af;
+        font-weight: 600;
+        margin-top: 2px;
+    }
+
+    .td-close {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: none;
+        background: #f3f4f6;
+        color: #6b7280;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        flex-shrink: 0;
+        outline: none;
+        transition: background 0.18s;
+    }
+
+    .td-close:hover {
+        background: #e5e7eb;
+    }
+
+    .td-body {
+        padding: 18px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        max-height: 65vh;
+        overflow: visible;
+    }
+
+    /* Rate tabs */
+    .td-rate-tabs {
+        display: flex;
+        gap: 8px;
+    }
+
+    .td-rate-tab {
+        flex: 1;
+        padding: 10px;
+        border-radius: 12px;
+        border: 1.5px solid #e5e7eb;
+        background: #fafbfd;
+        color: #6b7280;
+        font-size: 0.82rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        cursor: pointer;
+        outline: none;
+        transition: all 0.18s ease;
+    }
+
+    .td-rate-tab:hover {
+        border-color: #fb7185;
+        color: #fb7185;
+    }
+
+    .td-rate-active {
+        background: linear-gradient(135deg, #e11d48, #fb7185) !important;
+        border-color: transparent !important;
+        color: #fff !important;
+        box-shadow: 0 4px 14px rgba(225, 29, 72, 0.35);
+    }
+
+    /* Amount box */
+    .td-amount-box {
+        background: #fff1f2;
+        border: 1.5px solid #ffe4e6;
+        border-radius: 14px;
+        padding: 14px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .td-amount-label {
+        font-size: 0.75rem;
+        font-weight: 800;
+        color: #e11d48;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+
+    .td-amount-value {
+        font-size: 1.5rem;
+        font-weight: 900;
+        background: linear-gradient(135deg, #e11d48, #fb7185);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    /* Dialog footer */
+    .td-footer {
+        display: flex;
+        gap: 10px;
+        padding: 12px 20px 20px;
+        border-top: 1px solid #f3f4f6;
+    }
+
+    .td-btn-cancel {
+        flex: 1;
+        border: 1.5px solid #e5e7eb;
+        background: #fff;
+        color: #6b7280;
+        padding: 13px;
+        border-radius: 14px;
+        font-size: 0.88rem;
+        font-weight: 700;
+        cursor: pointer;
+        outline: none;
+        transition: all 0.18s;
+    }
+
+    .td-btn-cancel:hover {
+        background: #f9fafb;
+    }
+
+    .td-btn-confirm {
+        flex: 2;
+        border: none;
+        background: linear-gradient(135deg, #6366f1, #a855f7);
+        color: #fff;
+        padding: 13px;
+        border-radius: 14px;
+        font-size: 0.92rem;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        cursor: pointer;
+        outline: none;
+        box-shadow: 0 6px 18px rgba(99, 102, 241, 0.35);
+        transition: transform 0.18s, box-shadow 0.18s;
+    }
+
+    .td-btn-confirm:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 24px rgba(99, 102, 241, 0.45);
+    }
+</style>

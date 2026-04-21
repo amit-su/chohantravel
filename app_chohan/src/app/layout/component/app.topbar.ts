@@ -11,33 +11,25 @@ import { GlobalStorageService } from '../../../services/global-storage.service';
     selector: 'app-topbar',
     standalone: true,
     imports: [RouterModule, CommonModule, StyleClassModule],
-    template: ` <div class="layout-topbar">
-        <div class="layout-topbar-logo-container">
-            <button class="layout-menu-button layout-topbar-action not-for-mobile" (click)="layoutService.onMenuToggle()">
-                <i class="pi pi-bars"></i>
-            </button>
-            <a class="layout-topbar-logo text-xs" routerLink="/">
-                <span
-                    class="text-[13px] sm:text-[14px] md:text-[16px] lg:text-[18px] xl:text-[20px]
-             bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500
-             text-transparent bg-clip-text font-bold uppercase tracking-wide
-             drop-shadow-lg animate-pulse"
-                >
-                    Chohan Tours & Travels
-                </span>
-                <span
-                    class="bg-gradient-to-r from-sky-400 via-cyan-500 to-indigo-500
-             text-transparent bg-clip-text font-bold uppercase tracking-wide
-             drop-shadow-lg text-[13px] sm:text-[14px] md:text-[16px] lg:text-[18px] xl:text-[20px]"
-                >
-                    ({{ branchInfo.user_name }})
-                </span>
-            </a>
-        </div>
+    template: `    <div class="fixed top-0 left-0 w-full z-[1001] pointer-events-none">
+        <div class="w-full h-16 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 shadow-md pointer-events-auto flex items-center justify-between px-6 overflow-hidden">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center backdrop-blur-md">
+                    <img src="assets/image/logo-black-new.png" alt="Logo" class="w-8 h-8 object-contain brightness-0 invert" />
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xs font-black tracking-tight text-white leading-none uppercase">Chohan Tours and Travels</span>
+                    <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-red-100 mt-1">{{ branchInfo.user_name }}</span>
+                </div>
+            </div>
 
-        <div class="layout-topbar-actions">
-            <div class="layout-config-menu">
-                {{ globalstorage.get('PAGE_TITLE') }}
+            <div class="flex items-center gap-2">
+                <div class="px-4 py-2 rounded-xl bg-white/10 text-white font-bold text-xs uppercase tracking-widest backdrop-blur-md border border-white/5">
+                    {{ globalstorage.get('PAGE_TITLE') || 'Dashboard' }}
+                </div>
+                <button (click)="layoutService.onMenuToggle()" class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-all active:scale-90 sm:hidden">
+                    <i class="pi pi-bars"></i>
+                </button>
             </div>
         </div>
     </div>`
