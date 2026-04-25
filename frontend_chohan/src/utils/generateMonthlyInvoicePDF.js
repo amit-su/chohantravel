@@ -80,7 +80,8 @@ export const generateMonthlyInvoicePDF = async (data, companyDetails = null) => 
 
     const calculateTotals = () => {
         let grossAmount = 0;
-        let TollParkingAmt = parseFloat(invoiceData.TollParkingAmt) || 0;
+        let TollParkingAmt = parseFloat(invoiceData.TollParkingAmt || invoiceData.tollParkingAmt) || 0;
+        const discountAmt = parseFloat(invoiceData.extra || invoiceData.ExtraDesc || invoiceData.extradesc) || 0;
 
         data.forEach(item => {
             grossAmount += parseFloat(item.Amt) || 0;
@@ -94,11 +95,11 @@ export const generateMonthlyInvoicePDF = async (data, companyDetails = null) => 
         const sgstAmt = ((grossAmount + TollParkingAmt) * sgstPer) / 100;
         const igstAmt = ((grossAmount + TollParkingAmt) * igstPer) / 100;
         const totalGst = cgstAmt + sgstAmt + igstAmt;
-        const netAmountRaw = grossAmount + totalGst + TollParkingAmt;
+        const netAmountRaw = grossAmount + totalGst + TollParkingAmt - discountAmt;
         const netAmount = Math.ceil(netAmountRaw);
         const roundOff = netAmount - netAmountRaw;
 
-        return { grossAmount, TollParkingAmt, cgstPer, cgstAmt, sgstPer, sgstAmt, igstPer, igstAmt, totalGst, netAmount, roundOff };
+        return { grossAmount, TollParkingAmt, discountAmt, cgstPer, cgstAmt, sgstPer, sgstAmt, igstPer, igstAmt, totalGst, netAmount, roundOff };
     };
 
     const totals = calculateTotals();
@@ -296,6 +297,7 @@ export const generateMonthlyInvoicePDF = async (data, companyDetails = null) => 
                 },
                 margin: [0, 0, 0, 5]
             },
+
             {
                 columns: [
                     {
@@ -375,6 +377,10 @@ export const generateMonthlyInvoicePDF = async (data, companyDetails = null) => 
                                     { text: 'Toll & Parking', style: 'summaryLabel', border: [false, false, false, false] },
                                     { text: formatCurrency(totals.TollParkingAmt), style: 'summaryValue', alignment: 'right', border: [false, false, false, false] }
                                 ],
+                                ...(totals.discountAmt > 0 ? [[
+                                    { text: 'Discount', style: 'summaryLabel', border: [false, false, false, false], color: '#dc2626' },
+                                    { text: `- ${formatCurrency(totals.discountAmt)}`, style: 'summaryValue', alignment: 'right', border: [false, false, false, false], color: '#dc2626' }
+                                ]] : []),
                                 ...(totals.cgstPer > 0 ? [[
                                     { text: `CGST (${totals.cgstPer}%)`, style: 'summaryLabel', border: [false, false, false, false] },
                                     { text: formatCurrency(totals.cgstAmt), style: 'summaryValue', alignment: 'right', border: [false, false, false, false] }
