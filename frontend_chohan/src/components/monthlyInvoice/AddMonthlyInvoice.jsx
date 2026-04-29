@@ -93,6 +93,10 @@ const AddMonthlyInvoice = ({ repeat = false }) => {
                     address: monthlyInvoice.partyAddr,
                     GSTNO: monthlyInvoice.GSTNo,
                     extra: monthlyInvoice.extradesc,
+                    ExtraDesc: monthlyInvoice.ExtraDesc,
+                    extraDisAmount: monthlyInvoice.extraDisAmount,
+                    extraDisPersentage: monthlyInvoice.extraDisPersentage,
+                    AdvAmtPer: monthlyInvoice.AdvAmtPer,
                     invoiceNo: repeat ? "" : monthlyInvoice.invoiceNo
                 }
                 setInitValues(values);
@@ -177,7 +181,8 @@ const AddMonthlyInvoice = ({ repeat = false }) => {
 
     const calculateAfterTollParking = (totalAmount) => {
         const tollParking = parseFloat(form.getFieldValue("tollParking")) || 0;
-        const totalWithTollParking = totalAmount + tollParking;
+        const extraDisAmount = parseFloat(form.getFieldValue("extraDisAmount")) || 0;
+        const totalWithTollParking = totalAmount + tollParking - extraDisAmount;
         setAfterTollParking(totalWithTollParking);
         calculateAfterGST(totalWithTollParking);
     };
@@ -198,6 +203,14 @@ const AddMonthlyInvoice = ({ repeat = false }) => {
     useEffect(() => {
         totalCalculator();
     }, [bookingArray, totalCalculator]);
+
+    useEffect(() => {
+        const advPercent = parseFloat(form.getFieldValue("AdvAmtPer"));
+        if (advPercent) {
+            const advAmt = Math.round((netAmount * advPercent) / 100);
+            form.setFieldsValue({ advAmount: advAmt });
+        }
+    }, [netAmount, form]);
 
 
     const handlePartySelect = (partyId) => {
@@ -260,6 +273,10 @@ const AddMonthlyInvoice = ({ repeat = false }) => {
                 busQtyRequired: totalBusQty,
 
                 advancePayment: values.advAmount,
+                AdvAmtPer: values.AdvAmtPer || 0,
+                extraDisAmount: values.extraDisAmount || 0,
+                extraDisPersentage: values.extraDisPersentage || 0,
+                ExtraDesc: values.ExtraDesc || "",
 
                 CGSTPer: values.CGST,
                 SGSTPer: values.SGST,
@@ -429,13 +446,42 @@ const AddMonthlyInvoice = ({ repeat = false }) => {
 
                                     <Divider className="my-2" />
 
-                                    <Form.Item label="Extra Desc" name="extra" className="mb-2">
+                                    <Form.Item label="Extra Description" name="extra" className="mb-2">
                                         <Input />
                                     </Form.Item>
 
                                     <Form.Item label="Toll & Parking" name="tollParking" className="mb-4">
                                         <InputNumber className="w-full" onChange={handleTollParkingChange} />
                                     </Form.Item>
+
+                                    <Row gutter={8} className="mb-2">
+                                        <Col span={10}>
+                                            <Form.Item label="Discount %" name="extraDisPersentage">
+                                                <InputNumber className="w-full" onChange={(v) => {
+                                                    const toll = parseFloat(form.getFieldValue("tollParking")) || 0;
+                                                    const baseAmt = total + toll;
+                                                    const discAmt = (baseAmt * (v || 0)) / 100;
+                                                    form.setFieldsValue({ extraDisAmount: discAmt });
+                                                    calculateAfterTollParking(total);
+                                                }} />
+                                            </Form.Item>
+                                        </Col>
+                                        <Col span={14}>
+                                            <Form.Item label="Discount Amt" name="extraDisAmount">
+                                                <InputNumber className="w-full" onChange={(v) => {
+                                                    const toll = parseFloat(form.getFieldValue("tollParking")) || 0;
+                                                    const baseAmt = total + toll;
+                                                    if (baseAmt > 0 && v) {
+                                                        const p = (v / baseAmt) * 100;
+                                                        form.setFieldsValue({ extraDisPersentage: parseFloat(p.toFixed(2)) });
+                                                    } else if (!v) {
+                                                        form.setFieldsValue({ extraDisPersentage: 0 });
+                                                    }
+                                                    calculateAfterTollParking(total);
+                                                }} />
+                                            </Form.Item>
+                                        </Col>
+                                    </Row>
 
                                     <div className="flex justify-between items-center bg-slate-50 p-3 rounded-lg border border-slate-100">
                                         <Text strong className="text-slate-700">Gross Amount</Text>
@@ -472,9 +518,28 @@ const AddMonthlyInvoice = ({ repeat = false }) => {
                                     <Text className="text-white/70 text-xs italic">Inclusive of all taxes and charges</Text>
                                 </div>
 
-                                <Form.Item label="Advance" name="advAmount">
-                                    <InputNumber className="w-full" />
-                                </Form.Item>
+                                <Row gutter={8}>
+                                    <Col span={10}>
+                                        <Form.Item label="Adv %" name="AdvAmtPer">
+                                            <InputNumber className="w-full" onChange={(v) => {
+                                                const advAmt = Math.round((netAmount * (v || 0)) / 100);
+                                                form.setFieldsValue({ advAmount: advAmt });
+                                            }} />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col span={14}>
+                                        <Form.Item label="Advance Amt" name="advAmount">
+                                            <InputNumber className="w-full" onChange={(v) => {
+                                                if (netAmount > 0 && v) {
+                                                    const p = (v / netAmount) * 100;
+                                                    form.setFieldsValue({ AdvAmtPer: parseFloat(p.toFixed(2)) });
+                                                } else if (!v) {
+                                                    form.setFieldsValue({ AdvAmtPer: 0 });
+                                                }
+                                            }} />
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
                             </Card>
                         </Col>
                     </Row>

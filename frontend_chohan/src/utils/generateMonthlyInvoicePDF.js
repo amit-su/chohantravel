@@ -80,8 +80,9 @@ export const generateMonthlyInvoicePDF = async (data, companyDetails = null) => 
 
     const calculateTotals = () => {
         let grossAmount = 0;
-        let TollParkingAmt = parseFloat(invoiceData.TollParkingAmt || invoiceData.tollParkingAmt) || 0;
-        const discountAmt = parseFloat(invoiceData.extra || invoiceData.ExtraDesc || invoiceData.extradesc) || 0;
+        let TollParkingAmt = parseFloat(invoiceData.TollParkingAmt) || 0;
+        let extraDisAmount = parseFloat(invoiceData.extraDisAmount) || parseFloat(invoiceData.ExtraDisAmount) || 0;
+        let extraDisPersentage = parseFloat(invoiceData.extraDisPersentage) || parseFloat(invoiceData.ExtraDisPersentage) || 0;
 
         data.forEach(item => {
             grossAmount += parseFloat(item.Amt) || 0;
@@ -91,15 +92,17 @@ export const generateMonthlyInvoicePDF = async (data, companyDetails = null) => 
         const sgstPer = parseFloat(invoiceData.SGSTPer) || 0;
         const igstPer = parseFloat(invoiceData.IGSTPer) || 0;
 
-        const cgstAmt = ((grossAmount + TollParkingAmt) * cgstPer) / 100;
-        const sgstAmt = ((grossAmount + TollParkingAmt) * sgstPer) / 100;
-        const igstAmt = ((grossAmount + TollParkingAmt) * igstPer) / 100;
+        const taxableAmount = grossAmount + TollParkingAmt - extraDisAmount;
+
+        const cgstAmt = (taxableAmount * cgstPer) / 100;
+        const sgstAmt = (taxableAmount * sgstPer) / 100;
+        const igstAmt = (taxableAmount * igstPer) / 100;
         const totalGst = cgstAmt + sgstAmt + igstAmt;
-        const netAmountRaw = grossAmount + totalGst + TollParkingAmt - discountAmt;
+        const netAmountRaw = taxableAmount + totalGst;
         const netAmount = Math.ceil(netAmountRaw);
         const roundOff = netAmount - netAmountRaw;
 
-        return { grossAmount, TollParkingAmt, discountAmt, cgstPer, cgstAmt, sgstPer, sgstAmt, igstPer, igstAmt, totalGst, netAmount, roundOff };
+        return { grossAmount, TollParkingAmt, extraDisAmount, extraDisPersentage, cgstPer, cgstAmt, sgstPer, sgstAmt, igstPer, igstAmt, totalGst, netAmount, roundOff };
     };
 
     const totals = calculateTotals();
@@ -377,9 +380,12 @@ export const generateMonthlyInvoicePDF = async (data, companyDetails = null) => 
                                     { text: 'Toll & Parking', style: 'summaryLabel', border: [false, false, false, false] },
                                     { text: formatCurrency(totals.TollParkingAmt), style: 'summaryValue', alignment: 'right', border: [false, false, false, false] }
                                 ],
-                                ...(totals.discountAmt > 0 ? [[
-                                    { text: 'Discount', style: 'summaryLabel', border: [false, false, false, false], color: '#dc2626' },
-                                    { text: `- ${formatCurrency(totals.discountAmt)}`, style: 'summaryValue', alignment: 'right', border: [false, false, false, false], color: '#dc2626' }
+                                ...(totals.extraDisAmount > 0 ? [[
+                                    {
+                                        text: `Discount${totals.extraDisPersentage ? ` (${totals.extraDisPersentage}%)` : ''}`,
+                                        style: 'summaryLabel',
+                                        border: [false, false, false, false]
+                                    }, { text: `- ${formatCurrency(totals.extraDisAmount)}`, style: 'summaryValue', alignment: 'right', border: [false, false, false, false] }
                                 ]] : []),
                                 ...(totals.cgstPer > 0 ? [[
                                     { text: `CGST (${totals.cgstPer}%)`, style: 'summaryLabel', border: [false, false, false, false] },

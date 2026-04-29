@@ -40,6 +40,8 @@ const createMonthlyInvoice = async (req, res) => {
             PermitReq: req.body.PermitReq,
             localProformaList: req.body.localProformaList,
             extra: req.body.extra,
+            extraDisAmount: req.body.extraDisAmount,
+            extraDisPersentage: req.body.extraDisPersentage,
         };
         const result = await databaseService.callStoredProcedure(
             req,
