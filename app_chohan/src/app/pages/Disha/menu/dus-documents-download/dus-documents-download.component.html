@@ -1,78 +1,91 @@
-<div class="h-screen bg-surface-ground flex flex-col">
-    <!-- ================= HEADER / SEARCH (FIXED) ================= -->
-    <div class="sticky top-0 z-20 bg-surface-card border-b border-surface-border shadow-sm">
-        <div class="px-4 py-4 flex flex-col gap-3">
-            <p-autoComplete
-                [(ngModel)]="selectedBus"
-                [suggestions]="filteredBuses"
-                (completeMethod)="filterBus($event)"
-                (onSelect)="onBusSelect($event)"
-                field="busNo"
-                [dropdown]="true"
-                dataKey="id"
-                [forceSelection]="true"
-                placeholder="Search bus number"
-                styleClass="w-full"
-                inputStyleClass="
-          w-full
-          px-4 py-3
-          text-base
-          rounded-2xl
-          border border-gray-300
-          focus:border-primary
-          focus:ring-2 focus:ring-primary/20
-        "
-            >
-            </p-autoComplete>
+<div class="min-h-screen bg-gray-50 pb-20">
+    <!-- ================= PREMIUM HEADER ================= -->
+    <div class="header-gradient pb-10">
+        <div class="px-6 flex items-center justify-between pt-2">
+            <div>
+                <h1 class="text-2xl font-black text-white m-0">Bus Documents</h1>
+                <p class="text-rose-100 text-xs font-bold uppercase tracking-wider opacity-80">Chohan Tours & Travels</p>
+            </div>
+            <div class="w-12 h-12 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/30">
+                <i class="pi pi-file-pdf text-white text-xl"></i>
+            </div>
         </div>
     </div>
 
-    <!-- ================= SCROLLABLE CONTENT ================= -->
-    <div class="flex-1 overflow-y-auto mb-40">
-        <!-- DOCUMENT LIST -->
-        <div *ngIf="documents.length > 0" class="px-4 py-4 space-y-4">
-            <div *ngFor="let doc of documents">
-                <p-card styleClass="rounded-2xl shadow-sm">
-                    <!-- Header -->
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <p class="text-base font-semibold text-primary">
-                                {{ doc.doctype }}
-                            </p>
-                            <p *ngIf="doc.TaskName && doc.TaskName !== 'undefined'" class="text-sm text-gray-500 mt-0.5">
-                                {{ doc.TaskName }}
-                            </p>
-                        </div>
+    <!-- ================= SEARCH BAR ================= -->
+    <div class="search-card-wrap">
+        <p-autoComplete
+            [(ngModel)]="selectedBus"
+            [suggestions]="filteredBuses"
+            (completeMethod)="filterBus($event)"
+            (onSelect)="onBusSelect($event)"
+            field="busNo"
+            [dropdown]="true"
+            dataKey="id"
+            [forceSelection]="true"
+            placeholder="🔍 Enter Bus Number..."
+            styleClass="w-full search-ac"
+        >
+        </p-autoComplete>
+    </div>
 
-                        <p-button *ngIf="doc.DocumentPath" icon="pi pi-download" severity="primary" [rounded]="true" (onClick)="downloadDocument(doc)" pTooltip="Download" tooltipPosition="bottom"> </p-button>
+    <!-- ================= DOCUMENT LIST ================= -->
+    <div class="px-4 py-6 space-y-4">
+        <!-- SKELETON LOADER -->
+        <div *ngIf="loading" class="flex flex-col gap-4">
+            <div *ngFor="let i of [1,2,3]" class="doc-card-container">
+                <p-card styleClass="doc-card shadow-sm opacity-60">
+                    <div class="flex items-start justify-between gap-4">
+                        <div class="flex-1">
+                            <p-skeleton width="40%" height="0.85rem" styleClass="mb-2"></p-skeleton>
+                            <p-skeleton width="70%" height="1.2rem"></p-skeleton>
+                        </div>
+                        <p-skeleton shape="circle" size="3rem"></p-skeleton>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-gray-100">
+                        <div class="grid grid-cols-2 gap-4">
+                            <p-skeleton height="2rem" styleClass="rounded-lg"></p-skeleton>
+                            <p-skeleton height="2rem" styleClass="rounded-lg"></p-skeleton>
+                        </div>
+                        <p-skeleton height="2.5rem" styleClass="mt-4 rounded-xl"></p-skeleton>
+                    </div>
+                </p-card>
+            </div>
+        </div>
+
+        <!-- List Container -->
+        <div *ngIf="!loading && documents.length > 0" class="documents-grid flex flex-col gap-4">
+            <div *ngFor="let doc of documents" class="doc-card-container">
+                <p-card styleClass="doc-card shadow-sm">
+                    <div class="flex items-start justify-between gap-4">
+                        <div class="flex-1">
+                            <span class="doc-type-label">{{ doc.doctype }}</span>
+                        </div>
+                        <p-button 
+                            *ngIf="doc.DocumentPath" 
+                            icon="pi pi-download" 
+                            [rounded]="true" 
+                            styleClass="btn-download"
+                            (onClick)="downloadDocument(doc)"
+                            pRipple>
+                        </p-button>
                     </div>
 
-                    <p-divider></p-divider>
-
-                    <!-- Info -->
-                    <div class="grid grid-cols-2 gap-3 text-sm">
-                        <div>
-                            <p class="text-xs font-semibold text-gray-500 uppercase">Expiry Date</p>
-                            <p class="font-medium text-gray-900">
-                                {{ doc.ExpiryDate | date: 'dd MMM yyyy' }}
-                            </p>
-                        </div>
-
-                        <div>
-                            <p class="text-xs font-semibold text-gray-500 uppercase">Next Due</p>
-                            <p class="font-medium text-gray-900">
-                                {{ doc.NextDueDate | date: 'dd MMM yyyy' }}
-                            </p>
-                        </div>
-
-                        <div class="col-span-2 mt-2">
-                            <div class="flex items-center gap-2 bg-blue-50 px-3 py-2 rounded-xl">
-                                <i class="pi pi-bell text-blue-500 text-sm"></i>
-                                <span class="text-blue-700 text-sm">
-                                    Intimate in
-                                    <strong>{{ doc.IntimateDays }} days</strong>
-                                </span>
+                    <div class="mt-4 pt-4 border-t border-gray-100">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tight">Expiry Date</p>
+                                <p class="text-sm font-bold text-gray-700">{{ doc.ExpiryDate | date: 'dd MMM yyyy' }}</p>
                             </div>
+                            <div>
+                                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tight">Next Due</p>
+                                <p class="text-sm font-bold text-rose-600">{{ doc.NextDueDate | date: 'dd MMM yyyy' }}</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 intimate-badge">
+                            <i class="pi pi-bell-circle"></i>
+                            <span>Intimate in <strong>{{ doc.IntimateDays }} days</strong></span>
                         </div>
                     </div>
                 </p-card>
@@ -80,21 +93,21 @@
         </div>
 
         <!-- EMPTY STATE -->
-        <div *ngIf="selectedBus && documents.length === 0" class="px-6 mt-20 text-center">
-            <div class="bg-surface-card rounded-3xl shadow-sm p-8">
-                <div class="w-20 h-20 mx-auto mb-4 flex items-center justify-center rounded-full bg-gray-100">
-                    <i class="pi pi-file-excel text-4xl text-gray-400"></i>
-                </div>
-
-                <h3 class="text-base font-semibold text-gray-900">No Documents Found</h3>
-
-                <p class="text-sm text-gray-600 mt-2">
-                    No documents available for
-                    <span class="font-semibold text-primary">
-                        {{ selectedBus.busNo }}
-                    </span>
-                </p>
+        <div *ngIf="!loading && selectedBus && documents.length === 0" class="text-center py-20 px-6">
+            <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+                <i class="pi pi-search text-4xl text-gray-300"></i>
             </div>
+            <h2 class="text-xl font-bold text-gray-900">No Documents Found</h2>
+            <p class="text-gray-500 mt-2">We couldn't find any documents for bus <span class="text-rose-600 font-bold">{{ selectedBus.busNo }}</span></p>
+        </div>
+
+        <!-- INITIAL STATE -->
+        <div *ngIf="!loading && !selectedBus" class="text-center py-20 px-6">
+            <div class="w-24 h-24 bg-rose-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="pi pi-bus text-4xl text-rose-300"></i>
+            </div>
+            <h2 class="text-xl font-bold text-gray-900">Find Your Bus</h2>
+            <p class="text-gray-500 mt-2">Search for a bus number above to view and download registration and tax documents.</p>
         </div>
     </div>
 </div>

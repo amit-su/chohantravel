@@ -16,6 +16,7 @@ import { DusDocumentsDownloadComponent } from './Disha/menu/dus-documents-downlo
 import { BookingEntryComponent } from './Disha/menu/booking/booking-entry.component';
 import { BookingListComponent } from './Disha/menu/booking/booking-list.component';
 import { UpdateBookingComponent } from './Disha/menu/booking/update-booking.component';
+import { KhorakiDetailsComponent } from './Disha/menu/khoraki-details/khoraki-details.component';
 export default [
     { path: 'documentation', component: Documentation },
     { path: 'scan', component: MenuComponent },
@@ -26,5 +27,6 @@ export default [
     { path: 'bookingEntry', component: BookingEntryComponent},
     { path: 'bookingList', component: BookingListComponent},
     { path: 'editBooking/:id', component: UpdateBookingComponent},
+    { path: 'khorakiDetails', component: KhorakiDetailsComponent },
     { path: '**', redirectTo: '/notfound' }
 ] as Routes;

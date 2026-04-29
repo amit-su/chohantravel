@@ -143,7 +143,8 @@ export class MenuComponent {
             'pod-upload': '/pages/pod-upload',
             tracking: '/pages/tracking',
             attendence: '/pages/DriverHelperAttendencee',
-            documents: '/pages/bus-document'
+            documents: '/pages/bus-document',
+            khoraki: '/pages/khorakiDetails'
         };
 
         const route = routes[card];

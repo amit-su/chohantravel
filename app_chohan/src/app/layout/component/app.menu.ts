@@ -52,6 +52,12 @@ export class AppMenu {
                 ]
             },
             {
+                label: 'Reports',
+                items: [
+                    { label: 'Khoraki Details', icon: 'pi pi-fw pi-money-bill', routerLink: ['/pages/khorakiDetails'] }
+                ]
+            },
+            {
                 label: 'Pages',
                 icon: 'pi pi-fw pi-briefcase',
                 routerLink: ['/pages'],

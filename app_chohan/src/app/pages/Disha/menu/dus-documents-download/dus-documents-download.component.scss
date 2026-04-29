@@ -1,70 +1,103 @@
 :host {
     display: block;
 
-    .main-container {
-        min-height: 100vh;
-        background-color: var(--surface-ground);
-        padding-bottom: env(safe-area-inset-bottom, 2rem);
-        
-        .search-section {
-            background: var(--surface-card);
-            padding: 2rem 1rem;
-            border-bottom-left-radius: 2rem;
-            border-bottom-right-radius: 2rem;
-            border-bottom: 1px solid var(--surface-border);
+    .header-gradient {
+        background: linear-gradient(to right, #dc2626, #e11d48, #be123c);
+        padding-top: max(env(safe-area-inset-top), 1rem);
+    }
+
+    .glass-header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+
+    .search-card-wrap {
+        margin-top: -1.5rem;
+        padding: 0 1rem;
+        z-index: 30;
+        position: relative;
+    }
+
+    .doc-card {
+        border-radius: 1.25rem !important;
+        border: 1px solid rgba(0,0,0,0.05) !important;
+        transition: transform 0.2s, box-shadow 0.2s;
+        overflow: hidden;
+
+        &:active {
+            transform: scale(0.98);
         }
 
-        .documents-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
+        .doc-type-label {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #dc2626;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
-        .empty-state {
-            .empty-icon-container {
-                width: 100px;
-                height: 100px;
-                background: var(--surface-100);
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin: 0 auto;
-            }
+        .doc-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .intimate-badge {
+            background: #fef2f2;
+            border: 1px solid #fee2e2;
+            color: #991b1b;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
         }
     }
 
-    @media screen and (min-width: 768px) {
-        .documents-grid {
-            grid-template-columns: repeat(2, 1fr);
+    .btn-download {
+        background: linear-gradient(135deg, #ef4444 0%, #f43f5e 100%) !important;
+        border: none !important;
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3) !important;
+        
+        &:hover {
+            box-shadow: 0 6px 15px rgba(239, 68, 68, 0.4) !important;
         }
     }
 
     ::ng-deep {
-        .document-card {
-            .p-card-body {
-                padding: 1.25rem;
-            }
-
-            .p-divider {
-                margin: 0.75rem 0;
-                
-                &:before {
-                    border-top: 1px dashed var(--surface-border);
-                }
-            }
-        }
-
-        .p-autocomplete {
+        .search-ac {
+            width: 100% !important;
+            
             .p-inputtext {
-                padding: 0.75rem 1rem;
-                font-size: 1rem;
-                border: 1px solid var(--surface-border);
-                transition: all 0.2s;
+                border-radius: 1rem 0 0 1rem !important;
+                padding: 1rem 1.25rem !important;
+                border: 1px solid #e2e8f0 !important;
+                border-right: none !important;
+                font-size: 1rem !important;
+                box-shadow: none !important;
+                background: white !important;
 
                 &:focus {
-                    border-color: var(--primary-color);
-                    box-shadow: 0 0 0 2px var(--primary-100);
+                    border-color: #f87171 !important;
+                    box-shadow: none !important;
+                }
+            }
+
+            .p-autocomplete-dropdown {
+                border-radius: 0 1rem 1rem 0 !important;
+                background: white !important;
+                border: 1px solid #e2e8f0 !important;
+                border-left: none !important;
+                color: #94a3b8 !important;
+                width: 3.5rem !important;
+                border-left: 1px solid #f1f5f9 !important;
+                
+                &:hover {
+                    background: #f8fafc !important;
+                    color: #dc2626 !important;
                 }
             }
         }
