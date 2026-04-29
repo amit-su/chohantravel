@@ -11,8 +11,9 @@
             <h1 class="text-xl font-black m-0 text-red-600">Bookings</h1>
             <span class="bk-livebadge bg-red-100 text-red-600">● LIVE</span>
         </div>
-        <p-button label="New Booking" icon="pi pi-plus" pRipple (click)="createBooking()" severity="danger"
-            class="hidden md:block" styleClass="btn-modern bg-red-600 border-none shadow-glow-red"></p-button>
+        <p-button *ngIf="canCreate" label="New Booking" icon="pi pi-plus" pRipple (click)="createBooking()"
+            severity="danger" class="hidden md:block"
+            styleClass="btn-modern bg-red-600 border-none shadow-glow-red"></p-button>
     </div>
 
     <!-- Search & Filter Bar -->
@@ -120,6 +121,9 @@
             <small>Try adjusting your filters</small>
         </div>
 
+        <!-- Load More Target (Intersection Observer) -->
+        <div #loadMoreTarget style="height: 20px; width: 100%;"></div>
+
         <!-- Load More Spinner -->
         <div *ngIf="loading && page > 1" class="bk-load-more">
             <div class="bk-spinner"></div>
@@ -152,13 +156,17 @@
     <div class="bs-body">
         <div class="bs-field">
             <label class="bs-label">🏢 Party / Client</label>
-            <p-select [options]="parties" [(ngModel)]="filters.partyId" optionLabel="partyName" optionValue="id"
-                placeholder="All parties" [showClear]="true" [filter]="true" styleClass="w-full"></p-select>
+            <p-autoComplete #ac [(ngModel)]="filters.partyId" [suggestions]="filteredParties"
+                (completeMethod)="searchParties($event)" field="partyName" placeholder="Search party..."
+                [dropdown]="true" styleClass="w-full" [inputStyle]="{'width': '100%'}" [style]="{'width': '100%'}"
+                [forceSelection]="true"></p-autoComplete>
         </div>
         <div class="bs-field">
             <label class="bs-label">📅 Booking Date</label>
             <p-datepicker [(ngModel)]="filters.bookingDate" placeholder="Any date" dateFormat="dd-mm-yy"
-                [showIcon]="true" [showClear]="true" [inline]="false" styleClass="w-full"></p-datepicker>
+                [showIcon]="true" [showClear]="true" [inline]="false" styleClass="w-full"
+                [touchUI]="false" (onFocus)="ac.hide()" 
+                panelStyleClass="filter-date-panel"></p-datepicker>
         </div>
         <div class="bs-field">
             <label class="bs-label">🔖 Allotment Status</label>
@@ -180,7 +188,7 @@
 </p-dialog>
 
 <!-- ===== Speed Dial FAB — outside scroll container so fixed works ===== -->
-<div class="fab-wrap">
+<div class="fab-wrap" *ngIf="canCreate">
     <button class="fab-main" (click)="createBooking()" pRipple>
         <i class="pi pi-plus"></i>
     </button>
@@ -429,10 +437,36 @@
         gap: 18px;
     }
 
+    /* Fix for dropdowns/popups clipping in the dialog */
+    /* Fix for dropdowns/popups layering */
+    :host ::ng-deep .filter-ac-panel,
+    :host ::ng-deep .p-autocomplete-panel {
+        z-index: 5000 !important;
+        width: 100% !important;
+        border-radius: 12px !important;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+    }
+
+    :host ::ng-deep .filter-date-panel,
+    :host ::ng-deep .p-datepicker {
+        z-index: 6000 !important; /* Higher than autocomplete */
+    }
+
     .bs-field {
         display: flex;
         flex-direction: column;
-        gap: 6px;
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+
+    /* Fix for dropdowns/popups clipping in the dialog */
+    :host ::ng-deep .p-dialog-content,
+    :host ::ng-deep .p-dialog {
+        overflow: visible !important;
+    }
+
+    :host ::ng-deep .p-autocomplete {
+        width: 100%;
     }
 
     .bs-label {

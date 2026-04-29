@@ -1,128 +1,581 @@
-<!-- Loading Overlay -->
-<div *ngIf="loading"
-    class="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-60 backdrop-blur-sm">
-    <p-progressSpinner strokeWidth="8" animationDuration=".5s" styleClass="w-12 h-12"
-        [style]="{ width: '50px', height: '50px' }" />
-</div>
-<p-progressBar *ngIf="savingAll" mode="indeterminate" styleClass="mb-3"></p-progressBar>
+<div class="bk-root animate-fade-in">
+    <!-- Moving Blobs (Sync with Booking List) -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="blob blob-4"></div>
 
-<!-- Attendance Form -->
-<div class="p-2 text-sm bg-sky-100">
-    <form [formGroup]="attendanceForm" class="grid gap-2 mb-2 text-sm sm:grid-cols-2">
-        <!-- Row 1: Date + Driver/Helper -->
-        <div class="flex gap-2">
-            <!-- <p-calendar formControlName="selectedDate" dateFormat="dd/mm/yy" [touchUI]="true" showIcon="true"
-                iconDisplay="input" (onSelect)="handleDateChange($event)" placeholder="Select Date" class="w-1/2"
-                [appendTo]="'body'" inputStyleClass="!text-sm"> </p-calendar> -->
-            <p-calendar formControlName="selectedDate" dateFormat="dd/mm/yy" [touchUI]="isMobile" [appendTo]="'body'"
-                showIcon="true" iconDisplay="input" [maxDate]="today" placeholder="Select Date"
-                inputStyleClass="!text-sm w-full" (onSelect)="handleDateChange($event)">
-            </p-calendar>
-
-            <p-dropdown formControlName="driverHelper" [options]="driverHelperOptions" placeholder="Type"
-                (onChange)="handleDriverHelperChange($event.value)" class="w-1/2" styleClass="h-9 text-sm"
-                [appendTo]="'body'">
-            </p-dropdown>
+    <!-- Glassmorphic Topbar -->
+    <div class="bk-topbar px-3 pt-3 pb-2 flex align-items-center justify-content-between">
+        <div class="flex align-items-center gap-2">
+            <h1 class="text-xl font-black m-0 text-red-600">Attendance</h1>
+            <span class="bk-livebadge bg-red-100 text-red-600">● LIVE</span>
         </div>
+        <!-- <div class="flex gap-2">
+            <button (click)="toggleSites()"
+                class="hidden md:flex align-items-center gap-2 px-3 py-2 border-round-xl border-none font-bold text-sm shadow-sm transition-all"
+                [ngClass]="isAllSites ? 'bg-pink-100 text-pink-600' : 'bg-red-100 text-red-600'">
+                <i class="pi" [ngClass]="isAllSites ? 'pi-globe' : 'pi-map-marker'"></i>
+                {{ isAllSites ? 'All Sites' : 'My Sites' }}
+            </button>
+            <button (click)="saveAll()" [disabled]="savingAll" pRipple
+                class="flex items-center justify-center gap-2 px-3 py-2 border-round-xl border-none font-bold text-sm shadow-glow-red bg-red-600 text-white transition-all active:scale-95">
+                <i class="pi" [ngClass]="savingAll ? 'pi-spin pi-spinner' : 'pi-check-circle'"></i>
+                <span class="hidden sm:inline ml-1">Save All</span>
+            </button>
+        </div> -->
+    </div>
 
-        <!-- Row 2: Site -->
-        <p-dropdown [showClear]="true" formControlName="site" [options]="siteNameByUser" optionLabel="siteName"
-            optionValue="siteID" placeholder="Site" (onChange)="handleSiteChange($event.value)" [filter]="true"
-            class="w-full" styleClass="h-9 text-sm" [appendTo]="'body'">
-        </p-dropdown>
-
-        <!-- Row 3: Search + Save All -->
-        <div class="flex justify-between gap-2 sm:col-span-2">
-            <input pInputText formControlName="search" placeholder="Search" class="flex-grow !py-1 text-sm" />
-            <button pButton type="button" label="Save All" (click)="saveAll()" [disabled]="savingAll"
-                class="!px-3 !py-1 text-sm bg-green-500 border-green-600 hover:bg-green-600 hover:border-green-700"></button>
+    <!-- Search & Filter Card -->
+    <div class="mx-3 mb-3 mt-3">
+        <div class="bk-search-card">
+            <i class="pi pi-search text-red-500 text-lg mr-2"></i>
+            <div class="flex-1 px-1">
+                <input pInputText placeholder="Search by name or ID..." [(ngModel)]="searchTerm"
+                    (ngModelChange)="onSearchTermChange()" class="search-input w-full" />
+            </div>
+            <button class="filter-btn" [class.active]="filterOpen" (click)="filterOpen = true">
+                <i class="pi pi-sliders-h"></i>
+            </button>
         </div>
+    </div>
 
-    </form>
-    <div class="max-h-[calc(109vh-300px)] overflow-auto rounded-lg shadow-sm" *ngIf="filteredTableData?.length != 0">
-        <table class="min-w-full text-sm border-collapse">
-            <thead class="sticky top-0 z-10">
-                <tr class="text-left text-white bg-gradient-to-r from-blue-700 to-teal-600">
-                    <th class="px-4 py-3 font-medium first:rounded-tl-lg">Sl</th>
-                    <th class="px-4 py-3 font-medium">Name</th>
-                    <th class="px-4 py-3 font-medium last:rounded-tr-lg flex items-center justify-between">
-                        <span>{{ selectedDateColumn }}</span>
+    <!-- Active Filter Pills -->
+    <div class="flex gap-3 px-3 mb-4 overflow-x-auto no-scrollbar">
+        <div class="pill pill-red" (click)="filterOpen = true">
+            <i class="pi pi-user mr-2"></i>
+            <span>{{ DriverOrHelper }}</span>
+        </div>
+        <div class="pill pill-blue" (click)="filterOpen = true">
+            <i class="pi pi-calendar mr-2"></i>
+            <span>{{ attendanceForm.get('selectedDate')?.value | date:'dd MMM' }}</span>
+        </div>
+        <div class="pill pill-pink" (click)="toggleSites()">
+            <i class="pi pi-globe mr-2"></i>
+            <span>All Sites</span>
+        </div>
+    </div>
 
-                        <!-- Toggle Button -->
-                        <div *ngIf="userId !=1" class="ml-3">
-                            <button (click)="toggleSites()"
-                                [ngClass]="isAllSites
-        ? 'ml-3 px-3 py-1 text-xs font-semibold text-white rounded-lg bg-pink-600 hover:bg-pink-700 shadow-md transition'
-        : 'ml-3 px-3 py-1 text-xs font-semibold text-white rounded-lg bg-red-600 hover:bg-red-700 shadow-md transition'">
-                                {{ isAllSites ? 'My Sites' : 'All Sites' }}
+    <!-- Staff Cards List -->
+    <div class="booking-list">
+        <!-- Skeleton Loading -->
+        <ng-container *ngIf="loading">
+            <div *ngFor="let s of [1,2,3,4]" class="booking-card-skeleton mx-3 p-3">
+                <div class="flex align-items-center gap-3 mb-3">
+                    <p-skeleton shape="circle" size="3.5rem"></p-skeleton>
+                    <div class="flex-1">
+                        <p-skeleton width="60%" height="1.2rem" styleClass="mb-2"></p-skeleton>
+                        <p-skeleton width="40%" height="0.8rem"></p-skeleton>
+                    </div>
+                </div>
+                <p-skeleton width="100%" height="3rem" styleClass="border-round-xl"></p-skeleton>
+            </div>
+        </ng-container>
+
+        <!-- Attendance Cards -->
+        <div *ngFor="let row of filteredTableData; let i = index; trackBy: trackById" class="booking-card mx-3"
+            [style.animation-delay]="(i % 10) * 50 + 'ms'">
+
+            <div class="flex align-items-center gap-3">
+                <div class="bk-avatar" [style.background]="'linear-gradient(135deg, #e11d48, #fb7185)'">
+                    {{ (row.name || 'U').charAt(0) }}
+                </div>
+                <div class="flex-1 min-width-0">
+                    <div class="bk-party-name truncate">{{ row.name }}</div>
+                    <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mt-1">
+                        {{ DriverOrHelper }} • ID: {{ row.id }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="bk-divider"></div>
+
+            <!-- Explicitly Stacked Vertical Layout -->
+            <div class="flex flex-col gap-1 w-full">
+                <div>
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Assign
+                        Duty Site</label>
+                    <p-dropdown [options]="shortSiteOptions" [(ngModel)]="selectedValues[row.id]"
+                        placeholder="Select a site to add" [filter]="true"
+                        (onChange)="addToAttendance(row.id, selectedDateColumn, $event.value)"
+                        styleClass="w-full premium-dropdown h-11" [appendTo]="'body'">
+                    </p-dropdown>
+                </div>
+
+                <!-- Selected Site Chips -->
+                <div class="flex flex-wrap gap-2 pt-1" *ngIf="row['attendance_' + selectedDateColumn]?.length">
+                    <ng-container *ngFor="let val of row['attendance_' + selectedDateColumn]; let idx = index">
+                        <div *ngIf="val != 0" class="attendance-chip">
+                            <span class="chip-text">{{ getSiteLabel(val) }}</span>
+                            <button class="chip-remove" (click)="removeAttendance(row.id, selectedDateColumn, idx)">
+                                <i class="pi pi-times"></i>
                             </button>
                         </div>
-                    </th>
-                </tr>
+                    </ng-container>
+                </div>
 
+                <div *ngIf="!row['attendance_' + selectedDateColumn]?.length"
+                    class="text-xs italic text-slate-400 opacity-60">
+                    No sites assigned for today.
+                </div>
+            </div>
+        </div>
 
-            </thead>
-            <tbody class="divide-y divide-sky-200">
-                <tr *ngFor="let row of filteredTableData; let i = index; trackBy: trackById"
-                    class="transition-colors hover:bg-gray-50">
-                    <td class="px-2 py-2 text-center">{{ i + 1 }}</td>
-                    <td class="px-4 py-3 font-bold text-slate-900 bold">{{ row.name }}</td>
-                    <td class="px-4 py-3">
-                        <div class="flex flex-col w-full gap-2">
-                            <div class="flex flex-col w-full gap-2">
-                                <!-- <p-dropdown [options]="shortSiteOptions" [appendTo]="'body'"
-                                    [(ngModel)]="selectedValues[row.id]" placeholder="Select Site" [filter]="false"
-                                    styleClass="w-full max-w-xs text-sm border-gray-300 rounded-md p-0 m-0 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 custom-site-dropdown"
-                                    panelStyleClass="w-full min-w-[200px] max-w-full">
-
-                                    <ng-template let-option pTemplate="item">
-                                        <div class="cursor-pointer w-full hover:bg-gray-100 rounded"
-                                            (click)="addToAttendance(row.id, selectedDateColumn, option.value)">
-                                            {{ option.label }}
-                                        </div>
-                                    </ng-template>
-                                </p-dropdown> -->
-                                <p-dropdown [options]="shortSiteOptions" [appendTo]="'body'"
-                                    [(ngModel)]="selectedValues[row.id]" placeholder="Select Site" [filter]="false"
-                                    styleClass="w-full max-w-xs text-sm border-gray-300 rounded-md p-0 m-0 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 custom-site-dropdown"
-                                    [panelStyle]="{ 'min-width': '100%' }">
-                                    <ng-template let-option pTemplate="item">
-                                        <div class="cursor-pointer w-full hover:bg-gray-100 rounded"
-                                            (click)="addToAttendance(row.id, selectedDateColumn, option.value)">
-                                            {{ option.label }}
-                                        </div>
-                                    </ng-template>
-                                </p-dropdown>
-
-                            </div>
-                            <!-- Selected values list -->
-                            <!-- <div class="flex flex-wrap gap-2 mt-1">
-                                <span *ngFor="let val of row['attendance_' + selectedDateColumn]; let i = index"
-                                    class="inline-flex items-center px-3 py-1 text-xs font-bold text-indigo-800 bg-indigo-100 rounded-full">
-                                    <div *ngIf="val != 0">
-                                        {{ getSiteLabel(val) }}
-                                        <button type="button" (click)="removeAttendance(row.id, selectedDateColumn, i)"
-                                            class="ml-1.5 text-indigo-400 hover:text-indigo-600 focus:outline-none font-bold">×</button>
-                                    </div>
-                                </span>
-                            </div> -->
-                            <div class="flex flex-wrap gap-2 mt-1">
-                                <ng-container
-                                    *ngFor="let val of row['attendance_' + selectedDateColumn]; let i = index">
-                                    <span *ngIf="val != 0"
-                                        class="inline-flex items-center px-3 py-1 text-xs font-bold text-indigo-800 bg-indigo-100 rounded-full">
-                                        {{ getSiteLabel(val) }}
-                                        <button type="button" (click)="removeAttendance(row.id, selectedDateColumn, i)"
-                                            class="ml-1.5 text-indigo-400 hover:text-indigo-600 focus:outline-none font-bold">
-                                            ×
-                                        </button>
-                                    </span>
-                                </ng-container>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <!-- Empty State -->
+        <div *ngIf="!loading && filteredTableData.length === 0" class="bk-empty text-center p-5">
+            <i class="pi pi-users text-5xl mb-3 text-red-200"></i>
+            <p class="font-bold text-slate-700">No staff found</p>
+            <small class="text-slate-400">Try a different search or filter</small>
+        </div>
     </div>
 </div>
+
+<!-- Floating Action Button (Enhanced Visibility) -->
+<div class="fab-wrap">
+    <button class="fab-main shadow-glow-red" [disabled]="savingAll" (click)="saveAll()" pRipple>
+        <i class="pi" [ngClass]="savingAll ? 'pi-spin pi-spinner' : 'pi-save'"></i>
+    </button>
+</div>
+
+<!-- Advanced Filter Dialog -->
+<p-dialog [(visible)]="filterOpen" [modal]="true" position="bottom" [draggable]="false" [resizable]="false"
+    [showHeader]="false" styleClass="filter-dialog"
+    [style]="{'width': '100%', 'max-width':'500px', 'margin': '0', 'border-radius': '28px 28px 0 0'}">
+
+    <div class="bs-handle"></div>
+    <div class="bs-header">
+        <div>
+            <div class="bs-title">Filters</div>
+            <div class="bs-subtitle">Customize attendance view</div>
+        </div>
+        <button class="bs-close" (click)="filterOpen=false" pRipple>
+            <i class="pi pi-times"></i>
+        </button>
+    </div>
+
+    <form [formGroup]="attendanceForm" class="bs-body">
+        <div class="bs-field">
+            <label class="bs-label">
+                <i class="pi pi-user text-blue-500 mr-2"></i> EMPLOYEE TYPE
+            </label>
+            <p-dropdown [options]="driverHelperOptions" formControlName="driverHelper"
+                (onChange)="handleDriverHelperChange($event.value)" styleClass="w-full premium-dropdown"></p-dropdown>
+        </div>
+
+        <div class="bs-field">
+            <label class="bs-label">
+                <i class="pi pi-calendar text-red-500 mr-2"></i> ATTENDANCE DATE
+            </label>
+            <p-calendar formControlName="selectedDate" placeholder="Select Date" [maxDate]="today" dateFormat="dd/mm/yy"
+                [showIcon]="true" styleClass="w-full premium-calendar"
+                (onSelect)="handleDateChange($event)"></p-calendar>
+        </div>
+
+        <div class="bs-field">
+            <label class="bs-label">
+                <i class="pi pi-building text-teal-500 mr-2"></i> PRIMARY SITE
+            </label>
+            <p-dropdown [options]="siteNameByUser" formControlName="site" optionLabel="siteName" optionValue="siteID"
+                [filter]="true" [showClear]="true" placeholder="Select site" (onChange)="handleSiteChange($event.value)"
+                styleClass="w-full premium-dropdown"></p-dropdown>
+        </div>
+
+        <div class="flex align-items-center justify-content-between py-2 px-1">
+            <span class="text-sm font-bold text-slate-600">{{ isAllSites ? 'Showing All Sites' : 'Showing My Sites Only'
+                }}</span>
+            <button type="button" (click)="toggleSites()"
+                class="flex align-items-center justify-content-center w-8 h-8 rounded-full bg-slate-50 border-none text-red-500 cursor-pointer shadow-sm active:scale-90 transition-all">
+                <i class="pi" [ngClass]="isAllSites ? 'pi-globe' : 'pi-map-marker'"></i>
+            </button>
+        </div>
+    </form>
+
+    <div class="bs-actions">
+        <button class="bs-btn-apply w-full" pRipple (click)="filterOpen=false">
+            <i class="pi pi-check text-white"></i> <span class="text-white">Done</span>
+        </button>
+    </div>
+</p-dialog>
+
+<style>
+    /* ═══ PREMIUM DESIGN SYSTEM ═══ */
+    .bk-root {
+        position: relative;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #fffcfc 0%, #fff7f7 50%, #fffafa 100%);
+        overflow-x: hidden;
+        padding-bottom: 120px;
+    }
+
+    /* Aurora Blobs */
+    .blob {
+        position: fixed;
+        width: 60vw;
+        height: 60vw;
+        border-radius: 50%;
+        filter: blur(80px);
+        z-index: 0;
+        opacity: 0.2;
+        animation: move 25s infinite alternate ease-in-out;
+        pointer-events: none;
+        /* Add this to prevent blobs from blocking clicks */
+    }
+
+    .blob-1 {
+        background: radial-gradient(circle, #fecaca 0%, transparent 70%);
+        top: -10vw;
+        left: -10vw;
+    }
+
+    .blob-2 {
+        background: radial-gradient(circle, #ffedd5 0%, transparent 70%);
+        top: 20vh;
+        right: -10vw;
+        animation-delay: -5s;
+    }
+
+    .blob-3 {
+        background: radial-gradient(circle, #fee2e2 0%, transparent 70%);
+        bottom: -10vw;
+        left: 10vw;
+        animation-delay: -10s;
+    }
+
+    @keyframes move {
+        0% {
+            transform: translate(0, 0) scale(1);
+        }
+
+        100% {
+            transform: translate(10vw, 10vh) scale(1.1);
+        }
+    }
+
+    /* Glassmorphism */
+    .bk-topbar {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(225, 29, 72, 0.05);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .bk-livebadge {
+        font-size: 0.6rem;
+        font-weight: 800;
+        padding: 2px 8px;
+        border-radius: 99px;
+        background: #fff1f2;
+        color: #e11d48;
+        border: 1px solid rgba(225, 29, 72, 0.1);
+        animation: pulse-badge 2s infinite;
+    }
+
+    @keyframes pulse-badge {
+
+        0%,
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        50% {
+            opacity: 0.7;
+            transform: scale(0.95);
+        }
+    }
+
+    /* Shadow for Red Buttons */
+    .shadow-glow-red {
+        box-shadow: 0 8px 20px rgba(225, 29, 72, 0.35);
+    }
+
+    /* FAB */
+    .fab-wrap {
+        position: fixed;
+        bottom: 85px;
+        right: 20px;
+        z-index: 1100;
+        /* Higher than main content */
+    }
+
+    .fab-main {
+        width: 60px;
+        height: 60px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #e11d48, #fb7185);
+        color: #fff;
+        border: none;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .fab-main:active {
+        transform: scale(0.9);
+    }
+
+    .fab-main:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
+    /* REFINED SEARCH & PILLS */
+    .bk-search-card {
+        display: flex;
+        align-items: center;
+        background: #fff;
+        padding: 10px 14px;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+        border: 1px solid #f1f5f9;
+        transition: all 0.3s ease;
+    }
+
+    .search-input {
+        border: 1.5px solid #e2e8f0 !important;
+        border-radius: 12px !important;
+        padding: 8px 12px !important;
+        font-size: 0.85rem !important;
+        background: transparent !important;
+        color: #1e293b !important;
+    }
+
+    .filter-btn {
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+        border: none;
+        background: #f8fafc;
+        color: #64748b;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .filter-btn.active {
+        background: #fff1f2;
+        color: #e11d48;
+        border: 1px solid rgba(225, 29, 72, 0.1);
+    }
+
+    .pill {
+        display: flex;
+        align-items: center;
+        padding: 8px 16px;
+        border-radius: 14px;
+        font-size: 0.75rem;
+        font-weight: 800;
+        white-space: nowrap;
+        border: 1.5px solid;
+        transition: transform 0.2s;
+        cursor: pointer;
+    }
+
+    .pill:active {
+        transform: scale(0.95);
+    }
+
+    .pill-red {
+        background: #fff1f2;
+        color: #e11d48;
+        border-color: #fca5a5;
+    }
+
+    .pill-blue {
+        background: #eff6ff;
+        color: #2563eb;
+        border-color: #93c5fd;
+    }
+
+    .pill-pink {
+        background: #fdf2f8;
+        color: #db2777;
+        border-color: #f9a8d4;
+    }
+
+    /* Card System */
+    .booking-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        position: relative;
+        z-index: 10;
+    }
+
+    .booking-card {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 24px;
+        padding: 18px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+        border: 1px solid rgba(0, 0, 0, 0.03);
+        border-left: 5px solid #e11d48;
+        animation: fadeInSlide 0.4s ease-out both;
+        transition: transform 0.2s;
+    }
+
+    .bk-avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 16px;
+        color: #fff;
+        font-weight: 900;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(225, 29, 72, 0.2);
+    }
+
+    .bk-party-name {
+        font-size: 1rem;
+        font-weight: 800;
+        color: #1e293b;
+    }
+
+    .bk-divider {
+        height: 1px;
+        background: linear-gradient(90deg, #f1f5f9, transparent);
+        margin: 10px 0;
+    }
+
+    .attendance-chip {
+        display: flex;
+        align-items: center;
+        background: #fff1f2;
+        border-radius: 10px;
+        padding: 6px 12px;
+        border: 1px solid rgba(225, 29, 72, 0.1);
+        gap: 8px;
+    }
+
+    .chip-text {
+        font-size: 0.75rem;
+        font-weight: 800;
+        color: #e11d48;
+    }
+
+    .chip-remove {
+        border: none;
+        background: transparent;
+        color: #fb7185;
+    }
+
+    /* Bottom Sheet Styles */
+    .bs-handle {
+        width: 40px;
+        height: 4px;
+        background: #f1f5f9;
+        border-radius: 10px;
+        margin: 12px auto 4px;
+    }
+
+    .bs-header {
+        padding: 12px 24px 8px;
+        border-bottom: 1px solid #f1f5f9;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .bs-title {
+        font-size: 1.15rem;
+        font-weight: 950;
+        color: #1e293b;
+    }
+
+    .bs-subtitle {
+        font-size: 0.75rem;
+        color: #94a3b8;
+        font-weight: 700;
+    }
+
+    .bs-body {
+        padding: 24px 24px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .bs-label {
+        font-size: 0.65rem;
+        font-weight: 900;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+    }
+
+    .bs-actions {
+        padding: 12px 24px 32px;
+    }
+
+    .bs-btn-apply {
+        background: linear-gradient(135deg, #e11d48, #ff4d6d);
+        color: #fff;
+        border: none;
+        padding: 18px;
+        border-radius: 20px;
+        font-weight: 900;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        box-shadow: 0 12px 24px rgba(225, 29, 72, 0.3);
+    }
+
+    /* Skeleton Animation */
+    .booking-card-skeleton {
+        background: #fff;
+        border-radius: 24px;
+        position: relative;
+        overflow: hidden;
+        height: 160px;
+        margin-bottom: 16px;
+    }
+
+    @keyframes fadeInSlide {
+        from {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-fade-in {
+        animation: fadeInSlide 0.4s ease-out;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    :host ::ng-deep .premium-dropdown .p-dropdown {
+        border-radius: 16px;
+        border: 1.5px solid #f1f5f9;
+        background: #f8fafc;
+        padding: 4px 10px;
+    }
+
+    :host ::ng-deep .premium-calendar .p-inputtext {
+        border-radius: 16px;
+        background: #f8fafc;
+        border: 1.5px solid #f1f5f9;
+        padding: 12px 14px;
+        font-size: 0.9rem;
+        font-weight: 700;
+    }
+</style>

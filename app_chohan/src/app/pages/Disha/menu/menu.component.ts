@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { firstValueFrom, tap } from 'rxjs';
 import { PagesService } from '../../../../services/pages.service';
 import { AlertService } from '../../../../services/alert.service';
+import { LoginService } from '../../../../services/login.service';
 import { GlobalStorageService } from '../../../../services/global-storage.service';
 import { jwtDecode } from 'jwt-decode';
 import { CardModule } from 'primeng/card';
@@ -19,6 +20,7 @@ export class MenuComponent {
         private router: Router,
         private pageService: PagesService,
         private alertService: AlertService,
+        private loginService: LoginService,
         private globalstore: GlobalStorageService
     ) { }
     selectedCard: string = ''; // Initially, no card is selected
@@ -28,12 +30,19 @@ export class MenuComponent {
     masterPage: boolean = false;
     manifest: boolean = false;
     decodedToken: any;
+    canReadBooking = false;
+    canReadAttendance = false;
 
     async ngOnInit(): Promise<void> {
-        this.globalstore.set('PAGE_TITLE', 'MENU');
+        setTimeout(() => {
+            this.globalstore.set('PAGE_TITLE', 'MENU');
+        }, 0);
         // this.getAccess();
         const token: any = this.globalstore.get('token');
         this.decodedToken = this.decodeJwt(token);
+        
+        this.canReadBooking = this.loginService.hasPermission('readAll-bookingEntry');
+        this.canReadAttendance = this.loginService.hasPermission('readAll-driverHelperAttendance');
         // await this.getBranchById(this.decodedToken.branch_id);
         // await this.gateMtInfo();
     }

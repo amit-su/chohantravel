@@ -1,9 +1,21 @@
-// ::ng-deep .dropdown-up .p-dropdown-panel {
-//     transform-origin: bottom center !important;
-//     top: auto !important;
-//     bottom: 100% !important;
-//     margin-bottom: 4px;
-// }
-.custom-site-dropdown .p-dropdown-panel {
-  min-width: 100% !important;
+:host {
+    display: block;
+    width: 100%;
+}
+
+::ng-deep {
+    .p-dropdown {
+        background: #f8fafc;
+        border-color: #f1f5f9;
+        
+        &:not(.p-disabled).p-focus {
+            border-color: #fb7185;
+            box-shadow: 0 0 0 3px rgba(251, 113, 133, 0.1);
+        }
+    }
+
+    .p-datepicker {
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    }
 }

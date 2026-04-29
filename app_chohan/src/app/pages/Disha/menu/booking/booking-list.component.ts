@@ -1,16 +1,18 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MasterService } from '../../../../../services/master.service';
 import { BookingService } from '../../../../../services/booking.service';
 import { AlertService } from '../../../../../services/alert.service';
+import { LoginService } from '../../../../../services/login.service';
 import { firstValueFrom } from 'rxjs';
 
 // PrimeNG Imports
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 import { DatePickerModule } from 'primeng/datepicker';
 import { TagModule } from 'primeng/tag';
 import { MenuModule } from 'primeng/menu';
@@ -32,6 +34,7 @@ import { BookingDetailComponent } from './booking-detail.component';
     ButtonModule,
     InputTextModule,
     SelectModule,
+    AutoCompleteModule,
     DatePickerModule,
     TagModule,
     MenuModule,
@@ -43,7 +46,9 @@ import { BookingDetailComponent } from './booking-detail.component';
   ],
   templateUrl: './booking-list.component.html'
 })
-export class BookingListComponent implements OnInit {
+export class BookingListComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('loadMoreTarget') loadMoreTarget!: ElementRef;
+  private observer: IntersectionObserver | null = null;
   bookingList: any[] = [];
   parties: any[] = [];
   totalItems = 0;
@@ -53,7 +58,11 @@ export class BookingListComponent implements OnInit {
   fabOpen = false;
   filterOpen = false;
 
-  
+  canCreate = false;
+  canEdit = false;
+  canDelete = false;
+
+
   filters: any = {
     search: '',
     partyId: null,
@@ -71,10 +80,15 @@ export class BookingListComponent implements OnInit {
     private masterService: MasterService,
     private bookingService: BookingService,
     private alertService: AlertService,
+    private loginService: LoginService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
+    this.canCreate = this.loginService.hasPermission('create-bookingEntry');
+    this.canEdit = this.loginService.hasPermission('update-bookingEntry');
+    this.canDelete = this.loginService.hasPermission('delete-bookingEntry');
+
     this.loadParties();
     this.loadBookings(true);
   }
@@ -88,9 +102,15 @@ export class BookingListComponent implements OnInit {
     }
   }
 
+  filteredParties: any[] = [];
+  searchParties(event: any) {
+    const query = event.query.toLowerCase();
+    this.filteredParties = this.parties.filter(p => p.partyName.toLowerCase().includes(query));
+  }
+
   async loadBookings(reset: boolean = false) {
     if (this.loading && !reset) return;
-    
+
     if (reset) {
       this.page = 1;
       this.bookingList = [];
@@ -106,11 +126,15 @@ export class BookingListComponent implements OnInit {
     if (this.filters.search) {
       params.search = this.filters.search;
     }
-    
-    if (this.filters.partyId && this.filters.partyId !== 'null') {
-      params.partyId = Number(this.filters.partyId);
+
+    if (this.filters.partyId) {
+      // If partyId is an object (from autocomplete), get the id
+      const partyId = typeof this.filters.partyId === 'object' ? this.filters.partyId.id : this.filters.partyId;
+      if (partyId && partyId !== 'null') {
+        params.partyId = Number(partyId);
+      }
     }
-    
+
     if (this.filters.allotmentStatus && this.filters.allotmentStatus !== 'null') {
       params.allotmentStatus = this.filters.allotmentStatus;
     }
@@ -136,19 +160,34 @@ export class BookingListComponent implements OnInit {
     }
   }
 
-  @HostListener('window:scroll', ['$event'])
-  onScroll() {
-    if (this.loading) return;
-    
-    const scrollPosition = window.innerHeight + window.scrollY;
-    // For standard scrolling body
-    const documentHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
-    
-    if (scrollPosition >= documentHeight - 150) {
-      if (this.bookingList.length < this.totalItems) {
-        this.page++;
-        this.loadBookings();
+  ngAfterViewInit() {
+    this.setupObserver();
+  }
+
+  setupObserver() {
+    const options = {
+      root: null,
+      rootMargin: '250px', // Trigger load more well before it comes into full view
+      threshold: 0.1
+    };
+
+    this.observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        if (!this.loading && this.bookingList.length < this.totalItems) {
+          this.page++;
+          this.loadBookings();
+        }
       }
+    }, options);
+
+    if (this.loadMoreTarget) {
+      this.observer.observe(this.loadMoreTarget.nativeElement);
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.observer) {
+      this.observer.disconnect();
     }
   }
 
@@ -172,26 +211,33 @@ export class BookingListComponent implements OnInit {
   }
 
   getActionMenuItems(booking: any): MenuItem[] {
-    return [
-      {
+    const items: MenuItem[] = [];
+
+    if (this.canEdit) {
+      items.push({
         label: 'Edit Booking',
         icon: 'pi pi-pencil',
         disabled: !!booking.UsedInInvoice,
         command: () => this.editBooking(booking)
-      },
-      {
-        label: 'Bus Allotment',
-        icon: 'pi pi-car',
-        disabled: !!booking.UsedInInvoice,
-        command: () => this.openAllotment(booking)
-      },
-      {
+      });
+    }
+
+    // items.push({
+    //   label: 'Bus Allotment',
+    //   icon: 'pi pi-car',
+    //   disabled: !!booking.UsedInInvoice,
+    //   command: () => this.openAllotment(booking)
+    // });
+
+    if (this.canDelete) {
+      items.push({
         label: 'Delete',
         icon: 'pi pi-trash',
         disabled: !!booking.UsedInInvoice,
         command: () => this.deleteBooking(booking)
-      }
-    ];
+      });
+    }
+    return items;
   }
 
   editBooking(booking: any) {
@@ -203,6 +249,23 @@ export class BookingListComponent implements OnInit {
   }
 
   async deleteBooking(booking: any) {
-    // Implement delete logic with confirmation
+    const confirm = await this.alertService.confirm(
+      `Are you sure you want to delete booking ?`
+    );
+
+    if (confirm) {
+      this.loading = true;
+      try {
+        const res = await firstValueFrom(this.bookingService.deleteBooking(booking.BookingNo));
+        if (res) {
+          this.alertService.success('Booking deleted successfully');
+          this.loadBookings(true); // Reset and reload
+        }
+      } catch (error: any) {
+        this.alertService.error(error.error?.message || 'Failed to delete booking');
+      } finally {
+        this.loading = false;
+      }
+    }
   }
 }

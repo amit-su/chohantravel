@@ -1,31 +1,31 @@
-<div class="relative w-full h-full layout-wrapper" [ngClass]="containerClass">
+<div class="relative w-full layout-wrapper" [ngClass]="containerClass" style="min-height: 100dvh;">
     <app-topbar *ngIf="isNotLoginPage"></app-topbar>
     <app-sidebar *ngIf="isNotLoginPage && !isprod"></app-sidebar>
 
-    <div class="flex-grow bg-white/90 pt-[60px] pb-[64px] min-h-screen">
+    <!-- Scrollable content: pushed below the topbar (64px + safe-area-top) and above the bottom nav (64px + safe-area-bottom) -->
+    <div class="layout-content-area bg-white/90">
         <router-outlet></router-outlet>
     </div>
 
     <div class="layout-mask animate-fadein"></div>
 
-    <!-- Bottom Navbar -->
-    <div *ngIf="isNotLoginPage" class="fixed bottom-0 left-0 z-[1000] w-full pointer-events-none">
-        <div class="w-full h-16 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 shadow-md pointer-events-auto flex items-center justify-around px-4 overflow-hidden border-t border-white/10">
-            <!-- Menu Button -->
-            <button type="button" class="flex flex-col items-center justify-center gap-1 group relative transition-all" (click)="navigate('/')">
-                <div class="w-12 h-6 flex items-center justify-center rounded-xl transition-all" [ngClass]="isActive('/') ? 'bg-white text-red-600 shadow-md' : 'text-red-100/60 group-hover:bg-white/10'">
+    <!-- Bottom Navbar
+    <div *ngIf="isNotLoginPage" class="bottom-nav-outer">
+        <div class="bottom-nav-inner border-t border-white/10">
+            <button type="button" class="nav-btn group" (click)="navigate('/')">
+                <div class="nav-icon-wrap" [ngClass]="isActive('/') ? 'active-icon' : 'inactive-icon'">
                     <i class="pi pi-th-large text-lg"></i>
                 </div>
-                <span class="text-[10px] font-bold uppercase tracking-widest transition-all" [ngClass]="isActive('/') ? 'text-white' : 'text-red-100/40 group-hover:text-white'">Menu</span>
+                <span class="nav-label" [ngClass]="isActive('/') ? 'active-label' : 'inactive-label'">Menu</span>
             </button>
 
-            <!-- Profile Button -->
-            <button type="button" class="flex flex-col items-center justify-center gap-1 group relative transition-all" (click)="navigate('/pages/profile')">
-                <div class="w-12 h-6 flex items-center justify-center rounded-xl transition-all" [ngClass]="isActive('/pages/profile') ? 'bg-white text-rose-600 shadow-md' : 'text-red-100/60 group-hover:bg-white/10'">
+            
+            <button type="button" class="nav-btn group" (click)="navigate('/pages/profile')">
+                <div class="nav-icon-wrap" [ngClass]="isActive('/pages/profile') ? 'active-icon' : 'inactive-icon'">
                     <i class="pi pi-user text-lg"></i>
                 </div>
-                <span class="text-[10px] font-bold uppercase tracking-widest transition-all" [ngClass]="isActive('/pages/profile') ? 'text-white' : 'text-red-100/40 group-hover:text-white'">Profile</span>
+                <span class="nav-label" [ngClass]="isActive('/pages/profile') ? 'active-label' : 'inactive-label'">Profile</span>
             </button>
         </div>
-    </div>
+    </div> -->
 </div>

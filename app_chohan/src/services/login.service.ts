@@ -31,6 +31,27 @@ export class LoginService {
         return this.storage.get('token') ?? null;
     }
 
+    // Decode token and check permission
+    hasPermission(permission: string): boolean {
+        const token = this.getToken();
+        if (!token) return false;
+        try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            // Assuming permissions are stored in a 'permissions' array
+            // If the user is an admin or superadmin, they might have specific roles that skip this, 
+            // adjust as needed based on exact payload structure.
+            if (payload && Array.isArray(payload.permissions)) {
+                return payload.permissions.includes(permission);
+            }
+            if (payload && Array.isArray(payload.role?.permissions)) {
+                return payload.role.permissions.map((p: any) => p.name || p).includes(permission);
+            }
+            return false;
+        } catch (e) {
+            return false;
+        }
+    }
+
     // Clear token (Logout function)
     logout(): void {
         this.storage.destroy();

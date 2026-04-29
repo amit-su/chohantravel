@@ -31,12 +31,21 @@ export class BookingDetailComponent implements OnInit {
     try {
       const resp = await firstValueFrom(this.bookingService.getBookingEntryById(parseInt(this.bookingNo)));
       if (resp && resp.data) {
-        // Backend returns an array of details for this bookingNo
-        this.details = resp.data || [];
-        
-        // Parse LocalBookingList if it exists and details is empty or we want to double check
-        // Usually, the backend /bookingEntry/:id returns the JOINED results or the parsed list.
-        // Looking at the React code, it seems to expect an array of trips.
+        let bookingData = Array.isArray(resp.data) ? resp.data[0] : resp.data;
+        if (!bookingData) bookingData = resp.data;
+
+        if (bookingData && typeof bookingData.LocalBookingList === 'string') {
+          try {
+            this.details = JSON.parse(bookingData.LocalBookingList);
+          } catch (e) {
+            console.error('Failed to parse LocalBookingList:', e);
+            this.details = [];
+          }
+        } else if (bookingData && Array.isArray(bookingData.LocalBookingList)) {
+          this.details = bookingData.LocalBookingList;
+        } else {
+          this.details = Array.isArray(resp.data) ? resp.data : [];
+        }
       }
     } catch (error) {
       console.error('Error loading booking details', error);

@@ -9,7 +9,7 @@
         <!-- Dashboard Grid -->
         <div class="unique-grid">
             <!-- Trip List -->
-            <div class="bubble-card" (click)="selectCard('bookingList')" 
+            <div *ngIf="canReadBooking" class="bubble-card" (click)="selectCard('bookingList')" 
                 style="--icon-start: #818cf8; --icon-end: #6366f1; --hover-shadow: rgba(129, 140, 248, 0.2);">
                 <div class="icon-circle">
                     <i class="pi pi-list"></i>
@@ -19,7 +19,7 @@
             </div>
 
             <!-- Attendance -->
-            <div class="bubble-card" (click)="selectCard('attendence')"
+            <div *ngIf="canReadAttendance" class="bubble-card" (click)="selectCard('attendence')"
                 style="--icon-start: #fb923c; --icon-end: #f97316; --hover-shadow: rgba(251, 146, 60, 0.2);">
                 <div class="icon-circle">
                     <i class="pi pi-user-edit"></i>

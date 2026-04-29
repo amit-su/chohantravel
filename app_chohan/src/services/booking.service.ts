@@ -70,4 +70,8 @@ export class BookingService {
   deleteTripDetail(id: number): Observable<any> {
     return this.apiService.delete(`bookingEntry/tran/${id}`);
   }
+
+  deleteBooking(bookingID: string): Observable<any> {
+    return this.apiService.delete('bookingEntry', { BookingID: bookingID, status: 'false' });
+  }
 }

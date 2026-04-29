@@ -172,10 +172,109 @@ html, body {
 
 .animate-fade-in { animation: fadeInSlide 0.5s ease-out forwards; }
 
-/* Ensure PrimeNG overlays appear above bottom sheets (z-index 1051) */
+/* Ensure PrimeNG overlays appear above bottom sheets and dialogs */
 .p-select-overlay,
 .p-datepicker-panel,
+.p-datepicker,
 .p-overlay,
+.p-autocomplete-panel,
 .p-component-overlay {
-    z-index: 1100 !important;
+    z-index: 10000 !important;
 }
+
+/* ============================================================
+   SAFE-AREA LAYOUT SYSTEM
+   Uses CSS env() for notch / gesture-bar / status-bar support
+   ============================================================ */
+
+// The topbar height is 64px PLUS whatever safe-area-inset-top adds.
+// --topbar-height is used by content + bottom-nav to compute offsets.
+:root {
+    --topbar-bar-height: 64px;
+    --bottomnav-bar-height: 64px;
+    // Total header height = status-bar padding + bar itself
+    --topbar-height: calc(max(0px, calc(env(safe-area-inset-top, 0px) - 15px)) + var(--topbar-bar-height));
+    // Total footer height = nav-bar padding + bar itself
+    --bottomnav-height: calc(env(safe-area-inset-bottom, 0px) + var(--bottomnav-bar-height));
+}
+
+// Main scrollable content area
+.layout-content-area {
+    // Start below fully-padded topbar
+    padding-top: var(--topbar-height);
+    // End above fully-padded bottom nav
+    padding-bottom: var(--bottomnav-height);
+    min-height: 100dvh;
+    overflow-y: auto;
+    width: 100%;
+}
+
+// Bottom nav outer wrapper — fixed, full-width, covers safe area
+.bottom-nav-outer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    // Fill down into the safe-area (gesture bar zone)
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: linear-gradient(to right, #dc2626, #e11d48, #be123c);
+    pointer-events: none;
+}
+
+// The actual 64px nav strip
+.bottom-nav-inner {
+    height: var(--bottomnav-bar-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 1rem;
+    pointer-events: auto;
+    overflow: hidden;
+}
+
+// Nav button
+.nav-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    position: relative;
+    transition: all 0.2s;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.nav-icon-wrap {
+    width: 48px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    transition: all 0.2s;
+}
+
+.active-icon {
+    background: white;
+    color: #dc2626;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.inactive-icon {
+    color: rgba(254, 202, 202, 0.6);
+}
+
+.nav-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    transition: color 0.2s;
+}
+
+.active-label { color: white; }
+.inactive-label { color: rgba(254, 202, 202, 0.4); }

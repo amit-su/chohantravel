@@ -61,10 +61,10 @@ export class ApiService {
     }
 
     // Generic DELETE request
-    delete<T>(url: string, params: any = {}): Observable<T> {
+    delete<T>(url: string, body: any = {}): Observable<T> {
         return this.http.delete<T>(this.buildUrl(url), {
             headers: this.getHeaders(),
-            params
+            body: body
         });
     }
 }
