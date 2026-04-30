@@ -362,6 +362,60 @@ const getAdvanceReport = async (req, res) => {
   }
 };
 
+const regenerateKhurakiAmount = async (req, res) => {
+  try {
+    const { month, year, employType } = req.body;
+
+    // Calculate startDate and endDate
+    // month is expected to be 1-12
+    const startDate = `${year}-${String(month).padStart(2, "0")}-01`;
+    const nextMonth = month === 12 ? 1 : parseInt(month) + 1;
+    const nextYear = month === 12 ? parseInt(year) + 1 : year;
+    const endDate = `${nextYear}-${String(nextMonth).padStart(2, "0")}-01`;
+
+    const pool = await databaseService.dbClientService();
+
+    let query = "";
+    if (employType.toUpperCase() === "HELPER") {
+      query = `
+        UPDATE DH
+        SET 
+            DH.KhurakiAmt = S.HelperKhurakiAmt,
+            DH.LastModifidOn = GETDATE()
+        FROM dbo.DrvHelperSiteAttend DH
+        JOIN dbo.PartySiteMast S ON DH.SiteID = S.ID
+        WHERE 
+            ISNULL(DH.KhurakiAmt,0) = 0
+            AND ISNULL(DH.HelperID,0) <> 0
+            AND DH.DutyDate >= '${startDate}'
+            AND DH.DutyDate < '${endDate}';
+    `;
+    } else {
+      query = `
+        UPDATE DH
+        SET 
+            DH.KhurakiAmt = S.DriverKhurakiAmt,
+            DH.LastModifidOn = GETDATE()
+        FROM dbo.DrvHelperSiteAttend DH
+        JOIN dbo.PartySiteMast S ON DH.SiteID = S.ID
+        WHERE 
+            ISNULL(DH.KhurakiAmt,0) = 0
+            AND ISNULL(DH.DriverID,0) <> 0
+            AND DH.DutyDate >= '${startDate}'
+            AND DH.DutyDate < '${endDate}';
+    `;
+    }
+
+    const result = await pool.request().query(query);
+    res.json({
+      message: "Khuraki amount regenerated successfully",
+      rowsAffected: result.rowsAffected,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 module.exports = {
   getSalaryProcessbytypeid,
   getAllSalarydetail,
@@ -374,5 +428,6 @@ module.exports = {
   getSalaryRegisterReport,
   getKhorakiReport,
   getAdvanceReport,
+  regenerateKhurakiAmount,
   // deleteSingleProductCategory,
 };

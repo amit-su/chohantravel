@@ -168,6 +168,20 @@ const GetSalaryDetails = () => {
     );
   }, [data, searchQuery]);
 
+  const isRegenerateAllowed = useMemo(() => {
+    if (!selectedMonth) return false;
+    const now = dayjs();
+    const startOfSelectedMonth = selectedMonth.startOf("month");
+
+    // 1. Prevent showing for future months
+    if (now.isBefore(startOfSelectedMonth)) return false;
+
+    // 2. Deadline: 15th of the month FOLLOWING the selected salary month
+    const deadline = selectedMonth.add(1, "month").date(15).endOf("day");
+
+    return now.isBefore(deadline);
+  }, [selectedMonth]);
+
   const onDelete = async (id) => {
     console.log("Delete Payload (ID):", id); // Added console log as per previous request
     if (
@@ -271,6 +285,51 @@ const GetSalaryDetails = () => {
     // Always sync the total if we just created defaults
     if (existingDetails.length === 0 && advances.length > 0) {
       syncAdvanceTotal(initialAdjustments, record.id, advances);
+    }
+  };
+
+  const handleRegenerate = async () => {
+    if (!selectedMonth || !selectedEmpType) {
+      toast.warn("Please select month and employee type.");
+      return;
+    }
+
+    if (
+      !window.confirm(
+        `Are you sure you want to regenerate Khuraki for ${selectedEmpType} for ${selectedMonth.format(
+          "MMMM YYYY"
+        )}? This will only update records where Khuraki is currently 0.`
+      )
+    ) {
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const payload = {
+        month: selectedMonth.format("MM"),
+        year: selectedMonth.format("YYYY"),
+        employType: selectedEmpType,
+      };
+
+      const response = await axios.post(
+        `${apiUrl}/salarydetails/regenerate`,
+        payload
+      );
+
+      if (response.status === 200) {
+        toast.success(response.data.message || "Regenerated successfully!");
+        if (selectedCompany) {
+          loadSalaryDetails(selectedEmpType, selectedMonth, selectedCompany);
+        }
+      }
+    } catch (error) {
+      toast.error(
+        error.response?.data?.error || "Failed to regenerate Khuraki."
+      );
+      console.error("Regenerate error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -899,6 +958,15 @@ const GetSalaryDetails = () => {
                     >
                       Complite Salary
                     </Button>
+                    {isRegenerateAllowed && (
+                      <Button
+                        title={"Regenerate Khuraki"}
+                        onClick={handleRegenerate}
+                        className="bg-blue-600 text-white font-medium rounded hover:bg-blue-700 transition duration-300 text-sm"
+                      >
+                        Regenerate
+                      </Button>
+                    )}
                     <Button
                       title={"Save"}
                       onClick={handleSave}

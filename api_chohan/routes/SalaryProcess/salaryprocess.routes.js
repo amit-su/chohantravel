@@ -12,9 +12,13 @@ const {
   getSalaryRegisterReport,
   getKhorakiReport,
   getAdvanceReport,
+  regenerateKhurakiAmount,
 } = require("./salaryprocess.controller");
 
 const salarydetailssetupRoutes = express.Router();
+
+// Regenerate Khuraki route
+salarydetailssetupRoutes.post("/regenerate", regenerateKhurakiAmount);
 
 // Salary slip report route - POST request
 salarydetailssetupRoutes.post("/slip-report", getSalarySlipReport);
